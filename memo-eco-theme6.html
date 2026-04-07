@@ -127,7 +127,7 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
   .sli-nav { display: none !important; }
   body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .memo { padding: 0; max-width: 100%; }
-  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain { break-inside: avoid; }
+  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain, .inode, .ichain { break-inside: avoid; }
 }
 
 @media (max-width: 600px) {
@@ -165,102 +165,78 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 </div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ARBRE INTERACTIF UNIFIÉ -->
 <!-- ═══════════════════════════════════════ -->
 
-<div class="schema-section">
-  <div class="schema-box">
-    <svg viewBox="0 0 800 320" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
-      <!-- Fond -->
-      <!-- Niveau 1 : Problème -->
-      <rect x="280" y="8" width="240" height="44" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
-      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0" letter-spacing="1">POURQUOI ?</text>
-      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Le marché a des défaillances</text>
+<style>
+/* Arbre interactif */
+.itree { max-width: 100%; }
+.itree-level { display: flex; justify-content: center; position: relative; }
+.itree-connector { display: flex; justify-content: center; padding: 6px 0; }
+.itree-connector .vline { width: 2px; height: 16px; background: #c8c0b4; }
+.itree-hbar { display: flex; align-items: flex-start; justify-content: center; position: relative; margin: 0 auto; }
+.itree-hbar::before { content:''; position: absolute; top: 0; left: 16.66%; right: 16.66%; height: 2px; background: #c8c0b4; }
+.itree-branches { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding-top: 18px; position: relative; }
+.itree-branches > div { position: relative; }
+.itree-branches > div::before { content:''; position: absolute; top: -18px; left: 50%; width: 2px; height: 18px; background: #c8c0b4; }
 
-      <!-- Flèche -->
-      <line x1="400" y1="52" x2="400" y2="70" stroke="#a09880" stroke-width="2" marker-end="url(#arrow)"/>
+/* Noeuds */
+.inode { border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,.05); position: relative; }
+.inode-root { background: #fffdf8; border: 2px solid var(--color-primary); text-align: center; max-width: 500px; margin: 0 auto; }
+.inode-root .inode-circle { position: absolute; top: -14px; left: -14px; width: 36px; height: 36px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 900; color: #fff; }
+.inode-branch { background: #fffdf8; border-left: 4px solid #ccc; }
+.inode-branch.c-bleu { border-left-color: #2a69a8; }
+.inode-branch.c-rose { border-left-color: #b5415a; }
+.inode-branch.c-vert { border-left-color: #1a7a3c; }
+.inode-branch.c-violet { border-left-color: #7030a0; }
+.inode-branch.c-jaune { border-left-color: #946e00; }
 
-      <!-- Niveau 2 : État intervient -->
-      <rect x="260" y="70" width="280" height="38" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
-      <text x="400" y="94" text-anchor="middle" font-size="12" font-weight="900" fill="#2a69a8">L'État intervient (3 fonctions : ARS)</text>
+.inode-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; }
+.inode-label .freq { color: #f5c842; letter-spacing: 0; text-transform: none; }
+.inode-h { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: #1e1c18; margin-bottom: 6px; }
+.inode-def { font-size: 12px; line-height: 1.55; color: #3a3630; margin-bottom: 6px; }
+.inode-ex { font-size: 11px; color: #7a6a58; font-style: italic; }
 
-      <!-- 3 branches -->
-      <line x1="400" y1="108" x2="400" y2="128" stroke="#a09880" stroke-width="2"/>
-      <line x1="150" y1="128" x2="650" y2="128" stroke="#a09880" stroke-width="2"/>
-      <line x1="150" y1="128" x2="150" y2="145" stroke="#a09880" stroke-width="2"/>
-      <line x1="400" y1="128" x2="400" y2="145" stroke="#a09880" stroke-width="2"/>
-      <line x1="650" y1="128" x2="650" y2="145" stroke="#a09880" stroke-width="2"/>
+/* Sub-node (enfant dans la branche) */
+.inode-child { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(0,0,0,.08); }
+.inode-child .inode-label { font-size: 8px; }
+.inode-child .inode-h { font-size: 13px; }
 
-      <!-- Branche 1 : Politique budgétaire -->
-      <rect x="40" y="145" width="220" height="50" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
-      <text x="150" y="163" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8" letter-spacing="1">OUTIL 1 · L'ÉTAT ★★★★★</text>
-      <text x="150" y="180" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Politique budgétaire</text>
-      <!-- Sous-branches -->
-      <line x1="150" y1="195" x2="150" y2="210" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="80" y1="210" x2="220" y2="210" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="80" y1="210" x2="80" y2="222" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="220" y1="210" x2="220" y2="222" stroke="#a09880" stroke-width="1.5"/>
-      <rect x="20" y="222" width="120" height="32" rx="8" fill="#e8f3ff"/>
-      <text x="80" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#2a69a8">Relance</text>
-      <text x="80" y="251" text-anchor="middle" font-size="7" fill="#5a5448">(+ dépenses ou - impôts)</text>
-      <rect x="160" y="222" width="120" height="32" rx="8" fill="#fef8e2"/>
-      <text x="220" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#946e00">Offre</text>
-      <text x="220" y="251" text-anchor="middle" font-size="7" fill="#5a5448">(- charges, + innovation)</text>
+/* Chaîne logique intégrée */
+.ichain { background: #fef8e2; border-radius: 12px; padding: 12px 16px; margin-top: 14px; }
+.ichain .tree-label { color: #946e00; }
 
-      <!-- Branche 2 : Politique monétaire -->
-      <rect x="290" y="145" width="220" height="50" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
-      <text x="400" y="163" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c" letter-spacing="1">OUTIL 2 · LA BCE ★★☆☆☆</text>
-      <text x="400" y="180" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Politique monétaire</text>
-      <line x1="400" y1="195" x2="400" y2="210" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="330" y1="210" x2="470" y2="210" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="330" y1="210" x2="330" y2="222" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="470" y1="210" x2="470" y2="222" stroke="#a09880" stroke-width="1.5"/>
-      <rect x="275" y="222" width="110" height="32" rx="8" fill="#e6f5ec"/>
-      <text x="330" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">Taux bas</text>
-      <text x="330" y="251" text-anchor="middle" font-size="7" fill="#5a5448">crédit facile = relance</text>
-      <rect x="415" y="222" width="110" height="32" rx="8" fill="#fdeef2"/>
-      <text x="470" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">Taux hauts</text>
-      <text x="470" y="251" text-anchor="middle" font-size="7" fill="#5a5448">frein à l'inflation</text>
+/* Responsive */
+@media (max-width: 700px) {
+  .itree-branches { grid-template-columns: 1fr; }
+  .itree-hbar::before { display: none; }
+  .itree-branches > div::before { display: none; }
+}
+</style>
 
-      <!-- Branche 3 : Redistribution -->
-      <rect x="540" y="145" width="220" height="50" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
-      <text x="650" y="163" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">OUTIL 3 · SOLIDARITÉ ★★★☆☆</text>
-      <text x="650" y="180" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Redistribution</text>
-      <line x1="650" y1="195" x2="650" y2="210" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="580" y1="210" x2="720" y2="210" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="580" y1="210" x2="580" y2="222" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="720" y1="210" x2="720" y2="222" stroke="#a09880" stroke-width="1.5"/>
-      <rect x="525" y="222" width="110" height="32" rx="8" fill="#fdeef2"/>
-      <text x="580" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">Horizontale</text>
-      <text x="580" y="251" text-anchor="middle" font-size="7" fill="#5a5448">contre les risques</text>
-      <rect x="665" y="222" width="110" height="32" rx="8" fill="#fdeef2"/>
-      <text x="720" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">Verticale</text>
-      <text x="720" y="251" text-anchor="middle" font-size="7" fill="#5a5448">réduire les écarts</text>
+<div class="itree">
 
-      <!-- Financement : barre latérale -->
-      <rect x="40" y="272" width="720" height="38" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5" stroke-dasharray="6,3"/>
-      <text x="400" y="288" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">FINANCEMENT</text>
-      <text x="400" y="302" text-anchor="middle" font-size="10" font-weight="700" fill="#5a4e00">Prélèvements obligatoires (impôts + cotisations) → si dépenses > recettes = Déficit → accumulation = Dette</text>
-
-      <!-- Arrow marker -->
-      <defs><marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
-
-      <!-- Ancre visuelle T6 Éco -->
-      <g transform="translate(28, 28)">
-        <circle cx="0" cy="0" r="20" fill="#2a69a8"/>
-        <text x="0" y="6" text-anchor="middle"
-          font-family="Inter, sans-serif"
-          font-size="11" font-weight="900"
-          fill="#ffffff">ÉÉ</text>
-      </g>
-    </svg>
+  <!-- RACINE -->
+  <div class="itree-level">
+    <div class="inode inode-root">
+      <div class="inode-circle">ÉÉ</div>
+      <div class="inode-label">Le socle · <span class="freq">★★★★★</span></div>
+      <div class="inode-h">L'ÉTAT DANS L'ÉCONOMIE — 3 fonctions</div>
+      <div class="inode-def">L'État remplit <strong>3 fonctions</strong> : <strong>allocation</strong> des ressources (fournir les biens publics), <strong>redistribution</strong> (réduire les inégalités), <strong>stabilisation</strong> (maintenir croissance et emploi).</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-bleu" data-tip="allocation">Allocation des ressources</span>
+        <span class="tree-chip chip-bleu" data-tip="redistribution">Redistribution</span>
+        <span class="tree-chip chip-bleu" data-tip="stabilisation">Stabilisation</span>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- CHAÎNE LOGIQUE -->
-<div class="recup" style="margin-bottom:12px">
-  <div class="chain recup-full">
-    <div class="tree-label">La chaîne logique du thème 6</div>
+  <!-- Connecteur vertical -->
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- CHAÎNE LOGIQUE -->
+  <div class="ichain">
+    <div class="tree-label">Chaîne logique du thème 6</div>
     <div class="chain-flow">
       <span class="chain-node">Le marché a des défaillances</span>
       <span class="chain-arrow">→</span>
@@ -275,114 +251,97 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
       <span class="chain-node">Mais dette + inflation = limites</span>
     </div>
   </div>
-</div>
 
-<!-- ═══════════════════════════════════════ -->
-<!-- ENCODER — Les cartes du thème -->
-<!-- ═══════════════════════════════════════ -->
+  <!-- Connecteur vertical -->
+  <div class="itree-connector"><div class="vline"></div></div>
 
-<!-- Bloc racine : les 3 fonctions -->
-<div class="tree">
+  <!-- 3 BRANCHES -->
+  <div class="itree-branches">
 
-  <div class="tree-card c-bleu tree-full">
-    <div class="tree-label">Le point de départ <span class="freq">★★★★★</span></div>
-    <div class="tree-h">Les 3 fonctions économiques de l'État</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-bleu" data-tip="allocation">Allocation des ressources</span>
-      <span class="tree-chip chip-bleu" data-tip="redistribution">Redistribution</span>
-      <span class="tree-chip chip-bleu" data-tip="stabilisation">Stabilisation</span>
-    </div>
-    <div class="tree-def" style="margin-top:6px">L'État corrige ce que le marché ne fait pas seul : il fournit les biens publics, réduit les inégalités, et maintient la croissance et l'emploi.</div>
-  </div>
+    <!-- BRANCHE 1 : Politique budgétaire -->
+    <div>
+      <div class="inode inode-branch c-bleu">
+        <div class="inode-label">Outil n°1 · L'État <span class="freq">★★★★★</span></div>
+        <div class="inode-h">Politique budgétaire</div>
+        <div class="inode-def">L'État utilise son <strong>budget</strong> (dépenses + impôts) pour agir sur l'économie. Deux approches : la <strong>relance</strong> par la demande (augmenter les dépenses ou baisser les impôts) et la <strong>politique d'offre</strong> (baisser les charges des entreprises, favoriser l'innovation).</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-bleu" data-tip="relance">Relance (demande)</span>
+          <span class="tree-chip chip-jaune" data-tip="offre">Politique d'offre</span>
+        </div>
+        <div class="inode-ex">Ex. : plan de relance post-Covid de 100 Mds EUR (2020)</div>
 
-  <!-- Branche 1 : Défaillances du marché -->
-  <div class="tree-card c-violet">
-    <div class="tree-label">Pourquoi l'état intervient <span class="freq">★★☆☆☆</span></div>
-    <div class="tree-h">Les défaillances du marché</div>
-    <div class="tree-def">Quand le marché <strong>échoue seul</strong>, l'État intervient. 4 cas :</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-violet" data-tip="asymetrie">Asymétrie d'info</span>
-      <span class="tree-chip chip-violet" data-tip="externalite">Externalités</span>
-      <span class="tree-chip chip-violet" data-tip="bienpublic">Biens publics</span>
-      <span class="tree-chip chip-violet" data-tip="concurrence">Concurrence imparfaite</span>
+        <!-- Enfant : Financement -->
+        <div class="inode-child">
+          <div class="inode-label">Comment l'État finance <span class="freq">★★★★☆</span></div>
+          <div class="inode-h">Dépenses, recettes, déficit, dette</div>
+          <div class="inode-def">Les dépenses publiques sont financées par les <strong>prélèvements obligatoires</strong> (impôts + cotisations, ~45% du PIB). Quand les dépenses dépassent les recettes = <strong>déficit public</strong> (flux annuel). L'accumulation des déficits = <strong>dette publique</strong> (stock).</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-jaune" data-tip="po">Prélèvements obligatoires</span>
+            <span class="tree-chip chip-jaune" data-tip="deficit">Déficit public</span>
+            <span class="tree-chip chip-jaune" data-tip="dette">Dette publique</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="tree-ex">Ex. : la pollution est une externalité négative — le pollueur ne paye pas le coût pour la société</div>
-  </div>
 
-  <!-- Branche 2 : Financement -->
-  <div class="tree-card c-jaune">
-    <div class="tree-label">Comment l'état finance <span class="freq">★★★★☆</span></div>
-    <div class="tree-h">Dépenses, recettes, déficit, dette</div>
-    <div class="tree-def">
-      <strong>Prélèvements obligatoires</strong> = impôts + cotisations sociales (~45% du PIB en France).<br>
-      Si <strong>dépenses &gt; recettes</strong> = déficit public (flux annuel).<br>
-      L'accumulation des déficits = <strong>dette publique</strong> (stock).
+    <!-- BRANCHE 2 : Politique monétaire -->
+    <div>
+      <div class="inode inode-branch c-vert">
+        <div class="inode-label">Outil n°2 · La BCE <span class="freq">★★☆☆☆</span></div>
+        <div class="inode-h">Politique monétaire</div>
+        <div class="inode-def">La <strong>BCE</strong> agit via les <strong>taux directeurs</strong>. Objectif : inflation ~2%. <strong>Taux bas</strong> → crédit facile → relance de l'activité. <strong>Taux élevés</strong> → crédit cher → frein à l'inflation. Comprendre la politique monétaire nécessite de connaître la <strong>création monétaire</strong> et le <strong>taux d'intérêt</strong>.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-vert" data-tip="tauxbas">Taux bas → relance</span>
+          <span class="tree-chip chip-rose" data-tip="tauxhaut">Taux élevés → frein</span>
+          <span class="tree-chip chip-gris" data-tip="bce">BCE</span>
+          <span class="tree-chip chip-gris" data-tip="creation_monetaire">Création monétaire</span>
+          <span class="tree-chip chip-gris" data-tip="taux_interet">Taux d'intérêt</span>
+        </div>
+        <div class="inode-ex">Ex. : BCE remonte les taux en 2022-2023 contre l'inflation post-Covid</div>
+      </div>
     </div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-jaune" data-tip="po">Prélèvements obligatoires</span>
-      <span class="tree-chip chip-jaune" data-tip="deficit">Déficit public</span>
-      <span class="tree-chip chip-jaune" data-tip="dette">Dette publique</span>
-    </div>
-    <div class="tree-ex">Tombé dans 6 sujets sur 15 au Bac</div>
-  </div>
 
-  <!-- Branche 3 : Politique budgétaire -->
-  <div class="tree-card c-bleu">
-    <div class="tree-label">Outil n°1 — l'état <span class="freq">★★★★★</span></div>
-    <div class="tree-h">Politique budgétaire</div>
-    <div class="tree-def">
-      L'État utilise son <strong>budget</strong> (dépenses + impôts) pour agir sur l'économie.
-    </div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-bleu" data-tip="relance">Relance (demande)</span>
-      <span class="tree-chip chip-jaune" data-tip="offre">Politique d'offre</span>
-    </div>
-    <div class="tree-ex">Ex. : plan de relance post-Covid de 100 Mds EUR (2020)</div>
-  </div>
+    <!-- BRANCHE 3 : Redistribution -->
+    <div>
+      <div class="inode inode-branch c-rose">
+        <div class="inode-label">Outil n°3 · Solidarité <span class="freq">★★★☆☆</span></div>
+        <div class="inode-h">Redistribution</div>
+        <div class="inode-def">L'État <strong>transfère</strong> des revenus pour réduire les inégalités. Deux formes : la redistribution <strong>horizontale</strong> (protéger contre les risques : maladie, chômage, vieillesse) et la redistribution <strong>verticale</strong> (réduire les écarts de revenus entre riches et pauvres).</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-rose" data-tip="horizontale">Horizontale</span>
+          <span class="tree-chip chip-rose" data-tip="verticale">Verticale</span>
+        </div>
+        <div class="inode-ex">Ex. : salarié malade indemnisé (horizontal) ; cadre paye plus d'impôts (vertical)</div>
 
-  <!-- Branche 4 : Politique monétaire -->
-  <div class="tree-card c-vert">
-    <div class="tree-label">Outil n°2 — la BCE <span class="freq">★★☆☆☆</span></div>
-    <div class="tree-h">Politique monétaire</div>
-    <div class="tree-def">
-      La <strong>BCE</strong> agit via les <strong>taux directeurs</strong>. Objectif : inflation ~2%.
-    </div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-vert" data-tip="tauxbas">Taux bas → relance</span>
-      <span class="tree-chip chip-rose" data-tip="tauxhaut">Taux élevés → frein</span>
-      <span class="tree-chip chip-gris" data-tip="bce">BCE</span>
-      <span class="tree-chip chip-gris" data-tip="creation_monetaire">Création monétaire</span>
-      <span class="tree-chip chip-gris" data-tip="taux_interet">Taux d'intérêt</span>
-    </div>
-    <div class="tree-ex">Ex. : BCE remonte les taux en 2022-2023 contre l'inflation post-Covid</div>
-  </div>
+        <!-- Enfant : Défaillances du marché -->
+        <div class="inode-child">
+          <div class="inode-label">Pourquoi l'État intervient <span class="freq">★★☆☆☆</span></div>
+          <div class="inode-h">Les défaillances du marché</div>
+          <div class="inode-def">Quand le marché échoue seul, l'État intervient. 4 cas : l'<strong>asymétrie d'information</strong> (un acteur sait plus que l'autre), les <strong>externalités</strong> (effets sur des tiers sans compensation), les <strong>biens publics</strong> (non rivaux et non excluables), la <strong>concurrence imparfaite</strong> (monopoles).</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-violet" data-tip="asymetrie">Asymétrie d'info</span>
+            <span class="tree-chip chip-violet" data-tip="externalite">Externalités</span>
+            <span class="tree-chip chip-violet" data-tip="bienpublic">Biens publics</span>
+            <span class="tree-chip chip-violet" data-tip="concurrence">Concurrence imparfaite</span>
+          </div>
+        </div>
 
-  <!-- Branche 5bis : Prérequis calculs (Première) -->
-  <div class="tree-card c-jaune">
-    <div class="tree-label">Outils de calcul · rappels 1ère <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Les formules qui tombent au Bac</div>
-    <div class="tree-def">Ces outils de Première reviennent régulièrement dans les calculs de l'épreuve.</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-jaune" data-tip="taux_variation">Taux de variation</span>
-      <span class="tree-chip chip-jaune" data-tip="coef_multi">Coefficient multiplicateur</span>
-      <span class="tree-chip chip-jaune" data-tip="valeur_ajoutee">Valeur ajoutée</span>
-      <span class="tree-chip chip-jaune" data-tip="autofinancement">Autofinancement</span>
-      <span class="tree-chip chip-jaune" data-tip="financement_ext">Financement externe</span>
+        <!-- Enfant : Outils de calcul -->
+        <div class="inode-child">
+          <div class="inode-label">Rappels 1ère <span class="freq">★★★☆☆</span></div>
+          <div class="inode-h">Formules qui tombent au Bac</div>
+          <div class="inode-def">Outils de Première mobilisés dans les calculs : le <strong>taux de variation</strong> pour mesurer une évolution, le <strong>coefficient multiplicateur</strong>, la <strong>valeur ajoutée</strong> (CA − CI), et les modes de financement (<strong>autofinancement</strong> ou <strong>financement externe</strong>).</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-jaune" data-tip="taux_variation">Taux de variation</span>
+            <span class="tree-chip chip-jaune" data-tip="coef_multi">Coefficient multiplicateur</span>
+            <span class="tree-chip chip-jaune" data-tip="valeur_ajoutee">Valeur ajoutée</span>
+            <span class="tree-chip chip-jaune" data-tip="autofinancement">Autofinancement</span>
+            <span class="tree-chip chip-jaune" data-tip="financement_ext">Financement externe</span>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- Branche 5 : Redistribution -->
-  <div class="tree-card c-rose">
-    <div class="tree-label">Outil n°3 — solidarité <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Redistribution</div>
-    <div class="tree-def">
-      L'État <strong>transfère</strong> des revenus pour réduire les inégalités. Deux formes :
-    </div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-rose" data-tip="horizontale">Horizontale</span>
-      <span class="tree-chip chip-rose" data-tip="verticale">Verticale</span>
-    </div>
-    <div class="tree-ex">Ex. : un salarié malade est indemnisé (horizontal) ; un cadre paye plus d'impôts (vertical)</div>
   </div>
 
 </div>

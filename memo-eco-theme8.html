@@ -122,12 +122,56 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 .chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
 .chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
 
+/* ─── ARBRE INTERACTIF UNIFIÉ ─── */
+.itree { max-width: 100%; }
+.itree-level { display: flex; justify-content: center; position: relative; }
+.itree-connector { display: flex; justify-content: center; padding: 6px 0; }
+.itree-connector .vline { width: 2px; height: 16px; background: #c8c0b4; }
+.itree-hbar { display: flex; align-items: flex-start; justify-content: center; position: relative; margin: 0 auto; }
+.itree-hbar::before { content:''; position: absolute; top: 0; left: 16.66%; right: 16.66%; height: 2px; background: #c8c0b4; }
+.itree-branches { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding-top: 18px; position: relative; }
+.itree-branches > div { position: relative; }
+.itree-branches > div::before { content:''; position: absolute; top: -18px; left: 50%; width: 2px; height: 18px; background: #c8c0b4; }
+
+/* Noeuds */
+.inode { border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,.05); position: relative; }
+.inode-root { background: #fffdf8; border: 2px solid var(--color-primary); text-align: center; max-width: 500px; margin: 0 auto; }
+.inode-root .inode-circle { position: absolute; top: -14px; left: -14px; width: 36px; height: 36px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 900; color: #fff; }
+.inode-branch { background: #fffdf8; border-left: 4px solid #ccc; }
+.inode-branch.c-bleu { border-left-color: #2a69a8; }
+.inode-branch.c-rose { border-left-color: #b5415a; }
+.inode-branch.c-violet { border-left-color: #7030a0; }
+.inode-branch.c-jaune { border-left-color: #946e00; }
+.inode-branch.c-vert { border-left-color: #1a7a3c; }
+
+.inode-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; }
+.inode-label .freq { color: #f5c842; letter-spacing: 0; text-transform: none; }
+.inode-h { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: #1e1c18; margin-bottom: 6px; }
+.inode-def { font-size: 12px; line-height: 1.55; color: #3a3630; margin-bottom: 6px; }
+.inode-ex { font-size: 11px; color: #7a6a58; font-style: italic; }
+
+/* Sub-node (enfant dans la branche) */
+.inode-child { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(0,0,0,.08); }
+.inode-child .inode-label { font-size: 8px; }
+.inode-child .inode-h { font-size: 13px; }
+
+/* Chaîne logique intégrée */
+.ichain { background: #fef8e2; border-radius: 12px; padding: 12px 16px; margin-top: 14px; }
+.ichain .tree-label { color: #946e00; }
+
+/* Responsive arbre interactif */
+@media (max-width: 700px) {
+  .itree-branches { grid-template-columns: 1fr; }
+  .itree-hbar::before { display: none; }
+  .itree-branches > div::before { display: none; }
+}
+
 /* ─── PRINT ─── */
 @media print {
   .sli-nav { display: none !important; }
   body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .memo { padding: 0; max-width: 100%; }
-  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain { break-inside: avoid; }
+  .tree-card, .inode, .confuse-box, .mnemo-box, .freq-box, .chain, .ichain { break-inside: avoid; }
 }
 
 @media (max-width: 600px) {
@@ -165,188 +209,116 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 </div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ARBRE INTERACTIF UNIFIÉ -->
 <!-- ═══════════════════════════════════════ -->
 
-<div class="schema-section">
-  <div class="schema-box">
-    <svg viewBox="0 0 800 340" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+<div class="itree">
 
-      <!-- Niveau 1 : La mondialisation -->
-      <rect x="260" y="8" width="280" height="44" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
-      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">CONSTAT</text>
-      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">La mondialisation — les économies s'ouvrent</text>
-
-      <!-- Flèche vers branches -->
-      <line x1="400" y1="52" x2="400" y2="72" stroke="#a09880" stroke-width="2" marker-end="url(#arrow8)"/>
-      <line x1="200" y1="72" x2="600" y2="72" stroke="#a09880" stroke-width="2"/>
-      <line x1="200" y1="72" x2="200" y2="90" stroke="#a09880" stroke-width="2"/>
-      <line x1="600" y1="72" x2="600" y2="90" stroke="#a09880" stroke-width="2"/>
-
-      <!-- Niveau 2 gauche : Libre-échange -->
-      <rect x="80" y="90" width="240" height="44" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
-      <text x="200" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c" letter-spacing="1">POUR L'OUVERTURE</text>
-      <text x="200" y="122" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Libre-échange</text>
-
-      <!-- Sous-branches libre-échange -->
-      <line x1="200" y1="134" x2="200" y2="150" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="100" y1="150" x2="300" y2="150" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="100" y1="150" x2="100" y2="162" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="200" y1="150" x2="200" y2="162" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="300" y1="150" x2="300" y2="162" stroke="#a09880" stroke-width="1.5"/>
-      <rect x="40" y="162" width="120" height="30" rx="8" fill="#e6f5ec"/>
-      <text x="100" y="181" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">Baisse des prix</text>
-      <rect x="140" y="162" width="120" height="30" rx="8" fill="#e6f5ec"/>
-      <text x="200" y="181" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">Spécialisation</text>
-      <rect x="240" y="162" width="120" height="30" rx="8" fill="#e6f5ec"/>
-      <text x="300" y="181" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">Éco. d'échelle</text>
-
-      <!-- Niveau 2 droite : Protectionnisme -->
-      <rect x="480" y="90" width="240" height="44" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
-      <text x="600" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">CONTRE L'OUVERTURE</text>
-      <text x="600" y="122" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Protectionnisme</text>
-
-      <!-- Sous-branches protectionnisme -->
-      <line x1="600" y1="134" x2="600" y2="150" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="510" y1="150" x2="690" y2="150" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="510" y1="150" x2="510" y2="162" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="690" y1="150" x2="690" y2="162" stroke="#a09880" stroke-width="1.5"/>
-      <rect x="440" y="162" width="140" height="38" rx="8" fill="#fdeef2"/>
-      <text x="510" y="178" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">Barrières tarifaires</text>
-      <text x="510" y="192" text-anchor="middle" font-size="7" fill="#5a5448">(droits de douane)</text>
-      <rect x="620" y="162" width="140" height="38" rx="8" fill="#fdeef2"/>
-      <text x="690" y="178" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">Barrières non tarif.</text>
-      <text x="690" y="192" text-anchor="middle" font-size="7" fill="#5a5448">(quotas, normes)</text>
-
-      <!-- Flèches vers centre -->
-      <line x1="200" y1="192" x2="200" y2="220" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="600" y1="200" x2="600" y2="220" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="200" y1="220" x2="600" y2="220" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="400" y1="220" x2="400" y2="235" stroke="#a09880" stroke-width="2" marker-end="url(#arrow8)"/>
-
-      <!-- Niveau 3 centre : Régulation -->
-      <rect x="260" y="235" width="280" height="44" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
-      <text x="400" y="253" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8" letter-spacing="1">RÉGULATION</text>
-      <text x="400" y="267" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">OMC + Accords régionaux (UE, etc.)</text>
-
-      <!-- Barre indicateurs -->
-      <rect x="40" y="296" width="720" height="38" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5" stroke-dasharray="6,3"/>
-      <text x="400" y="312" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">INDICATEURS</text>
-      <text x="400" y="326" text-anchor="middle" font-size="10" font-weight="700" fill="#5a4e00">Balance commerciale = Export - Import | IDE = investissements d'un pays dans un autre</text>
-
-      <!-- Arrow marker -->
-      <defs><marker id="arrow8" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
-
-      <!-- Ancre visuelle T8 Éco -->
-      <g transform="translate(28, 28)">
-        <circle cx="0" cy="0" r="20" fill="#2a69a8"/>
-        <text x="0" y="6" text-anchor="middle"
-          font-family="Inter, sans-serif"
-          font-size="11" font-weight="900"
-          fill="#ffffff">CI</text>
-      </g>
-    </svg>
+  <!-- RACINE -->
+  <div class="itree-level">
+    <div class="inode inode-root">
+      <div class="inode-circle">CI</div>
+      <div class="inode-label">La mondialisation <span class="freq">★★★★☆</span></div>
+      <div class="inode-h">COMMERCE INTERNATIONAL</div>
+      <div class="inode-def">La <strong>mondialisation</strong> est le processus d'ouverture des économies sur un marché planétaire. Les échanges augmentent grâce à l'<strong>internationalisation</strong>, portée par les <strong>FMN</strong> (firmes multinationales) et la <strong>division internationale du travail</strong>.</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-jaune" data-tip="mondialisation">Mondialisation</span>
+        <span class="tree-chip chip-jaune" data-tip="internationalisation">Internationalisation</span>
+        <span class="tree-chip chip-jaune" data-tip="fmn">FMN</span>
+        <span class="tree-chip chip-jaune" data-tip="dit">DIT</span>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="recup" style="margin-bottom:12px">
-  <div class="chain recup-full">
-    <div class="tree-label">La chaîne logique du thème 8</div>
+  <!-- Connecteur vertical -->
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- CHAÎNE LOGIQUE -->
+  <div class="ichain">
+    <div class="tree-label">Chaîne logique</div>
     <div class="chain-flow">
-      <span class="chain-node">Les économies s'ouvrent (mondialisation)</span>
+      <span class="chain-node">Les économies s'ouvrent</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Deux visions : libre-échange vs protectionnisme</span>
+      <span class="chain-node">Libre-échange vs Protectionnisme</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">L'OMC tente de réguler</span>
+      <span class="chain-node">L'OMC régule</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Les effets se mesurent (balance, IDE)</span>
+      <span class="chain-node">Effets mesurés (balance, IDE)</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Débat : croissance pour tous ou inégalités ?</span>
+      <span class="chain-node">Croissance pour tous ou inégalités ?</span>
     </div>
   </div>
-</div>
 
-<!-- ═══════════════════════════════════════ -->
-<!-- PARTIE 1 : ENCODER — L'arbre du thème -->
-<!-- ═══════════════════════════════════════ -->
+  <!-- Connecteur vertical -->
+  <div class="itree-connector"><div class="vline"></div></div>
 
-<div class="tree">
+  <!-- 3 BRANCHES -->
+  <div class="itree-branches">
 
-  <div class="tree-card c-jaune tree-full">
-    <div class="tree-label">Le point de départ <span class="freq">★★★★☆</span></div>
-    <div class="tree-h">La mondialisation</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-jaune" data-tip="mondialisation">Mondialisation</span>
-      <span class="tree-chip chip-jaune" data-tip="internationalisation">Internationalisation</span>
-      <span class="tree-chip chip-jaune" data-tip="fmn">FMN</span>
-      <span class="tree-chip chip-jaune" data-tip="dit">DIT</span>
+    <!-- BRANCHE 1 : Libre-échange -->
+    <div>
+      <div class="inode inode-branch c-vert">
+        <div class="inode-label">Vision 1 · Pour l'ouverture <span class="freq">★★★★★</span></div>
+        <div class="inode-h">Le libre-échange</div>
+        <div class="inode-def">Politique favorable à la libre circulation des biens et services par la suppression des barrières. Arguments : baisse des prix grâce aux <strong>économies d'échelle</strong>, <strong>spécialisation</strong> de chaque pays selon son <strong>avantage comparatif</strong> (Ricardo), plus de choix pour les consommateurs, stimulation de l'innovation.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-vert" data-tip="libre_echange">Libre-échange</span>
+          <span class="tree-chip chip-vert" data-tip="avantage_comparatif">Avantage comparatif</span>
+          <span class="tree-chip chip-vert" data-tip="economies_echelle">Économies d'échelle</span>
+          <span class="tree-chip chip-vert" data-tip="specialisation">Spécialisation</span>
+        </div>
+        <div class="inode-ex">Ex. : le marché unique européen — 0 droits de douane entre les 27 pays</div>
+      </div>
     </div>
-    <div class="tree-def" style="margin-top:6px">Processus d'ouverture des économies sur un marché planétaire. Augmentation des échanges de biens, services, capitaux.</div>
-  </div>
 
-  <!-- Branche 2 : Libre-échange -->
-  <div class="tree-card c-vert">
-    <div class="tree-label">Vision 1 — pour l'ouverture <span class="freq">★★★★★</span></div>
-    <div class="tree-h">Le libre-échange</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-vert" data-tip="libre_echange">Libre-échange</span>
-      <span class="tree-chip chip-vert" data-tip="avantage_comparatif">Avantage comparatif</span>
-      <span class="tree-chip chip-vert" data-tip="economies_echelle">Économies d'échelle</span>
-      <span class="tree-chip chip-vert" data-tip="specialisation">Spécialisation</span>
+    <!-- BRANCHE 2 : Protectionnisme -->
+    <div>
+      <div class="inode inode-branch c-rose">
+        <div class="inode-label">Vision 2 · Contre l'ouverture <span class="freq">★★★★☆</span></div>
+        <div class="inode-h">Le protectionnisme</div>
+        <div class="inode-def">Politique visant à limiter les importations pour protéger la production nationale. Deux types de barrières : les <strong>droits de douane</strong> (taxes sur les importations = barrières tarifaires) et les <strong>quotas</strong>, <strong>normes</strong> techniques, <strong>subventions</strong> (= barrières non tarifaires, plus discrètes mais tout aussi efficaces).</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-rose" data-tip="protectionnisme">Protectionnisme</span>
+          <span class="tree-chip chip-rose" data-tip="droits_douane">Droits de douane</span>
+          <span class="tree-chip chip-rose" data-tip="quotas">Quotas</span>
+          <span class="tree-chip chip-rose" data-tip="normes">Normes</span>
+          <span class="tree-chip chip-rose" data-tip="subventions">Subventions</span>
+        </div>
+        <div class="inode-ex">Ex. : droits de douane US sur l'acier chinois (25%)</div>
+      </div>
     </div>
-    <div class="tree-def" style="margin-top:6px">Suppression des barrières = plus d'échanges. Arguments : prix plus bas, plus de choix, innovation.</div>
-  </div>
 
-  <!-- Branche 3 : Protectionnisme -->
-  <div class="tree-card c-rose">
-    <div class="tree-label">Vision 2 — contre l'ouverture <span class="freq">★★★★☆</span></div>
-    <div class="tree-h">Le protectionnisme</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-rose" data-tip="protectionnisme">Protectionnisme</span>
-      <span class="tree-chip chip-rose" data-tip="droits_douane">Droits de douane</span>
-      <span class="tree-chip chip-rose" data-tip="quotas">Quotas</span>
-      <span class="tree-chip chip-rose" data-tip="normes">Normes</span>
-      <span class="tree-chip chip-rose" data-tip="subventions">Subventions</span>
-    </div>
-    <div class="tree-def" style="margin-top:6px">Limiter les importations pour protéger la production nationale. Deux types de barrières : tarifaires et non tarifaires.</div>
-  </div>
+    <!-- BRANCHE 3 : Régulation et indicateurs -->
+    <div>
+      <div class="inode inode-branch c-bleu">
+        <div class="inode-label">Régulation <span class="freq">★★☆☆☆</span></div>
+        <div class="inode-h">Régulation et indicateurs</div>
+        <div class="inode-def">L'<strong>OMC</strong> régule le commerce mondial (164 pays membres). Les <strong>accords régionaux</strong> (comme l'<strong>UE</strong>) créent des zones de libre-échange. Les effets se mesurent avec la <strong>balance commerciale</strong> (export − import) et les <strong>IDE</strong> (investissements d'un pays dans un autre).</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-bleu" data-tip="omc">OMC</span>
+          <span class="tree-chip chip-bleu" data-tip="accords_regionaux">Accords régionaux</span>
+          <span class="tree-chip chip-bleu" data-tip="ue">UE</span>
+          <span class="tree-chip chip-bleu" data-tip="balance">Balance commerciale</span>
+          <span class="tree-chip chip-bleu" data-tip="ide">IDE</span>
+          <span class="tree-chip chip-bleu" data-tip="exportations">Exportations</span>
+          <span class="tree-chip chip-bleu" data-tip="importations">Importations</span>
+        </div>
 
-  <!-- Branche 4 : Régulation -->
-  <div class="tree-card c-bleu">
-    <div class="tree-label">Régulation internationale <span class="freq">★★☆☆☆</span></div>
-    <div class="tree-h">La régulation internationale</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-bleu" data-tip="omc">OMC</span>
-      <span class="tree-chip chip-bleu" data-tip="accords_regionaux">Accords régionaux</span>
-      <span class="tree-chip chip-bleu" data-tip="ue">UE</span>
+        <!-- Enfant : Rappels Première -->
+        <div class="inode-child">
+          <div class="inode-label">Rappels 1ère <span class="freq">★★☆☆☆</span></div>
+          <div class="inode-h">Offre, demande et prix</div>
+          <div class="inode-def">Le libre-échange agit sur l'<strong>offre et la demande</strong> : plus de producteurs = plus d'offre = baisse du <strong>prix d'équilibre</strong>. L'<strong>élasticité-prix</strong> mesure la sensibilité de la demande aux variations de prix. Le <strong>taux de variation</strong> sert à commenter les évolutions d'échanges.</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-gris" data-tip="offre_demande">Offre et demande</span>
+            <span class="tree-chip chip-gris" data-tip="prix_equilibre">Prix d'équilibre</span>
+            <span class="tree-chip chip-gris" data-tip="elasticite">Élasticité-prix</span>
+            <span class="tree-chip chip-gris" data-tip="taux_variation_t8">Taux de variation</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="tree-def" style="margin-top:6px">L'OMC régule le commerce mondial. Les accords régionaux (UE) créent des zones de libre-échange.</div>
-  </div>
 
-  <!-- Branche 5 : Balance et IDE -->
-  <div class="tree-card c-jaune">
-    <div class="tree-label">Mesurer les échanges <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Balance commerciale et IDE</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-jaune" data-tip="balance">Balance commerciale</span>
-      <span class="tree-chip chip-jaune" data-tip="ide">IDE</span>
-      <span class="tree-chip chip-jaune" data-tip="exportations">Exportations</span>
-      <span class="tree-chip chip-jaune" data-tip="importations">Importations</span>
-    </div>
-    <div class="tree-def" style="margin-top:6px">Balance = export - import. Excédentaire (Allemagne) ou déficitaire (France). Les IDE traduisent la mondialisation de la production.</div>
-  </div>
-
-  <!-- Branche 6 : Rappels Première -->
-  <div class="tree-card c-jaune">
-    <div class="tree-label">Rappels 1ère · Le marché <span class="freq">★★☆☆☆</span></div>
-    <div class="tree-h">Offre, demande et prix (prérequis)</div>
-    <div class="tree-def">Ces notions de Première sont mobilisées dans le commerce international : le libre-échange agit sur l'offre, la demande et les prix.</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-gris" data-tip="offre_demande">Offre et demande</span>
-      <span class="tree-chip chip-gris" data-tip="prix_equilibre">Prix d'équilibre</span>
-      <span class="tree-chip chip-gris" data-tip="elasticite">Élasticité-prix</span>
-      <span class="tree-chip chip-gris" data-tip="taux_variation_t8">Taux de variation</span>
-    </div>
   </div>
 
 </div>

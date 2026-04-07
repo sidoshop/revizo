@@ -165,100 +165,78 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 </div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ARBRE INTERACTIF UNIFIÉ -->
 <!-- ═══════════════════════════════════════ -->
 
-<div class="schema-section">
-  <div class="schema-box">
-    <svg viewBox="0 0 800 340" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+<style>
+/* Arbre interactif */
+.itree { max-width: 100%; }
+.itree-level { display: flex; justify-content: center; position: relative; }
+.itree-connector { display: flex; justify-content: center; padding: 6px 0; }
+.itree-connector .vline { width: 2px; height: 16px; background: #c8c0b4; }
+.itree-hbar { display: flex; align-items: flex-start; justify-content: center; position: relative; margin: 0 auto; }
+.itree-hbar::before { content:''; position: absolute; top: 0; left: 16.66%; right: 16.66%; height: 2px; background: #c8c0b4; }
+.itree-branches { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding-top: 18px; position: relative; }
+.itree-branches > div { position: relative; }
+.itree-branches > div::before { content:''; position: absolute; top: -18px; left: 50%; width: 2px; height: 18px; background: #c8c0b4; }
 
-      <!-- Niveau 1 : Le marché du travail -->
-      <rect x="250" y="8" width="300" height="44" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
-      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">NIVEAU 1</text>
-      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Le marché du travail</text>
+/* Noeuds */
+.inode { border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,.05); position: relative; }
+.inode-root { background: #fffdf8; border: 2px solid var(--color-primary); text-align: center; max-width: 500px; margin: 0 auto; }
+.inode-root .inode-circle { position: absolute; top: -14px; left: -14px; width: 36px; height: 36px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 900; color: #fff; }
+.inode-branch { background: #fffdf8; border-left: 4px solid #ccc; }
+.inode-branch.c-bleu { border-left-color: #2a69a8; }
+.inode-branch.c-rose { border-left-color: #b5415a; }
+.inode-branch.c-violet { border-left-color: #7030a0; }
+.inode-branch.c-jaune { border-left-color: #946e00; }
 
-      <!-- 2 sous-branches : Offre / Demande -->
-      <line x1="400" y1="52" x2="400" y2="66" stroke="#a09880" stroke-width="2"/>
-      <line x1="250" y1="66" x2="550" y2="66" stroke="#a09880" stroke-width="2"/>
-      <line x1="250" y1="66" x2="250" y2="78" stroke="#a09880" stroke-width="2"/>
-      <line x1="550" y1="66" x2="550" y2="78" stroke="#a09880" stroke-width="2"/>
+.inode-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; }
+.inode-label .freq { color: #f5c842; letter-spacing: 0; text-transform: none; }
+.inode-h { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: #1e1c18; margin-bottom: 6px; }
+.inode-def { font-size: 12px; line-height: 1.55; color: #3a3630; margin-bottom: 6px; }
+.inode-ex { font-size: 11px; color: #7a6a58; font-style: italic; }
 
-      <rect x="150" y="78" width="200" height="32" rx="8" fill="#fdeef2"/>
-      <text x="250" y="98" text-anchor="middle" font-size="10" font-weight="700" fill="#b5415a">Offre de travail (salariés)</text>
+/* Sub-node (enfant dans la branche) */
+.inode-child { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(0,0,0,.08); }
+.inode-child .inode-label { font-size: 8px; }
+.inode-child .inode-h { font-size: 13px; }
 
-      <rect x="450" y="78" width="200" height="32" rx="8" fill="#fdeef2"/>
-      <text x="550" y="98" text-anchor="middle" font-size="10" font-weight="700" fill="#b5415a">Demande de travail (employeurs)</text>
+/* Chaine logique integree */
+.ichain { background: #fef8e2; border-radius: 12px; padding: 12px 16px; margin-top: 14px; }
+.ichain .tree-label { color: #946e00; }
 
-      <!-- Flèche vers Niveau 2 -->
-      <line x1="400" y1="110" x2="400" y2="130" stroke="#a09880" stroke-width="2" marker-end="url(#arrow7)"/>
+/* Responsive */
+@media (max-width: 700px) {
+  .itree-branches { grid-template-columns: 1fr; }
+  .itree-hbar::before { display: none; }
+  .itree-branches > div::before { display: none; }
+}
+</style>
 
-      <!-- Niveau 2 : Le chômage -->
-      <rect x="280" y="130" width="240" height="38" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
-      <text x="400" y="154" text-anchor="middle" font-size="12" font-weight="900" fill="#7030a0">Le chômage (3 types)</text>
+<div class="itree">
 
-      <!-- 3 branches chômage -->
-      <line x1="400" y1="168" x2="400" y2="182" stroke="#a09880" stroke-width="2"/>
-      <line x1="180" y1="182" x2="620" y2="182" stroke="#a09880" stroke-width="2"/>
-      <line x1="180" y1="182" x2="180" y2="194" stroke="#a09880" stroke-width="2"/>
-      <line x1="400" y1="182" x2="400" y2="194" stroke="#a09880" stroke-width="2"/>
-      <line x1="620" y1="182" x2="620" y2="194" stroke="#a09880" stroke-width="2"/>
-
-      <rect x="110" y="194" width="140" height="32" rx="8" fill="#f3eafc"/>
-      <text x="180" y="214" text-anchor="middle" font-size="10" font-weight="700" fill="#7030a0">Conjoncturel</text>
-
-      <rect x="330" y="194" width="140" height="32" rx="8" fill="#f3eafc"/>
-      <text x="400" y="214" text-anchor="middle" font-size="10" font-weight="700" fill="#7030a0">Structurel</text>
-
-      <rect x="550" y="194" width="140" height="32" rx="8" fill="#f3eafc"/>
-      <text x="620" y="214" text-anchor="middle" font-size="10" font-weight="700" fill="#7030a0">Frictionnel</text>
-
-      <!-- Flèche vers Niveau 3 -->
-      <line x1="400" y1="226" x2="400" y2="244" stroke="#a09880" stroke-width="2" marker-end="url(#arrow7)"/>
-
-      <!-- Niveau 3 : Les politiques de l'emploi -->
-      <rect x="240" y="244" width="320" height="38" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
-      <text x="400" y="268" text-anchor="middle" font-size="12" font-weight="900" fill="#2a69a8">Les politiques de l'emploi (2 types)</text>
-
-      <!-- 2 branches politiques -->
-      <line x1="400" y1="282" x2="400" y2="294" stroke="#a09880" stroke-width="2"/>
-      <line x1="260" y1="294" x2="540" y2="294" stroke="#a09880" stroke-width="2"/>
-      <line x1="260" y1="294" x2="260" y2="306" stroke="#a09880" stroke-width="2"/>
-      <line x1="540" y1="294" x2="540" y2="306" stroke="#a09880" stroke-width="2"/>
-
-      <rect x="180" y="306" width="160" height="28" rx="8" fill="#e6f5ec"/>
-      <text x="260" y="324" text-anchor="middle" font-size="10" font-weight="700" fill="#1a7a3c">Actives (causes)</text>
-
-      <rect x="460" y="306" width="160" height="28" rx="8" fill="#fef8e2"/>
-      <text x="540" y="324" text-anchor="middle" font-size="10" font-weight="700" fill="#946e00">Passives (effets)</text>
-
-      <!-- Arrow marker -->
-      <defs><marker id="arrow7" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
-
-      <!-- Ancre visuelle T7 Éco -->
-      <g transform="translate(28, 28)">
-        <circle cx="0" cy="0" r="20" fill="#2a69a8"/>
-        <text x="0" y="6" text-anchor="middle"
-          font-family="Inter, sans-serif"
-          font-size="11" font-weight="900"
-          fill="#ffffff">E&amp;C</text>
-      </g>
-    </svg>
-  </div>
-</div>
-
-<!-- Barre indicateurs (dashed) -->
-<div class="recup" style="margin-bottom:16px">
-  <div class="chain recup-full" style="background:#fef8e2;border:2px dashed #946e00;">
-    <div class="tree-label" style="color:#946e00">Indicateurs clés</div>
-    <div style="font-size:11px;font-weight:700;color:#5a4e00;text-align:center;margin-top:4px;">
-      Taux de chômage = Chômeurs / Pop. active × 100 &nbsp;|&nbsp; Taux d'emploi &nbsp;|&nbsp; Taux d'activité
+  <!-- RACINE -->
+  <div class="itree-level">
+    <div class="inode inode-root">
+      <div class="inode-circle">E&amp;C</div>
+      <div class="inode-label">Le marché du travail <span class="freq">★★★☆☆</span></div>
+      <div class="inode-h">EMPLOI ET CHOMAGE</div>
+      <div class="inode-def">Le <strong>marché du travail</strong> confronte l'<strong>offre de travail</strong> (des salariés qui proposent leur force de travail) et la <strong>demande de travail</strong> (des employeurs qui cherchent à embaucher). Le prix sur ce marché = le <strong>salaire</strong> (encadré par le <strong>SMIC</strong>).</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-rose" data-tip="offre_travail">Offre de travail</span>
+        <span class="tree-chip chip-rose" data-tip="demande_travail">Demande de travail</span>
+        <span class="tree-chip chip-rose" data-tip="salaire_equilibre">Salaire d'équilibre</span>
+        <span class="tree-chip chip-rose" data-tip="smic">SMIC</span>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="recup" style="margin-bottom:12px">
-  <div class="chain recup-full">
-    <div class="tree-label">La chaîne logique du thème 7</div>
+  <!-- Connecteur vertical -->
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- CHAINE LOGIQUE -->
+  <div class="ichain">
+    <div class="tree-label">Chaîne logique</div>
     <div class="chain-flow">
       <span class="chain-node">Marché du travail déséquilibré</span>
       <span class="chain-arrow">→</span>
@@ -271,83 +249,71 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
       <span class="chain-node">Mais coût pour les finances publiques</span>
     </div>
   </div>
-</div>
 
-<!-- ═══════════════════════════════════════ -->
-<!-- PARTIE 1 : ENCODER — L'arbre du thème -->
-<!-- ═══════════════════════════════════════ -->
+  <!-- Connecteur vertical -->
+  <div class="itree-connector"><div class="vline"></div></div>
 
-<div class="tree">
+  <!-- 3 BRANCHES -->
+  <div class="itree-branches">
 
-  <div class="tree-card c-rose tree-full">
-    <div class="tree-label">Le point de départ <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Le marché du travail</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-rose" data-tip="offre_travail">Offre de travail</span>
-      <span class="tree-chip chip-rose" data-tip="demande_travail">Demande de travail</span>
-      <span class="tree-chip chip-rose" data-tip="salaire_equilibre">Salaire d'équilibre</span>
-      <span class="tree-chip chip-rose" data-tip="smic">SMIC</span>
+    <!-- BRANCHE 1 : Population active et indicateurs -->
+    <div>
+      <div class="inode inode-branch c-rose">
+        <div class="inode-label">Les chiffres <span class="freq">★★★★☆</span></div>
+        <div class="inode-h">Population active et indicateurs</div>
+        <div class="inode-def">La <strong>population active</strong> = les personnes qui ont un emploi (actifs occupés) + celles qui en cherchent (chômeurs). Le <strong>taux de chômage</strong> = (chômeurs / population active) × 100. Le <strong>taux d'emploi</strong> mesure la part des 15-64 ans qui travaillent. Le <strong>taux de variation</strong> sert à commenter les évolutions.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-rose" data-tip="pop_active">Population active</span>
+          <span class="tree-chip chip-rose" data-tip="taux_chomage">Taux de chômage</span>
+          <span class="tree-chip chip-rose" data-tip="taux_emploi">Taux d'emploi</span>
+          <span class="tree-chip chip-gris" data-tip="taux_variation_t7">Taux de variation</span>
+        </div>
+        <div class="inode-ex">Ex. : 3M de chômeurs / 30M d'actifs = 10% (calcul tombé en 2022)</div>
+      </div>
     </div>
-    <div class="tree-def" style="margin-top:6px">Lieu abstrait où se confrontent l'<strong>offre</strong> (salariés) et la <strong>demande</strong> (employeurs). Le prix = le salaire.</div>
-  </div>
 
-  <!-- Population active et indicateurs -->
-  <div class="tree-card c-rose">
-    <div class="tree-label">Les chiffres à connaître <span class="freq">★★★★☆</span></div>
-    <div class="tree-h">Population active et indicateurs</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-rose" data-tip="pop_active">Population active</span>
-      <span class="tree-chip chip-rose" data-tip="taux_chomage">Taux de chômage</span>
-      <span class="tree-chip chip-rose" data-tip="taux_emploi">Taux d'emploi</span>
-      <span class="tree-chip chip-gris" data-tip="taux_variation_t7">Taux de variation</span>
+    <!-- BRANCHE 2 : Les types de chômage -->
+    <div>
+      <div class="inode inode-branch c-violet">
+        <div class="inode-label">3 causes <span class="freq">★★★☆☆</span></div>
+        <div class="inode-h">Les types de chômage</div>
+        <div class="inode-def">3 causes différentes = 3 remèdes différents. Le chômage <strong>conjoncturel</strong> est temporaire (lié à un ralentissement de l'activité). Le <strong>structurel</strong> est durable (inadéquation des qualifications, rigidités). Le <strong>frictionnel</strong> est normal (temps de recherche entre deux emplois).</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-violet" data-tip="conjoncturel">Conjoncturel</span>
+          <span class="tree-chip chip-violet" data-tip="structurel">Structurel</span>
+          <span class="tree-chip chip-violet" data-tip="frictionnel">Frictionnel</span>
+        </div>
+        <div class="inode-ex">Ex. : Covid = conjoncturel · Robots remplacent ouvriers = structurel</div>
+      </div>
     </div>
-    <div class="tree-def">Pop. active = actifs occupés + chômeurs. Le taux de chômage se <strong>CALCULE</strong> (tombé en 2022).</div>
-  </div>
 
-  <!-- Les types de chômage -->
-  <div class="tree-card c-violet">
-    <div class="tree-label">Les 3 causes <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Les types de chômage</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-violet" data-tip="conjoncturel">Conjoncturel</span>
-      <span class="tree-chip chip-violet" data-tip="structurel">Structurel</span>
-      <span class="tree-chip chip-violet" data-tip="frictionnel">Frictionnel</span>
-    </div>
-    <div class="tree-def">3 causes différentes = 3 remèdes différents</div>
-  </div>
+    <!-- BRANCHE 3 : Politiques de l'emploi -->
+    <div>
+      <div class="inode inode-branch c-bleu">
+        <div class="inode-label">Les réponses de l'État <span class="freq">★★★★☆</span></div>
+        <div class="inode-h">Politiques de l'emploi</div>
+        <div class="inode-def">Deux types de politiques. Les <strong>politiques actives</strong> agissent sur les causes : <strong>formation</strong> professionnelle, <strong>contrats aidés</strong>, <strong>allègements de charges</strong>. Les <strong>politiques passives</strong> amortissent les conséquences : <strong>allocations</strong> chômage, <strong>préretraites</strong>.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-bleu" data-tip="formation">Formation</span>
+          <span class="tree-chip chip-bleu" data-tip="contrats_aides">Contrats aidés</span>
+          <span class="tree-chip chip-bleu" data-tip="allegements">Allègements de charges</span>
+          <span class="tree-chip chip-jaune" data-tip="allocations">Allocations</span>
+          <span class="tree-chip chip-jaune" data-tip="preretraites">Préretraites</span>
+        </div>
 
-  <!-- Politiques actives -->
-  <div class="tree-card c-bleu">
-    <div class="tree-label">Agir sur les causes <span class="freq">★★★★☆</span></div>
-    <div class="tree-h">Politiques actives</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-bleu" data-tip="formation">Formation</span>
-      <span class="tree-chip chip-bleu" data-tip="contrats_aides">Contrats aidés</span>
-      <span class="tree-chip chip-bleu" data-tip="allegements">Allègements de charges</span>
+        <!-- Enfant : Flexisécurité -->
+        <div class="inode-child">
+          <div class="inode-label">Modèle alternatif <span class="freq">★★☆☆☆</span></div>
+          <div class="inode-h">Flexisécurité</div>
+          <div class="inode-def">Modèle qui combine <strong>flexibilité</strong> du marché du travail (faciliter embauches et licenciements) et <strong>sécurité</strong> pour les salariés (formation continue, indemnisation généreuse). Modèle danois souvent cité en exemple.</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-vert" data-tip="flexibilite">Flexibilité</span>
+            <span class="tree-chip chip-vert" data-tip="securite">Sécurité</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="tree-def">Agissent sur les <strong>CAUSES</strong> du chômage</div>
-  </div>
 
-  <!-- Politiques passives -->
-  <div class="tree-card c-jaune">
-    <div class="tree-label">Amortir les effets <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Politiques passives</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-jaune" data-tip="allocations">Allocations chômage</span>
-      <span class="tree-chip chip-jaune" data-tip="preretraites">Préretraites</span>
-    </div>
-    <div class="tree-def">Amortissent les <strong>CONSÉQUENCES</strong> du chômage</div>
-  </div>
-
-  <!-- Flexisécurité -->
-  <div class="tree-card c-vert">
-    <div class="tree-label">Le modèle hybride <span class="freq">★★☆☆☆</span></div>
-    <div class="tree-h">Flexisécurité</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-vert" data-tip="flexibilite">Flexibilité</span>
-      <span class="tree-chip chip-vert" data-tip="securite">Sécurité</span>
-    </div>
-    <div class="tree-def">Modèle combinant facilité de licenciement + protection du salarié (modèle danois)</div>
   </div>
 
 </div>
