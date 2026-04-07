@@ -165,7 +165,7 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 </div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- ARBRE INTERACTIF UNIFIÉ -->
+<!-- ARBRE INTERACTIF UNIFIÉ (multi-niveaux) -->
 <!-- ═══════════════════════════════════════ -->
 
 <style>
@@ -216,65 +216,80 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 
 <div class="itree">
 
-  <!-- RACINE -->
+  <!-- ─── NIVEAU 1 : POURQUOI ? ─── -->
+  <div class="itree-level">
+    <div class="inode inode-root" style="border-color:#7030a0">
+      <div class="inode-circle">ÉÉ</div>
+      <div class="inode-label">Pourquoi l'État intervient <span class="freq">★★☆☆☆</span></div>
+      <div class="inode-h">Le marché a des défaillances</div>
+      <div class="inode-def">Quand le marché échoue seul, l'État doit intervenir. 4 cas : l'<strong>asymétrie d'information</strong> (un acteur sait plus que l'autre), les <strong>externalités</strong> (effets sur des tiers sans compensation), les <strong>biens publics</strong> (non rivaux, non excluables), la <strong>concurrence imparfaite</strong> (monopoles).</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-violet" data-tip="asymetrie">Asymétrie d'info</span>
+        <span class="tree-chip chip-violet" data-tip="externalite">Externalités</span>
+        <span class="tree-chip chip-violet" data-tip="bienpublic">Biens publics</span>
+        <span class="tree-chip chip-violet" data-tip="concurrence">Concurrence imparfaite</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- ─── NIVEAU 2 : L'ÉTAT INTERVIENT ─── -->
   <div class="itree-level">
     <div class="inode inode-root">
-      <div class="inode-circle">ÉÉ</div>
-      <div class="inode-label">Le socle · <span class="freq">★★★★★</span></div>
-      <div class="inode-h">L'ÉTAT DANS L'ÉCONOMIE — 3 fonctions</div>
+      <div class="inode-label">3 fonctions de l'État <span class="freq">★★★★★</span></div>
+      <div class="inode-h">L'État intervient (ARS)</div>
       <div class="inode-def">L'État remplit <strong>3 fonctions</strong> : <strong>allocation</strong> des ressources (fournir les biens publics), <strong>redistribution</strong> (réduire les inégalités), <strong>stabilisation</strong> (maintenir croissance et emploi).</div>
       <div class="tree-sub" style="justify-content:center">
-        <span class="tree-chip chip-bleu" data-tip="allocation">Allocation des ressources</span>
+        <span class="tree-chip chip-bleu" data-tip="allocation">Allocation</span>
         <span class="tree-chip chip-bleu" data-tip="redistribution">Redistribution</span>
         <span class="tree-chip chip-bleu" data-tip="stabilisation">Stabilisation</span>
       </div>
     </div>
   </div>
 
-  <!-- Connecteur vertical -->
   <div class="itree-connector"><div class="vline"></div></div>
 
   <!-- CHAÎNE LOGIQUE -->
   <div class="ichain">
-    <div class="tree-label">Chaîne logique du thème 6</div>
+    <div class="tree-label">Chaîne logique</div>
     <div class="chain-flow">
-      <span class="chain-node">Le marché a des défaillances</span>
+      <span class="chain-node">Défaillances</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">L'État intervient</span>
+      <span class="chain-node">L'État intervient (ARS)</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Via le budget (budgétaire)</span>
+      <span class="chain-node">Budget (budgétaire)</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Via la BCE (monétaire)</span>
+      <span class="chain-node">BCE (monétaire)</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Via la redistribution</span>
+      <span class="chain-node">Redistribution</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Mais dette + inflation = limites</span>
+      <span class="chain-node">Limites : dette + inflation</span>
     </div>
   </div>
 
-  <!-- Connecteur vertical -->
   <div class="itree-connector"><div class="vline"></div></div>
 
-  <!-- 3 BRANCHES -->
+  <!-- ─── NIVEAU 3 : LES 3 OUTILS ─── -->
   <div class="itree-branches">
 
-    <!-- BRANCHE 1 : Politique budgétaire -->
+    <!-- OUTIL 1 : Politique budgétaire -->
     <div>
       <div class="inode inode-branch c-bleu">
         <div class="inode-label">Outil n°1 · L'État <span class="freq">★★★★★</span></div>
         <div class="inode-h">Politique budgétaire</div>
-        <div class="inode-def">L'État utilise son <strong>budget</strong> (dépenses + impôts) pour agir sur l'économie. Deux approches : la <strong>relance</strong> par la demande (augmenter les dépenses ou baisser les impôts) et la <strong>politique d'offre</strong> (baisser les charges des entreprises, favoriser l'innovation).</div>
+        <div class="inode-def">L'État utilise son <strong>budget</strong> (dépenses + impôts) pour agir sur l'économie. Deux approches : la <strong>relance</strong> par la demande (+ dépenses ou − impôts) et la <strong>politique d'offre</strong> (− charges entreprises, + innovation).</div>
         <div class="tree-sub">
           <span class="tree-chip chip-bleu" data-tip="relance">Relance (demande)</span>
           <span class="tree-chip chip-jaune" data-tip="offre">Politique d'offre</span>
         </div>
-        <div class="inode-ex">Ex. : plan de relance post-Covid de 100 Mds EUR (2020)</div>
+        <div class="inode-ex">Ex. : plan de relance post-Covid 100 Mds EUR (2020)</div>
 
-        <!-- Enfant : Financement -->
+        <!-- Niveau 4 : Financement -->
         <div class="inode-child">
-          <div class="inode-label">Comment l'État finance <span class="freq">★★★★☆</span></div>
-          <div class="inode-h">Dépenses, recettes, déficit, dette</div>
-          <div class="inode-def">Les dépenses publiques sont financées par les <strong>prélèvements obligatoires</strong> (impôts + cotisations, ~45% du PIB). Quand les dépenses dépassent les recettes = <strong>déficit public</strong> (flux annuel). L'accumulation des déficits = <strong>dette publique</strong> (stock).</div>
+          <div class="inode-label">Financement <span class="freq">★★★★☆</span></div>
+          <div class="inode-h">Dépenses → Recettes → Déficit → Dette</div>
+          <div class="inode-def">Financé par les <strong>prélèvements obligatoires</strong> (impôts + cotisations, ~45% du PIB). Si dépenses > recettes = <strong>déficit public</strong> (flux annuel). Accumulation des déficits = <strong>dette publique</strong> (stock).</div>
           <div class="tree-sub">
             <span class="tree-chip chip-jaune" data-tip="po">Prélèvements obligatoires</span>
             <span class="tree-chip chip-jaune" data-tip="deficit">Déficit public</span>
@@ -284,64 +299,64 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
       </div>
     </div>
 
-    <!-- BRANCHE 2 : Politique monétaire -->
+    <!-- OUTIL 2 : Politique monétaire -->
     <div>
       <div class="inode inode-branch c-vert">
         <div class="inode-label">Outil n°2 · La BCE <span class="freq">★★☆☆☆</span></div>
         <div class="inode-h">Politique monétaire</div>
-        <div class="inode-def">La <strong>BCE</strong> agit via les <strong>taux directeurs</strong>. Objectif : inflation ~2%. <strong>Taux bas</strong> → crédit facile → relance de l'activité. <strong>Taux élevés</strong> → crédit cher → frein à l'inflation. Comprendre la politique monétaire nécessite de connaître la <strong>création monétaire</strong> et le <strong>taux d'intérêt</strong>.</div>
+        <div class="inode-def">La <strong>BCE</strong> agit via les <strong>taux directeurs</strong>. Objectif : inflation ~2%. <strong>Taux bas</strong> → crédit facile → relance. <strong>Taux élevés</strong> → crédit cher → frein à l'inflation.</div>
         <div class="tree-sub">
           <span class="tree-chip chip-vert" data-tip="tauxbas">Taux bas → relance</span>
           <span class="tree-chip chip-rose" data-tip="tauxhaut">Taux élevés → frein</span>
           <span class="tree-chip chip-gris" data-tip="bce">BCE</span>
-          <span class="tree-chip chip-gris" data-tip="creation_monetaire">Création monétaire</span>
-          <span class="tree-chip chip-gris" data-tip="taux_interet">Taux d'intérêt</span>
         </div>
-        <div class="inode-ex">Ex. : BCE remonte les taux en 2022-2023 contre l'inflation post-Covid</div>
+        <div class="inode-ex">Ex. : BCE remonte les taux 2022-2023 contre l'inflation post-Covid</div>
+
+        <!-- Niveau 4 : Rappels Première -->
+        <div class="inode-child">
+          <div class="inode-label">Rappels 1ère <span class="freq">★★☆☆☆</span></div>
+          <div class="inode-h">Comprendre la politique monétaire</div>
+          <div class="inode-def">La <strong>création monétaire</strong> se fait quand une banque accorde un crédit. Le <strong>taux d'intérêt</strong> est le prix du crédit, directement lié au taux directeur de la BCE.</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-gris" data-tip="creation_monetaire">Création monétaire</span>
+            <span class="tree-chip chip-gris" data-tip="taux_interet">Taux d'intérêt</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- BRANCHE 3 : Redistribution -->
+    <!-- OUTIL 3 : Redistribution -->
     <div>
       <div class="inode inode-branch c-rose">
         <div class="inode-label">Outil n°3 · Solidarité <span class="freq">★★★☆☆</span></div>
         <div class="inode-h">Redistribution</div>
-        <div class="inode-def">L'État <strong>transfère</strong> des revenus pour réduire les inégalités. Deux formes : la redistribution <strong>horizontale</strong> (protéger contre les risques : maladie, chômage, vieillesse) et la redistribution <strong>verticale</strong> (réduire les écarts de revenus entre riches et pauvres).</div>
+        <div class="inode-def">L'État <strong>transfère</strong> des revenus pour réduire les inégalités. Deux formes : <strong>horizontale</strong> (contre les risques : maladie, chômage, vieillesse) et <strong>verticale</strong> (réduire les écarts de revenus).</div>
         <div class="tree-sub">
           <span class="tree-chip chip-rose" data-tip="horizontale">Horizontale</span>
           <span class="tree-chip chip-rose" data-tip="verticale">Verticale</span>
         </div>
-        <div class="inode-ex">Ex. : salarié malade indemnisé (horizontal) ; cadre paye plus d'impôts (vertical)</div>
-
-        <!-- Enfant : Défaillances du marché -->
-        <div class="inode-child">
-          <div class="inode-label">Pourquoi l'État intervient <span class="freq">★★☆☆☆</span></div>
-          <div class="inode-h">Les défaillances du marché</div>
-          <div class="inode-def">Quand le marché échoue seul, l'État intervient. 4 cas : l'<strong>asymétrie d'information</strong> (un acteur sait plus que l'autre), les <strong>externalités</strong> (effets sur des tiers sans compensation), les <strong>biens publics</strong> (non rivaux et non excluables), la <strong>concurrence imparfaite</strong> (monopoles).</div>
-          <div class="tree-sub">
-            <span class="tree-chip chip-violet" data-tip="asymetrie">Asymétrie d'info</span>
-            <span class="tree-chip chip-violet" data-tip="externalite">Externalités</span>
-            <span class="tree-chip chip-violet" data-tip="bienpublic">Biens publics</span>
-            <span class="tree-chip chip-violet" data-tip="concurrence">Concurrence imparfaite</span>
-          </div>
-        </div>
-
-        <!-- Enfant : Outils de calcul -->
-        <div class="inode-child">
-          <div class="inode-label">Rappels 1ère <span class="freq">★★★☆☆</span></div>
-          <div class="inode-h">Formules qui tombent au Bac</div>
-          <div class="inode-def">Outils de Première mobilisés dans les calculs : le <strong>taux de variation</strong> pour mesurer une évolution, le <strong>coefficient multiplicateur</strong>, la <strong>valeur ajoutée</strong> (CA − CI), et les modes de financement (<strong>autofinancement</strong> ou <strong>financement externe</strong>).</div>
-          <div class="tree-sub">
-            <span class="tree-chip chip-jaune" data-tip="taux_variation">Taux de variation</span>
-            <span class="tree-chip chip-jaune" data-tip="coef_multi">Coefficient multiplicateur</span>
-            <span class="tree-chip chip-jaune" data-tip="valeur_ajoutee">Valeur ajoutée</span>
-            <span class="tree-chip chip-jaune" data-tip="autofinancement">Autofinancement</span>
-            <span class="tree-chip chip-jaune" data-tip="financement_ext">Financement externe</span>
-          </div>
-        </div>
+        <div class="inode-ex">Ex. : salarié malade indemnisé (horizontal) ; cadre paye + d'impôts (vertical)</div>
       </div>
     </div>
 
+  </div>
+
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- ─── NIVEAU 4 : OUTILS DE CALCUL (BARRE TRANSVERSALE) ─── -->
+  <div class="itree-level">
+    <div class="inode" style="background:#fef8e2;border:2px dashed #946e00;border-radius:14px;padding:14px 18px;width:100%">
+      <div class="inode-label" style="color:#946e00">Rappels 1ère · Outils de calcul <span class="freq">★★★☆☆</span></div>
+      <div class="inode-h" style="font-size:13px">Les formules qui tombent au Bac</div>
+      <div class="inode-def">Le <strong>taux de variation</strong> mesure une évolution en %. Le <strong>coefficient multiplicateur</strong> dit "multiplié par combien". La <strong>valeur ajoutée</strong> = CA − consommations intermédiaires. Financement : <strong>autofinancement</strong> (bénéfices propres) ou <strong>financement externe</strong> (emprunt, marché).</div>
+      <div class="tree-sub">
+        <span class="tree-chip chip-jaune" data-tip="taux_variation">Taux de variation</span>
+        <span class="tree-chip chip-jaune" data-tip="coef_multi">Coeff. multiplicateur</span>
+        <span class="tree-chip chip-jaune" data-tip="valeur_ajoutee">Valeur ajoutée</span>
+        <span class="tree-chip chip-jaune" data-tip="autofinancement">Autofinancement</span>
+        <span class="tree-chip chip-jaune" data-tip="financement_ext">Financement externe</span>
+      </div>
+    </div>
   </div>
 
 </div>
