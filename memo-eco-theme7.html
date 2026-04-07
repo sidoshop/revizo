@@ -189,6 +189,7 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 .inode-branch.c-rose { border-left-color: #b5415a; }
 .inode-branch.c-violet { border-left-color: #7030a0; }
 .inode-branch.c-jaune { border-left-color: #946e00; }
+.inode-branch.c-vert { border-left-color: #1a7a3c; }
 
 .inode-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; }
 .inode-label .freq { color: #f5c842; letter-spacing: 0; text-transform: none; }
@@ -215,13 +216,13 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 
 <div class="itree">
 
-  <!-- RACINE -->
+  <!-- ─── NIVEAU 1 : LE MARCHÉ DU TRAVAIL ─── -->
   <div class="itree-level">
-    <div class="inode inode-root">
-      <div class="inode-circle">E&amp;C</div>
-      <div class="inode-label">Le marché du travail <span class="freq">★★★☆☆</span></div>
-      <div class="inode-h">EMPLOI ET CHOMAGE</div>
-      <div class="inode-def">Le <strong>marché du travail</strong> confronte l'<strong>offre de travail</strong> (des salariés qui proposent leur force de travail) et la <strong>demande de travail</strong> (des employeurs qui cherchent à embaucher). Le prix sur ce marché = le <strong>salaire</strong> (encadré par le <strong>SMIC</strong>).</div>
+    <div class="inode inode-root" style="border-color:#b5415a">
+      <div class="inode-circle" style="font-size:11px">E&amp;C</div>
+      <div class="inode-label">Le point de départ <span class="freq">★★★☆☆</span></div>
+      <div class="inode-h">Le marché du travail</div>
+      <div class="inode-def">Un lieu abstrait où se confrontent l'<strong>offre de travail</strong> (les salariés qui proposent leurs compétences — attention, c'est l'inverse du langage courant !) et la <strong>demande de travail</strong> (les employeurs qui cherchent à embaucher). Le prix sur ce marché = le <strong>salaire</strong>, encadré par un minimum légal : le <strong>SMIC</strong>.</div>
       <div class="tree-sub" style="justify-content:center">
         <span class="tree-chip chip-rose" data-tip="offre_travail">Offre de travail</span>
         <span class="tree-chip chip-rose" data-tip="demande_travail">Demande de travail</span>
@@ -231,72 +232,82 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
     </div>
   </div>
 
-  <!-- Connecteur vertical -->
   <div class="itree-connector"><div class="vline"></div></div>
 
-  <!-- CHAINE LOGIQUE -->
+  <!-- ─── NIVEAU 2 : INDICATEURS ─── -->
+  <div class="itree-level">
+    <div class="inode inode-root">
+      <div class="inode-label">Indicateurs <span class="freq">★★★★☆</span></div>
+      <div class="inode-h">Mesurer l'emploi et le chômage</div>
+      <div class="inode-def">La <strong>population active</strong> = ceux qui travaillent + ceux qui cherchent. Le <strong>taux de chômage</strong> = (chômeurs / pop. active) × 100 — attention au dénominateur, c'est la pop. ACTIVE, pas totale. Le <strong>taux d'emploi</strong> mesure la part des 15-64 ans qui travaillent effectivement. Le <strong>taux de variation</strong> sert à commenter les évolutions.</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-rose" data-tip="pop_active">Population active</span>
+        <span class="tree-chip chip-rose" data-tip="taux_chomage">Taux de chômage</span>
+        <span class="tree-chip chip-rose" data-tip="taux_emploi">Taux d'emploi</span>
+        <span class="tree-chip chip-gris" data-tip="taux_variation_t7">Taux de variation</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- CHAÎNE LOGIQUE -->
   <div class="ichain">
     <div class="tree-label">Chaîne logique</div>
     <div class="chain-flow">
-      <span class="chain-node">Marché du travail déséquilibré</span>
+      <span class="chain-node">Marché déséquilibré</span>
       <span class="chain-arrow">→</span>
       <span class="chain-node">Chômage (3 types)</span>
       <span class="chain-arrow">→</span>
       <span class="chain-node">L'État agit</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Politiques actives + passives</span>
+      <span class="chain-node">Actives + Passives</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Mais coût pour les finances publiques</span>
+      <span class="chain-node">Coût pour les finances</span>
     </div>
   </div>
 
-  <!-- Connecteur vertical -->
   <div class="itree-connector"><div class="vline"></div></div>
 
-  <!-- 3 BRANCHES -->
+  <!-- ─── NIVEAU 3 : 3 BRANCHES ─── -->
   <div class="itree-branches">
 
-    <!-- BRANCHE 1 : Population active et indicateurs -->
-    <div>
-      <div class="inode inode-branch c-rose">
-        <div class="inode-label">Les chiffres <span class="freq">★★★★☆</span></div>
-        <div class="inode-h">Population active et indicateurs</div>
-        <div class="inode-def">La <strong>population active</strong> = les personnes qui ont un emploi (actifs occupés) + celles qui en cherchent (chômeurs). Le <strong>taux de chômage</strong> = (chômeurs / population active) × 100. Le <strong>taux d'emploi</strong> mesure la part des 15-64 ans qui travaillent. Le <strong>taux de variation</strong> sert à commenter les évolutions.</div>
-        <div class="tree-sub">
-          <span class="tree-chip chip-rose" data-tip="pop_active">Population active</span>
-          <span class="tree-chip chip-rose" data-tip="taux_chomage">Taux de chômage</span>
-          <span class="tree-chip chip-rose" data-tip="taux_emploi">Taux d'emploi</span>
-          <span class="tree-chip chip-gris" data-tip="taux_variation_t7">Taux de variation</span>
-        </div>
-        <div class="inode-ex">Ex. : 3M de chômeurs / 30M d'actifs = 10% (calcul tombé en 2022)</div>
-      </div>
-    </div>
-
-    <!-- BRANCHE 2 : Les types de chômage -->
+    <!-- BRANCHE 1 : Les types de chômage -->
     <div>
       <div class="inode inode-branch c-violet">
-        <div class="inode-label">3 causes <span class="freq">★★★☆☆</span></div>
+        <div class="inode-label">3 causes différentes <span class="freq">★★★☆☆</span></div>
         <div class="inode-h">Les types de chômage</div>
-        <div class="inode-def">3 causes différentes = 3 remèdes différents. Le chômage <strong>conjoncturel</strong> est temporaire (lié à un ralentissement de l'activité). Le <strong>structurel</strong> est durable (inadéquation des qualifications, rigidités). Le <strong>frictionnel</strong> est normal (temps de recherche entre deux emplois).</div>
+        <div class="inode-def">Le <strong>conjoncturel</strong> est temporaire — l'économie ralentit, les entreprises embauchent moins (ex. : Covid 2020). Le <strong>structurel</strong> est durable — les qualifications ne correspondent pas aux besoins (ex. : ouvriers remplacés par des robots). Le <strong>frictionnel</strong> est normal — c'est le temps de recherche entre deux emplois.</div>
         <div class="tree-sub">
           <span class="tree-chip chip-violet" data-tip="conjoncturel">Conjoncturel</span>
           <span class="tree-chip chip-violet" data-tip="structurel">Structurel</span>
           <span class="tree-chip chip-violet" data-tip="frictionnel">Frictionnel</span>
         </div>
-        <div class="inode-ex">Ex. : Covid = conjoncturel · Robots remplacent ouvriers = structurel</div>
       </div>
     </div>
 
-    <!-- BRANCHE 3 : Politiques de l'emploi -->
+    <!-- BRANCHE 2 : Politiques actives -->
     <div>
       <div class="inode inode-branch c-bleu">
-        <div class="inode-label">Les réponses de l'État <span class="freq">★★★★☆</span></div>
-        <div class="inode-h">Politiques de l'emploi</div>
-        <div class="inode-def">Deux types de politiques. Les <strong>politiques actives</strong> agissent sur les causes : <strong>formation</strong> professionnelle, <strong>contrats aidés</strong>, <strong>allègements de charges</strong>. Les <strong>politiques passives</strong> amortissent les conséquences : <strong>allocations</strong> chômage, <strong>préretraites</strong>.</div>
+        <div class="inode-label">Agir sur les causes <span class="freq">★★★★☆</span></div>
+        <div class="inode-h">Politiques actives</div>
+        <div class="inode-def">Elles attaquent les causes du chômage : la <strong>formation</strong> professionnelle (adapter les compétences aux besoins), les <strong>contrats aidés</strong> (l'État subventionne l'embauche des publics fragiles), les <strong>allègements de charges</strong> (réduire le coût du travail pour les entreprises).</div>
         <div class="tree-sub">
           <span class="tree-chip chip-bleu" data-tip="formation">Formation</span>
           <span class="tree-chip chip-bleu" data-tip="contrats_aides">Contrats aidés</span>
           <span class="tree-chip chip-bleu" data-tip="allegements">Allègements de charges</span>
+        </div>
+        <div class="inode-ex">Ex. : France Travail propose des formations en numérique pour reconvertir des chômeurs</div>
+      </div>
+    </div>
+
+    <!-- BRANCHE 3 : Politiques passives -->
+    <div>
+      <div class="inode inode-branch c-jaune">
+        <div class="inode-label">Amortir les conséquences <span class="freq">★★★☆☆</span></div>
+        <div class="inode-h">Politiques passives</div>
+        <div class="inode-def">Elles n'éliminent pas le chômage mais protègent les chômeurs : les <strong>allocations</strong> chômage (revenu de remplacement pendant la recherche) et les <strong>préretraites</strong> (quitter le marché du travail plus tôt pour libérer des postes).</div>
+        <div class="tree-sub">
           <span class="tree-chip chip-jaune" data-tip="allocations">Allocations</span>
           <span class="tree-chip chip-jaune" data-tip="preretraites">Préretraites</span>
         </div>
@@ -305,7 +316,7 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
         <div class="inode-child">
           <div class="inode-label">Modèle alternatif <span class="freq">★★☆☆☆</span></div>
           <div class="inode-h">Flexisécurité</div>
-          <div class="inode-def">Modèle qui combine <strong>flexibilité</strong> du marché du travail (faciliter embauches et licenciements) et <strong>sécurité</strong> pour les salariés (formation continue, indemnisation généreuse). Modèle danois souvent cité en exemple.</div>
+          <div class="inode-def">Un compromis : <strong>flexibilité</strong> pour les entreprises (embaucher et licencier facilement) + <strong>sécurité</strong> pour les salariés (formation continue, indemnisation généreuse). Le modèle danois est la référence.</div>
           <div class="tree-sub">
             <span class="tree-chip chip-vert" data-tip="flexibilite">Flexibilité</span>
             <span class="tree-chip chip-vert" data-tip="securite">Sécurité</span>

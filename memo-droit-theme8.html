@@ -35,25 +35,6 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 .memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
 .memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: var(--color-primary); margin-top: 8px; font-style: italic; }
 
-/* ─── ARBRE STRUCTURE (ENCODER) ─── */
-.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-.tree-full { grid-column: 1 / -1; }
-
-.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
-.tree-card.c-bleu  { border-left-color: #2a69a8; }
-.tree-card.c-rose  { border-left-color: #b5415a; }
-.tree-card.c-jaune { border-left-color: #946e00; }
-.tree-card.c-vert  { border-left-color: #1a7a3c; }
-.tree-card.c-violet { border-left-color: #7030a0; }
-
-.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
-.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
-.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
-.tree-def strong { color: #1e1c18; }
-.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
-.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(42,105,168,.08); color: #2a69a8; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
-
 /* Sub-items inside tree cards */
 .tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
@@ -70,11 +51,6 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 .tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
 .tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:rgba(42,105,168,.06); border-radius:8px; border-left:3px solid #2a69a8; }
 .tip-bac { font-size:10px; font-weight:700; color:#b5415a; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
-
-/* Schema */
-.schema-section { margin-bottom: 16px; }
-.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
-.schema-box svg { display: block; margin: 0 auto; }
 
 .chip-bleu   { background: #e8f3ff; color: #2a69a8; }
 .chip-rose   { background: #fdeef2; color: #b5415a; }
@@ -127,12 +103,12 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
   .sli-nav { display: none !important; }
   body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .memo { padding: 0; max-width: 100%; }
-  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain { break-inside: avoid; }
+  .confuse-box, .mnemo-box, .freq-box, .chain, .inode, .ichain { break-inside: avoid; }
 }
 
 @media (max-width: 600px) {
-  .tree, .recup { grid-template-columns: 1fr; }
-  .tree-full, .recup-full { grid-column: 1; }
+  .recup { grid-template-columns: 1fr; }
+  .recup-full { grid-column: 1; }
   .memo { padding: 74px 12px 30px; }
 }
 </style>
@@ -165,168 +141,144 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 </div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ARBRE INTERACTIF UNIFIÉ (multi-niveaux) -->
 <!-- ═══════════════════════════════════════ -->
 
-<div class="schema-section">
-  <div class="schema-box">
-    <svg viewBox="0 0 800 340" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
-      <!-- Niveau 1 : Entreprendre -->
-      <rect x="250" y="8" width="300" height="44" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
-      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0" letter-spacing="1">ENTREPRENDRE</text>
-      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Choix de la forme juridique</text>
+<style>
+/* Arbre interactif */
+.itree { max-width: 100%; }
+.itree-level { display: flex; justify-content: center; position: relative; }
+.itree-connector { display: flex; justify-content: center; padding: 6px 0; }
+.itree-connector .vline { width: 2px; height: 16px; background: #c8c0b4; }
+.itree-hbar { display: flex; align-items: flex-start; justify-content: center; position: relative; margin: 0 auto; }
+.itree-hbar::before { content:''; position: absolute; top: 0; left: 25%; right: 25%; height: 2px; background: #c8c0b4; }
+.itree-branches { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding-top: 18px; position: relative; }
+.itree-branches > div { position: relative; }
+.itree-branches > div::before { content:''; position: absolute; top: -18px; left: 50%; width: 2px; height: 18px; background: #c8c0b4; }
+.itree-branches.two-col { grid-template-columns: 1fr 1fr; }
 
-      <!-- Flèche -->
-      <line x1="400" y1="52" x2="400" y2="72" stroke="#a09880" stroke-width="2" marker-end="url(#arrow)"/>
+/* Noeuds */
+.inode { border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,.05); position: relative; }
+.inode-root { background: #fffdf8; border: 2px solid var(--color-primary); text-align: center; max-width: 500px; margin: 0 auto; }
+.inode-root .inode-circle { position: absolute; top: -14px; left: -14px; width: 36px; height: 36px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 900; color: #fff; }
+.inode-branch { background: #fffdf8; border-left: 4px solid #ccc; }
+.inode-branch.c-bleu { border-left-color: #2a69a8; }
+.inode-branch.c-rose { border-left-color: #b5415a; }
+.inode-branch.c-vert { border-left-color: #1a7a3c; }
+.inode-branch.c-violet { border-left-color: #7030a0; }
+.inode-branch.c-jaune { border-left-color: #946e00; }
 
-      <!-- Barre horizontale -->
-      <line x1="200" y1="72" x2="600" y2="72" stroke="#a09880" stroke-width="2"/>
-      <line x1="200" y1="72" x2="200" y2="90" stroke="#a09880" stroke-width="2"/>
-      <line x1="600" y1="72" x2="600" y2="90" stroke="#a09880" stroke-width="2"/>
+.inode-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; }
+.inode-label .freq { color: #f5c842; letter-spacing: 0; text-transform: none; }
+.inode-h { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: #1e1c18; margin-bottom: 6px; }
+.inode-def { font-size: 12px; line-height: 1.55; color: #3a3630; margin-bottom: 6px; }
+.inode-ex { font-size: 11px; color: #7a6a58; font-style: italic; }
 
-      <!-- Branche 1 : SEUL -->
-      <rect x="80" y="90" width="240" height="50" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
-      <text x="200" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8" letter-spacing="1">SEUL</text>
-      <text x="200" y="125" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Entrepreneur individuel (EI)</text>
-      <!-- Sous-branches -->
-      <line x1="200" y1="140" x2="200" y2="158" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="120" y1="158" x2="280" y2="158" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="120" y1="158" x2="120" y2="170" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="280" y1="158" x2="280" y2="170" stroke="#a09880" stroke-width="1.5"/>
-      <rect x="55" y="170" width="130" height="32" rx="8" fill="#e8f3ff"/>
-      <text x="120" y="185" text-anchor="middle" font-size="9" font-weight="700" fill="#2a69a8">EI classique</text>
-      <text x="120" y="196" text-anchor="middle" font-size="7" fill="#5a5448">Micro-entrepreneur</text>
-      <rect x="215" y="170" width="130" height="32" rx="8" fill="#e6f5ec"/>
-      <text x="280" y="185" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">Patrimoine protégé</text>
-      <text x="280" y="196" text-anchor="middle" font-size="7" fill="#5a5448">Loi 2022 : séparation auto</text>
+/* Sub-node (enfant dans la branche) */
+.inode-child { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(0,0,0,.08); }
+.inode-child .inode-label { font-size: 8px; }
+.inode-child .inode-h { font-size: 13px; }
 
-      <!-- Branche 2 : EN SOCIÉTÉ -->
-      <rect x="480" y="90" width="240" height="50" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
-      <text x="600" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">EN SOCIÉTÉ</text>
-      <text x="600" y="125" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Personne morale distincte</text>
-      <!-- Sous-branches -->
-      <line x1="600" y1="140" x2="600" y2="158" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="510" y1="158" x2="690" y2="158" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="510" y1="158" x2="510" y2="170" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="600" y1="158" x2="600" y2="170" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="690" y1="158" x2="690" y2="170" stroke="#a09880" stroke-width="1.5"/>
-      <rect x="470" y="170" width="80" height="32" rx="8" fill="#fdeef2"/>
-      <text x="510" y="189" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">SARL</text>
-      <rect x="560" y="170" width="80" height="32" rx="8" fill="#fdeef2"/>
-      <text x="600" y="189" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">SA</text>
-      <rect x="650" y="170" width="80" height="32" rx="8" fill="#fdeef2"/>
-      <text x="690" y="189" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">SAS</text>
+/* Chaîne logique intégrée */
+.ichain { background: #fef8e2; border-radius: 12px; padding: 12px 16px; margin-top: 14px; }
+.ichain .tree-label { color: #946e00; }
 
-      <!-- Niveau 3 : Concurrence -->
-      <rect x="250" y="225" width="300" height="44" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
-      <text x="400" y="243" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0" letter-spacing="1">CONCURRENCE</text>
-      <text x="400" y="257" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Liberté du commerce + Concurrence déloyale</text>
+/* Responsive */
+@media (max-width: 700px) {
+  .itree-branches, .itree-branches.two-col { grid-template-columns: 1fr; }
+  .itree-hbar::before { display: none; }
+  .itree-branches > div::before { display: none; }
+}
+</style>
 
-      <!-- Barre du bas -->
-      <rect x="40" y="290" width="720" height="38" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5" stroke-dasharray="6,3"/>
-      <text x="400" y="306" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">CHOIX CLÉ</text>
-      <text x="400" y="320" text-anchor="middle" font-size="10" font-weight="700" fill="#5a4e00">Responsabilité limitée (société) vs patrimoine protégé (EI depuis 2022)</text>
+<div class="itree">
 
-      <!-- Arrow marker -->
-      <defs><marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
-
-      <g transform="translate(28, 28)">
-        <circle cx="0" cy="0" r="20" fill="#1a7a3c"/>
-        <text x="0" y="6" text-anchor="middle"
-          font-family="Inter, sans-serif"
-          font-size="15" font-weight="900"
-          fill="#ffffff">E</text>
-      </g>
-    </svg>
+  <!-- ─── NIVEAU 1 : COMMENT ENTREPRENDRE ? ─── -->
+  <div class="itree-level">
+    <div class="inode inode-root" style="border-color:#7030a0">
+      <div class="inode-circle" style="font-size:15px;background:#7030a0">E</div>
+      <div class="inode-label">Le choix fondamental <span class="freq">★★☆☆☆</span></div>
+      <div class="inode-h">Comment entreprendre ?</div>
+      <div class="inode-def">Deux grandes voies : seul en tant qu'<strong>entrepreneur individuel</strong> (pas de société distincte, mais depuis 2022 le patrimoine personnel est protégé) ou en créant une <strong>société</strong> (une <strong>personne morale</strong> distincte de ses fondateurs, avec sa propre <strong>personnalité juridique</strong> : un nom, un domicile, un patrimoine propre).</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-bleu" data-tip="ei">Entrepreneur individuel</span>
+        <span class="tree-chip chip-rose" data-tip="societe">Société</span>
+        <span class="tree-chip chip-rose" data-tip="personne_morale">Personne morale</span>
+        <span class="tree-chip chip-gris" data-tip="personnalite_juridique">Personnalité juridique</span>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="recup" style="margin-bottom:12px">
-  <div class="chain recup-full">
-    <div class="tree-label">La chaîne logique du thème 8</div>
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- CHAÎNE LOGIQUE -->
+  <div class="ichain">
+    <div class="tree-label">Chaîne logique</div>
     <div class="chain-flow">
-      <span class="chain-node">Choix de la forme juridique</span>
+      <span class="chain-node">Choix : seul (EI) ou en société</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Seul (EI) ou en société (SARL/SA/SAS)</span>
-      <span class="chain-arrow">→</span>
-      <span class="chain-node">Conséquences : patrimoine, responsabilité, fiscalité</span>
+      <span class="chain-node">Conséquences : patrimoine, responsabilité</span>
       <span class="chain-arrow">→</span>
       <span class="chain-node">Le droit encadre la concurrence</span>
     </div>
   </div>
-</div>
 
-<!-- ═══════════════════════════════════════ -->
-<!-- PARTIE 1 : ENCODER — L'arbre du thème -->
-<!-- ═══════════════════════════════════════ -->
+  <div class="itree-connector"><div class="vline"></div></div>
 
-<div class="tree">
+  <!-- ─── NIVEAU 2 : LES 2 VOIES ─── -->
+  <div class="itree-branches two-col">
 
-  <div class="tree-card c-jaune tree-full">
-    <div class="tree-label">Le choix fondamental <span class="freq">★★☆☆☆</span></div>
-    <div class="tree-h">Entreprendre : seul ou en société ?</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-bleu" data-tip="ei">Entrepreneur individuel</span>
-      <span class="tree-chip chip-rose" data-tip="societe">Société</span>
-      <span class="tree-chip chip-rose" data-tip="personne_morale">Personne morale</span>
-      <span class="tree-chip chip-gris" data-tip="personnalite_juridique">Personnalité juridique</span>
+    <!-- BRANCHE 1 : Seul -->
+    <div>
+      <div class="inode inode-branch c-bleu">
+        <div class="inode-label">Entreprendre seul <span class="freq">★★☆☆☆</span></div>
+        <div class="inode-h">L'entrepreneur individuel</div>
+        <div class="inode-def">L'<strong>EI</strong> exerce en son nom, sans créer de société. Le <strong>micro-entrepreneur</strong> bénéficie d'un régime simplifié (comptabilité allégée, cotisations sur le CA). Depuis la loi 2022 : séparation automatique entre <strong>patrimoine professionnel</strong> (biens utiles à l'activité) et <strong>patrimoine personnel</strong> (protégé des créanciers pro).</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-bleu" data-tip="ei">EI</span>
+          <span class="tree-chip chip-bleu" data-tip="micro_entrepreneur">Micro-entrepreneur</span>
+          <span class="tree-chip chip-vert" data-tip="patrimoine_pro">Patrimoine professionnel</span>
+          <span class="tree-chip chip-vert" data-tip="patrimoine_perso">Patrimoine personnel</span>
+        </div>
+      </div>
     </div>
-    <div class="tree-def" style="margin-top:6px">Deux grandes voies. <strong>Seul</strong> (EI, pas de personne morale) ou <strong>en société</strong> (création d'une personne morale distincte).</div>
-  </div>
 
-  <!-- Card 2 : L'entrepreneur individuel -->
-  <div class="tree-card c-bleu">
-    <div class="tree-label">Entreprendre seul <span class="freq">★★☆☆☆</span></div>
-    <div class="tree-h">L'entrepreneur individuel</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-bleu" data-tip="ei">EI</span>
-      <span class="tree-chip chip-bleu" data-tip="micro_entrepreneur">Micro-entrepreneur</span>
-      <span class="tree-chip chip-vert" data-tip="patrimoine_pro">Patrimoine professionnel</span>
-      <span class="tree-chip chip-vert" data-tip="patrimoine_perso">Patrimoine personnel</span>
-    </div>
-    <div class="tree-def" style="margin-top:6px">Pas de société distincte. Depuis <strong>2022</strong>, séparation automatique des patrimoines.</div>
-  </div>
+    <!-- BRANCHE 2 : En société -->
+    <div>
+      <div class="inode inode-branch c-rose">
+        <div class="inode-label">Entreprendre à plusieurs <span class="freq">★☆☆☆☆</span></div>
+        <div class="inode-h">Les sociétés commerciales</div>
+        <div class="inode-def">3 formes principales : la <strong>SARL</strong> (1-100 associés, capital libre, dirigée par un gérant — adaptée aux petites structures), la <strong>SA</strong> (min 2 actionnaires, capital min 37 000EUR, conseil d'administration — grandes entreprises), la <strong>SAS</strong> (min 1 associé, capital libre, grande liberté statutaire — la plus populaire). Le <strong>capital social</strong> = les <strong>apports</strong> des associés (numéraire, nature, industrie). <strong>Responsabilité limitée</strong> = on ne perd que ses apports. <strong>Responsabilité illimitée</strong> = tout le patrimoine personnel est engagé.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-rose" data-tip="sarl">SARL</span>
+          <span class="tree-chip chip-rose" data-tip="sa">SA</span>
+          <span class="tree-chip chip-rose" data-tip="sas">SAS</span>
+          <span class="tree-chip chip-gris" data-tip="capital_social">Capital social</span>
+          <span class="tree-chip chip-gris" data-tip="apports">Apports</span>
+          <span class="tree-chip chip-violet" data-tip="resp_limitee">Responsabilité limitée</span>
+          <span class="tree-chip chip-violet" data-tip="resp_illimitee">Responsabilité illimitée</span>
+          <span class="tree-chip chip-gris" data-tip="associe">Associé</span>
+          <span class="tree-chip chip-gris" data-tip="actionnaire">Actionnaire</span>
+        </div>
 
-  <!-- Card 3 : Les sociétés commerciales -->
-  <div class="tree-card c-rose">
-    <div class="tree-label">Les formes de sociétés <span class="freq">★☆☆☆☆</span></div>
-    <div class="tree-h">Les sociétés commerciales</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-rose" data-tip="sarl">SARL</span>
-      <span class="tree-chip chip-rose" data-tip="sa">SA</span>
-      <span class="tree-chip chip-rose" data-tip="sas">SAS</span>
-      <span class="tree-chip chip-gris" data-tip="capital_social">Capital social</span>
-      <span class="tree-chip chip-gris" data-tip="apports">Apports</span>
+        <!-- Enfant : Concurrence -->
+        <div class="inode-child">
+          <div class="inode-label">Encadrement <span class="freq">★☆☆☆☆</span></div>
+          <div class="inode-h">La concurrence</div>
+          <div class="inode-def">La <strong>liberté du commerce</strong> est un principe fondamental mais le droit sanctionne les abus : la <strong>concurrence déloyale</strong> (imitation, dénigrement) et les <strong>pratiques anticoncurrentielles</strong> (ententes sur les prix, abus de position dominante).</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-vert" data-tip="liberte_commerce">Liberté du commerce</span>
+            <span class="tree-chip chip-rose" data-tip="concurrence_deloyale">Concurrence déloyale</span>
+            <span class="tree-chip chip-violet" data-tip="anticoncurrentielles">Pratiques anticoncurrentielles</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="tree-def" style="margin-top:6px">3 formes principales. La <strong>SAS</strong> est la plus utilisée (souplesse). Capital social = apports des associés.</div>
-  </div>
 
-  <!-- Card 4 : Responsabilité et patrimoine -->
-  <div class="tree-card c-violet">
-    <div class="tree-label">La protection du patrimoine <span class="freq">★★☆☆☆</span></div>
-    <div class="tree-h">Responsabilité et patrimoine</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-violet" data-tip="resp_limitee">Responsabilité limitée</span>
-      <span class="tree-chip chip-violet" data-tip="resp_illimitee">Responsabilité illimitée</span>
-      <span class="tree-chip chip-gris" data-tip="associe">Associé</span>
-      <span class="tree-chip chip-gris" data-tip="actionnaire">Actionnaire</span>
-    </div>
-    <div class="tree-def" style="margin-top:6px">En société (SARL, SA, SAS) = <strong>responsabilité limitée aux apports</strong>. Le patrimoine personnel est protégé.</div>
-  </div>
-
-  <!-- Card 5 : La concurrence -->
-  <div class="tree-card c-vert">
-    <div class="tree-label">Le cadre de la concurrence <span class="freq">★☆☆☆☆</span></div>
-    <div class="tree-h">La concurrence</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-vert" data-tip="liberte_commerce">Liberté du commerce</span>
-      <span class="tree-chip chip-rose" data-tip="concurrence_deloyale">Concurrence déloyale</span>
-      <span class="tree-chip chip-violet" data-tip="anticoncurrentielles">Pratiques anticoncurrentielles</span>
-    </div>
-    <div class="tree-def" style="margin-top:6px">Le droit protège la <strong>libre concurrence</strong> mais sanctionne les abus (ententes, abus de position dominante).</div>
   </div>
 
 </div>
+
 
 <!-- ═══════════════════════════════════════ -->
 <!-- PARTIE 3 : RÉCUPÉRER -->

@@ -215,10 +215,10 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 
 <div class="itree">
 
-  <!-- RACINE -->
+  <!-- ─── NIVEAU 1 : LE CONTRAT ─── -->
   <div class="itree-level">
     <div class="inode inode-root">
-      <div class="inode-circle">C</div>
+      <div class="inode-circle" style="font-size:15px">C</div>
       <div class="inode-label">Le socle · art. 1101 <span class="freq">★★★★★</span></div>
       <div class="inode-h">LE CONTRAT — Accord de volontés</div>
       <div class="inode-def">Un <strong>contrat</strong> est un accord entre des <strong>parties</strong> (les cocontractants) qui crée des <strong>obligations</strong> réciproques. Celui qui doit = le <strong>débiteur</strong>. Celui à qui on doit = le <strong>créancier</strong>.</div>
@@ -234,63 +234,68 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
   <!-- Connecteur vertical -->
   <div class="itree-connector"><div class="vline"></div></div>
 
-  <!-- CHAÎNE LOGIQUE -->
-  <div class="ichain">
-    <div class="tree-label">Chaîne logique</div>
-    <div class="chain-flow">
-      <span class="chain-node">Accord de volontés</span>
-      <span class="chain-arrow">→</span>
-      <span class="chain-node">Formation (3 conditions)</span>
-      <span class="chain-arrow">→</span>
-      <span class="chain-node">Si vice = Nullité</span>
-      <span class="chain-arrow">|</span>
-      <span class="chain-node">Si valide → Exécution</span>
-      <span class="chain-arrow">→</span>
-      <span class="chain-node">Si inexécution → 5 remèdes</span>
+  <!-- ─── NIVEAU 2 : VALIDITÉ ─── -->
+  <div class="itree-level">
+    <div class="inode inode-root">
+      <div class="inode-label">Validité · art. 1128 <span class="freq">★★★★☆</span></div>
+      <div class="inode-h">3 conditions pour qu'un contrat soit valable</div>
+      <div class="inode-def">Le <strong>consentement</strong> libre et éclairé des parties (pas de tromperie, pas de pression), la <strong>capacité</strong> juridique (ni mineur, ni majeur protégé pour les actes importants), un <strong>contenu licite</strong> et certain (pas de contrat pour vendre de la drogue). Si une condition manque → <strong>nullité</strong> : le contrat n'a jamais existé.</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-bleu" data-tip="consentement">Consentement</span>
+        <span class="tree-chip chip-bleu" data-tip="capacite">Capacité</span>
+        <span class="tree-chip chip-bleu" data-tip="contenu_licite">Contenu licite</span>
+        <span class="tree-chip chip-bleu" data-tip="nullite">Nullité</span>
+      </div>
     </div>
   </div>
 
   <!-- Connecteur vertical -->
   <div class="itree-connector"><div class="vline"></div></div>
 
-  <!-- 3 BRANCHES -->
+  <!-- CHAÎNE LOGIQUE -->
+  <div class="ichain">
+    <div class="tree-label">Chaîne logique</div>
+    <div class="chain-flow">
+      <span class="chain-node">Accord</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">3 conditions</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Si vice = Nullité</span>
+      <span class="chain-arrow">|</span>
+      <span class="chain-node">Si valide → Exécution</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Si inexécution → 5 remèdes + Resp. contractuelle</span>
+    </div>
+  </div>
+
+  <!-- Connecteur vertical -->
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- ─── NIVEAU 3 : 3 BRANCHES ─── -->
   <div class="itree-branches">
 
-    <!-- BRANCHE 1 : FORMATION -->
+    <!-- BRANCHE 1 : Vices du consentement -->
     <div>
-      <div class="inode inode-branch c-bleu">
-        <div class="inode-label">Formation · art. 1128 <span class="freq">★★★★☆</span></div>
-        <div class="inode-h">Formation du contrat</div>
-        <div class="inode-def">Pour être valable, un contrat doit réunir <strong>3 conditions</strong> : le <strong>consentement</strong> libre des parties, leur <strong>capacité</strong> juridique, et un <strong>contenu licite</strong>. Si une condition manque → <strong>nullité</strong> (le contrat n'a jamais existé).</div>
+      <div class="inode inode-branch c-rose">
+        <div class="inode-label">Si consentement vicié <span class="freq">★★★★☆</span></div>
+        <div class="inode-h">Vices du consentement</div>
+        <div class="inode-def">3 vices qui altèrent le consentement : l'<strong>erreur</strong> (je me suis trompé seul sur une qualité essentielle), le <strong>dol</strong> (l'autre m'a trompé volontairement — manœuvres, mensonges, dissimulation), la <strong>violence</strong> (on m'a forcé physiquement ou moralement). Le vendeur a une <strong>obligation d'information</strong> — s'il cache quelque chose, c'est un dol.</div>
         <div class="tree-sub">
-          <span class="tree-chip chip-bleu" data-tip="consentement">Consentement</span>
-          <span class="tree-chip chip-bleu" data-tip="capacite">Capacité</span>
-          <span class="tree-chip chip-bleu" data-tip="contenu_licite">Contenu licite</span>
-          <span class="tree-chip chip-bleu" data-tip="nullite">Nullité</span>
+          <span class="tree-chip chip-rose" data-tip="erreur">Erreur</span>
+          <span class="tree-chip chip-rose" data-tip="dol">Dol</span>
+          <span class="tree-chip chip-rose" data-tip="violence">Violence</span>
+          <span class="tree-chip chip-rose" data-tip="obligation_info">Obl. d'information</span>
         </div>
-
-        <!-- Enfant : Vices du consentement -->
-        <div class="inode-child">
-          <div class="inode-label">Si consentement vicié <span class="freq">★★★★☆</span></div>
-          <div class="inode-h">Vices du consentement</div>
-          <div class="inode-def">3 vices qui altèrent le consentement : l'<strong>erreur</strong> (je me suis trompé seul), le <strong>dol</strong> (l'autre m'a trompé), la <strong>violence</strong> (on m'a forcé). Le vendeur a aussi une <strong>obligation d'information</strong> — s'il cache quelque chose, c'est un dol.</div>
-          <div class="tree-sub">
-            <span class="tree-chip chip-rose" data-tip="erreur">Erreur</span>
-            <span class="tree-chip chip-rose" data-tip="dol">Dol</span>
-            <span class="tree-chip chip-rose" data-tip="violence">Violence</span>
-            <span class="tree-chip chip-rose" data-tip="obligation_info">Obl. d'information</span>
-          </div>
-          <div class="inode-ex">Ex. : vendeur qui cache un défaut = dol (Beebop 2023, Marcellin 2021)</div>
-        </div>
+        <div class="inode-ex">Ex. : vendeur qui cache un défaut = dol (Beebop 2023, Marcellin 2021)</div>
       </div>
     </div>
 
-    <!-- BRANCHE 2 : EXÉCUTION -->
+    <!-- BRANCHE 2 : Exécution -->
     <div>
-      <div class="inode inode-branch c-rose">
-        <div class="inode-label">Exécution <span class="freq">★★★☆☆</span></div>
+      <div class="inode inode-branch c-bleu">
+        <div class="inode-label">Le contrat s'exécute <span class="freq">★★★☆☆</span></div>
         <div class="inode-h">Exécution du contrat</div>
-        <div class="inode-def">Le contrat a une <strong>force obligatoire</strong> : chaque partie doit tenir ses engagements. Deux types d'obligations : <strong>de moyens</strong> (faire de son mieux) ou <strong>de résultat</strong> (atteindre le résultat promis). Les <strong>clauses abusives</strong> (déséquilibre au détriment du consommateur) sont réputées non écrites.</div>
+        <div class="inode-def">Le contrat a une <strong>force obligatoire</strong> : chaque partie DOIT tenir ses engagements. Deux niveaux d'obligation : l'<strong>obligation de moyens</strong> (faire de son mieux — ex. : le médecin essaye de guérir) et l'<strong>obligation de résultat</strong> (atteindre le résultat promis — ex. : le transporteur DOIT livrer). Les <strong>clauses abusives</strong> qui désavantagent le consommateur sont réputées non écrites.</div>
         <div class="tree-sub">
           <span class="tree-chip chip-bleu" data-tip="moyens">Obl. de moyens</span>
           <span class="tree-chip chip-bleu" data-tip="resultat">Obl. de résultat</span>
@@ -301,10 +306,10 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
       </div>
     </div>
 
-    <!-- BRANCHE 3 : INEXÉCUTION -->
+    <!-- BRANCHE 3 : Inexécution -->
     <div>
       <div class="inode inode-branch c-violet">
-        <div class="inode-label">Inexécution · art. 1217 <span class="freq">★★★☆☆</span></div>
+        <div class="inode-label">Si le contrat n'est pas respecté <span class="freq">★★★☆☆</span></div>
         <div class="inode-h">Inexécution et remèdes</div>
         <div class="inode-def">Quand une partie ne respecte pas ses obligations, l'autre a <strong>5 remèdes</strong> : suspendre sa propre obligation (<strong>exception d'inexécution</strong>), exiger la <strong>résolution</strong> du contrat, demander l'<strong>exécution forcée</strong>, obtenir des <strong>dommages-intérêts</strong>, ou envoyer une <strong>mise en demeure</strong> préalable.</div>
         <div class="tree-sub">

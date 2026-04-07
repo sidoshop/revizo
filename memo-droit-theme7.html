@@ -35,25 +35,6 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 .memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
 .memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: var(--color-primary); margin-top: 8px; font-style: italic; }
 
-/* ─── ARBRE STRUCTURE (ENCODER) ─── */
-.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-.tree-full { grid-column: 1 / -1; }
-
-.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
-.tree-card.c-bleu  { border-left-color: #2a69a8; }
-.tree-card.c-rose  { border-left-color: #b5415a; }
-.tree-card.c-jaune { border-left-color: #946e00; }
-.tree-card.c-vert  { border-left-color: #1a7a3c; }
-.tree-card.c-violet { border-left-color: #7030a0; }
-
-.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
-.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
-.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
-.tree-def strong { color: #1e1c18; }
-.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
-.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(42,105,168,.08); color: #2a69a8; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
-
 /* Sub-items inside tree cards */
 .tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
@@ -70,11 +51,6 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 .tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
 .tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:rgba(42,105,168,.06); border-radius:8px; border-left:3px solid #2a69a8; }
 .tip-bac { font-size:10px; font-weight:700; color:#b5415a; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
-
-/* Schema */
-.schema-section { margin-bottom: 16px; }
-.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
-.schema-box svg { display: block; margin: 0 auto; }
 
 .chip-bleu   { background: #e8f3ff; color: #2a69a8; }
 .chip-rose   { background: #fdeef2; color: #b5415a; }
@@ -127,12 +103,12 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
   .sli-nav { display: none !important; }
   body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .memo { padding: 0; max-width: 100%; }
-  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain { break-inside: avoid; }
+  .confuse-box, .mnemo-box, .freq-box, .chain, .inode, .ichain { break-inside: avoid; }
 }
 
 @media (max-width: 600px) {
-  .tree, .recup { grid-template-columns: 1fr; }
-  .tree-full, .recup-full { grid-column: 1; }
+  .recup { grid-template-columns: 1fr; }
+  .recup-full { grid-column: 1; }
   .memo { padding: 74px 12px 30px; }
 }
 </style>
@@ -165,206 +141,181 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 </div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ARBRE INTERACTIF UNIFIÉ (multi-niveaux) -->
 <!-- ═══════════════════════════════════════ -->
 
-<div class="schema-section">
-  <div class="schema-box">
-    <svg viewBox="0 0 800 370" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
-      <!-- Niveau 1 : Le contrat de travail -->
-      <rect x="180" y="8" width="440" height="44" rx="10" fill="#e6f7f8" stroke="#0e7490" stroke-width="2"/>
-      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#0e7490" letter-spacing="1">LE CONTRAT DE TRAVAIL</text>
-      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">3 éléments : Prestation + Rémunération + Subordination</text>
+<style>
+/* Arbre interactif */
+.itree { max-width: 100%; }
+.itree-level { display: flex; justify-content: center; position: relative; }
+.itree-connector { display: flex; justify-content: center; padding: 6px 0; }
+.itree-connector .vline { width: 2px; height: 16px; background: #c8c0b4; }
+.itree-hbar { display: flex; align-items: flex-start; justify-content: center; position: relative; margin: 0 auto; }
+.itree-hbar::before { content:''; position: absolute; top: 0; left: 16.66%; right: 16.66%; height: 2px; background: #c8c0b4; }
+.itree-branches { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding-top: 18px; position: relative; }
+.itree-branches > div { position: relative; }
+.itree-branches > div::before { content:''; position: absolute; top: -18px; left: 50%; width: 2px; height: 18px; background: #c8c0b4; }
 
-      <!-- Flèche -->
-      <line x1="400" y1="52" x2="400" y2="72" stroke="#a09880" stroke-width="2" marker-end="url(#arrow)"/>
+/* Noeuds */
+.inode { border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,.05); position: relative; }
+.inode-root { background: #fffdf8; border: 2px solid var(--color-primary); text-align: center; max-width: 500px; margin: 0 auto; }
+.inode-root .inode-circle { position: absolute; top: -14px; left: -14px; width: 36px; height: 36px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 900; color: #fff; }
+.inode-branch { background: #fffdf8; border-left: 4px solid #ccc; }
+.inode-branch.c-bleu { border-left-color: #2a69a8; }
+.inode-branch.c-rose { border-left-color: #b5415a; }
+.inode-branch.c-vert { border-left-color: #1a7a3c; }
+.inode-branch.c-violet { border-left-color: #7030a0; }
+.inode-branch.c-jaune { border-left-color: #946e00; }
 
-      <!-- Barre horizontale -->
-      <line x1="130" y1="72" x2="670" y2="72" stroke="#a09880" stroke-width="2"/>
-      <line x1="130" y1="72" x2="130" y2="90" stroke="#a09880" stroke-width="2"/>
-      <line x1="400" y1="72" x2="400" y2="90" stroke="#a09880" stroke-width="2"/>
-      <line x1="670" y1="72" x2="670" y2="90" stroke="#a09880" stroke-width="2"/>
+.inode-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; }
+.inode-label .freq { color: #f5c842; letter-spacing: 0; text-transform: none; }
+.inode-h { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: #1e1c18; margin-bottom: 6px; }
+.inode-def { font-size: 12px; line-height: 1.55; color: #3a3630; margin-bottom: 6px; }
+.inode-ex { font-size: 11px; color: #7a6a58; font-style: italic; }
 
-      <!-- Branche 1 : FORMATION -->
-      <rect x="20" y="90" width="220" height="50" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
-      <text x="130" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8" letter-spacing="1">FORMATION</text>
-      <text x="130" y="125" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">CDI / CDD / Intérim</text>
-      <!-- Sous-branche formation -->
-      <line x1="130" y1="140" x2="130" y2="158" stroke="#a09880" stroke-width="1.5"/>
-      <rect x="20" y="158" width="220" height="28" rx="8" fill="#e8f3ff"/>
-      <text x="130" y="176" text-anchor="middle" font-size="9" font-weight="700" fill="#2a69a8">Clauses : non-concurrence, mobilité, confidentialité</text>
+/* Sub-node (enfant dans la branche) */
+.inode-child { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(0,0,0,.08); }
+.inode-child .inode-label { font-size: 8px; }
+.inode-child .inode-h { font-size: 13px; }
 
-      <!-- Branche 2 : EXÉCUTION -->
-      <rect x="280" y="90" width="240" height="50" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
-      <text x="400" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">EXÉCUTION</text>
-      <text x="400" y="125" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Pouvoirs employeur / Droits salarié</text>
-      <!-- Sous-branches exécution -->
-      <line x1="400" y1="140" x2="400" y2="158" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="320" y1="158" x2="480" y2="158" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="320" y1="158" x2="320" y2="170" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="480" y1="158" x2="480" y2="170" stroke="#a09880" stroke-width="1.5"/>
-      <rect x="260" y="170" width="120" height="32" rx="8" fill="#fdeef2"/>
-      <text x="320" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#b5415a">Direction</text>
-      <text x="320" y="196" text-anchor="middle" font-size="7" fill="#5a5448">Réglementaire · Disciplinaire</text>
-      <rect x="420" y="170" width="120" height="32" rx="8" fill="#e6f5ec"/>
-      <text x="480" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#1a7a3c">Vie privée</text>
-      <text x="480" y="196" text-anchor="middle" font-size="7" fill="#5a5448">Retrait · Grève</text>
+/* Chaîne logique intégrée */
+.ichain { background: #fef8e2; border-radius: 12px; padding: 12px 16px; margin-top: 14px; }
+.ichain .tree-label { color: #946e00; }
 
-      <!-- Branche 3 : RUPTURE -->
-      <rect x="560" y="90" width="220" height="50" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
-      <text x="670" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0" letter-spacing="1">RUPTURE</text>
-      <text x="670" y="125" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">4 modes de rupture</text>
-      <!-- Sous-branches rupture -->
-      <line x1="670" y1="140" x2="670" y2="158" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="590" y1="158" x2="750" y2="158" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="590" y1="158" x2="590" y2="170" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="670" y1="158" x2="670" y2="170" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="750" y1="158" x2="750" y2="170" stroke="#a09880" stroke-width="1.5"/>
-      <rect x="545" y="170" width="90" height="32" rx="8" fill="#f3eafc"/>
-      <text x="590" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#7030a0">Lic. personnel</text>
-      <text x="590" y="196" text-anchor="middle" font-size="7" fill="#5a5448">cause réelle et sérieuse</text>
-      <rect x="625" y="206" width="90" height="32" rx="8" fill="#f3eafc"/>
-      <text x="670" y="221" text-anchor="middle" font-size="8" font-weight="700" fill="#7030a0">Lic. économique</text>
-      <text x="670" y="232" text-anchor="middle" font-size="7" fill="#5a5448">lié à l'entreprise</text>
-      <rect x="705" y="170" width="90" height="32" rx="8" fill="#fdeef2"/>
-      <text x="750" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#b5415a">Rupt. conv.</text>
-      <text x="750" y="196" text-anchor="middle" font-size="7" fill="#5a5448">Démission</text>
+/* Responsive */
+@media (max-width: 700px) {
+  .itree-branches { grid-template-columns: 1fr; }
+  .itree-hbar::before { display: none; }
+  .itree-branches > div::before { display: none; }
+}
+</style>
 
-      <!-- Barre du bas : Juridiction -->
-      <rect x="40" y="320" width="720" height="38" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5" stroke-dasharray="6,3"/>
-      <text x="400" y="336" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">JURIDICTION</text>
-      <text x="400" y="350" text-anchor="middle" font-size="10" font-weight="700" fill="#5a4e00">Conseil de prud'hommes | Protection du salarié = fil rouge de tout le thème</text>
+<div class="itree">
 
-      <!-- Arrow marker -->
-      <defs><marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
-
-      <g transform="translate(28, 28)">
-        <circle cx="0" cy="0" r="20" fill="#1a7a3c"/>
-        <text x="0" y="6" text-anchor="middle"
-          font-family="Inter, sans-serif"
-          font-size="15" font-weight="900"
-          fill="#ffffff">T</text>
-      </g>
-    </svg>
+  <!-- ─── NIVEAU 1 : LE CONTRAT DE TRAVAIL ─── -->
+  <div class="itree-level">
+    <div class="inode inode-root" style="border-color:#0e7490">
+      <div class="inode-circle" style="font-size:15px;background:#0e7490">T</div>
+      <div class="inode-label">Le critère décisif <span class="freq">★★★★★</span></div>
+      <div class="inode-h">Le contrat de travail</div>
+      <div class="inode-def">3 éléments cumulatifs : une <strong>prestation de travail</strong> (le salarié travaille), une <strong>rémunération</strong> (il reçoit un salaire), et surtout un <strong>lien de subordination</strong> (il est sous l'autorité de l'employeur qui donne des ordres, contrôle et sanctionne — jurisprudence Société Générale 1996). C'est LE critère qui distingue le salarié du travailleur indépendant.</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-rose" data-tip="contrat_travail">Contrat de travail</span>
+        <span class="tree-chip chip-rose" data-tip="lien_subordination">Lien de subordination</span>
+        <span class="tree-chip chip-rose" data-tip="prestation_travail">Prestation de travail</span>
+        <span class="tree-chip chip-rose" data-tip="remuneration">Rémunération</span>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="recup" style="margin-bottom:12px">
-  <div class="chain recup-full">
-    <div class="tree-label">La chaîne logique du thème 7</div>
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- ─── NIVEAU 2 : FORMES ET CLAUSES ─── -->
+  <div class="itree-level">
+    <div class="inode inode-root">
+      <div class="inode-label">Les formes et les clauses <span class="freq">★★★☆☆</span></div>
+      <div class="inode-h">CDI, CDD et clauses du contrat</div>
+      <div class="inode-def">Le <strong>CDI</strong> est la norme (pas de date de fin). Le <strong>CDD</strong> est l'exception (motif précis, durée limitée ~18 mois). L'<strong>intérim</strong> est triangulaire (agence / salarié / entreprise). Attention à ne pas confondre avec le <strong>contrat d'entreprise</strong> (travailleur indépendant, pas de subordination). Le contrat peut contenir des clauses : <strong>non-concurrence</strong> (ne pas travailler chez un concurrent après), <strong>mobilité</strong> (accepter une mutation), <strong>confidentialité</strong> (ne rien divulguer).</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-bleu" data-tip="cdi">CDI</span>
+        <span class="tree-chip chip-bleu" data-tip="cdd">CDD</span>
+        <span class="tree-chip chip-bleu" data-tip="interim">Intérim</span>
+        <span class="tree-chip chip-gris" data-tip="contrat_entreprise">Contrat d'entreprise</span>
+        <span class="tree-chip chip-jaune" data-tip="clause_nonconcurrence">Clause de non-concurrence</span>
+        <span class="tree-chip chip-jaune" data-tip="clause_mobilite">Clause de mobilité</span>
+        <span class="tree-chip chip-jaune" data-tip="clause_confidentialite">Clause de confidentialité</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- CHAÎNE LOGIQUE -->
+  <div class="ichain">
+    <div class="tree-label">Chaîne logique</div>
     <div class="chain-flow">
       <span class="chain-node">Contrat de travail (3 éléments)</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">L'employeur a des pouvoirs (direction, discipline)</span>
+      <span class="chain-node">Pouvoirs employeur (mais limités)</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">MAIS le salarié a des droits (vie privée, grève, retrait)</span>
+      <span class="chain-node">Droits du salarié</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Si rupture : licenciement (cause réelle et sérieuse ?) ou rupture conv.</span>
+      <span class="chain-node">Si rupture : licenciement ou rupture conv.</span>
       <span class="chain-arrow">→</span>
       <span class="chain-node">Litige → Prud'hommes</span>
     </div>
   </div>
-</div>
 
-<!-- ═══════════════════════════════════════ -->
-<!-- PARTIE 1 : ENCODER — L'arbre du thème -->
-<!-- ═══════════════════════════════════════ -->
+  <div class="itree-connector"><div class="vline"></div></div>
 
-<div class="tree">
+  <!-- ─── NIVEAU 3 : LES 3 PILIERS ─── -->
+  <div class="itree-branches">
 
-  <div class="tree-card c-rose tree-full">
-    <div class="tree-label">Le fondement <span class="freq">★★★★★</span></div>
-    <div class="tree-h">Le contrat de travail</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-rose" data-tip="contrat_travail">Contrat de travail</span>
-      <span class="tree-chip chip-rose" data-tip="lien_subordination">Lien de subordination</span>
-      <span class="tree-chip chip-rose" data-tip="prestation_travail">Prestation de travail</span>
-      <span class="tree-chip chip-rose" data-tip="remuneration">Rémunération</span>
+    <!-- BRANCHE 1 : Pouvoirs et modification -->
+    <div>
+      <div class="inode inode-branch c-bleu">
+        <div class="inode-label">L'employeur <span class="freq">★★★★☆</span></div>
+        <div class="inode-h">Pouvoirs de l'employeur</div>
+        <div class="inode-def">3 pouvoirs : le <strong>pouvoir de direction</strong> (organiser le travail, fixer les horaires), le <strong>pouvoir réglementaire</strong> (établir le règlement intérieur), le <strong>pouvoir disciplinaire</strong> (sanctionner les fautes). MAIS : distinction cruciale entre <strong>modification du contrat</strong> (touche un élément essentiel → accord du salarié obligatoire) et <strong>changement des conditions</strong> (élément secondaire → pouvoir de direction, pas d'accord nécessaire).</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-bleu" data-tip="pouvoir_direction">Pouvoir de direction</span>
+          <span class="tree-chip chip-bleu" data-tip="pouvoir_reglementaire">Pouvoir réglementaire</span>
+          <span class="tree-chip chip-bleu" data-tip="pouvoir_disciplinaire">Pouvoir disciplinaire</span>
+          <span class="tree-chip chip-jaune" data-tip="modification_contrat">Modification du contrat</span>
+          <span class="tree-chip chip-jaune" data-tip="changement_conditions">Changement des conditions</span>
+        </div>
+      </div>
     </div>
-    <div class="tree-def" style="margin-top:6px"><strong>3 éléments cumulatifs.</strong> Le <strong>lien de subordination</strong> est le critère décisif qui distingue le salarié du travailleur indépendant.</div>
-  </div>
 
-  <!-- Card 2 : Les formes du contrat -->
-  <div class="tree-card c-bleu">
-    <div class="tree-label">Les types de contrat <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Les formes du contrat</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-bleu" data-tip="cdi">CDI</span>
-      <span class="tree-chip chip-bleu" data-tip="cdd">CDD</span>
-      <span class="tree-chip chip-bleu" data-tip="interim">Intérim</span>
-      <span class="tree-chip chip-gris" data-tip="contrat_entreprise">Contrat d'entreprise</span>
+    <!-- BRANCHE 2 : Droits du salarié -->
+    <div>
+      <div class="inode inode-branch c-vert">
+        <div class="inode-label">Protections <span class="freq">★★★☆☆</span></div>
+        <div class="inode-h">Droits du salarié</div>
+        <div class="inode-def">Le salarié conserve des libertés fondamentales : sa <strong>vie privée</strong> est protégée même au travail (l'employeur ne peut pas lire ses messages perso ni le sanctionner pour des faits privés), le <strong>droit de retrait</strong> si danger grave, le <strong>droit de grève</strong> (constitutionnel, le contrat est suspendu pas rompu), la <strong>négociation collective</strong> (syndicats), et le recours au <strong>conseil de prud'hommes</strong> pour les litiges.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-vert" data-tip="vie_privee">Vie privée au travail</span>
+          <span class="tree-chip chip-vert" data-tip="droit_retrait">Droit de retrait</span>
+          <span class="tree-chip chip-vert" data-tip="droit_greve">Droit de grève</span>
+          <span class="tree-chip chip-vert" data-tip="negociation_collective">Négociation collective</span>
+          <span class="tree-chip chip-gris" data-tip="prudhommes">Conseil de prud'hommes</span>
+        </div>
+      </div>
     </div>
-    <div class="tree-def" style="margin-top:6px">Le <strong>CDI est la norme</strong>. Le CDD et l'intérim sont des <strong>exceptions</strong> pour des cas précis.</div>
-  </div>
 
-  <!-- Card 3 : Les clauses -->
-  <div class="tree-card c-jaune">
-    <div class="tree-label">Clauses particulières <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Les clauses</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-jaune" data-tip="clause_nonconcurrence">Clause de non-concurrence</span>
-      <span class="tree-chip chip-jaune" data-tip="clause_mobilite">Clause de mobilité</span>
-      <span class="tree-chip chip-jaune" data-tip="clause_confidentialite">Clause de confidentialité</span>
-    </div>
-    <div class="tree-def" style="margin-top:6px">Clauses qui encadrent les droits et devoirs <strong>au-delà du contrat de base</strong>.</div>
-  </div>
+    <!-- BRANCHE 3 : Rupture du contrat -->
+    <div>
+      <div class="inode inode-branch c-rose">
+        <div class="inode-label">LE sujet n°1 du Bac <span class="freq">★★★★★</span></div>
+        <div class="inode-h">Le licenciement</div>
+        <div class="inode-def">Le <strong>licenciement personnel</strong> est fondé sur un motif lié à la personne (faute, insuffisance). Il doit avoir une <strong>cause réelle</strong> (faits objectifs) ET <strong>sérieuse</strong> (suffisamment grave). La <strong>faute grave</strong> prive de préavis et d'indemnités. Le <strong>licenciement économique</strong> est lié à la situation de l'entreprise (difficultés, restructuration). La <strong>procédure</strong> est strictement encadrée (entretien, notification, délais).</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-violet" data-tip="licenciement_personnel">Licenciement personnel</span>
+          <span class="tree-chip chip-violet" data-tip="cause_reelle_serieuse">Cause réelle et sérieuse</span>
+          <span class="tree-chip chip-rose" data-tip="faute_grave">Faute grave</span>
+          <span class="tree-chip chip-violet" data-tip="licenciement_eco">Licenciement économique</span>
+          <span class="tree-chip chip-gris" data-tip="procedure_licenciement">Procédure de licenciement</span>
+        </div>
 
-  <!-- Card 4 : Pouvoirs de l'employeur -->
-  <div class="tree-card c-bleu">
-    <div class="tree-label">L'autorité de l'employeur <span class="freq">★★★★☆</span></div>
-    <div class="tree-h">Pouvoirs de l'employeur</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-bleu" data-tip="pouvoir_direction">Pouvoir de direction</span>
-      <span class="tree-chip chip-bleu" data-tip="pouvoir_reglementaire">Pouvoir réglementaire</span>
-      <span class="tree-chip chip-bleu" data-tip="pouvoir_disciplinaire">Pouvoir disciplinaire</span>
-      <span class="tree-chip chip-jaune" data-tip="modification_contrat">Modification du contrat</span>
-      <span class="tree-chip chip-jaune" data-tip="changement_conditions">Changement des conditions</span>
+        <!-- Enfant : Autres modes de rupture -->
+        <div class="inode-child">
+          <div class="inode-label">Alternatives <span class="freq">★★☆☆☆</span></div>
+          <div class="inode-h">Rupture conventionnelle et démission</div>
+          <div class="inode-def">La <strong>rupture conventionnelle</strong> = d'un commun accord (entretiens + convention signée + 15 jours de rétractation + homologation). Le salarié touche les allocations chômage. La <strong>démission</strong> = décision du salarié seul, pas besoin de justifier, mais <strong>préavis</strong> à respecter et pas d'allocations. Des <strong>indemnités</strong> sont dues selon le mode de rupture.</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-rose" data-tip="rupture_conventionnelle">Rupture conventionnelle</span>
+            <span class="tree-chip chip-rose" data-tip="demission">Démission</span>
+            <span class="tree-chip chip-gris" data-tip="preavis">Préavis</span>
+            <span class="tree-chip chip-gris" data-tip="indemnites">Indemnités</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="tree-def" style="margin-top:6px">L'employeur a <strong>3 pouvoirs</strong>, MAIS ils sont <strong>encadrés par la loi</strong>. La distinction modification/changement des conditions est un <strong>classique du Bac</strong>.</div>
-  </div>
 
-  <!-- Card 5 : Droits du salarié -->
-  <div class="tree-card c-vert">
-    <div class="tree-label">Les protections du salarié <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Droits du salarié</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-vert" data-tip="vie_privee">Vie privée au travail</span>
-      <span class="tree-chip chip-vert" data-tip="droit_retrait">Droit de retrait</span>
-      <span class="tree-chip chip-vert" data-tip="droit_greve">Droit de grève</span>
-      <span class="tree-chip chip-vert" data-tip="negociation_collective">Négociation collective</span>
-      <span class="tree-chip chip-gris" data-tip="prudhommes">Conseil de prud'hommes</span>
-    </div>
-    <div class="tree-def" style="margin-top:6px">Le salarié conserve des <strong>libertés fondamentales</strong> dans l'entreprise. L'employeur ne peut pas tout faire.</div>
-  </div>
-
-  <!-- Card 6 : Le licenciement -->
-  <div class="tree-card c-violet">
-    <div class="tree-label">Le sujet n°1 du bac <span class="freq">★★★★★</span></div>
-    <div class="tree-h">Le licenciement</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-violet" data-tip="licenciement_personnel">Licenciement personnel</span>
-      <span class="tree-chip chip-violet" data-tip="cause_reelle_serieuse">Cause réelle et sérieuse</span>
-      <span class="tree-chip chip-rose" data-tip="faute_grave">Faute grave</span>
-      <span class="tree-chip chip-violet" data-tip="licenciement_eco">Licenciement économique</span>
-      <span class="tree-chip chip-gris" data-tip="procedure_licenciement">Procédure de licenciement</span>
-    </div>
-    <div class="tree-def" style="margin-top:6px"><strong>LE sujet n°1 du Bac Droit.</strong> Le licenciement doit avoir une cause <strong>réelle</strong> (faits objectifs) et <strong>sérieuse</strong> (suffisamment grave).</div>
-  </div>
-
-  <!-- Card 7 : Les autres modes de rupture -->
-  <div class="tree-card c-rose">
-    <div class="tree-label">Autres fins du contrat <span class="freq">★★☆☆☆</span></div>
-    <div class="tree-h">Les autres modes de rupture</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-rose" data-tip="rupture_conventionnelle">Rupture conventionnelle</span>
-      <span class="tree-chip chip-rose" data-tip="demission">Démission</span>
-      <span class="tree-chip chip-gris" data-tip="preavis">Préavis</span>
-      <span class="tree-chip chip-gris" data-tip="indemnites">Indemnités</span>
-    </div>
-    <div class="tree-def" style="margin-top:6px">Le CDI peut aussi prendre fin par <strong>accord mutuel</strong> (rupture conventionnelle) ou <strong>décision du salarié</strong> (démission).</div>
   </div>
 
 </div>
+
 
 <!-- ═══════════════════════════════════════ -->
 <!-- PARTIE 3 : RÉCUPÉRER -->

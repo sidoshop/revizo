@@ -35,25 +35,6 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 .memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
 .memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: var(--color-primary); margin-top: 8px; font-style: italic; }
 
-/* ─── ARBRE STRUCTURE (ENCODER) ─── */
-.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-.tree-full { grid-column: 1 / -1; }
-
-.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
-.tree-card.c-bleu  { border-left-color: #2a69a8; }
-.tree-card.c-rose  { border-left-color: #b5415a; }
-.tree-card.c-jaune { border-left-color: #946e00; }
-.tree-card.c-vert  { border-left-color: #1a7a3c; }
-.tree-card.c-violet { border-left-color: #7030a0; }
-
-.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
-.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
-.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
-.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
-.tree-def strong { color: #1e1c18; }
-.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
-.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(42,105,168,.08); color: #2a69a8; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
-
 /* Sub-items inside tree cards */
 .tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
@@ -70,11 +51,6 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 .tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
 .tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:var(--color-primary-bg); border-radius:8px; border-left:3px solid var(--color-primary); }
 .tip-bac { font-size:10px; font-weight:700; color:#b5415a; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
-
-/* Schema */
-.schema-section { margin-bottom: 16px; }
-.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
-.schema-box svg { display: block; margin: 0 auto; }
 
 .chip-bleu   { background: #e8f3ff; color: #2a69a8; }
 .chip-rose   { background: #fdeef2; color: #b5415a; }
@@ -127,12 +103,12 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
   .sli-nav { display: none !important; }
   body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .memo { padding: 0; max-width: 100%; }
-  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain { break-inside: avoid; }
+  .confuse-box, .mnemo-box, .freq-box, .chain, .inode, .ichain { break-inside: avoid; }
 }
 
 @media (max-width: 600px) {
-  .tree, .recup { grid-template-columns: 1fr; }
-  .tree-full, .recup-full { grid-column: 1; }
+  .recup { grid-template-columns: 1fr; }
+  .recup-full { grid-column: 1; }
   .memo { padding: 74px 12px 30px; }
 }
 </style>
@@ -165,187 +141,187 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 </div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ARBRE INTERACTIF UNIFIÉ (multi-niveaux) -->
 <!-- ═══════════════════════════════════════ -->
 
-<div class="schema-section">
-  <div class="schema-box">
-    <svg viewBox="0 0 800 360" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
-      <!-- Niveau 1 : Un dommage est causé -->
-      <rect x="220" y="8" width="360" height="44" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
-      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">POINT DE DÉPART</text>
-      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">UN DOMMAGE EST CAUSÉ → Corporel · Matériel · Moral</text>
+<style>
+/* Arbre interactif */
+.itree { max-width: 100%; }
+.itree-level { display: flex; justify-content: center; position: relative; }
+.itree-connector { display: flex; justify-content: center; padding: 6px 0; }
+.itree-connector .vline { width: 2px; height: 16px; background: #c8c0b4; }
+.itree-hbar { display: flex; align-items: flex-start; justify-content: center; position: relative; margin: 0 auto; }
+.itree-hbar::before { content:''; position: absolute; top: 0; left: 16.66%; right: 16.66%; height: 2px; background: #c8c0b4; }
+.itree-branches { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding-top: 18px; position: relative; }
+.itree-branches > div { position: relative; }
+.itree-branches > div::before { content:''; position: absolute; top: -18px; left: 50%; width: 2px; height: 18px; background: #c8c0b4; }
 
-      <!-- Flèche -->
-      <line x1="400" y1="52" x2="400" y2="70" stroke="#a09880" stroke-width="2" marker-end="url(#arrow)"/>
+/* Noeuds */
+.inode { border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,.05); position: relative; }
+.inode-root { background: #fffdf8; border: 2px solid var(--color-primary); text-align: center; max-width: 500px; margin: 0 auto; }
+.inode-root .inode-circle { position: absolute; top: -14px; left: -14px; width: 36px; height: 36px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 900; color: #fff; }
+.inode-branch { background: #fffdf8; border-left: 4px solid #ccc; }
+.inode-branch.c-bleu { border-left-color: #2a69a8; }
+.inode-branch.c-rose { border-left-color: #b5415a; }
+.inode-branch.c-vert { border-left-color: #1a7a3c; }
+.inode-branch.c-violet { border-left-color: #7030a0; }
+.inode-branch.c-jaune { border-left-color: #946e00; }
 
-      <!-- Barre horizontale -->
-      <line x1="400" y1="70" x2="400" y2="85" stroke="#a09880" stroke-width="2"/>
-      <line x1="200" y1="85" x2="600" y2="85" stroke="#a09880" stroke-width="2"/>
-      <line x1="200" y1="85" x2="200" y2="100" stroke="#a09880" stroke-width="2"/>
-      <line x1="600" y1="85" x2="600" y2="100" stroke="#a09880" stroke-width="2"/>
+.inode-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; }
+.inode-label .freq { color: #f5c842; letter-spacing: 0; text-transform: none; }
+.inode-h { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: #1e1c18; margin-bottom: 6px; }
+.inode-def { font-size: 12px; line-height: 1.55; color: #3a3630; margin-bottom: 6px; }
+.inode-ex { font-size: 11px; color: #7a6a58; font-style: italic; }
 
-      <!-- Branche 1 : RESPONSABILITÉ CIVILE -->
-      <rect x="60" y="100" width="280" height="44" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
-      <text x="200" y="118" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8" letter-spacing="1">RESPONSABILITÉ CIVILE (RÉPARER)</text>
-      <text x="200" y="132" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">But : indemniser la victime</text>
+/* Sub-node (enfant dans la branche) */
+.inode-child { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(0,0,0,.08); }
+.inode-child .inode-label { font-size: 8px; }
+.inode-child .inode-h { font-size: 13px; }
 
-      <!-- Sous-branches civile : 3 régimes -->
-      <line x1="200" y1="144" x2="200" y2="160" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="100" y1="160" x2="300" y2="160" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="100" y1="160" x2="100" y2="172" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="200" y1="160" x2="200" y2="172" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="300" y1="160" x2="300" y2="172" stroke="#a09880" stroke-width="1.5"/>
+/* Chaîne logique intégrée */
+.ichain { background: #fef8e2; border-radius: 12px; padding: 12px 16px; margin-top: 14px; }
+.ichain .tree-label { color: #946e00; }
 
-      <rect x="40" y="172" width="120" height="36" rx="8" fill="#e8f3ff"/>
-      <text x="100" y="186" text-anchor="middle" font-size="8" font-weight="700" fill="#2a69a8">Fait personnel</text>
-      <text x="100" y="198" text-anchor="middle" font-size="7" fill="#5a5448">(art. 1240-1241)</text>
+/* Responsive */
+@media (max-width: 700px) {
+  .itree-branches { grid-template-columns: 1fr; }
+  .itree-hbar::before { display: none; }
+  .itree-branches > div::before { display: none; }
+}
+</style>
 
-      <rect x="140" y="172" width="120" height="36" rx="8" fill="#f3eafc"/>
-      <text x="200" y="186" text-anchor="middle" font-size="8" font-weight="700" fill="#7030a0">Fait d'autrui</text>
-      <text x="200" y="198" text-anchor="middle" font-size="7" fill="#5a5448">(art. 1242)</text>
+<div class="itree">
 
-      <rect x="240" y="172" width="120" height="36" rx="8" fill="#e6f5ec"/>
-      <text x="300" y="186" text-anchor="middle" font-size="8" font-weight="700" fill="#1a7a3c">Fait des choses</text>
-      <text x="300" y="198" text-anchor="middle" font-size="7" fill="#5a5448">(art. 1242 al.1)</text>
-
-      <!-- Branche 2 : RESPONSABILITÉ PÉNALE -->
-      <rect x="460" y="100" width="280" height="44" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
-      <text x="600" y="118" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0" letter-spacing="1">RESPONSABILITÉ PÉNALE (PUNIR)</text>
-      <text x="600" y="132" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">But : protéger la société</text>
-
-      <!-- Sous-branches pénale -->
-      <line x1="600" y1="144" x2="600" y2="172" stroke="#a09880" stroke-width="1.5"/>
-      <rect x="530" y="172" width="140" height="36" rx="8" fill="#f3eafc"/>
-      <text x="600" y="186" text-anchor="middle" font-size="8" font-weight="700" fill="#7030a0">Sanctions</text>
-      <text x="600" y="198" text-anchor="middle" font-size="7" fill="#5a5448">amende, prison</text>
-
-      <!-- Niveau 3 : RÉPARATION -->
-      <rect x="220" y="228" width="360" height="44" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
-      <text x="400" y="246" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">RÉPARATION</text>
-      <text x="400" y="260" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">En nature ou Dommages-intérêts</text>
-
-      <!-- Flèche vers réparation -->
-      <line x1="200" y1="208" x2="200" y2="220" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="200" y1="220" x2="400" y2="220" stroke="#a09880" stroke-width="1.5"/>
-      <line x1="400" y1="220" x2="400" y2="228" stroke="#a09880" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-      <!-- Barre du bas : Exonérations -->
-      <rect x="40" y="290" width="720" height="38" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5" stroke-dasharray="6,3"/>
-      <text x="400" y="306" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">EXONÉRATIONS POSSIBLES</text>
-      <text x="400" y="320" text-anchor="middle" font-size="10" font-weight="700" fill="#5a4e00">Force majeure | Fait d'un tiers | Faute de la victime</text>
-
-      <!-- Arrow marker -->
-      <defs><marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
-
-      <g transform="translate(28, 28)">
-        <circle cx="0" cy="0" r="20" fill="#1a7a3c"/>
-        <text x="0" y="6" text-anchor="middle"
-          font-family="Inter, sans-serif"
-          font-size="15" font-weight="900"
-          fill="#ffffff">R</text>
-      </g>
-    </svg>
+  <!-- ─── NIVEAU 1 : UN DOMMAGE EST CAUSÉ ─── -->
+  <div class="itree-level">
+    <div class="inode inode-root" style="border-color:#b5415a">
+      <div class="inode-circle" style="font-size:15px">R</div>
+      <div class="inode-label">Le point de départ <span class="freq">★★★★☆</span></div>
+      <div class="inode-h">Un dommage est causé</div>
+      <div class="inode-def">Quelqu'un subit un préjudice. 3 types : <strong>corporel</strong> (atteinte au corps — blessure, handicap), <strong>matériel</strong> (atteinte aux biens — voiture détruite, vitrine cassée), <strong>moral</strong> (atteinte aux sentiments — souffrance, humiliation). Cas spécial : le <strong>préjudice écologique</strong> (atteinte aux écosystèmes, réparé en priorité en nature).</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-jaune" data-tip="corporel">Dommage corporel</span>
+        <span class="tree-chip chip-jaune" data-tip="materiel">Dommage matériel</span>
+        <span class="tree-chip chip-jaune" data-tip="moral">Dommage moral</span>
+        <span class="tree-chip chip-jaune" data-tip="ecologique">Préjudice écologique</span>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="recup" style="margin-bottom:12px">
-  <div class="chain recup-full">
-    <div class="tree-label">La chaîne logique du thème 6</div>
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- ─── NIVEAU 2 : QUEL RÉGIME ? ─── -->
+  <div class="itree-level">
+    <div class="inode inode-root">
+      <div class="inode-label">La question clé <span class="freq">★★★★☆</span></div>
+      <div class="inode-h">Quel régime de responsabilité ?</div>
+      <div class="inode-def">Deux grandes familles : la <strong>responsabilité civile</strong> (objectif : RÉPARER le dommage — indemniser la victime) et la <strong>responsabilité pénale</strong> (objectif : PUNIR l'auteur — amende, prison). Un même fait peut engager les deux. La civile se divise en <strong>contractuelle</strong> (entre cocontractants) et <strong>délictuelle</strong> (entre tiers).</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-rose" data-tip="resp_civile">Resp. civile</span>
+        <span class="tree-chip chip-violet" data-tip="resp_penale">Resp. pénale</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- CHAÎNE LOGIQUE -->
+  <div class="ichain">
+    <div class="tree-label">Chaîne logique</div>
     <div class="chain-flow">
-      <span class="chain-node">Dommage (corporel/matériel/moral)</span>
+      <span class="chain-node">Dommage</span>
       <span class="chain-arrow">→</span>
       <span class="chain-node">Quel régime ?</span>
       <span class="chain-arrow">→</span>
-      <span class="chain-node">Fait perso / autrui / choses</span>
-      <span class="chain-arrow">→</span>
-      <span class="chain-node">3 conditions (F+D+L)</span>
+      <span class="chain-node">3 conditions (faute + dommage + lien)</span>
       <span class="chain-arrow">→</span>
       <span class="chain-node">Exonération possible ?</span>
       <span class="chain-arrow">→</span>
       <span class="chain-node">Réparation intégrale</span>
     </div>
   </div>
+
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- ─── NIVEAU 3 : LES 3 RÉGIMES ─── -->
+  <div class="itree-branches">
+
+    <!-- BRANCHE 1 : Fait personnel -->
+    <div>
+      <div class="inode inode-branch c-bleu">
+        <div class="inode-label">Art. 1240-1241 <span class="freq">★★★★☆</span></div>
+        <div class="inode-h">Fait personnel</div>
+        <div class="inode-def">Ma propre <strong>faute</strong> cause un dommage à autrui. Soit intentionnelle (<strong>art. 1240</strong> — je l'ai fait exprès), soit par négligence (<strong>art. 1241</strong> — j'aurais dû faire attention). La victime doit prouver 3 choses : la <strong>faute</strong>, le <strong>dommage</strong>, et le <strong>lien de causalité</strong> entre les deux.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-bleu" data-tip="art_1240">Art. 1240</span>
+          <span class="tree-chip chip-bleu" data-tip="art_1241">Art. 1241</span>
+          <span class="tree-chip chip-bleu" data-tip="faute_t6">Faute</span>
+          <span class="tree-chip chip-bleu" data-tip="dommage_t6">Dommage</span>
+          <span class="tree-chip chip-bleu" data-tip="lien_causalite_t6">Lien de causalité</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRANCHE 2 : Fait d'autrui -->
+    <div>
+      <div class="inode inode-branch c-violet">
+        <div class="inode-label">Art. 1242 <span class="freq">★★★☆☆</span></div>
+        <div class="inode-h">Fait d'autrui</div>
+        <div class="inode-def">On est responsable des personnes dont on a la charge : les <strong>parents</strong> répondent des dommages causés par leurs enfants mineurs (responsabilité de plein droit, pas besoin de prouver une faute des parents), les <strong>employeurs</strong> répondent des dommages causés par leurs salariés dans l'exercice de leurs fonctions.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-violet" data-tip="art_1242">Art. 1242</span>
+          <span class="tree-chip chip-violet" data-tip="parents">Parents (enfants mineurs)</span>
+          <span class="tree-chip chip-violet" data-tip="employeurs">Employeurs (salariés)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRANCHE 3 : Fait des choses + Exonération -->
+    <div>
+      <div class="inode inode-branch c-vert">
+        <div class="inode-label">Art. 1242 al.1 <span class="freq">★★★☆☆</span></div>
+        <div class="inode-h">Fait des choses</div>
+        <div class="inode-def">Le <strong>gardien</strong> d'une chose (celui qui en a l'<strong>usage</strong>, la <strong>direction</strong> et le <strong>contrôle</strong>) est responsable des dommages qu'elle cause. Pas besoin de prouver une faute — c'est automatique.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-vert" data-tip="art_1242_al1">Art. 1242 al.1</span>
+          <span class="tree-chip chip-vert" data-tip="gardien">Gardien</span>
+          <span class="tree-chip chip-vert" data-tip="garde">Garde</span>
+        </div>
+
+        <!-- Enfant : Exonération -->
+        <div class="inode-child">
+          <div class="inode-label">Se défendre <span class="freq">★★★☆☆</span></div>
+          <div class="inode-h">Causes d'exonération</div>
+          <div class="inode-def">Le responsable peut échapper (totalement ou partiellement) à sa responsabilité s'il prouve : la <strong>force majeure</strong> (événement imprévisible, irrésistible et extérieur — séisme, pandémie), le <strong>fait d'un tiers</strong> (c'est quelqu'un d'autre qui a causé le dommage), ou la <strong>faute de la victime</strong> (la victime a contribué à son propre dommage).</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-rose" data-tip="force_majeure">Force majeure</span>
+            <span class="tree-chip chip-rose" data-tip="fait_tiers">Fait d'un tiers</span>
+            <span class="tree-chip chip-rose" data-tip="faute_victime">Faute de la victime</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- ─── BARRE DU BAS : RÉPARATION ─── -->
+  <div class="itree-level">
+    <div class="inode" style="background:#fef8e2;border:2px dashed #b5415a;border-radius:14px;padding:14px 18px;width:100%">
+      <div class="inode-label" style="color:#b5415a">Réparation <span class="freq">★★★☆☆</span></div>
+      <div class="inode-h" style="font-size:14px">Réparation intégrale du préjudice</div>
+      <div class="inode-def">La victime doit être replacée dans la situation où elle se serait trouvée sans le dommage. Deux modes : <strong>réparation en nature</strong> (remettre en état — reconstruire le mur) ou <strong>dommages-intérêts</strong> (somme d'argent). Le <strong>trouble anormal de voisinage</strong> est un régime spécial : pas besoin de faute, juste le caractère ANORMAL de la nuisance.</div>
+      <div class="tree-sub">
+        <span class="tree-chip chip-jaune" data-tip="reparation_nature">Réparation en nature</span>
+        <span class="tree-chip chip-jaune" data-tip="dommages_interets_t6">Dommages-intérêts</span>
+        <span class="tree-chip chip-gris" data-tip="trouble_voisinage">Trouble anormal de voisinage</span>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<!-- ═══════════════════════════════════════ -->
-<!-- PARTIE 1 : ENCODER — L'arbre du thème -->
-<!-- ═══════════════════════════════════════ -->
-
-<div class="tree">
-
-  <div class="tree-card c-rose tree-full">
-    <div class="tree-label">Le point de départ <span class="freq">★★★★☆</span></div>
-    <div class="tree-h">Les deux responsabilités</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-rose" data-tip="resp_civile">Resp. civile (réparer)</span>
-      <span class="tree-chip chip-violet" data-tip="resp_penale">Resp. pénale (punir)</span>
-    </div>
-    <div class="tree-def" style="margin-top:6px">Civile = indemniser la victime. Pénale = sanctionner l'auteur. Un même fait peut engager les deux.</div>
-  </div>
-
-  <div class="tree-card c-bleu">
-    <div class="tree-label">Fait personnel <span class="freq">★★★★☆</span></div>
-    <div class="tree-h">Responsabilité du fait personnel</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-bleu" data-tip="art_1240">Art. 1240</span>
-      <span class="tree-chip chip-bleu" data-tip="art_1241">Art. 1241</span>
-      <span class="tree-chip chip-bleu" data-tip="faute_t6">Faute</span>
-      <span class="tree-chip chip-bleu" data-tip="dommage_t6">Dommage</span>
-      <span class="tree-chip chip-bleu" data-tip="lien_causalite_t6">Lien de causalité</span>
-    </div>
-    <div class="tree-def">Toute faute qui cause un dommage oblige à le réparer. 3 conditions cumulatives : faute + dommage + lien.</div>
-  </div>
-
-  <div class="tree-card c-violet">
-    <div class="tree-label">Fait d'autrui <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Responsabilité du fait d'autrui</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-violet" data-tip="art_1242">Art. 1242</span>
-      <span class="tree-chip chip-violet" data-tip="parents">Parents (enfants mineurs)</span>
-      <span class="tree-chip chip-violet" data-tip="employeurs">Employeurs (salariés)</span>
-    </div>
-    <div class="tree-def">On est responsable des dommages causés par les personnes dont on répond (enfants, salariés).</div>
-  </div>
-
-  <div class="tree-card c-vert">
-    <div class="tree-label">Fait des choses <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Responsabilité du fait des choses</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-vert" data-tip="art_1242_al1">Art. 1242 al.1</span>
-      <span class="tree-chip chip-vert" data-tip="gardien">Gardien</span>
-      <span class="tree-chip chip-vert" data-tip="garde">Garde (usage, direction, contrôle)</span>
-    </div>
-    <div class="tree-def">Le gardien d'une chose (celui qui en a l'usage, la direction et le contrôle) est responsable des dommages qu'elle cause.</div>
-  </div>
-
-  <div class="tree-card c-jaune">
-    <div class="tree-label">Dommage et réparation <span class="freq">★★★★☆</span></div>
-    <div class="tree-h">Types de dommage et réparation</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-jaune" data-tip="corporel">Dommage corporel</span>
-      <span class="tree-chip chip-jaune" data-tip="materiel">Dommage matériel</span>
-      <span class="tree-chip chip-jaune" data-tip="moral">Dommage moral</span>
-      <span class="tree-chip chip-jaune" data-tip="ecologique">Préjudice écologique</span>
-      <span class="tree-chip chip-jaune" data-tip="reparation_nature">Réparation en nature</span>
-      <span class="tree-chip chip-jaune" data-tip="dommages_interets_t6">Dommages-intérêts</span>
-    </div>
-    <div class="tree-def">3 types de dommage. Réparation intégrale : en nature (remettre en état) ou par équivalent (argent).</div>
-  </div>
-
-  <div class="tree-card c-rose">
-    <div class="tree-label">Exonérations <span class="freq">★★★☆☆</span></div>
-    <div class="tree-h">Exonérations et cas spéciaux</div>
-    <div class="tree-sub">
-      <span class="tree-chip chip-rose" data-tip="force_majeure">Force majeure</span>
-      <span class="tree-chip chip-rose" data-tip="fait_tiers">Fait d'un tiers</span>
-      <span class="tree-chip chip-rose" data-tip="faute_victime">Faute de la victime</span>
-      <span class="tree-chip chip-gris" data-tip="trouble_voisinage">Trouble anormal de voisinage</span>
-    </div>
-    <div class="tree-def">Le responsable peut s'exonérer totalement ou partiellement. Le trouble de voisinage est un régime spécial (pas besoin de prouver la faute).</div>
-  </div>
-
-</div>
 
 <!-- ═══════════════════════════════════════ -->
 <!-- PARTIE 3 : RÉCUPÉRER -->
