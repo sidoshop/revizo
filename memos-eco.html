@@ -73,11 +73,11 @@
       box-shadow: 0 4px 16px rgba(30,28,24,0.1);
     }
 
-    /* Couleurs par thème Éco — identiques aux mémos existants */
+    /* Couleurs Éco — tout en bleu */
     .memo-card.t6 { border-left-color: #2a69a8; }
-    .memo-card.t7 { border-left-color: #b5415a; }
-    .memo-card.t8 { border-left-color: #946e00; }
-    .memo-card.t9 { border-left-color: #1a7a3c; }
+    .memo-card.t7 { border-left-color: #2a69a8; }
+    .memo-card.t8 { border-left-color: #2a69a8; }
+    .memo-card.t9 { border-left-color: #2a69a8; }
 
     .memo-card .theme-badge {
       font-family: 'Inter', sans-serif;
@@ -92,9 +92,9 @@
     }
 
     .memo-card.t6 .theme-badge { color: #2a69a8; background: #e8f3ff; }
-    .memo-card.t7 .theme-badge { color: #b5415a; background: #fdeef2; }
-    .memo-card.t8 .theme-badge { color: #946e00; background: #fef8e2; }
-    .memo-card.t9 .theme-badge { color: #1a7a3c; background: #e6f5ec; }
+    .memo-card.t7 .theme-badge { color: #2a69a8; background: #e8f3ff; }
+    .memo-card.t8 .theme-badge { color: #2a69a8; background: #e8f3ff; }
+    .memo-card.t9 .theme-badge { color: #2a69a8; background: #e8f3ff; }
 
     .memo-card .memo-body { flex: 1; }
 
@@ -113,6 +113,20 @@
     .memo-card .memo-arrow {
       color: var(--color-muted);
       font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .memo-card .circle-letter {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      color: #fff;
       flex-shrink: 0;
     }
 
@@ -161,6 +175,7 @@
   <div class="memos-grid">
 
     <a href="memo-eco-theme6.html" class="memo-card t6">
+      <span class="circle-letter" style="background:#2a69a8">ÉÉ</span>
       <span class="theme-badge">Thème 6</span>
       <div class="memo-body">
         <div class="memo-title">L'État dans l'économie</div>
@@ -170,6 +185,7 @@
     </a>
 
     <a href="memo-eco-theme7.html" class="memo-card t7">
+      <span class="circle-letter" style="background:#2a69a8">E&amp;C</span>
       <span class="theme-badge">Thème 7</span>
       <div class="memo-body">
         <div class="memo-title">Emploi et chômage</div>
@@ -179,6 +195,7 @@
     </a>
 
     <a href="memo-eco-theme8.html" class="memo-card t8">
+      <span class="circle-letter" style="background:#2a69a8">CI</span>
       <span class="theme-badge">Thème 8</span>
       <div class="memo-body">
         <div class="memo-title">Commerce international</div>
@@ -188,6 +205,7 @@
     </a>
 
     <a href="memo-eco-theme9.html" class="memo-card t9">
+      <span class="circle-letter" style="background:#2a69a8">DD</span>
       <span class="theme-badge">Thème 9</span>
       <div class="memo-body">
         <div class="memo-title">Croissance et développement durable
