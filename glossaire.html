@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Glossaire express</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito Sans', sans-serif; }
+body { background: #f0ede6; color: #1e1c18; min-height: 100vh; }
+
+/* Nav — identique a index.html */
+.nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.nav a { text-decoration:none }
+.nav-logo { font-family:'Inter',sans-serif;font-size:1.15rem;font-weight:900;color:#1e1c18 }
+.nav-logo .zo { color:#b5415a }
+.nav-links { display:flex;gap:4px }
+.nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none;transition:background .15s }
+.nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.nl.on { background:#1e1c18;color:#f5c842 }
+
+/* Hero */
+.hero { max-width:900px;margin:0 auto;padding:100px 24px 32px;text-align:center }
+.hero-badge { display:inline-block;background:#1e1c18;color:#f5c842;font-size:0.6rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:6px 20px;border-radius:20px;margin-bottom:20px }
+.hero h1 { font-family:'Nunito',sans-serif;font-size:2.8rem;font-weight:900;color:#1e1c18;line-height:1.1;margin-bottom:12px }
+.hero-sub { font-size:1.05rem;line-height:1.7;color:#7a6a58;font-weight:500;max-width:580px;margin:0 auto }
+
+/* Search */
+.search-wrap { max-width:900px;margin:0 auto;padding:20px 24px 0 }
+.search-input { width:100%;padding:16px 24px 16px 52px;font-size:1.05rem;font-weight:600;border:2px solid rgba(30,28,24,.12);border-radius:16px;background:#fff;color:#1e1c18;outline:none;transition:border-color .2s,box-shadow .2s;font-family:'Nunito Sans',sans-serif }
+.search-input::placeholder { color:#a09880;font-weight:500 }
+.search-input:focus { border-color:#b5415a;box-shadow:0 0 0 4px rgba(181,65,90,.1) }
+.search-box { position:relative }
+.search-icon { position:absolute;left:20px;top:50%;transform:translateY(-50%);font-size:1.2rem;pointer-events:none;color:#a09880 }
+
+/* Filters */
+.filters { max-width:900px;margin:0 auto;padding:16px 24px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap }
+.filter-btn { font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:700;padding:7px 18px;border-radius:20px;border:2px solid rgba(30,28,24,.12);background:#fff;color:#7a6a58;cursor:pointer;transition:all .15s }
+.filter-btn:hover { background:rgba(30,28,24,.06) }
+.filter-btn.active-all { background:#1e1c18;color:#f5c842;border-color:#1e1c18 }
+.filter-btn.active-eco { background:#2a69a8;color:#fff;border-color:#2a69a8 }
+.filter-btn.active-droit { background:#c46a10;color:#fff;border-color:#c46a10 }
+.count-label { font-size:0.82rem;font-weight:600;color:#a09880;margin-left:auto }
+
+/* Table */
+.table-wrap { max-width:900px;margin:0 auto;padding:20px 24px 60px }
+.glossary-table { width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06) }
+.glossary-table thead th { font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;padding:16px 20px;text-align:left;border-bottom:2px solid rgba(30,28,24,.08);cursor:pointer;user-select:none;transition:color .15s }
+.glossary-table thead th:hover { color:#1e1c18 }
+.glossary-table thead th .sort-arrow { margin-left:4px;font-size:0.6rem;opacity:0.4 }
+.glossary-table thead th.sorted .sort-arrow { opacity:1;color:#b5415a }
+.glossary-table tbody tr { transition:background .1s }
+.glossary-table tbody tr:hover { background:rgba(30,28,24,.03) }
+.glossary-table tbody td { padding:14px 20px;font-size:0.9rem;line-height:1.5;border-bottom:1px solid rgba(30,28,24,.06);vertical-align:top }
+.glossary-table tbody tr:last-child td { border-bottom:none }
+.col-terme { font-weight:700;color:#1e1c18;white-space:nowrap;width:22% }
+.col-def { color:#5a5448;font-weight:500;width:64% }
+.col-mat { width:14%;text-align:center }
+
+/* Badges matiere */
+.badge { display:inline-block;font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px }
+.badge-eco { background:rgba(42,105,168,.12);color:#2a69a8 }
+.badge-droit { background:rgba(196,106,16,.12);color:#c46a10 }
+
+/* Empty state */
+.empty-row td { text-align:center;padding:40px 20px;color:#a09880;font-weight:600;font-size:0.95rem }
+
+/* Responsive */
+@media(max-width:640px){
+  .nav { padding:0 16px }
+  .nav-links { gap:2px }
+  .nl { font-size:0.7rem;padding:5px 10px }
+  .hero { padding:90px 16px 24px }
+  .hero h1 { font-size:2rem }
+  .search-wrap,.filters,.table-wrap { padding-left:16px;padding-right:16px }
+  .glossary-table thead th { padding:12px 12px;font-size:0.65rem }
+  .glossary-table tbody td { padding:10px 12px;font-size:0.82rem }
+  .col-terme { white-space:normal }
+  .filters { gap:6px }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Revi<span class="zo">zo</span></a>
+  <div class="nav-links">
+    <a href="index.html" class="nl">Accueil</a>
+    <a href="glossaire.html" class="nl on">Glossaire</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">Glossaire &middot; Toutes matieres</div>
+  <h1>Glossaire express</h1>
+  <p class="hero-sub">Recherche rapide dans toutes les notions d'Economie et de Droit</p>
+</section>
+
+<div class="search-wrap">
+  <div class="search-box">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" class="search-input" id="searchInput" placeholder="Rechercher un terme ou une definition...">
+  </div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active-all" data-filter="all" onclick="setFilter('all')">Tout</button>
+  <button class="filter-btn" data-filter="eco" onclick="setFilter('eco')">Economie</button>
+  <button class="filter-btn" data-filter="droit" onclick="setFilter('droit')">Droit</button>
+  <span class="count-label" id="countLabel"></span>
+</div>
+
+<div class="table-wrap">
+  <table class="glossary-table">
+    <thead>
+      <tr>
+        <th class="sorted" data-col="terme" onclick="sortTable('terme')">Terme <span class="sort-arrow">&#9650;</span></th>
+        <th data-col="def" onclick="sortTable('def')">Definition <span class="sort-arrow">&#9650;</span></th>
+        <th data-col="mat" onclick="sortTable('mat')">Matiere <span class="sort-arrow">&#9650;</span></th>
+      </tr>
+    </thead>
+    <tbody id="glossaryBody"></tbody>
+  </table>
+</div>
+
+<script>
+var DATA = [
+  // --- ECONOMIE ---
+  ["Asymetrie d'information","Situation ou un acteur du marche detient plus d'informations que l'autre","eco"],
+  ["Autofinancement","L'entreprise finance ses investissements avec ses propres benefices","eco"],
+  ["Balance commerciale","Difference entre exportations et importations d'un pays","eco"],
+  ["Barrieres non tarifaires","Obstacles aux importations autres que les droits de douane (quotas, normes)","eco"],
+  ["Barrieres tarifaires","Droits de douane preleves sur les produits importes","eco"],
+  ["BCE","Banque Centrale Europeenne, responsable de la politique monetaire dans la zone euro","eco"],
+  ["Bien commun","Bien rival mais non excluable, menace de surexploitation","eco"],
+  ["Bien public","Bien non rival et non excluable que le marche ne produit pas spontanement","eco"],
+  ["Capital naturel","Ensemble des ressources naturelles utilisees dans l'activite economique","eco"],
+  ["Chomage conjoncturel","Chomage temporaire lie a un ralentissement de l'activite economique","eco"],
+  ["Chomage frictionnel","Chomage de courte duree entre deux emplois","eco"],
+  ["Chomage structurel","Chomage durable lie a des problemes de fond du marche du travail","eco"],
+  ["Coefficient multiplicateur","Valeur d'arrivee / Valeur de depart \u2014 mesure l'ampleur d'une variation","eco"],
+  ["Concurrence imparfaite","Marche domine par un ou quelques acteurs (monopole, oligopole)","eco"],
+  ["Creation monetaire","Processus par lequel les banques creent de la monnaie en accordant des credits","eco"],
+  ["Croissance economique","Augmentation durable de la production de biens et services, mesuree par le PIB","eco"],
+  ["Defaillances du marche","Situations ou le marche ne produit pas un resultat efficace (4 types)","eco"],
+  ["Deficit public","Situation ou les depenses publiques depassent les recettes sur une annee","eco"],
+  ["Demande de travail","Quantite de travail que les employeurs souhaitent embaucher","eco"],
+  ["Depenses publiques","Ensemble des depenses de l'Etat et des administrations publiques","eco"],
+  ["Dette publique","Accumulation de tous les emprunts contractes par l'Etat","eco"],
+  ["Developpement durable","Developpement repondant aux besoins du present sans compromettre ceux des generations futures","eco"],
+  ["Droits de douane","Taxes prelevees sur les produits importes","eco"],
+  ["Economies d'echelle","Baisse du cout unitaire quand les quantites produites augmentent","eco"],
+  ["Elasticite-prix","Mesure de la sensibilite de la demande aux variations de prix","eco"],
+  ["Externalite","Effet positif ou negatif d'une activite economique sur un tiers, sans compensation","eco"],
+  ["Financement externe","Recours au credit bancaire ou au marche financier","eco"],
+  ["Flexisecurite","Modele combinant flexibilite du marche du travail et securite pour les salaries","eco"],
+  ["IDE","Investissements realises par une entreprise d'un pays dans un autre pays","eco"],
+  ["Libre-echange","Politique favorisant la libre circulation des biens et services entre pays","eco"],
+  ["Marche du travail","Lieu ou se confrontent l'offre de travail (salaries) et la demande (employeurs)","eco"],
+  ["Mondialisation","Processus d'ouverture des economies nationales sur un marche planetaire","eco"],
+  ["Offre de travail","Quantite de travail que les salaries proposent sur le marche","eco"],
+  ["OMC","Organisation Mondiale du Commerce, regule les echanges internationaux","eco"],
+  ["PIB","Produit Interieur Brut : valeur totale de la production en un an dans un pays","eco"],
+  ["Politique active de l'emploi","Action qui ameliore le fonctionnement du marche du travail","eco"],
+  ["Politique budgetaire","Utilisation du budget de l'Etat pour agir sur l'activite economique","eco"],
+  ["Politique de la demande","Stimuler la consommation (hausse depenses, baisse impots)","eco"],
+  ["Politique de l'offre","Ameliorer la competitivite des entreprises (baisse charges, innovation)","eco"],
+  ["Politique monetaire","Action de la BCE sur les taux directeurs","eco"],
+  ["Politique passive de l'emploi","Action qui amortit les effets du chomage (indemnisation)","eco"],
+  ["Population active","Personnes de 15+ ans ayant un emploi ou en cherchant un","eco"],
+  ["Prelevements obligatoires","Impots + cotisations sociales qui financent les depenses publiques","eco"],
+  ["Protectionnisme","Politique visant a limiter les importations pour proteger la production nationale","eco"],
+  ["Redistribution","Transferts de l'Etat pour reduire les inegalites","eco"],
+  ["SMIC","Salaire minimum en dessous duquel aucun employeur ne peut payer un salarie","eco"],
+  ["Soutenabilite faible","Le capital naturel peut etre remplace par du capital produit","eco"],
+  ["Soutenabilite forte","Le capital naturel est irremplacable et doit etre preserve","eco"],
+  ["Taux de chomage","(Chomeurs / Population active) x 100","eco"],
+  ["Taux de variation","((Valeur finale - Valeur initiale) / Valeur initiale) x 100","eco"],
+  ["Taux directeur","Taux d'interet fixe par la BCE","eco"],
+  ["Valeur ajoutee","Chiffre d'affaires - Consommations intermediaires","eco"],
+  // --- DROIT ---
+  ["Capacite juridique","Aptitude d'une personne a conclure un contrat valable","droit"],
+  ["Capital social","Montant total des apports des associes a la creation de la societe","droit"],
+  ["Cause reelle et serieuse","Double condition pour un licenciement valide : faits objectifs + suffisamment graves","droit"],
+  ["CDD","Contrat a Duree Determinee, contrat d'exception pour un motif precis","droit"],
+  ["CDI","Contrat a Duree Indeterminee, contrat de droit commun sans terme fixe","droit"],
+  ["Clause abusive","Clause creant un desequilibre significatif au detriment du consommateur","droit"],
+  ["Clause de mobilite","Clause permettant a l'employeur de muter le salarie dans une zone definie","droit"],
+  ["Clause de non-concurrence","Clause interdisant au salarie d'exercer une activite concurrente apres la rupture","droit"],
+  ["Conseil de prud'hommes","Juridiction competente pour les litiges employeur/salarie","droit"],
+  ["Consentement","Accord libre et eclaire des parties au contrat","droit"],
+  ["Contrat","Accord de volontes destine a creer des obligations (art. 1101 C. civ.)","droit"],
+  ["Contrat de travail","Convention liant un salarie et un employeur (prestation + remuneration + subordination)","droit"],
+  ["Demission","Rupture du contrat de travail a l'initiative du salarie","droit"],
+  ["Dol","Vice du consentement : manoeuvres frauduleuses pour tromper l'autre partie","droit"],
+  ["Dommage corporel","Atteinte au corps humain (blessures, incapacite)","droit"],
+  ["Dommage materiel","Atteinte aux biens (destruction, degradation)","droit"],
+  ["Dommage moral","Atteinte aux sentiments, a la dignite, a l'honneur","droit"],
+  ["Dommages-interets","Somme d'argent versee a la victime pour reparer le prejudice","droit"],
+  ["Droit de greve","Cessation collective du travail pour revendications professionnelles","droit"],
+  ["Droit de retrait","Droit du salarie de quitter son poste si danger grave et imminent","droit"],
+  ["Entrepreneur individuel","Personne exercant seule une activite, sans creation de societe","droit"],
+  ["Erreur","Vice du consentement : se tromper sur une qualite essentielle","droit"],
+  ["Exception d'inexecution","Suspendre sa propre obligation tant que l'autre n'execute pas","droit"],
+  ["Exoneration","Fait d'echapper a sa responsabilite (force majeure, fait du tiers, faute victime)","droit"],
+  ["Faute","Comportement fautif engageant la responsabilite (intentionnel ou par negligence)","droit"],
+  ["Force majeure","Evenement imprevisible, irresistible et exterieur permettant l'exoneration","droit"],
+  ["Inexecution","Situation ou une partie ne respecte pas ses obligations contractuelles","droit"],
+  ["Licenciement economique","Rupture pour motif non lie a la personne (difficultes, reorganisation)","droit"],
+  ["Licenciement personnel","Rupture pour motif lie a la personne du salarie (faute, insuffisance)","droit"],
+  ["Lien de causalite","Lien de cause a effet entre la faute et le dommage","droit"],
+  ["Lien de subordination","Critere distinctif du contrat de travail : autorite de l'employeur","droit"],
+  ["Mise en demeure","Acte formel demandant au debiteur d'executer son obligation","droit"],
+  ["Nullite","Aneantissement retroactif d'un contrat pour defaut de formation","droit"],
+  ["Obligation de moyens","S'engager a faire tout son possible sans garantir le resultat","droit"],
+  ["Obligation de resultat","S'engager a atteindre un resultat precis","droit"],
+  ["Personne morale","Entite juridique distincte des personnes physiques qui la composent","droit"],
+  ["Pouvoir de direction","Pouvoir de l'employeur de donner des ordres et organiser le travail","droit"],
+  ["Pouvoir disciplinaire","Pouvoir de l'employeur de sanctionner les fautes du salarie","droit"],
+  ["Prejudice ecologique","Atteinte aux ecosystemes, repare en priorite en nature","droit"],
+  ["Responsabilite civile","Obligation de reparer un dommage cause a autrui","droit"],
+  ["Responsabilite contractuelle","Obligation de reparer un dommage ne de l'inexecution d'un contrat","droit"],
+  ["Responsabilite du fait d'autrui","Responsabilite pour les dommages causes par les personnes dont on repond","droit"],
+  ["Responsabilite du fait des choses","Responsabilite du gardien pour les dommages causes par une chose","droit"],
+  ["Responsabilite du fait personnel","Obligation de reparer un dommage cause par sa propre faute","droit"],
+  ["Responsabilite limitee","L'associe ne risque que ses apports (SARL, SA, SAS)","droit"],
+  ["Responsabilite penale","Sanction d'un comportement interdit par la loi (amende, prison)","droit"],
+  ["Resolution","Aneantissement du contrat pour inexecution (probleme d'execution)","droit"],
+  ["Rupture conventionnelle","Rupture du CDI d'un commun accord employeur/salarie","droit"],
+  ["SA","Societe Anonyme : min 2 actionnaires, capital min 37 000\u20ac","droit"],
+  ["SARL","Societe a Responsabilite Limitee : 1-100 associes, capital libre","droit"],
+  ["SAS","Societe par Actions Simplifiee : min 1 associe, grande liberte statutaire","droit"],
+  ["Syllogisme juridique","Methode de raisonnement : Regle de droit \u2192 Application aux faits \u2192 Solution","droit"],
+  ["Trouble anormal de voisinage","Nuisances excedant les inconvenients normaux, pas besoin de prouver la faute","droit"],
+  ["Vice du consentement","Defaut alterant le consentement (erreur, dol, violence)","droit"],
+  ["Violence","Vice du consentement : contrainte physique ou morale","droit"]
+];
+
+var currentFilter = 'all';
+var currentSort = { col: 'terme', asc: true };
+var totalCount = DATA.length;
+
+function normalize(str) {
+  return str.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9 ]/g, ' ');
+}
+
+function render() {
+  var query = normalize(document.getElementById('searchInput').value);
+  var tbody = document.getElementById('glossaryBody');
+  var filtered = DATA.filter(function(row) {
+    if (currentFilter !== 'all' && row[2] !== currentFilter) return false;
+    if (query) {
+      var t = normalize(row[0]);
+      var d = normalize(row[1]);
+      return t.indexOf(query) !== -1 || d.indexOf(query) !== -1;
+    }
+    return true;
+  });
+
+  // Sort
+  var ci = currentSort.col === 'terme' ? 0 : currentSort.col === 'def' ? 1 : 2;
+  filtered.sort(function(a, b) {
+    var va = normalize(a[ci]), vb = normalize(b[ci]);
+    if (va < vb) return currentSort.asc ? -1 : 1;
+    if (va > vb) return currentSort.asc ? 1 : -1;
+    return 0;
+  });
+
+  var html = '';
+  if (filtered.length === 0) {
+    html = '<tr class="empty-row"><td colspan="3">Aucun terme ne correspond a la recherche</td></tr>';
+  } else {
+    for (var i = 0; i < filtered.length; i++) {
+      var r = filtered[i];
+      var bc = r[2] === 'eco' ? 'badge-eco' : 'badge-droit';
+      var bl = r[2] === 'eco' ? 'Eco' : 'Droit';
+      html += '<tr><td class="col-terme">' + r[0] + '</td><td class="col-def">' + r[1] + '</td><td class="col-mat"><span class="badge ' + bc + '">' + bl + '</span></td></tr>';
+    }
+  }
+  tbody.innerHTML = html;
+  document.getElementById('countLabel').textContent = filtered.length + ' terme' + (filtered.length > 1 ? 's' : '') + ' affiche' + (filtered.length > 1 ? 's' : '') + ' sur ' + totalCount + ' total';
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  var btns = document.querySelectorAll('.filter-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].className = 'filter-btn';
+    if (btns[i].getAttribute('data-filter') === f) {
+      if (f === 'all') btns[i].classList.add('active-all');
+      else if (f === 'eco') btns[i].classList.add('active-eco');
+      else btns[i].classList.add('active-droit');
+    }
+  }
+  render();
+}
+
+function sortTable(col) {
+  if (currentSort.col === col) {
+    currentSort.asc = !currentSort.asc;
+  } else {
+    currentSort.col = col;
+    currentSort.asc = true;
+  }
+  // Update header style
+  var ths = document.querySelectorAll('.glossary-table thead th');
+  for (var i = 0; i < ths.length; i++) {
+    ths[i].classList.remove('sorted');
+    var arrow = ths[i].querySelector('.sort-arrow');
+    arrow.innerHTML = '\u25B2';
+  }
+  var colMap = { terme: 0, def: 1, mat: 2 };
+  var th = ths[colMap[col]];
+  th.classList.add('sorted');
+  th.querySelector('.sort-arrow').innerHTML = currentSort.asc ? '\u25B2' : '\u25BC';
+  render();
+}
+
+document.getElementById('searchInput').addEventListener('input', render);
+
+// Initial render
+render();
+</script>
+
+</body>
+</html>

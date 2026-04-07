@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Mémo Thème 8 · Le commerce international</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── PRINT-FIRST DESIGN ─── */
+@page { size: A4; margin: 12mm; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; }
+
+/* NAV (screen only) */
+.sli-nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.sli-nav a { text-decoration:none }
+.sli-nav-logo { font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18 }
+.sli-nav-logo span { color:#b5415a }
+.sli-nav-links { display:flex;gap:2px }
+.sli-nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none }
+.sli-nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.sli-nl.on { background:#1e1c18;color:#f5c842 }
+
+/* ─── MEMO LAYOUT ─── */
+.memo { max-width: 900px; margin: 0 auto; padding: 80px 20px 40px; }
+
+/* Header */
+.memo-hd { text-align: center; margin-bottom: 20px; }
+.memo-badge { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #946e00; color: #fff; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+.memo-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 2px; }
+.memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+.memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #946e00; margin-top: 8px; font-style: italic; }
+
+/* ─── ARBRE STRUCTURE (ENCODER) ─── */
+.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.tree-full { grid-column: 1 / -1; }
+
+.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
+.tree-card.c-bleu  { border-left-color: #2a69a8; }
+.tree-card.c-rose  { border-left-color: #b5415a; }
+.tree-card.c-jaune { border-left-color: #946e00; }
+.tree-card.c-vert  { border-left-color: #1a7a3c; }
+.tree-card.c-violet { border-left-color: #7030a0; }
+
+.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
+.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
+.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
+.tree-def strong { color: #1e1c18; }
+.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
+.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(42,105,168,.08); color: #2a69a8; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+
+/* Sub-items inside tree cards */
+.tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
+.tree-chip[data-tip] { cursor: pointer; transition: transform .1s, box-shadow .1s; }
+.tree-chip[data-tip]:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+/* Tooltip popup */
+.tip-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; z-index:9000; background:rgba(30,28,24,.25); }
+.tip-overlay.show { display:flex; align-items:center; justify-content:center; animation: fadeIn .15s ease; }
+.tip-card { background:#fffdf8; border-radius:16px; padding:20px 24px; max-width:380px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,.18); position:relative; }
+.tip-close { position:absolute; top:10px; right:14px; font-size:18px; cursor:pointer; color:#a09880; background:none; border:none; font-weight:700; }
+.tip-close:hover { color:#1e1c18; }
+.tip-term { font-family:'Nunito',sans-serif; font-size:16px; font-weight:900; color:#1e1c18; margin-bottom:6px; }
+.tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
+.tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:rgba(42,105,168,.06); border-radius:8px; border-left:3px solid #2a69a8; }
+.tip-bac { font-size:10px; font-weight:700; color:#b5415a; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+
+/* Schema */
+.schema-section { margin-bottom: 16px; }
+.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
+.schema-box svg { display: block; margin: 0 auto; }
+
+.chip-bleu   { background: #e8f3ff; color: #2a69a8; }
+.chip-rose   { background: #fdeef2; color: #b5415a; }
+.chip-jaune  { background: #fef8e2; color: #946e00; }
+.chip-vert   { background: #e6f5ec; color: #1a7a3c; }
+.chip-violet { background: #f3eafc; color: #7030a0; }
+.chip-gris   { background: rgba(30,28,24,.07); color: #5a5448; }
+
+/* ─── SECTION BOTTOM: RECUPERER ─── */
+.recup { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.recup-full { grid-column: 1 / -1; }
+
+/* Confusion box */
+.confuse-box { background: #fdeef2; border-radius: 12px; padding: 14px 16px; }
+.confuse-box .tree-label { color: #b5415a; }
+.confuse-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 11px; line-height: 1.5; }
+.confuse-row:last-child { margin-bottom: 0; }
+.confuse-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.confuse-text strong { font-weight: 800; }
+
+/* Mnemo box */
+.mnemo-box { background: #e8f3ff; border-radius: 12px; padding: 14px 16px; }
+.mnemo-box .tree-label { color: #2a69a8; }
+.mnemo-item { font-size: 11px; line-height: 1.6; margin-bottom: 4px; }
+.mnemo-item:last-child { margin-bottom: 0; }
+
+/* Bac frequency bar */
+.freq-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; }
+.freq-row:last-child { margin-bottom: 0; }
+.freq-bar-track { flex: 1; height: 6px; background: #e8e4dc; border-radius: 3px; overflow: hidden; }
+.freq-bar-fill { height: 100%; border-radius: 3px; }
+.freq-bar-fill.f5 { width: 100%; background: #b5415a; }
+.freq-bar-fill.f4 { width: 80%; background: #d46a1a; }
+.freq-bar-fill.f3 { width: 60%; background: #946e00; }
+.freq-bar-fill.f2 { width: 40%; background: #2a69a8; }
+.freq-bar-fill.f1 { width: 20%; background: #a09880; }
+.freq-notion { font-weight: 700; min-width: 160px; }
+.freq-stars { color: #f5c842; font-size: 10px; min-width: 50px; text-align: right; letter-spacing: 1px; }
+
+/* Link chain */
+.chain { background: #fef8e2; border-radius: 12px; padding: 14px 16px; }
+.chain .tree-label { color: #946e00; }
+.chain-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
+.chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
+
+/* ─── PRINT ─── */
+@media print {
+  .sli-nav { display: none !important; }
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .memo { padding: 0; max-width: 100%; }
+  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain { break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .tree, .recup { grid-template-columns: 1fr; }
+  .tree-full, .recup-full { grid-column: 1; }
+  .memo { padding: 74px 12px 30px; }
+}
+</style>
+</head>
+<body data-subject="eco">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Économie</span>
+  <a href="memos-eco.html" class="active">Mémos</a>
+  <a href="flashcards-eco.html">Flashcards</a>
+  <a href="questions-bac-eco.html">Questions Bac</a>
+  <a href="methode-jour-j-eco.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<div class="memo">
+
+<!-- HEADER -->
+<div class="memo-hd">
+  <div class="memo-badge">Mémo · Économie · Thème 8</div>
+  <div class="memo-title">Comment organiser le commerce international ?</div>
+  <div class="memo-sub">Terminale STMG · 1 page · Encoder · Comprendre · Récupérer</div>
+  <div class="memo-question">"Pourquoi les pays échangent-ils, et comment organiser ces échanges ?"</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="schema-section">
+  <div class="schema-box">
+    <svg viewBox="0 0 800 340" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+
+      <!-- Niveau 1 : La mondialisation -->
+      <rect x="260" y="8" width="280" height="44" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
+      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">CONSTAT</text>
+      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">La mondialisation — les économies s'ouvrent</text>
+
+      <!-- Flèche vers branches -->
+      <line x1="400" y1="52" x2="400" y2="72" stroke="#a09880" stroke-width="2" marker-end="url(#arrow8)"/>
+      <line x1="200" y1="72" x2="600" y2="72" stroke="#a09880" stroke-width="2"/>
+      <line x1="200" y1="72" x2="200" y2="90" stroke="#a09880" stroke-width="2"/>
+      <line x1="600" y1="72" x2="600" y2="90" stroke="#a09880" stroke-width="2"/>
+
+      <!-- Niveau 2 gauche : Libre-échange -->
+      <rect x="80" y="90" width="240" height="44" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+      <text x="200" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c" letter-spacing="1">POUR L'OUVERTURE</text>
+      <text x="200" y="122" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Libre-échange</text>
+
+      <!-- Sous-branches libre-échange -->
+      <line x1="200" y1="134" x2="200" y2="150" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="100" y1="150" x2="300" y2="150" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="100" y1="150" x2="100" y2="162" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="200" y1="150" x2="200" y2="162" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="300" y1="150" x2="300" y2="162" stroke="#a09880" stroke-width="1.5"/>
+      <rect x="40" y="162" width="120" height="30" rx="8" fill="#e6f5ec"/>
+      <text x="100" y="181" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">Baisse des prix</text>
+      <rect x="140" y="162" width="120" height="30" rx="8" fill="#e6f5ec"/>
+      <text x="200" y="181" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">Spécialisation</text>
+      <rect x="240" y="162" width="120" height="30" rx="8" fill="#e6f5ec"/>
+      <text x="300" y="181" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">Éco. d'échelle</text>
+
+      <!-- Niveau 2 droite : Protectionnisme -->
+      <rect x="480" y="90" width="240" height="44" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+      <text x="600" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">CONTRE L'OUVERTURE</text>
+      <text x="600" y="122" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Protectionnisme</text>
+
+      <!-- Sous-branches protectionnisme -->
+      <line x1="600" y1="134" x2="600" y2="150" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="510" y1="150" x2="690" y2="150" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="510" y1="150" x2="510" y2="162" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="690" y1="150" x2="690" y2="162" stroke="#a09880" stroke-width="1.5"/>
+      <rect x="440" y="162" width="140" height="38" rx="8" fill="#fdeef2"/>
+      <text x="510" y="178" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">Barrières tarifaires</text>
+      <text x="510" y="192" text-anchor="middle" font-size="7" fill="#5a5448">(droits de douane)</text>
+      <rect x="620" y="162" width="140" height="38" rx="8" fill="#fdeef2"/>
+      <text x="690" y="178" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">Barrières non tarif.</text>
+      <text x="690" y="192" text-anchor="middle" font-size="7" fill="#5a5448">(quotas, normes)</text>
+
+      <!-- Flèches vers centre -->
+      <line x1="200" y1="192" x2="200" y2="220" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="600" y1="200" x2="600" y2="220" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="200" y1="220" x2="600" y2="220" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="400" y1="220" x2="400" y2="235" stroke="#a09880" stroke-width="2" marker-end="url(#arrow8)"/>
+
+      <!-- Niveau 3 centre : Régulation -->
+      <rect x="260" y="235" width="280" height="44" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+      <text x="400" y="253" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8" letter-spacing="1">RÉGULATION</text>
+      <text x="400" y="267" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">OMC + Accords régionaux (UE, etc.)</text>
+
+      <!-- Barre indicateurs -->
+      <rect x="40" y="296" width="720" height="38" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="400" y="312" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">INDICATEURS</text>
+      <text x="400" y="326" text-anchor="middle" font-size="10" font-weight="700" fill="#5a4e00">Balance commerciale = Export - Import | IDE = investissements d'un pays dans un autre</text>
+
+      <!-- Arrow marker -->
+      <defs><marker id="arrow8" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
+
+      <!-- Ancre visuelle T8 Éco -->
+      <g transform="translate(28, 28)">
+        <circle cx="0" cy="0" r="20" fill="#2a69a8"/>
+        <text x="0" y="6" text-anchor="middle"
+          font-family="Inter, sans-serif"
+          font-size="11" font-weight="900"
+          fill="#ffffff">CI</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 1 : ENCODER — L'arbre du thème -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="tree">
+
+  <div class="tree-card c-jaune tree-full">
+    <div class="tree-label">Le point de départ <span class="freq">★★★★☆</span></div>
+    <div class="tree-h">La mondialisation</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="mondialisation">Mondialisation</span>
+      <span class="tree-chip chip-jaune" data-tip="internationalisation">Internationalisation</span>
+      <span class="tree-chip chip-jaune" data-tip="fmn">FMN</span>
+      <span class="tree-chip chip-jaune" data-tip="dit">DIT</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Processus d'ouverture des économies sur un marché planétaire. Augmentation des échanges de biens, services, capitaux.</div>
+  </div>
+
+  <!-- Branche 2 : Libre-échange -->
+  <div class="tree-card c-vert">
+    <div class="tree-label">Vision 1 — pour l'ouverture <span class="freq">★★★★★</span></div>
+    <div class="tree-h">Le libre-échange</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="libre_echange">Libre-échange</span>
+      <span class="tree-chip chip-vert" data-tip="avantage_comparatif">Avantage comparatif</span>
+      <span class="tree-chip chip-vert" data-tip="economies_echelle">Économies d'échelle</span>
+      <span class="tree-chip chip-vert" data-tip="specialisation">Spécialisation</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Suppression des barrières = plus d'échanges. Arguments : prix plus bas, plus de choix, innovation.</div>
+  </div>
+
+  <!-- Branche 3 : Protectionnisme -->
+  <div class="tree-card c-rose">
+    <div class="tree-label">Vision 2 — contre l'ouverture <span class="freq">★★★★☆</span></div>
+    <div class="tree-h">Le protectionnisme</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="protectionnisme">Protectionnisme</span>
+      <span class="tree-chip chip-rose" data-tip="droits_douane">Droits de douane</span>
+      <span class="tree-chip chip-rose" data-tip="quotas">Quotas</span>
+      <span class="tree-chip chip-rose" data-tip="normes">Normes</span>
+      <span class="tree-chip chip-rose" data-tip="subventions">Subventions</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Limiter les importations pour protéger la production nationale. Deux types de barrières : tarifaires et non tarifaires.</div>
+  </div>
+
+  <!-- Branche 4 : Régulation -->
+  <div class="tree-card c-bleu">
+    <div class="tree-label">Régulation internationale <span class="freq">★★☆☆☆</span></div>
+    <div class="tree-h">La régulation internationale</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="omc">OMC</span>
+      <span class="tree-chip chip-bleu" data-tip="accords_regionaux">Accords régionaux</span>
+      <span class="tree-chip chip-bleu" data-tip="ue">UE</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">L'OMC régule le commerce mondial. Les accords régionaux (UE) créent des zones de libre-échange.</div>
+  </div>
+
+  <!-- Branche 5 : Balance et IDE -->
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Mesurer les échanges <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">Balance commerciale et IDE</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="balance">Balance commerciale</span>
+      <span class="tree-chip chip-jaune" data-tip="ide">IDE</span>
+      <span class="tree-chip chip-jaune" data-tip="exportations">Exportations</span>
+      <span class="tree-chip chip-jaune" data-tip="importations">Importations</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Balance = export - import. Excédentaire (Allemagne) ou déficitaire (France). Les IDE traduisent la mondialisation de la production.</div>
+  </div>
+
+  <!-- Branche 6 : Rappels Première -->
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Rappels 1ère · Le marché <span class="freq">★★☆☆☆</span></div>
+    <div class="tree-h">Offre, demande et prix (prérequis)</div>
+    <div class="tree-def">Ces notions de Première sont mobilisées dans le commerce international : le libre-échange agit sur l'offre, la demande et les prix.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-gris" data-tip="offre_demande">Offre et demande</span>
+      <span class="tree-chip chip-gris" data-tip="prix_equilibre">Prix d'équilibre</span>
+      <span class="tree-chip chip-gris" data-tip="elasticite">Élasticité-prix</span>
+      <span class="tree-chip chip-gris" data-tip="taux_variation_t8">Taux de variation</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 2 : CHAÎNE LOGIQUE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <div class="chain recup-full">
+    <div class="tree-label">La chaîne logique du thème 8</div>
+    <div class="chain-flow">
+      <span class="chain-node">Les économies s'ouvrent (mondialisation)</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Deux visions : libre-échange vs protectionnisme</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">L'OMC tente de réguler</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Les effets se mesurent (balance, IDE)</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Débat : croissance pour tous ou inégalités ?</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 3 : RÉCUPÉRER -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <!-- Confusions à éviter -->
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques au Bac</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Libre-échange</strong> = DOCTRINE (choix politique) ≠ <strong>Mondialisation</strong> = PROCESSUS (fait observable)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Barrières tarifaires</strong> = TAXES (droits de douane) ≠ <strong>Non tarifaires</strong> = RÈGLES (quotas, normes)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>IDE entrants</strong> = une entreprise étrangère investit CHEZ NOUS ≠ <strong>IDE sortants</strong> = nos entreprises investissent À L'ÉTRANGER</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Balance excédentaire</strong> = on EXPORTE plus ≠ <strong>Balance déficitaire</strong> = on IMPORTE plus</span>
+    </div>
+  </div>
+
+  <!-- Moyens mnémotechniques -->
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>LE = Libre-Échange = Laisser Entrer</strong> : on laisse les produits entrer librement</div>
+    <div class="mnemo-item"><strong>PRO-tectionnisme = PRO-tège</strong> : on protège la production nationale</div>
+    <div class="mnemo-item"><strong>Tarifaire = TARIF = TAXE</strong> : c'est une taxe sur les importations</div>
+    <div class="mnemo-item"><strong>Balance : EX > IM = excédent</strong> : si on exporte plus qu'on importe = excédent (positif)</div>
+    <div class="mnemo-item"><strong>IDE = Investir Dans l'Étranger</strong> : une entreprise investit dans un autre pays</div>
+    <div class="mnemo-item"><strong>Ricardo = Relatif</strong> : l'avantage comparatif est RELATIF, pas absolu</div>
+  </div>
+
+</div>
+
+<!-- Fréquences BAC -->
+<div class="recup">
+  <div class="freq-box recup-full">
+    <div class="tree-label" style="margin-bottom:8px">Fréquence au Bac (15 sujets analysés)</div>
+
+    <div class="freq-row">
+      <span class="freq-notion">Libre-échange et croissance</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">★★★★★</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Commerce international</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">★★★★☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Protectionnisme</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">★★★★☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">IDE</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Balance commerciale</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">OMC</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f2"></div></div>
+      <span class="freq-stars">★★☆☆☆</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
+  Révizo · Mémo Thème 8 · Économie STMG · Avril 2026 · Sources : 15 annales post-réforme, BO 2019, consignes de correction
+</div>
+
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tip-overlay" id="tipOverlay" onclick="closeTip()">
+  <div class="tip-card" onclick="event.stopPropagation()">
+    <button class="tip-close" onclick="closeTip()">&times;</button>
+    <div class="tip-term" id="tipTerm"></div>
+    <div class="tip-def" id="tipDef"></div>
+    <div class="tip-example" id="tipEx"></div>
+    <div class="tip-bac" id="tipBac"></div>
+  </div>
+</div>
+
+<script>
+const TIPS = {
+  mondialisation: {
+    term: "Mondialisation",
+    def: "Processus d'ouverture de toutes les économies nationales sur un marché devenu planétaire. Se traduit par une augmentation des échanges de biens, services, capitaux et informations entre pays.",
+    ex: "Un iPhone : conçu aux États-Unis, composants coréens et japonais, assemblé en Chine, vendu dans le monde entier. C'est la mondialisation en un objet.",
+    bac: "★★★★☆ — Attention : mondialisation ≠ libre-échange (processus ≠ doctrine)"
+  },
+  internationalisation: {
+    term: "Internationalisation des échanges",
+    def: "Augmentation du volume des échanges commerciaux entre pays. Les exportations et importations mondiales ont été multipliées par 30 depuis 1950. C'est une conséquence de la mondialisation.",
+    ex: "Le commerce mondial représente environ 60% du PIB mondial. En 1960, c'était moins de 25%.",
+    bac: "★★★☆☆"
+  },
+  fmn: {
+    term: "FMN (Firmes MultiNationales)",
+    def: "Entreprises qui exercent leurs activités dans plusieurs pays, avec des filiales à l'étranger. Elles sont les acteurs principaux de la mondialisation : elles délocalisent, investissent (IDE), et pratiquent le commerce intra-firme.",
+    ex: "Apple, Toyota, LVMH sont des FMN. Quand Toyota ouvre une usine en France, c'est un IDE entrant pour la France et une stratégie de la FMN.",
+    bac: "★★★☆☆"
+  },
+  dit: {
+    term: "DIT (Division Internationale du Travail)",
+    def: "Répartition de la production entre les pays selon leurs avantages : chaque pays se spécialise dans ce qu'il produit le mieux (ou le moins mal). C'est la base théorique du libre-échange.",
+    ex: "La Chine se spécialise dans l'assemblage électronique (main-d'œuvre abondante), l'Allemagne dans les machines-outils (haute technologie), le Brésil dans l'agriculture (terres fertiles).",
+    bac: "★★☆☆☆"
+  },
+  libre_echange: {
+    term: "Libre-échange",
+    def: "Politique commerciale favorable à la libre circulation des biens et services entre pays, par la suppression des barrières aux échanges. Arguments : baisse des prix pour les consommateurs, spécialisation, économies d'échelle, stimulation de l'innovation.",
+    ex: "Le marché unique européen : les 27 pays de l'UE échangent sans droits de douane entre eux. Un produit fabriqué en Espagne arrive en France sans taxe.",
+    bac: "★★★★★ — 'Le libre-échange favorise-t-il la croissance ?' (2025 Métropole)"
+  },
+  avantage_comparatif: {
+    term: "Avantage comparatif (Ricardo)",
+    def: "Un pays a intérêt à se spécialiser dans la production où il est RELATIVEMENT le plus efficace (ou le moins inefficace), même s'il est moins performant que d'autres pays dans tous les domaines. C'est la justification théorique du libre-échange.",
+    ex: "Même si la France est meilleure que le Portugal en tout, si elle est BEAUCOUP meilleure en vin mais seulement UN PEU meilleure en textile, elle a intérêt à se spécialiser dans le vin et importer le textile.",
+    bac: "★★☆☆☆ — Notion théorique, rarement un calcul au Bac"
+  },
+  economies_echelle: {
+    term: "Économies d'échelle",
+    def: "Baisse du coût unitaire de production quand les quantités produites augmentent. Un marché plus large (grâce au libre-échange) permet de produire plus et donc moins cher par unité.",
+    ex: "Airbus vend des avions dans le monde entier. Produire 500 avions coûte moins cher par avion que d'en produire 50, car les coûts fixes (R&D, usines) sont répartis sur plus d'unités.",
+    bac: "★★★☆☆"
+  },
+  specialisation: {
+    term: "Spécialisation",
+    def: "Stratégie où un pays concentre sa production dans les domaines où il est le plus compétitif. Le libre-échange pousse à la spécialisation car chaque pays peut vendre sur un marché mondial.",
+    ex: "La France est spécialisée dans le luxe (LVMH), l'aéronautique (Airbus), et l'agroalimentaire (vins, fromages). Elle importe ce qu'elle produit moins bien.",
+    bac: "★★★☆☆"
+  },
+  protectionnisme: {
+    term: "Protectionnisme",
+    def: "Politique visant à limiter les importations pour protéger la production nationale de la concurrence étrangère. Moyens : droits de douane (barrières tarifaires) et quotas/normes/subventions (barrières non tarifaires).",
+    ex: "Les États-Unis imposent des droits de douane de 25% sur l'acier chinois pour protéger leur sidérurgie nationale. Le prix de l'acier chinois augmente, rendant l'acier américain plus compétitif.",
+    bac: "★★★★☆ — Toujours en opposition avec le libre-échange dans les argumentations"
+  },
+  droits_douane: {
+    term: "Droits de douane (barrière tarifaire)",
+    def: "Taxes prélevées par un État sur les produits importés. Objectif : rendre les produits étrangers plus chers pour favoriser les produits nationaux. C'est la forme la plus visible du protectionnisme.",
+    ex: "Si un jean chinois coûte 20 EUR et que la France impose 30% de droits de douane, il coûtera 26 EUR en magasin. Un jean français à 25 EUR devient alors compétitif.",
+    bac: "★★★★☆ — Tombé en 2025 Métropole (ArchiDij974)"
+  },
+  quotas: {
+    term: "Quotas (barrière non tarifaire)",
+    def: "Limitation de la quantité de produits qu'un pays peut importer. Contrairement aux droits de douane, ce n'est pas une taxe mais un plafond en volume.",
+    ex: "L'UE limite les importations de bananes en provenance d'Amérique latine à un certain tonnage par an, pour protéger les producteurs des DOM-TOM (Guadeloupe, Martinique).",
+    bac: "★★★☆☆"
+  },
+  normes: {
+    term: "Normes (barrière non tarifaire)",
+    def: "Réglementations techniques, sanitaires ou environnementales qui limitent les importations de fait, même sans taxe ni quota. Un produit qui ne respecte pas les normes locales ne peut pas être vendu.",
+    ex: "L'UE interdit le bœuf aux hormones américain pour des raisons sanitaires. Les États-Unis considèrent que c'est du protectionnisme déguisé.",
+    bac: "★★★☆☆"
+  },
+  subventions: {
+    term: "Subventions (barrière non tarifaire)",
+    def: "Aides financières de l'État aux entreprises nationales pour les rendre plus compétitives face à la concurrence étrangère. Baisse artificiellement les coûts de production.",
+    ex: "La PAC (Politique Agricole Commune) subventionne les agriculteurs européens, rendant leurs produits moins chers que ceux des pays en développement.",
+    bac: "★★☆☆☆"
+  },
+  omc: {
+    term: "OMC (Organisation Mondiale du Commerce)",
+    def: "Organisation internationale qui régule le commerce mondial. 164 pays membres. Principes : non-discrimination, réciprocité, transparence. Elle règle les différends commerciaux entre États. Limites : négociations très lentes, montée du bilatéralisme.",
+    ex: "Quand les USA imposent des droits de douane sur l'acier européen, l'UE peut porter plainte à l'OMC. L'OMC juge si c'est conforme aux règles du commerce international.",
+    bac: "★★☆☆☆"
+  },
+  accords_regionaux: {
+    term: "Accords régionaux",
+    def: "Traités entre un groupe de pays pour faciliter le commerce entre eux (zone de libre-échange, union douanière, marché commun). Exemples : UE, USMCA (ex-ALENA), Mercosur.",
+    ex: "L'Union européenne est l'accord régional le plus poussé : marché unique sans frontières intérieures, monnaie commune, libre circulation des personnes.",
+    bac: "★★☆☆☆"
+  },
+  ue: {
+    term: "UE (Union européenne)",
+    def: "Union de 27 pays européens formant un marché unique : libre circulation des biens, services, capitaux et personnes. 20 pays partagent aussi la monnaie (euro). C'est l'exemple le plus abouti d'intégration économique.",
+    ex: "Un produit fabriqué en Allemagne arrive en France sans droits de douane ni contrôle aux frontières. Un Français peut travailler en Espagne sans visa.",
+    bac: "★★★☆☆"
+  },
+  balance: {
+    term: "Balance commerciale",
+    def: "Différence entre les exportations et les importations d'un pays. Excédentaire si exports > imports (le pays vend plus qu'il n'achète). Déficitaire si imports > exports.",
+    ex: "L'Allemagne a une balance excédentaire grâce à ses exportations industrielles (voitures, machines). La France a souvent une balance déficitaire car elle importe beaucoup d'énergie et de biens manufacturés.",
+    bac: "★★★☆☆ — Tombé en 2023 Métropole"
+  },
+  ide: {
+    term: "IDE (Investissements Directs à l'Étranger)",
+    def: "Investissements réalisés par une entreprise d'un pays dans un autre pays : création d'usine (greenfield), rachat d'entreprise, prise de participation. Traduisent la mondialisation de la production.",
+    ex: "Toyota ouvre une usine à Valenciennes = IDE entrant pour la France. Renault rachète une usine en Roumanie = IDE sortant pour la France.",
+    bac: "★★★☆☆ — Tombé dans 5 sujets sur 15"
+  },
+  exportations: {
+    term: "Exportations",
+    def: "Biens et services produits dans un pays et vendus à l'étranger. Elles rapportent des devises et contribuent positivement au PIB.",
+    ex: "Airbus vend des avions à des compagnies du monde entier. Les vins de Bordeaux exportés au Japon. Le luxe français (LVMH) exporté partout.",
+    bac: "★★★☆☆"
+  },
+  importations: {
+    term: "Importations",
+    def: "Biens et services achetés à l'étranger par un pays. Elles permettent d'accéder à des produits moins chers ou indisponibles localement, mais pèsent sur la balance commerciale.",
+    ex: "La France importe du pétrole (Moyen-Orient), des smartphones (Chine), des voitures (Allemagne). Ces importations creusent la balance commerciale.",
+    bac: "★★★☆☆"
+  },
+  offre_demande: {
+    term: "Offre et demande (rappel 1ère)",
+    def: "L'offre = quantité que les producteurs sont prêts à vendre (augmente quand le prix monte). La demande = quantité que les consommateurs veulent acheter (diminue quand le prix monte). Le libre-échange augmente l'offre (plus de producteurs) et fait baisser les prix.",
+    ex: "Sans libre-échange, tu n'as que les producteurs français de t-shirts. Avec, tu as aussi les producteurs chinois, bangladais, turcs → plus d'offre → prix plus bas.",
+    bac: "Prérequis 1ère — Mobilisé pour expliquer pourquoi le libre-échange baisse les prix"
+  },
+  prix_equilibre: {
+    term: "Prix d'équilibre (rappel 1ère)",
+    def: "Prix auquel la quantité offerte = la quantité demandée. Tout le monde est servi, pas de surplus ni de pénurie. Le libre-échange modifie l'équilibre en changeant l'offre disponible.",
+    ex: "Si le prix du blé français est 200 EUR/tonne mais que le blé ukrainien coûte 150 EUR, le libre-échange pousse le prix d'équilibre vers le bas. C'est bon pour les consommateurs, moins pour les producteurs français.",
+    bac: "Prérequis 1ère — Utile pour comprendre l'effet du commerce sur les prix"
+  },
+  elasticite: {
+    term: "Élasticité-prix de la demande (rappel 1ère)",
+    def: "Mesure la sensibilité de la demande aux variations de prix. Formule : (Variation demande en %) / (Variation prix en %). Si > 1 : très sensible (la demande chute vite). Si < 1 : peu sensible (la demande bouge peu).",
+    ex: "L'essence a une élasticité faible (~0,3) : même si le prix monte, on continue à en acheter (pas d'alternative). Les voyages en avion ont une élasticité forte (~1,5) : si le prix monte, les gens annulent.",
+    bac: "★★☆☆☆ — Calcul tombé en 2023 (La Réunion). Poser la formule + commenter."
+  },
+  taux_variation_t8: {
+    term: "Taux de variation (rappel 1ère)",
+    def: "Formule : ((Valeur finale − Valeur initiale) / Valeur initiale) × 100. Résultat en %. C'est LE calcul le plus demandé au Bac. Utilisé pour commenter l'évolution des échanges, du PIB, de la balance commerciale.",
+    ex: "Les exportations passent de 500 à 550 milliards : ((550−500)/500) × 100 = +10%. On dit que les exportations ont augmenté de 10%.",
+    bac: "★★★☆☆ — TOUJOURS poser la formule, donner le résultat avec %, puis commenter"
+  }
+};
+
+// Open tip
+document.querySelectorAll('[data-tip]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.getAttribute('data-tip');
+    const tip = TIPS[key];
+    if (!tip) return;
+    document.getElementById('tipTerm').textContent = tip.term;
+    document.getElementById('tipDef').textContent = tip.def;
+    document.getElementById('tipEx').textContent = tip.ex;
+    document.getElementById('tipBac').textContent = tip.bac;
+    document.getElementById('tipOverlay').classList.add('show');
+  });
+});
+
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTip(); });
+</script>
+
+</body>
+</html>

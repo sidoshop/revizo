@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Révizo — Mémos Droit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="revizo-design-system.css">
+  <link rel="stylesheet" href="revizo-nav.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--color-bg); color: var(--color-text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+    .page-header {
+      max-width: 700px;
+      margin: 2.5rem auto 1.5rem;
+      padding: 0 1rem;
+    }
+
+    .matiere-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-primary);
+      background: var(--color-primary-bg);
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 0.6rem;
+    }
+
+    .page-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.8rem;
+      color: var(--color-primary-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .page-sub {
+      font-size: 0.9rem;
+      color: var(--color-muted);
+    }
+
+    .memos-grid {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 1rem 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .memo-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      text-decoration: none;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-left: 4px solid #1a7a3c;
+      box-shadow: 0 2px 8px rgba(30,28,24,0.06);
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    .memo-card:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 16px rgba(30,28,24,0.1);
+    }
+
+    .memo-card .theme-badge {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      color: #1a7a3c;
+      background: #e6f5ec;
+    }
+
+    .memo-card .memo-body { flex: 1; }
+
+    .memo-card .memo-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .memo-card .memo-chips {
+      font-size: 0.78rem;
+      color: var(--color-muted);
+    }
+
+    .memo-card .memo-arrow {
+      color: var(--color-muted);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+
+<body data-subject="droit">
+
+  <!-- BARRE HAUTE -->
+  <nav class="nav-epreuve">
+    <a href="index.html" class="logo">Révi<span>zo</span></a>
+    <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+    <a href="epreuve-sgdn.html"     class="epreuve-link">SGDN</a>
+    <a href="epreuve-philo.html"    class="epreuve-link">Philo</a>
+  </nav>
+
+  <!-- BARRE BASSE -->
+  <nav class="nav-rubriques">
+    <span class="matiere-pill">Droit</span>
+    <a href="memos-droit.html" class="active">Mémos</a>
+    <a href="flashcards-droit.html">Flashcards</a>
+    <a href="questions-bac-droit.html">Questions Bac</a>
+    <a href="methode-jour-j-droit.html">Méthode Jour J</a>
+    <a href="glossaire.html">Glossaire</a>
+  </nav>
+
+  <!-- EN-TÊTE -->
+  <div class="page-header">
+    <span class="matiere-label">Droit</span>
+    <h1 class="page-title">Mémos thématiques</h1>
+    <p class="page-sub">4 thèmes du programme · Syllogisme juridique : Règle → Faits → Solution.</p>
+  </div>
+
+  <!-- LISTE DES MÉMOS -->
+  <div class="memos-grid">
+
+    <a href="memo-droit-theme5.html" class="memo-card">
+      <span class="theme-badge">Thème 5</span>
+      <div class="memo-body">
+        <div class="memo-title">Le contrat</div>
+        <div class="memo-chips">23 notions · 4 confusions · 6 mnémos</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+    <a href="memo-droit-theme6.html" class="memo-card">
+      <span class="theme-badge">Thème 6</span>
+      <div class="memo-body">
+        <div class="memo-title">La responsabilité</div>
+        <div class="memo-chips">22 notions · 4 confusions · 6 mnémos</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+    <a href="memo-droit-theme7.html" class="memo-card">
+      <span class="theme-badge">Thème 7</span>
+      <div class="memo-body">
+        <div class="memo-title">Le travail subordonné</div>
+        <div class="memo-chips">28 notions · 5 confusions · 6 mnémos</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+    <a href="memo-droit-theme8.html" class="memo-card">
+      <span class="theme-badge">Thème 8</span>
+      <div class="memo-body">
+        <div class="memo-title">Entreprendre</div>
+        <div class="memo-chips">20 notions · 3 confusions · 4 mnémos</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+  </div>
+
+</body>
+</html>

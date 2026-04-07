@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Révizo — Prépare ton Bac STMG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="revizo-design-system.css">
+  <link rel="stylesheet" href="revizo-nav.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+    }
+
+    .hero .logo-big {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 2.8rem;
+      letter-spacing: -1px;
+      color: var(--color-text);
+    }
+
+    .hero .logo-big span { color: var(--color-accent); }
+
+    .hero .tagline {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: var(--color-muted);
+      font-weight: 500;
+    }
+
+    /* Grille épreuves */
+    .epreuves {
+      max-width: 700px;
+      margin: 2.5rem auto;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .epreuve-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      border: 2px solid transparent;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      box-shadow: 0 2px 8px rgba(30,28,24,0.06);
+    }
+
+    .epreuve-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30,28,24,0.12);
+    }
+
+    .epreuve-card.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+      border-style: dashed;
+    }
+
+    .epreuve-card .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .epreuve-card .card-body { flex: 1; }
+
+    .epreuve-card .card-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.15rem;
+    }
+
+    .epreuve-card .card-sub {
+      font-size: 0.82rem;
+      color: var(--color-muted);
+      margin-top: 0.2rem;
+    }
+
+    .epreuve-card .card-status {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* Couleurs par épreuve */
+    .card-ecodroit { border-color: #1a3d5c; }
+    .card-ecodroit .card-icon { background: #e8f3ff; }
+    .card-ecodroit .card-title { color: #1a3d5c; }
+    .card-ecodroit .card-status { background: #e8f3ff; color: #1a3d5c; }
+
+    .card-sgdn { border-color: #3d1a5c; }
+    .card-sgdn .card-icon { background: #f3eafc; }
+    .card-sgdn .card-title { color: #3d1a5c; }
+    .card-sgdn .card-status { background: #f3eafc; color: #3d1a5c; }
+
+    .card-philo { border-color: #2e2e2e; }
+    .card-philo .card-icon { background: #eeeeee; }
+    .card-philo .card-title { color: #2e2e2e; }
+    .card-philo .card-status { background: #eeeeee; color: #2e2e2e; }
+
+    /* Stats barre */
+    .stats {
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      padding: 0 1rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+      background: rgba(30,28,24,0.04);
+      border-radius: 10px;
+      padding: 0.6rem 1.2rem;
+    }
+
+    .stat .stat-n {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: var(--color-text);
+    }
+
+    .stat .stat-label {
+      font-size: 0.72rem;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- BARRE HAUTE -->
+  <nav class="nav-epreuve">
+    <a href="index.html" class="logo">Révi<span>zo</span></a>
+    <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+    <a href="epreuve-sgdn.html"     class="epreuve-link">SGDN</a>
+    <a href="epreuve-philo.html"    class="epreuve-link">Philo</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="logo-big">Révi<span>zo</span></div>
+    <p class="tagline">Prépare ton Bac STMG — construit sur les vraies annales</p>
+  </div>
+
+  <!-- CARTES ÉPREUVES -->
+  <div class="epreuves">
+
+    <a href="epreuve-ecodroit.html" class="epreuve-card card-ecodroit">
+      <div class="card-icon">📊</div>
+      <div class="card-body">
+        <div class="card-title">Éco-Droit</div>
+        <div class="card-sub">Économie · Droit — 8 mémos · 137 flashcards · 12 types Bac</div>
+      </div>
+      <div class="card-status">Disponible</div>
+    </a>
+
+    <div class="epreuve-card card-sgdn disabled">
+      <div class="card-icon">⚙️</div>
+      <div class="card-body">
+        <div class="card-title">SGDN</div>
+        <div class="card-sub">Sciences de gestion · Management</div>
+      </div>
+      <div class="card-status">Bientôt</div>
+    </div>
+
+    <div class="epreuve-card card-philo disabled">
+      <div class="card-icon">💭</div>
+      <div class="card-body">
+        <div class="card-title">Philosophie</div>
+        <div class="card-sub">Dissertation · Questions de cours</div>
+      </div>
+      <div class="card-status">Bientôt</div>
+    </div>
+
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-n">22</div>
+      <div class="stat-label">annales analysées</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">171</div>
+      <div class="stat-label">notions cliquables</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">137</div>
+      <div class="stat-label">flashcards</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">12</div>
+      <div class="stat-label">types de questions Bac</div>
+    </div>
+  </div>
+
+</body>
+</html>

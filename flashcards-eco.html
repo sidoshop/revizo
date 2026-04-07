@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Flashcards Économie STMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; min-height: 100vh; padding-top: 64px; }
+
+/* NAV */
+.sli-nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.sli-nav a { text-decoration:none }
+.sli-nav-logo { font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18 }
+.sli-nav-logo span { color:#b5415a }
+.sli-nav-links { display:flex;gap:2px }
+.sli-nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none }
+.sli-nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.sli-nl.on { background:#1e1c18;color:#f5c842 }
+.badge { font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;background:#1e1c18;color:#f5c842;padding:3px 10px;border-radius:20px;letter-spacing:.02em }
+@media print { .sli-nav { display:none!important } body { padding-top:0 } }
+
+/* LAYOUT */
+.page { max-width: 820px; margin: 0 auto; padding: 28px 20px 48px; }
+
+/* HEADER */
+.fc-header { text-align: center; margin-bottom: 22px; }
+.fc-badge { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #1e1c18; color: #f5c842; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+.fc-title { font-family: 'Nunito', sans-serif; font-size: 30px; font-weight: 900; color: #1e1c18; margin-bottom: 4px; }
+.fc-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+
+/* STATS BAR */
+.stats-bar { background: #fffdf8; border-radius: 12px; padding: 12px 20px; display: flex; align-items: center; gap: 14px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.06); flex-wrap: wrap; }
+.stat-item { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: #5a5448; white-space: nowrap; }
+.stat-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.d-new-color { background: #c8c0b4; }
+.d-nope-color { background: #b5415a; }
+.d-ok-color { background: #1a7a3c; }
+.progress-track { flex: 1; min-width: 80px; height: 7px; background: #e0dbd2; border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #1a7a3c, #2cad60); border-radius: 4px; transition: width 0.35s; }
+
+/* FILTER BAR */
+.filter-section-label { font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 700; color: #a09880; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; margin-top: 4px; }
+.filter-bar { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+.filter-btn { font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 800; padding: 5px 13px; border-radius: 20px; border: 2px solid transparent; cursor: pointer; transition: all 0.13s; opacity: 0.6; }
+.filter-btn:hover { opacity: 0.85; }
+.filter-btn.active { opacity: 1; }
+.f-all { background: #e0dbd2; color: #5a5448; }
+.f-all.active { background: #1e1c18; color: #fffdf8; border-color: #1e1c18; }
+.f-rose { background: #f9d0d9; color: #b5415a; }
+.f-rose.active { border-color: #b5415a; }
+.f-bleu { background: #cce2f8; color: #2a69a8; }
+.f-bleu.active { border-color: #2a69a8; }
+.f-violet { background: #ead8f5; color: #7030a0; }
+.f-violet.active { border-color: #7030a0; }
+.f-jaune { background: #fde8a0; color: #946e00; }
+.f-jaune.active { border-color: #946e00; }
+.f-form { background: #2c2920; color: #f5c842; }
+.f-form.active { border-color: #f5c842; }
+.f-vert { background: #c8e6c8; color: #2a6a2a; }
+.f-vert.active { border-color: #2a6a2a; }
+.f-gris { background: #d8d8d8; color: #4a4a4a; }
+.f-gris.active { border-color: #4a4a4a; }
+
+/* TOOLBAR */
+.toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 10px; }
+.toolbar-left { display: flex; gap: 8px; }
+.tool-btn { font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 700; padding: 6px 13px; border-radius: 8px; border: 1.5px solid #ddd8cf; background: #fff; color: #5a5448; cursor: pointer; transition: all 0.13s; }
+.tool-btn:hover { border-color: #a09880; }
+.tool-btn.on { background: #1e1c18; color: #fffdf8; border-color: #1e1c18; }
+.kbd-hint { font-size: 10px; color: #a09880; font-weight: 600; }
+
+/* CARD AREA */
+.card-area { perspective: 1200px; margin-bottom: 14px; }
+.card-wrap { position: relative; height: 290px; cursor: pointer; user-select: none; }
+.card-inner { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.42s cubic-bezier(.4,0,.2,1); }
+.card-inner.flipped { transform: rotateY(180deg); }
+.card-face { position: absolute; inset: 0; border-radius: 18px; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 36px; text-align: center; }
+.card-back { transform: rotateY(180deg); overflow-y: auto; }
+
+/* Card colors */
+.card-rose .card-front  { background: linear-gradient(135deg, #b5415a 0%, #d05070 100%); box-shadow: 0 8px 32px rgba(181,65,90,.35); }
+.card-rose .card-back   { background: #fdeef2; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-bleu .card-front  { background: linear-gradient(135deg, #2a69a8 0%, #3a82c8 100%); box-shadow: 0 8px 32px rgba(42,105,168,.35); }
+.card-bleu .card-back   { background: #e8f3ff; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-violet .card-front { background: linear-gradient(135deg, #7030a0 0%, #9055b8 100%); box-shadow: 0 8px 32px rgba(112,48,160,.35); }
+.card-violet .card-back  { background: #f5eeff; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-jaune .card-front { background: linear-gradient(135deg, #946e00 0%, #b88c00 100%); box-shadow: 0 8px 32px rgba(148,110,0,.35); }
+.card-jaune .card-back  { background: #fef8e2; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-form .card-front  { background: linear-gradient(135deg, #1e1c18 0%, #2c2920 100%); box-shadow: 0 8px 32px rgba(0,0,0,.4); }
+.card-form .card-back   { background: #fde8a0; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-vert .card-front  { background: linear-gradient(135deg, #2a6a2a 0%, #3a8a3a 100%); box-shadow: 0 8px 32px rgba(42,106,42,.35); }
+.card-vert .card-back   { background: #eef6ee; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-gris .card-front  { background: linear-gradient(135deg, #6a6a6a 0%, #8a8a8a 100%); box-shadow: 0 8px 32px rgba(106,106,106,.35); }
+.card-gris .card-back   { background: #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+
+/* Card front content */
+.card-chap-tag { font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 3px 12px; border-radius: 20px; background: rgba(255,255,255,.2); color: rgba(255,255,255,.9); margin-bottom: 16px; }
+.card-form .card-chap-tag { background: rgba(245,200,66,.25); color: #f5c842; }
+.card-notion { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #fff; line-height: 1.25; }
+.card-form .card-notion { color: #f5c842; font-size: 24px; }
+.card-hint { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 16px; font-weight: 600; }
+
+/* Card back content */
+.back-tag { font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 12px; border-radius: 20px; margin-bottom: 6px; display: inline-block; }
+.card-rose   .back-tag { background: rgba(181,65,90,.15);  color: #b5415a; }
+.card-bleu   .back-tag { background: rgba(42,105,168,.15); color: #2a69a8; }
+.card-violet .back-tag { background: rgba(112,48,160,.15); color: #7030a0; }
+.card-jaune  .back-tag { background: rgba(148,110,0,.15);  color: #946e00; }
+.card-form   .back-tag { background: rgba(30,28,24,.1);    color: #7a5800; }
+.card-vert   .back-tag { background: rgba(42,106,42,.15);  color: #2a6a2a; }
+.card-gris   .back-tag { background: rgba(106,106,106,.15); color: #4a4a4a; }
+
+.cat-badge { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+.cat-vocabulaire { background: #e0dbd2; color: #5a5448; }
+.cat-distinction { background: #cce2f8; color: #2a69a8; }
+.cat-formule     { background: #fde8a0; color: #946e00; }
+.cat-piege       { background: #fdeef2; color: #b5415a; }
+.cat-methode     { background: #e6f5ec; color: #1a7a3c; }
+
+.card-def { font-size: 16px; font-weight: 600; line-height: 1.6; text-align: left; }
+.card-def ul { list-style: none; padding: 0; margin: 8px 0 0; text-align: left; }
+.card-def ul li { position: relative; padding-left: 20px; margin-bottom: 6px; }
+.card-def ul li::before { content: '•'; position: absolute; left: 0; font-weight: 900; color: inherit; opacity: 0.5; }
+.card-rose   .card-def { color: #7a2038; }
+.card-bleu   .card-def { color: #1a4f82; }
+.card-violet .card-def { color: #4a1a7a; }
+.card-jaune  .card-def { color: #7a5800; }
+.card-form   .card-def { color: #5a4000; }
+.card-vert   .card-def { color: #1a5a1a; }
+.card-gris   .card-def { color: #3a3a3a; }
+.card-formula { font-family: monospace; font-size: 14px; font-weight: 700; background: rgba(30,28,24,.12); padding: 8px 16px; border-radius: 8px; margin-top: 12px; color: #1e1c18; }
+
+/* Mastery badge on card corner */
+.mastery-badge { position: absolute; top: 13px; right: 13px; z-index: 5; width: 28px; height: 28px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+.mastery-badge.ok   { display: flex; background: #1a7a3c; }
+.mastery-badge.nope { display: flex; background: #b5415a; }
+
+/* CONTROLS */
+.controls { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.nav-btn { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; padding: 10px 18px; border-radius: 10px; border: 2px solid #ddd8cf; background: #fff; color: #5a5448; cursor: pointer; transition: all 0.13s; }
+.nav-btn:hover:not(:disabled) { border-color: #1e1c18; color: #1e1c18; }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+.card-counter { flex: 1; text-align: center; }
+.counter-main { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: #1e1c18; }
+.counter-name { font-size: 11px; color: #7a6a58; font-weight: 600; margin-top: 2px; }
+.flip-btn { font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; padding: 10px 18px; border-radius: 10px; border: none; background: #1e1c18; color: #fffdf8; cursor: pointer; transition: background 0.13s; white-space: nowrap; }
+.flip-btn:hover { background: #2c2920; }
+
+/* MASTERY BUTTONS */
+.mastery-row { display: flex; gap: 10px; margin-bottom: 16px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+.mastery-row.visible { opacity: 1; pointer-events: all; }
+.btn-nope { flex: 1; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; padding: 11px; border-radius: 10px; border: none; background: #fdeef2; color: #b5415a; cursor: pointer; transition: background 0.13s; }
+.btn-nope:hover { background: #f9d0d9; }
+.btn-ok   { flex: 1; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; padding: 11px; border-radius: 10px; border: none; background: #e6f5ec; color: #1a7a3c; cursor: pointer; transition: background 0.13s; }
+.btn-ok:hover { background: #bce8cd; }
+
+/* DOT TRACK */
+.dot-track { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
+.dot { width: 11px; height: 11px; border-radius: 50%; cursor: pointer; transition: transform 0.1s; flex-shrink: 0; outline: none; border: none; padding: 0; }
+.dot:hover { transform: scale(1.4); }
+.dot.cur { outline: 2.5px solid #1e1c18; outline-offset: 2px; }
+.d-new  { background: #c8c0b4; }
+.d-ok   { background: #1a7a3c; }
+.d-nope { background: #b5415a; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 60px 20px; color: #7a6a58; }
+.empty-state .big { font-size: 40px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; font-weight: 600; }
+</style>
+</head>
+<body data-subject="eco">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Économie</span>
+  <a href="memos-eco.html">Mémos</a>
+  <a href="flashcards-eco.html" class="active">Flashcards</a>
+  <a href="questions-bac-eco.html">Questions Bac</a>
+  <a href="methode-jour-j-eco.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<div class="page">
+
+  <div class="fc-header">
+    <div class="fc-badge">Révizo · Économie · Terminale STMG</div>
+    <div class="fc-title">🃏 Flashcards</div>
+    <div class="fc-sub">60 cartes · Filtre par thème et catégorie · Suivi de maîtrise</div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-item"><span class="stat-dot d-new-color"></span><span id="stat-new">– à voir</span></div>
+    <div class="stat-item"><span class="stat-dot d-nope-color"></span><span id="stat-nope">– à revoir</span></div>
+    <div class="stat-item"><span class="stat-dot d-ok-color"></span><span id="stat-ok">– maîtrisées</span></div>
+    <div class="progress-track"><div id="progress-fill" class="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- FILTER: Par thème -->
+  <div class="filter-section-label">Par thème</div>
+  <div class="filter-bar" id="filter-theme">
+    <button class="filter-btn f-all active" data-filter="all" onclick="setThemeFilter('all')">Tout</button>
+    <button class="filter-btn f-bleu"  data-filter="t6"    onclick="setThemeFilter('t6')">🔵 Thème 6</button>
+    <button class="filter-btn f-rose"  data-filter="t7"    onclick="setThemeFilter('t7')">🩷 Thème 7</button>
+    <button class="filter-btn f-jaune" data-filter="t8"    onclick="setThemeFilter('t8')">🟡 Thème 8</button>
+    <button class="filter-btn f-vert"  data-filter="t9"    onclick="setThemeFilter('t9')">🟢 Thème 9</button>
+    <button class="filter-btn f-violet" data-filter="rp"   onclick="setThemeFilter('rp')">🟣 Rappels</button>
+    <button class="filter-btn f-gris"  data-filter="trans" onclick="setThemeFilter('trans')">⚪ Transversal</button>
+  </div>
+
+  <!-- FILTER: Par catégorie -->
+  <div class="filter-section-label">Par catégorie</div>
+  <div class="filter-bar" id="filter-cat">
+    <button class="filter-btn f-all active" data-filter="all"         onclick="setCatFilter('all')">Tout</button>
+    <button class="filter-btn f-gris"       data-filter="vocabulaire" onclick="setCatFilter('vocabulaire')">Vocabulaire</button>
+    <button class="filter-btn f-bleu"       data-filter="distinction" onclick="setCatFilter('distinction')">A ≠ B Distinction</button>
+    <button class="filter-btn f-jaune"      data-filter="formule"     onclick="setCatFilter('formule')">Formule</button>
+    <button class="filter-btn f-rose"       data-filter="piege"       onclick="setCatFilter('piege')">⚠️ Piège</button>
+    <button class="filter-btn f-vert"       data-filter="methode"     onclick="setCatFilter('methode')">📋 Méthode</button>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button id="shuffle-btn" class="tool-btn" onclick="toggleShuffle()">🔀 Mélanger</button>
+      <button class="tool-btn" onclick="resetCurrent()">↺ Réinitialiser</button>
+    </div>
+    <span class="kbd-hint">← → pour naviguer · Espace pour retourner</span>
+  </div>
+
+  <!-- CARD AREA -->
+  <div class="card-area">
+    <div id="card-wrap" class="card-wrap card-bleu" onclick="flipCard()">
+      <div id="card-inner" class="card-inner">
+        <!-- Front -->
+        <div class="card-face card-front">
+          <div id="front-tag" class="card-chap-tag"></div>
+          <div id="front-notion" class="card-notion"></div>
+          <div class="card-hint">Cliquer pour voir la définition</div>
+        </div>
+        <!-- Back -->
+        <div class="card-face card-back">
+          <div id="back-tag" class="back-tag"></div>
+          <div id="back-cat" class="cat-badge"></div>
+          <div id="back-def" class="card-def"></div>
+          <div id="back-formula" class="card-formula" style="display:none;"></div>
+        </div>
+      </div>
+      <div id="mastery-badge" class="mastery-badge"></div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button id="btn-prev" class="nav-btn" onclick="prev()">← Précédente</button>
+    <div class="card-counter">
+      <div id="counter-main" class="counter-main">1 / 60</div>
+      <div id="counter-name" class="counter-name"></div>
+    </div>
+    <button id="flip-btn" class="flip-btn" onclick="flipCard()">👁 Voir la définition</button>
+    <button id="btn-next" class="nav-btn" onclick="next()">Suivante →</button>
+  </div>
+
+  <!-- MASTERY BUTTONS -->
+  <div id="mastery-row" class="mastery-row">
+    <button class="btn-nope" onclick="markMastery('nope')">🔴 À revoir</button>
+    <button class="btn-ok"   onclick="markMastery('ok')">✅ Je sais !</button>
+  </div>
+
+  <!-- DOT TRACK -->
+  <div id="dot-track" class="dot-track"></div>
+
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const CARDS = [
+  // THÈME 6 — bleu (15 cartes)
+  {id:1, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'vocabulaire', notion:'Fonctions économiques de l\'État', def:'3 fonctions : 1) Allocation des ressources (biens publics) 2) Redistribution (réduire les inégalités) 3) Stabilisation (croissance et emploi).'},
+  {id:2, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'vocabulaire', notion:'Défaillances du marché', def:'Situations où le marché ne produit pas un résultat efficace. 4 types : asymétries d\'information, externalités, biens publics, concurrence imparfaite.'},
+  {id:3, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'vocabulaire', notion:'Asymétrie d\'information', def:'Quand un acteur du marché détient plus d\'informations que l\'autre. Ex. : le vendeur de voiture d\'occasion connaît les défauts, pas l\'acheteur.'},
+  {id:4, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'vocabulaire', notion:'Externalité', def:'Effet positif ou négatif d\'une activité économique sur un tiers, sans compensation financière. Ex. négatif : pollution. Ex. positif : abeilles pollinisatrices.'},
+  {id:5, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'distinction', notion:'Bien public vs bien commun', def:'Bien public : non rival ET non excluable (éclairage public).\nBien commun : rival mais non excluable (poissons en mer — le stock diminue).'},
+  {id:6, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'vocabulaire', notion:'Prélèvements obligatoires', def:'Impôts + cotisations sociales prélevés par l\'État. En France : environ 45% du PIB.'},
+  {id:7, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'distinction', notion:'Déficit public vs dette publique', def:'Déficit = flux annuel (dépenses > recettes sur 1 an).\nDette = stock (accumulation de TOUS les déficits passés).\nLe déficit alimente la dette.'},
+  {id:8, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'distinction', notion:'Politique budgétaire vs monétaire', def:'Budgétaire : menée par l\'ÉTAT via le budget (dépenses + impôts).\nMonétaire : menée par la BCE via les taux directeurs.'},
+  {id:9, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'vocabulaire', notion:'Politique budgétaire', def:'Utilisation du budget de l\'État (recettes et dépenses) pour agir sur l\'activité économique.'},
+  {id:10, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'vocabulaire', notion:'Politique monétaire', def:'Action de la BCE sur les taux directeurs. Objectif : stabilité des prix (~2%). Taux bas = crédit facile = relance. Taux élevés = frein inflation.'},
+  {id:11, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'distinction', notion:'Politique de la demande vs de l\'offre', def:'Demande : stimuler la consommation (hausse dépenses, baisse impôts ménages).\nOffre : améliorer la compétitivité des entreprises (baisse charges, innovation).'},
+  {id:12, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'vocabulaire', notion:'Redistribution horizontale vs verticale', def:'Horizontale : protège contre les risques (maladie, chômage). Ex. : assurance maladie.\nVerticale : réduit les écarts de revenus. Ex. : impôt progressif, RSA.'},
+  {id:13, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'vocabulaire', notion:'Taux directeur (BCE)', def:'Taux d\'intérêt auquel la BCE prête aux banques. Taux bas → crédit moins cher → relance. Taux élevé → crédit plus cher → frein.'},
+  {id:14, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'piege', notion:'Déficit ↔ dette : lien automatique ?', def:'VRAI. Chaque année de déficit oblige l\'État à emprunter → la dette augmente. Un excédent permet de rembourser (rare en France).'},
+  {id:15, chap:'t6', chapLabel:'Thème 6 · État', color:'bleu', cat:'piege', notion:'Bien public = service public ?', def:'FAUX. Bien public = notion économique (non rival + non excluable). Service public = mission de l\'État (éducation, santé). Ce n\'est pas la même chose.'},
+
+  // THÈME 7 — rose (10 cartes)
+  {id:16, chap:'t7', chapLabel:'Thème 7 · Emploi', color:'rose', cat:'vocabulaire', notion:'Marché du travail', def:'Lieu où se confrontent l\'offre de travail (des salariés) et la demande de travail (des employeurs). Le prix = le salaire.'},
+  {id:17, chap:'t7', chapLabel:'Thème 7 · Emploi', color:'rose', cat:'piege', notion:'Qui "offre" du travail ?', def:'FAUX de croire que ce sont les entreprises. En économie, les SALARIÉS offrent leur travail, les ENTREPRISES demandent du travail. Piège classique au Bac.'},
+  {id:18, chap:'t7', chapLabel:'Thème 7 · Emploi', color:'rose', cat:'vocabulaire', notion:'Population active', def:'Personnes de 15+ ans ayant un emploi OU en cherchant un. Population active = actifs occupés + chômeurs.'},
+  {id:19, chap:'t7', chapLabel:'Thème 7 · Emploi', color:'rose', cat:'formule', notion:'Taux de chômage', def:'(Nombre de chômeurs / Population active) × 100\nAttention : le dénominateur est la population ACTIVE, pas totale.'},
+  {id:20, chap:'t7', chapLabel:'Thème 7 · Emploi', color:'rose', cat:'vocabulaire', notion:'Chômeur au sens du BIT', def:'Personne 15+ ans qui : 1) N\'a pas d\'emploi 2) Recherche activement 3) Est disponible immédiatement.'},
+  {id:21, chap:'t7', chapLabel:'Thème 7 · Emploi', color:'rose', cat:'distinction', notion:'Chômage conjoncturel vs structurel', def:'Conjoncturel : TEMPORAIRE, lié à un ralentissement (ex. : crise Covid).\nStructurel : DURABLE, lié à des problèmes de fond (qualifications, rigidités).'},
+  {id:22, chap:'t7', chapLabel:'Thème 7 · Emploi', color:'rose', cat:'distinction', notion:'Politique active vs passive', def:'Active : agit sur les CAUSES (formation, aides à l\'embauche).\nPassive : amortit les CONSÉQUENCES (allocations chômage, préretraites).'},
+  {id:23, chap:'t7', chapLabel:'Thème 7 · Emploi', color:'rose', cat:'vocabulaire', notion:'Flexisécurité', def:'Combine flexibilité du marché du travail et sécurité pour les salariés. Modèle danois souvent cité en exemple.'},
+  {id:24, chap:'t7', chapLabel:'Thème 7 · Emploi', color:'rose', cat:'vocabulaire', notion:'SMIC', def:'Salaire Minimum. Aucun employeur ne peut payer en dessous. Exemple de rigidité du marché du travail.'},
+  {id:25, chap:'t7', chapLabel:'Thème 7 · Emploi', color:'rose', cat:'methode', notion:'Expliquer les causes du chômage', def:'1. Distinguer conjoncturel et structurel\n2. Donner le mécanisme pour chaque type\n3. Illustrer (Covid = conjoncturel, robotisation = structurel)\n4. Lier aux politiques possibles'},
+
+  // THÈME 8 — jaune (11 cartes)
+  {id:26, chap:'t8', chapLabel:'Thème 8 · Commerce', color:'jaune', cat:'vocabulaire', notion:'Mondialisation', def:'Processus d\'ouverture des économies nationales sur un marché planétaire. Échanges de biens, services, capitaux et informations.'},
+  {id:27, chap:'t8', chapLabel:'Thème 8 · Commerce', color:'jaune', cat:'vocabulaire', notion:'Libre-échange', def:'Politique favorisant la libre circulation des biens et services. Arguments : baisse des prix, choix, spécialisation, économies d\'échelle.'},
+  {id:28, chap:'t8', chapLabel:'Thème 8 · Commerce', color:'jaune', cat:'vocabulaire', notion:'Protectionnisme', def:'Politique limitant les importations. Moyens : droits de douane (tarifaires) et quotas/normes (non tarifaires).'},
+  {id:29, chap:'t8', chapLabel:'Thème 8 · Commerce', color:'jaune', cat:'distinction', notion:'Barrières tarifaires vs non tarifaires', def:'Tarifaires : droits de douane = TAXES sur les importations.\nNon tarifaires : quotas, normes techniques, subventions. Plus discrètes mais efficaces.'},
+  {id:30, chap:'t8', chapLabel:'Thème 8 · Commerce', color:'jaune', cat:'distinction', notion:'Libre-échange vs mondialisation', def:'Mondialisation = PROCESSUS factuel (les économies s\'ouvrent).\nLibre-échange = DOCTRINE (on choisit de supprimer les barrières).'},
+  {id:31, chap:'t8', chapLabel:'Thème 8 · Commerce', color:'jaune', cat:'vocabulaire', notion:'IDE', def:'Investissements Directs à l\'Étranger. Ex. : Toyota ouvre une usine en France = IDE entrant pour la France.'},
+  {id:32, chap:'t8', chapLabel:'Thème 8 · Commerce', color:'jaune', cat:'vocabulaire', notion:'Balance commerciale', def:'Exportations − Importations. Excédentaire si export > import (Allemagne). Déficitaire si import > export (France souvent).'},
+  {id:33, chap:'t8', chapLabel:'Thème 8 · Commerce', color:'jaune', cat:'vocabulaire', notion:'OMC', def:'Organisation Mondiale du Commerce. Régule les échanges : non-discrimination, réciprocité. Limites : négociations qui n\'aboutissent pas.'},
+  {id:34, chap:'t8', chapLabel:'Thème 8 · Commerce', color:'jaune', cat:'vocabulaire', notion:'Économies d\'échelle', def:'Baisse du coût unitaire quand les quantités augmentent. Le libre-échange permet un marché plus large → produire plus → coûts plus bas.'},
+  {id:35, chap:'t8', chapLabel:'Thème 8 · Commerce', color:'jaune', cat:'vocabulaire', notion:'Avantage comparatif (Ricardo)', def:'Un pays se spécialise là où il est RELATIVEMENT le plus efficace, même s\'il est moins performant que d\'autres partout. Justifie le libre-échange.'},
+  {id:36, chap:'t8', chapLabel:'Thème 8 · Commerce', color:'jaune', cat:'methode', notion:'Argumenter libre-échange/croissance', def:'1. Définir libre-échange ET croissance\n2. POUR : prix, spécialisation, échelle, innovation\n3. CONTRE : concurrence déloyale, délocalisations\n4. Conclusion nuancée'},
+
+  // THÈME 9 — vert (7 cartes)
+  {id:37, chap:'t9', chapLabel:'Thème 9 · Croissance', color:'vert', cat:'vocabulaire', notion:'Croissance économique', def:'Augmentation durable de la production, mesurée par le PIB. Attention : croissance (quantitatif) ≠ développement (qualitatif).'},
+  {id:38, chap:'t9', chapLabel:'Thème 9 · Croissance', color:'vert', cat:'vocabulaire', notion:'PIB', def:'Produit Intérieur Brut = somme des valeurs ajoutées en un an. Indicateur principal de la croissance.'},
+  {id:39, chap:'t9', chapLabel:'Thème 9 · Croissance', color:'vert', cat:'vocabulaire', notion:'Limites du PIB', def:'Ne mesure pas : inégalités, bien-être, économie informelle, dégâts environnementaux. Peut augmenter grâce à des activités négatives.'},
+  {id:40, chap:'t9', chapLabel:'Thème 9 · Croissance', color:'vert', cat:'vocabulaire', notion:'Développement durable', def:'Répondre aux besoins du présent sans compromettre les générations futures (Brundtland, 1987). 3 piliers : économique, social, environnemental.'},
+  {id:41, chap:'t9', chapLabel:'Thème 9 · Croissance', color:'vert', cat:'distinction', notion:'Croissance vs développement', def:'Croissance = augmentation QUANTITATIVE (PIB).\nDéveloppement = amélioration QUALITATIVE (santé, éducation, libertés).\nOn peut avoir l\'un sans l\'autre.'},
+  {id:42, chap:'t9', chapLabel:'Thème 9 · Croissance', color:'vert', cat:'distinction', notion:'Soutenabilité faible vs forte', def:'Faible : le capital naturel PEUT être remplacé par la technologie.\nForte : le capital naturel est IRREMPLAÇABLE. Il faut le préserver.'},
+  {id:43, chap:'t9', chapLabel:'Thème 9 · Croissance', color:'vert', cat:'vocabulaire', notion:'Capital naturel', def:'Ressources naturelles (eau, forêts, minerais, biodiversité) utilisées dans l\'économie. Question : remplaçable par la technologie ou non ?'},
+
+  // FORMULES — form (5 cartes)
+  {id:44, chap:'trans', chapLabel:'Formules', color:'form', cat:'formule', notion:'Taux de variation', def:'((Valeur finale − Valeur initiale) / Valeur initiale) × 100\nRésultat en %. Positif = hausse. Négatif = baisse.', formula:'(Vf − Vi) / Vi × 100'},
+  {id:45, chap:'trans', chapLabel:'Formules', color:'form', cat:'formule', notion:'Valeur ajoutée', def:'Richesse créée par l\'entreprise = CA − Consommations intermédiaires.', formula:'VA = CA − CI'},
+  {id:46, chap:'trans', chapLabel:'Formules', color:'form', cat:'formule', notion:'Élasticité-prix de la demande', def:'Variation demande (%) / Variation prix (%)\nSi > 1 : demande très sensible. Si < 1 : peu sensible. Généralement négatif.', formula:'ΔD% / ΔP%'},
+  {id:47, chap:'trans', chapLabel:'Formules', color:'form', cat:'formule', notion:'PIB nominal → réel', def:'PIB réel = (PIB nominal / Indice des prix) × 100\nÉlimine l\'inflation. C\'est le PIB réel qui mesure la vraie croissance.', formula:'PIB réel = (Nominal / Indice) × 100'},
+  {id:48, chap:'trans', chapLabel:'Formules', color:'form', cat:'formule', notion:'Coefficient multiplicateur', def:'Valeur d\'arrivée / Valeur de départ. Permet de dire "multiplié par X".', formula:'CM = Vf / Vi'},
+
+  // RAPPELS 1ÈRE — violet (4 cartes)
+  {id:49, chap:'rp', chapLabel:'Rappels 1ère', color:'violet', cat:'vocabulaire', notion:'Marché (en économie)', def:'Lieu réel ou virtuel où se confrontent une offre et une demande pour déterminer un prix. Ex. : marché des smartphones.'},
+  {id:50, chap:'rp', chapLabel:'Rappels 1ère', color:'violet', cat:'vocabulaire', notion:'Prix d\'équilibre', def:'Prix auquel quantité offerte = quantité demandée. Trop haut → surplus. Trop bas → pénurie.'},
+  {id:51, chap:'rp', chapLabel:'Rappels 1ère', color:'violet', cat:'vocabulaire', notion:'Création monétaire', def:'Quand une banque accorde un crédit, elle crée de la monnaie. "Les crédits font les dépôts."'},
+  {id:52, chap:'rp', chapLabel:'Rappels 1ère', color:'violet', cat:'distinction', notion:'Autofinancement vs financement externe', def:'Auto = bénéfices propres (interne).\nExterne = crédit bancaire ou marché financier (actions, obligations).'},
+
+  // TRANSVERSAL / PIÈGES / MÉTHODE — gris (8 cartes)
+  {id:53, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'piege', notion:'Taux de chômage / population totale ?', def:'FAUX. Taux de chômage = Chômeurs / Population ACTIVE (pas totale). Exclut enfants, retraités, étudiants non actifs.'},
+  {id:54, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'piege', notion:'Le protectionnisme protège toujours l\'emploi ?', def:'FAUX. Protège certains emplois à court terme, mais augmente les prix, provoque des représailles, réduit la compétitivité à long terme.'},
+  {id:55, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'piege', notion:'La relance n\'a que des effets positifs ?', def:'FAUX. Stimule la demande MAIS creuse déficit/dette, peut provoquer de l\'inflation, peut favoriser les importations plutôt que la production nationale.'},
+  {id:56, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'piege', notion:'PIB ↑ = niveau de vie ↑ pour tous ?', def:'FAUX. Le PIB peut augmenter sans que tout le monde en profite (inégalités). Le PIB/hab peut baisser si la population croît plus vite.'},
+  {id:57, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'methode', notion:'Répondre à "distinguez"', def:'1. Définir notion A\n2. Définir notion B\n3. Dire CE QUI LES DIFFÉRENCIE (critère)\n4. Exemple pour chacune'},
+  {id:58, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'methode', notion:'Répondre à "analysez des données"', def:'1. Lire titre et source\n2. Repérer la tendance (hausse, baisse, stabilité)\n3. Chiffres précis du document\n4. Interpréter économiquement'},
+  {id:59, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'methode', notion:'Structurer une argumentation (4 pts)', def:'1. INTRO : définir termes + problématique\n2. AXE 1 : argument + mécanisme + exemple (AEI)\n3. AXE 2 : limites/nuance + mécanisme + exemple\n4. CONCLUSION nuancée'},
+  {id:60, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'methode', notion:'La méthode AEI', def:'A = Affirmation (poser l\'idée)\nE = Explication (mécanisme économique)\nI = Illustration (exemple concret, si possible d\'actualité)\nC\'est ce que les correcteurs valorisent.'},
+];
+
+// Category display config
+const CAT_CONFIG = {
+  vocabulaire: { label: 'Vocabulaire', cls: 'cat-vocabulaire' },
+  distinction: { label: 'A ≠ B Distinction', cls: 'cat-distinction' },
+  formule:     { label: 'Formule', cls: 'cat-formule' },
+  piege:       { label: '⚠️ Piège', cls: 'cat-piege' },
+  methode:     { label: '📋 Méthode', cls: 'cat-methode' },
+};
+
+// ─── COMPUTE FILTER COUNTS ──────────────────────────────────────────────────
+function countBy(key, val) {
+  return CARDS.filter(c => c[key] === val).length;
+}
+
+// Set counts on filter buttons at init
+(function setCounts() {
+  // Theme counts
+  const themeBtns = document.querySelectorAll('#filter-theme .filter-btn');
+  themeBtns.forEach(btn => {
+    const f = btn.dataset.filter;
+    const count = f === 'all' ? CARDS.length : CARDS.filter(c => c.chap === f).length;
+    btn.textContent = btn.textContent + ' · ' + count;
+  });
+  // Cat counts
+  const catBtns = document.querySelectorAll('#filter-cat .filter-btn');
+  catBtns.forEach(btn => {
+    const f = btn.dataset.filter;
+    const count = f === 'all' ? CARDS.length : CARDS.filter(c => c.cat === f).length;
+    btn.textContent = btn.textContent + ' · ' + count;
+  });
+})();
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let filterTheme = 'all';
+let filterCat = 'all';
+let deck = [...CARDS];
+let idx = 0;
+let flipped = false;
+let shuffled = false;
+let mastery = {};
+
+// Persist mastery in localStorage
+(function loadMastery() {
+  try { const s = localStorage.getItem('revizo_mastery_eco'); if(s) mastery = JSON.parse(s); } catch(e) {}
+})();
+function saveMastery() {
+  try { localStorage.setItem('revizo_mastery_eco', JSON.stringify(mastery)); } catch(e) {}
+}
+
+// ─── DECK MANAGEMENT ─────────────────────────────────────────────────────────
+function getBase() {
+  return CARDS.filter(c =>
+    (filterTheme === 'all' || c.chap === filterTheme) &&
+    (filterCat === 'all' || c.cat === filterCat)
+  );
+}
+
+function setThemeFilter(f) {
+  filterTheme = f;
+  deck = getBase();
+  if(shuffled) shuffle(deck);
+  idx = 0; flipped = false;
+  render();
+}
+
+function setCatFilter(f) {
+  filterCat = f;
+  deck = getBase();
+  if(shuffled) shuffle(deck);
+  idx = 0; flipped = false;
+  render();
+}
+
+function toggleShuffle() {
+  shuffled = !shuffled;
+  deck = getBase();
+  if(shuffled) shuffle(deck);
+  idx = 0; flipped = false;
+  render();
+}
+
+function shuffle(arr) {
+  for(let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function resetCurrent() {
+  deck.forEach(c => delete mastery[c.id]);
+  saveMastery();
+  render();
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+function flipCard() {
+  if(deck.length === 0) return;
+  flipped = !flipped;
+  render();
+}
+
+function next() { if(idx < deck.length - 1) { idx++; flipped = false; render(); } }
+function prev() { if(idx > 0) { idx--; flipped = false; render(); } }
+function goTo(i) { idx = i; flipped = false; render(); }
+
+function markMastery(status) {
+  const card = deck[idx];
+  mastery[card.id] = status;
+  saveMastery();
+  render();
+  if(idx < deck.length - 1) {
+    setTimeout(() => { idx++; flipped = false; render(); }, 280);
+  }
+}
+
+// ─── FORMAT DEF ─────────────────────────────────────────────────────────────
+function formatDef(text) {
+  // Detect numbered lists like "1) ... 2) ... 3) ..." or "1. ... 2. ... 3. ..."
+  const numberedPattern = /(?:^|\s)(\d)[.)]\s/g;
+  const matches = text.match(numberedPattern);
+  if (matches && matches.length >= 2) {
+    // Split on numbered items, build bullet list
+    const parts = text.split(/\d[.)]\s/);
+    const intro = parts[0].trim();
+    const items = parts.slice(1).map(p => p.trim()).filter(Boolean);
+    let html = intro ? '<span>' + intro + '</span>' : '';
+    html += '<ul>' + items.map(it => '<li>' + it + '</li>').join('') + '</ul>';
+    return html;
+  }
+  // Detect newline-separated lists (like distinctions: "A = ...\nB = ...")
+  if (text.includes('\n')) {
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length >= 2 && lines.length <= 5) {
+      return '<ul>' + lines.map(l => '<li>' + l + '</li>').join('') + '</ul>';
+    }
+    return text.replace(/\n/g, '<br>');
+  }
+  return text;
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function render() {
+  // Empty state
+  if(deck.length === 0) {
+    document.getElementById('card-wrap').innerHTML = '<div class="empty-state"><div class="big">🔍</div><p>Aucune carte ne correspond à ces filtres.<br>Essayez une autre combinaison.</p></div>';
+    document.getElementById('counter-main').textContent = '0 / 0';
+    document.getElementById('counter-name').textContent = '';
+    document.getElementById('btn-prev').disabled = true;
+    document.getElementById('btn-next').disabled = true;
+    document.getElementById('mastery-row').className = 'mastery-row';
+    document.getElementById('dot-track').innerHTML = '';
+    updateStats();
+    updateFilterButtons();
+    return;
+  }
+
+  // Ensure card HTML is present
+  const wrap = document.getElementById('card-wrap');
+  if(!document.getElementById('card-inner')) {
+    wrap.innerHTML = '<div id="card-inner" class="card-inner"><div class="card-face card-front"><div id="front-tag" class="card-chap-tag"></div><div id="front-notion" class="card-notion"></div><div class="card-hint">Cliquer pour voir la définition</div></div><div class="card-face card-back"><div id="back-tag" class="back-tag"></div><div id="back-cat" class="cat-badge"></div><div id="back-def" class="card-def"></div><div id="back-formula" class="card-formula" style="display:none;"></div></div></div><div id="mastery-badge" class="mastery-badge"></div>';
+  }
+
+  const card = deck[idx];
+  const m = mastery[card.id];
+
+  // Filter buttons
+  updateFilterButtons();
+
+  // Card class
+  document.getElementById('card-wrap').className = 'card-wrap card-' + card.color;
+  document.getElementById('card-inner').className = 'card-inner' + (flipped ? ' flipped' : '');
+
+  // Front
+  document.getElementById('front-tag').textContent = card.chapLabel;
+  document.getElementById('front-notion').textContent = card.notion;
+
+  // Back
+  document.getElementById('back-tag').textContent = card.chapLabel;
+
+  // Category badge
+  const catEl = document.getElementById('back-cat');
+  const catConf = CAT_CONFIG[card.cat];
+  if(catConf) {
+    catEl.textContent = catConf.label;
+    catEl.className = 'cat-badge ' + catConf.cls;
+    catEl.style.display = 'inline-block';
+  } else {
+    catEl.style.display = 'none';
+  }
+
+  // Definition with line breaks
+  const defEl = document.getElementById('back-def');
+  defEl.innerHTML = formatDef(card.def);
+
+  const formulaEl = document.getElementById('back-formula');
+  if(card.formula) { formulaEl.textContent = card.formula; formulaEl.style.display = 'block'; }
+  else { formulaEl.style.display = 'none'; }
+
+  // Mastery badge
+  const badge = document.getElementById('mastery-badge');
+  badge.className = 'mastery-badge' + (m === 'ok' ? ' ok' : m === 'nope' ? ' nope' : '');
+  badge.textContent = m === 'ok' ? '✓' : m === 'nope' ? '✕' : '';
+
+  // Counter
+  document.getElementById('counter-main').textContent = (idx + 1) + ' / ' + deck.length;
+  document.getElementById('counter-name').textContent = card.notion;
+
+  // Nav buttons
+  document.getElementById('btn-prev').disabled = (idx === 0);
+  document.getElementById('btn-next').disabled = (idx === deck.length - 1);
+
+  // Flip button
+  document.getElementById('flip-btn').textContent = flipped ? '↩ Cacher' : '👁 Voir la définition';
+
+  // Mastery row
+  document.getElementById('mastery-row').className = 'mastery-row' + (flipped ? ' visible' : '');
+
+  // Shuffle button
+  document.getElementById('shuffle-btn').className = 'tool-btn' + (shuffled ? ' on' : '');
+
+  // Stats
+  updateStats();
+
+  // Dots
+  renderDots();
+}
+
+function updateFilterButtons() {
+  document.querySelectorAll('#filter-theme .filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filterTheme);
+  });
+  document.querySelectorAll('#filter-cat .filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filterCat);
+  });
+}
+
+function updateStats() {
+  const okCount   = deck.filter(c => mastery[c.id] === 'ok').length;
+  const nopeCount = deck.filter(c => mastery[c.id] === 'nope').length;
+  const newCount  = deck.length - okCount - nopeCount;
+  document.getElementById('stat-new').textContent   = newCount + ' à voir';
+  document.getElementById('stat-nope').textContent  = nopeCount + ' à revoir';
+  document.getElementById('stat-ok').textContent    = okCount + ' maîtrisées';
+  document.getElementById('progress-fill').style.width = (deck.length ? (okCount / deck.length * 100) : 0) + '%';
+}
+
+function renderDots() {
+  const track = document.getElementById('dot-track');
+  track.innerHTML = '';
+  deck.forEach((card, i) => {
+    const m = mastery[card.id];
+    const dot = document.createElement('button');
+    dot.className = 'dot ' + (i === idx ? 'cur ' : '') + (m === 'ok' ? 'd-ok' : m === 'nope' ? 'd-nope' : 'd-new');
+    dot.title = card.notion;
+    dot.setAttribute('aria-label', card.notion);
+    dot.onclick = () => goTo(i);
+    track.appendChild(dot);
+  });
+}
+
+// ─── KEYBOARD ────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if(e.target.tagName === 'BUTTON' && e.code !== 'Space') return;
+  if(e.code === 'ArrowRight') next();
+  else if(e.code === 'ArrowLeft') prev();
+  else if(e.code === 'Space') { e.preventDefault(); flipCard(); }
+  else if(e.code === 'Digit1' && flipped) markMastery('ok');
+  else if(e.code === 'Digit2' && flipped) markMastery('nope');
+});
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>

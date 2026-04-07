@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Mémo Thème 9 · Croissance et développement durable</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── PRINT-FIRST DESIGN ─── */
+@page { size: A4; margin: 12mm; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; }
+
+/* NAV (screen only) */
+.sli-nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.sli-nav a { text-decoration:none }
+.sli-nav-logo { font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18 }
+.sli-nav-logo span { color:#b5415a }
+.sli-nav-links { display:flex;gap:2px }
+.sli-nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none }
+.sli-nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.sli-nl.on { background:#1e1c18;color:#f5c842 }
+
+/* ─── MEMO LAYOUT ─── */
+.memo { max-width: 900px; margin: 0 auto; padding: 80px 20px 40px; }
+
+/* Header */
+.memo-hd { text-align: center; margin-bottom: 20px; }
+.memo-badge { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #1a7a3c; color: #fff; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+.memo-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 2px; }
+.memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+.memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #1a7a3c; margin-top: 8px; font-style: italic; }
+
+/* Warning banner */
+.warning-banner { background: #fef8e2; border-left: 4px solid #946e00; border-radius: 0 12px 12px 0; padding: 14px 18px; font-size: 0.85rem; color: #7a5800; margin-bottom: 16px; line-height: 1.55; }
+
+/* ─── ARBRE STRUCTURE (ENCODER) ─── */
+.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.tree-full { grid-column: 1 / -1; }
+
+.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
+.tree-card.c-bleu  { border-left-color: #2a69a8; }
+.tree-card.c-rose  { border-left-color: #b5415a; }
+.tree-card.c-jaune { border-left-color: #946e00; }
+.tree-card.c-vert  { border-left-color: #1a7a3c; }
+.tree-card.c-violet { border-left-color: #7030a0; }
+
+.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
+.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
+.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
+.tree-def strong { color: #1e1c18; }
+.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
+.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(42,105,168,.08); color: #2a69a8; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+
+/* Sub-items inside tree cards */
+.tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
+.tree-chip[data-tip] { cursor: pointer; transition: transform .1s, box-shadow .1s; }
+.tree-chip[data-tip]:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+/* Tooltip popup */
+.tip-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; z-index:9000; background:rgba(30,28,24,.25); }
+.tip-overlay.show { display:flex; align-items:center; justify-content:center; animation: fadeIn .15s ease; }
+.tip-card { background:#fffdf8; border-radius:16px; padding:20px 24px; max-width:380px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,.18); position:relative; }
+.tip-close { position:absolute; top:10px; right:14px; font-size:18px; cursor:pointer; color:#a09880; background:none; border:none; font-weight:700; }
+.tip-close:hover { color:#1e1c18; }
+.tip-term { font-family:'Nunito',sans-serif; font-size:16px; font-weight:900; color:#1e1c18; margin-bottom:6px; }
+.tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
+.tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:rgba(42,105,168,.06); border-radius:8px; border-left:3px solid #2a69a8; }
+.tip-bac { font-size:10px; font-weight:700; color:#b5415a; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+
+/* Schema */
+.schema-section { margin-bottom: 16px; }
+.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
+.schema-box svg { display: block; margin: 0 auto; }
+
+.chip-bleu   { background: #e8f3ff; color: #2a69a8; }
+.chip-rose   { background: #fdeef2; color: #b5415a; }
+.chip-jaune  { background: #fef8e2; color: #946e00; }
+.chip-vert   { background: #e6f5ec; color: #1a7a3c; }
+.chip-violet { background: #f3eafc; color: #7030a0; }
+.chip-gris   { background: rgba(30,28,24,.07); color: #5a5448; }
+
+/* ─── SECTION BOTTOM: RECUPERER ─── */
+.recup { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.recup-full { grid-column: 1 / -1; }
+
+/* Confusion box */
+.confuse-box { background: #fdeef2; border-radius: 12px; padding: 14px 16px; }
+.confuse-box .tree-label { color: #b5415a; }
+.confuse-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 11px; line-height: 1.5; }
+.confuse-row:last-child { margin-bottom: 0; }
+.confuse-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.confuse-text strong { font-weight: 800; }
+
+/* Mnemo box */
+.mnemo-box { background: #e8f3ff; border-radius: 12px; padding: 14px 16px; }
+.mnemo-box .tree-label { color: #2a69a8; }
+.mnemo-item { font-size: 11px; line-height: 1.6; margin-bottom: 4px; }
+.mnemo-item:last-child { margin-bottom: 0; }
+
+/* Bac frequency note */
+.freq-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+
+/* Link chain */
+.chain { background: #fef8e2; border-radius: 12px; padding: 14px 16px; }
+.chain .tree-label { color: #946e00; }
+.chain-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
+.chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
+
+/* ─── PRINT ─── */
+@media print {
+  .sli-nav { display: none !important; }
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .memo { padding: 0; max-width: 100%; }
+  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain { break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .tree, .recup { grid-template-columns: 1fr; }
+  .tree-full, .recup-full { grid-column: 1; }
+  .memo { padding: 74px 12px 30px; }
+}
+</style>
+</head>
+<body data-subject="eco">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Économie</span>
+  <a href="memos-eco.html" class="active">Mémos</a>
+  <a href="flashcards-eco.html">Flashcards</a>
+  <a href="questions-bac-eco.html">Questions Bac</a>
+  <a href="methode-jour-j-eco.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<div class="memo">
+
+<!-- HEADER -->
+<div class="memo-hd">
+  <div class="memo-badge">Mémo &middot; Économie &middot; Thème 9</div>
+  <div class="memo-title">Comment concilier croissance économique et développement durable ?</div>
+  <div class="memo-sub">Terminale STMG &middot; Grand Oral (pas à l'écrit de mars) &middot; Encoder &middot; Comprendre &middot; Récupérer</div>
+  <div class="memo-question">&laquo; La croissance est-elle compatible avec la préservation de l'environnement ? &raquo;</div>
+</div>
+
+<!-- WARNING BANNER -->
+<div class="warning-banner">
+  Ce thème n'est PAS à l'épreuve écrite de mars. Il peut être mobilisé pour le Grand Oral. Les notions de croissance et PIB sont néanmoins transversales et apparaissent dans presque tous les sujets écrits.
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="schema-section">
+  <div class="schema-box">
+    <svg viewBox="0 0 800 320" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+
+      <!-- Niveau 1 : Croissance -->
+      <rect x="240" y="8" width="320" height="44" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c" letter-spacing="1">QUANTITATIF</text>
+      <text x="400" y="40" text-anchor="middle" font-size="12" font-weight="900" fill="#1e1c18">CROISSANCE ÉCONOMIQUE (PIB)</text>
+
+      <!-- Fleches vers branches gauche et droite -->
+      <line x1="400" y1="52" x2="400" y2="68" stroke="#a09880" stroke-width="2"/>
+      <line x1="200" y1="68" x2="600" y2="68" stroke="#a09880" stroke-width="2"/>
+      <line x1="200" y1="68" x2="200" y2="85" stroke="#a09880" stroke-width="2"/>
+      <line x1="600" y1="68" x2="600" y2="85" stroke="#a09880" stroke-width="2"/>
+
+      <!-- Branche gauche : Benefices -->
+      <rect x="80" y="85" width="240" height="42" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+      <text x="200" y="101" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c" letter-spacing="1">BÉNÉFICES</text>
+      <text x="200" y="116" text-anchor="middle" font-size="10" font-weight="700" fill="#1e1c18">Emploi, revenus, niveau de vie</text>
+
+      <!-- Branche droite : Limites -->
+      <rect x="480" y="85" width="240" height="42" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+      <text x="600" y="101" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">LIMITES</text>
+      <text x="600" y="116" text-anchor="middle" font-size="10" font-weight="700" fill="#1e1c18">Inégalités, pollution, épuisement</text>
+
+      <!-- Fleche vers centre -->
+      <line x1="200" y1="127" x2="200" y2="150" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="600" y1="127" x2="600" y2="150" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="200" y1="150" x2="600" y2="150" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="400" y1="150" x2="400" y2="168" stroke="#a09880" stroke-width="2" marker-end="url(#arrow9)"/>
+
+      <!-- Niveau 3 centre : Développement durable -->
+      <rect x="210" y="168" width="380" height="52" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+      <text x="400" y="186" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8" letter-spacing="1">DÉVELOPPEMENT DURABLE</text>
+      <text x="400" y="204" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">3 piliers : Économique &middot; Social &middot; Environnemental</text>
+
+      <!-- Fleche vers bas -->
+      <line x1="400" y1="220" x2="400" y2="245" stroke="#a09880" stroke-width="2" marker-end="url(#arrow9)"/>
+
+      <!-- Bottom : Soutenabilite -->
+      <rect x="100" y="245" width="600" height="52" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="400" y="264" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">SOUTENABILITÉ</text>
+      <text x="250" y="284" text-anchor="middle" font-size="10" font-weight="700" fill="#5a4e00">Faible : on peut compenser</text>
+      <text x="400" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#946e00">vs</text>
+      <text x="555" y="284" text-anchor="middle" font-size="10" font-weight="700" fill="#5a4e00">Forte : capital naturel irremplaçable</text>
+
+      <!-- Arrow marker -->
+      <defs><marker id="arrow9" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
+
+      <!-- Ancre visuelle T9 Éco -->
+      <g transform="translate(28, 28)">
+        <circle cx="0" cy="0" r="20" fill="#2a69a8"/>
+        <text x="0" y="6" text-anchor="middle"
+          font-family="Inter, sans-serif"
+          font-size="11" font-weight="900"
+          fill="#ffffff">DD</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 1 : ENCODER — L'arbre du thème -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="tree">
+
+  <div class="tree-card c-vert tree-full">
+    <div class="tree-label">Notion transversale <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+    <div class="tree-h">Croissance et PIB</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="croissance">Croissance économique</span>
+      <span class="tree-chip chip-vert" data-tip="pib">PIB</span>
+      <span class="tree-chip chip-vert" data-tip="limites_pib">Limites du PIB</span>
+      <span class="tree-chip chip-jaune" data-tip="taux_variation_t9">Taux de variation</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Augmentation durable de la production, mesurée par le PIB. Le PIB est dans <strong>TOUS les sujets écrits</strong>, même si le thème 9 n'y est pas.</div>
+  </div>
+
+  <div class="tree-card c-bleu">
+    <div class="tree-label">Le cadre <span class="freq">&#9733;&#9733;&#9734;&#9734;&#9734;</span></div>
+    <div class="tree-h">Développement durable</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="dev_durable">Développement durable</span>
+      <span class="tree-chip chip-bleu" data-tip="trois_piliers">3 piliers</span>
+      <span class="tree-chip chip-bleu" data-tip="brundtland">Brundtland 1987</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Répondre aux besoins du présent sans compromettre les générations futures. 3 piliers : éco, social, environnemental.</div>
+  </div>
+
+  <div class="tree-card c-rose">
+    <div class="tree-label">Les tensions <span class="freq">&#9733;&#9733;&#9734;&#9734;&#9734;</span></div>
+    <div class="tree-h">Les tensions croissance / environnement</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="externalites_neg">Externalités négatives</span>
+      <span class="tree-chip chip-rose" data-tip="capital_naturel">Capital naturel</span>
+      <span class="tree-chip chip-rose" data-tip="transition">Transition écologique</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">La croissance dégrade l'environnement (externalités). L'État intervient : fiscalité écologique, normes, accords internationaux.</div>
+  </div>
+
+  <div class="tree-card c-violet">
+    <div class="tree-label">Le débat <span class="freq">&#9733;&#9734;&#9734;&#9734;&#9734;</span></div>
+    <div class="tree-h">Soutenabilité</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="soutenabilite_faible">Soutenabilité faible</span>
+      <span class="tree-chip chip-violet" data-tip="soutenabilite_forte">Soutenabilité forte</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Faible = le capital naturel <strong>PEUT</strong> être remplacé par la technologie. Forte = le capital naturel est <strong>IRREMPLAÇABLE</strong>.</div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 2 : CHAÎNE LOGIQUE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <div class="chain recup-full">
+    <div class="tree-label">La chaîne logique du thème 9</div>
+    <div class="chain-flow">
+      <span class="chain-node">Croissance (PIB &uarr;)</span>
+      <span class="chain-arrow">&rarr;</span>
+      <span class="chain-node">Mais externalités négatives (pollution, ressources)</span>
+      <span class="chain-arrow">&rarr;</span>
+      <span class="chain-node">Développement durable (3 piliers)</span>
+      <span class="chain-arrow">&rarr;</span>
+      <span class="chain-node">Soutenabilité faible ou forte ?</span>
+      <span class="chain-arrow">&rarr;</span>
+      <span class="chain-node">Outils : fiscalité écologique, normes, accords</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 3 : RÉCUPÉRER -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <!-- Confusions à éviter -->
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;&#65039;</span>
+      <span class="confuse-text"><strong>Croissance</strong> = augmentation QUANTITATIVE (PIB) &#8800; <strong>Développement</strong> = amélioration QUALITATIVE (conditions de vie)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;&#65039;</span>
+      <span class="confuse-text"><strong>PIB</strong> ne mesure PAS le bien-être, les inégalités, ni les dégâts environnementaux</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;&#65039;</span>
+      <span class="confuse-text"><strong>Soutenabilité faible</strong> (optimiste : la techno compensera) &#8800; <strong>Soutenabilité forte</strong> (prudent : certaines ressources sont irremplaçables)</span>
+    </div>
+  </div>
+
+  <!-- Moyens mnémotechniques -->
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>Croissance = Combien / Développement = Comment</strong> : quantitatif vs qualitatif</div>
+    <div class="mnemo-item"><strong>3P du développement durable</strong> : Profit (éco) &middot; Personnes (social) &middot; Planète (environnement)</div>
+    <div class="mnemo-item"><strong>PIB = tout ce qui se VEND</strong> : il ne compte pas le bénévolat, le travail domestique, ni le bonheur</div>
+    <div class="mnemo-item"><strong>Faible = Flexible / Forte = Ferme</strong> : faible = on peut remplacer, forte = on ne peut pas</div>
+  </div>
+
+</div>
+
+<!-- Note fréquence -->
+<div class="recup">
+  <div class="freq-box recup-full">
+    <div class="tree-label" style="margin-bottom:6px">Note sur les épreuves</div>
+    <div style="font-size:12px;line-height:1.6;color:#3a3630">
+      Ce thème <strong>n'est pas à l'écrit</strong>. Mais le PIB et la croissance (notions transversales) tombent dans <span style="color:#f5c842;font-weight:800">&#9733;&#9733;&#9733;&#9733;&#9733;</span> des sujets.
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
+  Révizo &middot; Mémo Thème 9 &middot; Économie STMG &middot; Avril 2026 &middot; Grand Oral uniquement
+</div>
+
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tip-overlay" id="tipOverlay" onclick="closeTip()">
+  <div class="tip-card" onclick="event.stopPropagation()">
+    <button class="tip-close" onclick="closeTip()">&times;</button>
+    <div class="tip-term" id="tipTerm"></div>
+    <div class="tip-def" id="tipDef"></div>
+    <div class="tip-example" id="tipEx"></div>
+    <div class="tip-bac" id="tipBac"></div>
+  </div>
+</div>
+
+<script>
+const TIPS = {
+  croissance: {
+    term: "Croissance \u00e9conomique",
+    def: "Augmentation durable de la production de biens et services dans un pays, mesur\u00e9e par le PIB. C'est l'indicateur principal de la sant\u00e9 \u00e9conomique. Attention : croissance \u2260 d\u00e9veloppement.",
+    ex: "La France a connu une croissance de 0,9% en 2023. \u00c7a veut dire que la production totale a augment\u00e9 de 0,9% par rapport \u00e0 2022.",
+    bac: "\u2605\u2605\u2605\u2605\u2605 \u2014 Notion TRANSVERSALE pr\u00e9sente dans presque tous les sujets \u00e9crits"
+  },
+  pib: {
+    term: "PIB (Produit Int\u00e9rieur Brut)",
+    def: "Valeur totale de la production de biens et services r\u00e9alis\u00e9e en un an par les agents \u00e9conomiques r\u00e9sidents d'un pays. PIB = somme des valeurs ajout\u00e9es. C'est LE chiffre qui r\u00e9sume la production d'un pays.",
+    ex: "Le PIB de la France est d'environ 2 800 milliards d'euros. Si on le divise par le nombre d'habitants, on obtient le PIB par habitant (~42 000 \u20ac).",
+    bac: "\u2605\u2605\u2605\u2605\u2605 \u2014 Dans presque TOUS les sujets \u00e9crits"
+  },
+  limites_pib: {
+    term: "Limites du PIB",
+    def: "Le PIB ne mesure pas : les in\u00e9galit\u00e9s (un pays peut \u00eatre riche en moyenne mais tr\u00e8s in\u00e9gal), le bien-\u00eatre (stress, pollution), l'\u00e9conomie informelle (travail au noir, b\u00e9n\u00e9volat), les d\u00e9g\u00e2ts environnementaux. Il peut m\u00eame augmenter gr\u00e2ce \u00e0 des activit\u00e9s n\u00e9gatives (reconstruction apr\u00e8s une catastrophe).",
+    ex: "Un accident de voiture fait monter le PIB (r\u00e9parations, soins m\u00e9dicaux, assurance), mais personne ne dirait que c'est positif pour la soci\u00e9t\u00e9.",
+    bac: "\u2605\u2605\u2734\u2734\u2734 \u2014 Sujet d'argumentation possible : 'Le PIB permet-il de mesurer la richesse ?' (2022 M\u00e9tropole)"
+  },
+  taux_variation_t9: {
+    term: "Taux de variation (rappel 1\u00e8re)",
+    def: "Formule : ((Valeur finale \u2212 Valeur initiale) / Valeur initiale) \u00d7 100. Utilis\u00e9 pour mesurer la croissance du PIB d'une ann\u00e9e \u00e0 l'autre.",
+    ex: "PIB passe de 2 700 \u00e0 2 800 Mds : ((2800\u22122700)/2700) \u00d7 100 = +3,7% de croissance.",
+    bac: "\u2605\u2605\u2605\u2734\u2734 \u2014 Calcul r\u00e9current \u00e0 l'\u00e9crit"
+  },
+  dev_durable: {
+    term: "D\u00e9veloppement durable",
+    def: "D\u00e9veloppement qui r\u00e9pond aux besoins du pr\u00e9sent sans compromettre la capacit\u00e9 des g\u00e9n\u00e9rations futures \u00e0 r\u00e9pondre aux leurs (rapport Brundtland, 1987). Repose sur 3 piliers indissociables : \u00e9conomique, social, environnemental.",
+    ex: "Une entreprise qui r\u00e9duit ses emballages (environnemental) tout en cr\u00e9ant des emplois locaux (social) et en restant rentable (\u00e9conomique) pratique le d\u00e9veloppement durable.",
+    bac: "\u2605\u2605\u2734\u2734\u2734 \u2014 Grand Oral"
+  },
+  trois_piliers: {
+    term: "Les 3 piliers du d\u00e9veloppement durable",
+    def: "1. Pilier \u00c9CONOMIQUE : une activit\u00e9 rentable et viable \u00e0 long terme. 2. Pilier SOCIAL : respect des droits, r\u00e9duction des in\u00e9galit\u00e9s, conditions de travail. 3. Pilier ENVIRONNEMENTAL : pr\u00e9servation des ressources naturelles et de la biodiversit\u00e9.",
+    ex: "L'agriculture biologique tente de concilier les 3 : rentable pour l'agriculteur, saine pour le consommateur, respectueuse des sols.",
+    bac: "\u2605\u2605\u2734\u2734\u2734"
+  },
+  brundtland: {
+    term: "Rapport Brundtland (1987)",
+    def: "Rapport de la Commission mondiale sur l'environnement et le d\u00e9veloppement (ONU), pr\u00e9sid\u00e9e par Gro Harlem Brundtland. Il a pos\u00e9 LA d\u00e9finition du d\u00e9veloppement durable utilis\u00e9e partout depuis : 'un d\u00e9veloppement qui r\u00e9pond aux besoins du pr\u00e9sent sans compromettre...'",
+    ex: "C'est la r\u00e9f\u00e9rence \u00e0 citer si on te demande de d\u00e9finir le d\u00e9veloppement durable au Bac ou au Grand Oral.",
+    bac: "\u2605\u2734\u2734\u2734\u2734"
+  },
+  externalites_neg: {
+    term: "Externalit\u00e9s n\u00e9gatives environnementales",
+    def: "Dommages caus\u00e9s \u00e0 l'environnement par l'activit\u00e9 \u00e9conomique SANS que le pollueur en paye le co\u00fbt. Le march\u00e9 seul ne corrige pas ce probl\u00e8me \u2014 c'est une d\u00e9faillance (lien avec le th\u00e8me 6).",
+    ex: "Une usine rejette du CO2 qui contribue au r\u00e9chauffement climatique. Elle ne paye pas pour ce dommage (sauf si l'\u00c9tat impose une taxe carbone). Le co\u00fbt est support\u00e9 par la soci\u00e9t\u00e9 enti\u00e8re.",
+    bac: "\u2605\u2605\u2734\u2734\u2734"
+  },
+  capital_naturel: {
+    term: "Capital naturel",
+    def: "Ensemble des ressources naturelles (eau, for\u00eats, minerais, biodiversit\u00e9, air pur) utilis\u00e9es dans l'activit\u00e9 \u00e9conomique. La question centrale du th\u00e8me 9 : peut-on remplacer ce capital par de la technologie (soutenabilit\u00e9 faible) ou est-il irremplacable (soutenabilit\u00e9 forte) ?",
+    ex: "Le p\u00e9trole est du capital naturel. Une fois \u00e9puis\u00e9, on peut le remplacer par de l'\u00e9nergie solaire (soutenabilit\u00e9 faible) \u2014 mais la biodiversit\u00e9 d\u00e9truite, peut-on la recr\u00e9er ? (soutenabilit\u00e9 forte dirait non).",
+    bac: "\u2605\u2734\u2734\u2734\u2734"
+  },
+  transition: {
+    term: "Transition \u00e9cologique",
+    def: "Passage d'un mod\u00e8le \u00e9conomique bas\u00e9 sur les \u00e9nergies fossiles et la surexploitation des ressources vers un mod\u00e8le durable. Outils : fiscalit\u00e9 \u00e9cologique (taxe carbone), normes environnementales, investissement dans les \u00e9nergies renouvelables, \u00e9conomie circulaire.",
+    ex: "La France vise la neutralit\u00e9 carbone en 2050. \u00c7a implique de transformer les transports (\u00e9lectrification), l'industrie (d\u00e9carbonation), et le logement (isolation).",
+    bac: "\u2605\u2734\u2734\u2734\u2734"
+  },
+  soutenabilite_faible: {
+    term: "Soutenabilit\u00e9 faible",
+    def: "Vision optimiste : le capital naturel PEUT \u00eatre remplac\u00e9 par du capital produit (technologie, innovation). Si on d\u00e9truit une for\u00eat, on peut compenser par des technologies de capture de CO2. La croissance peut continuer ind\u00e9finiment si on innove.",
+    ex: "Les partisans de la croissance verte pensent que l'innovation technologique (voitures \u00e9lectriques, \u00e9nergie solaire) permettra de continuer \u00e0 cro\u00eetre sans d\u00e9truire la plan\u00e8te.",
+    bac: "\u2605\u2734\u2734\u2734\u2734"
+  },
+  soutenabilite_forte: {
+    term: "Soutenabilit\u00e9 forte",
+    def: "Vision prudente : le capital naturel est IRREMPLACABLE. Certaines ressources une fois d\u00e9truites ne se recr\u00e9ent pas (biodiversit\u00e9, climat stable, eau potable). Il faut R\u00c9DUIRE la consommation, pas juste innover.",
+    ex: "La disparition d'une esp\u00e8ce animale est irr\u00e9versible \u2014 aucune technologie ne peut la recr\u00e9er. Les partisans de la soutenabilit\u00e9 forte disent qu'il faut poser des LIMITES \u00e0 la croissance.",
+    bac: "\u2605\u2734\u2734\u2734\u2734"
+  }
+};
+
+// Open tip
+document.querySelectorAll('[data-tip]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.getAttribute('data-tip');
+    const tip = TIPS[key];
+    if (!tip) return;
+    document.getElementById('tipTerm').textContent = tip.term;
+    document.getElementById('tipDef').textContent = tip.def;
+    document.getElementById('tipEx').textContent = tip.ex;
+    document.getElementById('tipBac').textContent = tip.bac;
+    document.getElementById('tipOverlay').classList.add('show');
+  });
+});
+
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTip(); });
+</script>
+
+</body>
+</html>

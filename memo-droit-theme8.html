@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Mémo Droit Thème 8 · Entreprendre</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── PRINT-FIRST DESIGN ─── */
+@page { size: A4; margin: 12mm; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; }
+
+/* NAV (screen only) */
+.sli-nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.sli-nav a { text-decoration:none }
+.sli-nav-logo { font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18 }
+.sli-nav-logo span { color:#b5415a }
+.sli-nav-links { display:flex;gap:2px }
+.sli-nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none }
+.sli-nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.sli-nl.on { background:#1e1c18;color:#f5c842 }
+
+/* ─── MEMO LAYOUT ─── */
+.memo { max-width: 900px; margin: 0 auto; padding: 80px 20px 40px; }
+
+/* Header */
+.memo-hd { text-align: center; margin-bottom: 20px; }
+.memo-badge { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: var(--color-primary); color: #fff; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+.memo-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 2px; }
+.memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+.memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: var(--color-primary); margin-top: 8px; font-style: italic; }
+
+/* ─── ARBRE STRUCTURE (ENCODER) ─── */
+.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.tree-full { grid-column: 1 / -1; }
+
+.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
+.tree-card.c-bleu  { border-left-color: #2a69a8; }
+.tree-card.c-rose  { border-left-color: #b5415a; }
+.tree-card.c-jaune { border-left-color: #946e00; }
+.tree-card.c-vert  { border-left-color: #1a7a3c; }
+.tree-card.c-violet { border-left-color: #7030a0; }
+
+.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
+.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
+.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
+.tree-def strong { color: #1e1c18; }
+.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
+.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(42,105,168,.08); color: #2a69a8; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+
+/* Sub-items inside tree cards */
+.tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
+.tree-chip[data-tip] { cursor: pointer; transition: transform .1s, box-shadow .1s; }
+.tree-chip[data-tip]:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+/* Tooltip popup */
+.tip-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; z-index:9000; background:rgba(30,28,24,.25); }
+.tip-overlay.show { display:flex; align-items:center; justify-content:center; animation: fadeIn .15s ease; }
+.tip-card { background:#fffdf8; border-radius:16px; padding:20px 24px; max-width:380px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,.18); position:relative; }
+.tip-close { position:absolute; top:10px; right:14px; font-size:18px; cursor:pointer; color:#a09880; background:none; border:none; font-weight:700; }
+.tip-close:hover { color:#1e1c18; }
+.tip-term { font-family:'Nunito',sans-serif; font-size:16px; font-weight:900; color:#1e1c18; margin-bottom:6px; }
+.tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
+.tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:rgba(42,105,168,.06); border-radius:8px; border-left:3px solid #2a69a8; }
+.tip-bac { font-size:10px; font-weight:700; color:#b5415a; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+
+/* Schema */
+.schema-section { margin-bottom: 16px; }
+.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
+.schema-box svg { display: block; margin: 0 auto; }
+
+.chip-bleu   { background: #e8f3ff; color: #2a69a8; }
+.chip-rose   { background: #fdeef2; color: #b5415a; }
+.chip-jaune  { background: #fef8e2; color: #946e00; }
+.chip-vert   { background: #e6f5ec; color: #1a7a3c; }
+.chip-violet { background: #f3eafc; color: #7030a0; }
+.chip-gris   { background: rgba(30,28,24,.07); color: #5a5448; }
+
+/* ─── SECTION BOTTOM: RECUPERER ─── */
+.recup { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.recup-full { grid-column: 1 / -1; }
+
+/* Confusion box */
+.confuse-box { background: #fdeef2; border-radius: 12px; padding: 14px 16px; }
+.confuse-box .tree-label { color: #b5415a; }
+.confuse-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 11px; line-height: 1.5; }
+.confuse-row:last-child { margin-bottom: 0; }
+.confuse-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.confuse-text strong { font-weight: 800; }
+
+/* Mnemo box */
+.mnemo-box { background: #e8f3ff; border-radius: 12px; padding: 14px 16px; }
+.mnemo-box .tree-label { color: #2a69a8; }
+.mnemo-item { font-size: 11px; line-height: 1.6; margin-bottom: 4px; }
+.mnemo-item:last-child { margin-bottom: 0; }
+
+/* Bac frequency bar */
+.freq-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; }
+.freq-row:last-child { margin-bottom: 0; }
+.freq-bar-track { flex: 1; height: 6px; background: #e8e4dc; border-radius: 3px; overflow: hidden; }
+.freq-bar-fill { height: 100%; border-radius: 3px; }
+.freq-bar-fill.f5 { width: 100%; background: #b5415a; }
+.freq-bar-fill.f4 { width: 80%; background: #d46a1a; }
+.freq-bar-fill.f3 { width: 60%; background: #946e00; }
+.freq-bar-fill.f2 { width: 40%; background: #2a69a8; }
+.freq-bar-fill.f1 { width: 20%; background: #a09880; }
+.freq-notion { font-weight: 700; min-width: 160px; }
+.freq-stars { color: #f5c842; font-size: 10px; min-width: 50px; text-align: right; letter-spacing: 1px; }
+
+/* Link chain */
+.chain { background: #fef8e2; border-radius: 12px; padding: 14px 16px; }
+.chain .tree-label { color: #946e00; }
+.chain-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
+.chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
+
+/* ─── PRINT ─── */
+@media print {
+  .sli-nav { display: none !important; }
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .memo { padding: 0; max-width: 100%; }
+  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain { break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .tree, .recup { grid-template-columns: 1fr; }
+  .tree-full, .recup-full { grid-column: 1; }
+  .memo { padding: 74px 12px 30px; }
+}
+</style>
+</head>
+<body data-subject="droit">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Droit</span>
+  <a href="memos-droit.html" class="active">Mémos</a>
+  <a href="flashcards-droit.html">Flashcards</a>
+  <a href="questions-bac-droit.html">Questions Bac</a>
+  <a href="methode-jour-j-droit.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<div class="memo">
+
+<!-- HEADER -->
+<div class="memo-hd">
+  <div class="memo-badge">Mémo · Droit · Thème 8</div>
+  <div class="memo-title">Dans quel cadre et comment entreprendre ?</div>
+  <div class="memo-sub">Terminale STMG · 1 page · Encoder · Comprendre · Récupérer</div>
+  <div class="memo-question">"Quelles formes juridiques choisir pour entreprendre et quelles conséquences ?"</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="schema-section">
+  <div class="schema-box">
+    <svg viewBox="0 0 800 340" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+      <!-- Niveau 1 : Entreprendre -->
+      <rect x="250" y="8" width="300" height="44" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0" letter-spacing="1">ENTREPRENDRE</text>
+      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Choix de la forme juridique</text>
+
+      <!-- Flèche -->
+      <line x1="400" y1="52" x2="400" y2="72" stroke="#a09880" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Barre horizontale -->
+      <line x1="200" y1="72" x2="600" y2="72" stroke="#a09880" stroke-width="2"/>
+      <line x1="200" y1="72" x2="200" y2="90" stroke="#a09880" stroke-width="2"/>
+      <line x1="600" y1="72" x2="600" y2="90" stroke="#a09880" stroke-width="2"/>
+
+      <!-- Branche 1 : SEUL -->
+      <rect x="80" y="90" width="240" height="50" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+      <text x="200" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8" letter-spacing="1">SEUL</text>
+      <text x="200" y="125" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Entrepreneur individuel (EI)</text>
+      <!-- Sous-branches -->
+      <line x1="200" y1="140" x2="200" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="120" y1="158" x2="280" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="120" y1="158" x2="120" y2="170" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="280" y1="158" x2="280" y2="170" stroke="#a09880" stroke-width="1.5"/>
+      <rect x="55" y="170" width="130" height="32" rx="8" fill="#e8f3ff"/>
+      <text x="120" y="185" text-anchor="middle" font-size="9" font-weight="700" fill="#2a69a8">EI classique</text>
+      <text x="120" y="196" text-anchor="middle" font-size="7" fill="#5a5448">Micro-entrepreneur</text>
+      <rect x="215" y="170" width="130" height="32" rx="8" fill="#e6f5ec"/>
+      <text x="280" y="185" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">Patrimoine protégé</text>
+      <text x="280" y="196" text-anchor="middle" font-size="7" fill="#5a5448">Loi 2022 : séparation auto</text>
+
+      <!-- Branche 2 : EN SOCIÉTÉ -->
+      <rect x="480" y="90" width="240" height="50" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+      <text x="600" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">EN SOCIÉTÉ</text>
+      <text x="600" y="125" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Personne morale distincte</text>
+      <!-- Sous-branches -->
+      <line x1="600" y1="140" x2="600" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="510" y1="158" x2="690" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="510" y1="158" x2="510" y2="170" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="600" y1="158" x2="600" y2="170" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="690" y1="158" x2="690" y2="170" stroke="#a09880" stroke-width="1.5"/>
+      <rect x="470" y="170" width="80" height="32" rx="8" fill="#fdeef2"/>
+      <text x="510" y="189" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">SARL</text>
+      <rect x="560" y="170" width="80" height="32" rx="8" fill="#fdeef2"/>
+      <text x="600" y="189" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">SA</text>
+      <rect x="650" y="170" width="80" height="32" rx="8" fill="#fdeef2"/>
+      <text x="690" y="189" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">SAS</text>
+
+      <!-- Niveau 3 : Concurrence -->
+      <rect x="250" y="225" width="300" height="44" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+      <text x="400" y="243" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0" letter-spacing="1">CONCURRENCE</text>
+      <text x="400" y="257" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Liberté du commerce + Concurrence déloyale</text>
+
+      <!-- Barre du bas -->
+      <rect x="40" y="290" width="720" height="38" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="400" y="306" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">CHOIX CLÉ</text>
+      <text x="400" y="320" text-anchor="middle" font-size="10" font-weight="700" fill="#5a4e00">Responsabilité limitée (société) vs patrimoine protégé (EI depuis 2022)</text>
+
+      <!-- Arrow marker -->
+      <defs><marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
+
+      <g transform="translate(28, 28)">
+        <circle cx="0" cy="0" r="20" fill="#1a7a3c"/>
+        <text x="0" y="6" text-anchor="middle"
+          font-family="Inter, sans-serif"
+          font-size="15" font-weight="900"
+          fill="#ffffff">E</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 1 : ENCODER — L'arbre du thème -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="tree">
+
+  <div class="tree-card c-jaune tree-full">
+    <div class="tree-label">Le choix fondamental <span class="freq">★★☆☆☆</span></div>
+    <div class="tree-h">Entreprendre : seul ou en société ?</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="ei">Entrepreneur individuel</span>
+      <span class="tree-chip chip-rose" data-tip="societe">Société</span>
+      <span class="tree-chip chip-rose" data-tip="personne_morale">Personne morale</span>
+      <span class="tree-chip chip-gris" data-tip="personnalite_juridique">Personnalité juridique</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Deux grandes voies. <strong>Seul</strong> (EI, pas de personne morale) ou <strong>en société</strong> (création d'une personne morale distincte).</div>
+  </div>
+
+  <!-- Card 2 : L'entrepreneur individuel -->
+  <div class="tree-card c-bleu">
+    <div class="tree-label">Entreprendre seul <span class="freq">★★☆☆☆</span></div>
+    <div class="tree-h">L'entrepreneur individuel</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="ei">EI</span>
+      <span class="tree-chip chip-bleu" data-tip="micro_entrepreneur">Micro-entrepreneur</span>
+      <span class="tree-chip chip-vert" data-tip="patrimoine_pro">Patrimoine professionnel</span>
+      <span class="tree-chip chip-vert" data-tip="patrimoine_perso">Patrimoine personnel</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Pas de société distincte. Depuis <strong>2022</strong>, séparation automatique des patrimoines.</div>
+  </div>
+
+  <!-- Card 3 : Les sociétés commerciales -->
+  <div class="tree-card c-rose">
+    <div class="tree-label">Les formes de sociétés <span class="freq">★☆☆☆☆</span></div>
+    <div class="tree-h">Les sociétés commerciales</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="sarl">SARL</span>
+      <span class="tree-chip chip-rose" data-tip="sa">SA</span>
+      <span class="tree-chip chip-rose" data-tip="sas">SAS</span>
+      <span class="tree-chip chip-gris" data-tip="capital_social">Capital social</span>
+      <span class="tree-chip chip-gris" data-tip="apports">Apports</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">3 formes principales. La <strong>SAS</strong> est la plus utilisée (souplesse). Capital social = apports des associés.</div>
+  </div>
+
+  <!-- Card 4 : Responsabilité et patrimoine -->
+  <div class="tree-card c-violet">
+    <div class="tree-label">La protection du patrimoine <span class="freq">★★☆☆☆</span></div>
+    <div class="tree-h">Responsabilité et patrimoine</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="resp_limitee">Responsabilité limitée</span>
+      <span class="tree-chip chip-violet" data-tip="resp_illimitee">Responsabilité illimitée</span>
+      <span class="tree-chip chip-gris" data-tip="associe">Associé</span>
+      <span class="tree-chip chip-gris" data-tip="actionnaire">Actionnaire</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">En société (SARL, SA, SAS) = <strong>responsabilité limitée aux apports</strong>. Le patrimoine personnel est protégé.</div>
+  </div>
+
+  <!-- Card 5 : La concurrence -->
+  <div class="tree-card c-vert">
+    <div class="tree-label">Le cadre de la concurrence <span class="freq">★☆☆☆☆</span></div>
+    <div class="tree-h">La concurrence</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="liberte_commerce">Liberté du commerce</span>
+      <span class="tree-chip chip-rose" data-tip="concurrence_deloyale">Concurrence déloyale</span>
+      <span class="tree-chip chip-violet" data-tip="anticoncurrentielles">Pratiques anticoncurrentielles</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Le droit protège la <strong>libre concurrence</strong> mais sanctionne les abus (ententes, abus de position dominante).</div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 2 : CHAÎNE LOGIQUE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <div class="chain recup-full">
+    <div class="tree-label">La chaîne logique du thème 8</div>
+    <div class="chain-flow">
+      <span class="chain-node">Choix de la forme juridique</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Seul (EI) ou en société (SARL/SA/SAS)</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Conséquences : patrimoine, responsabilité, fiscalité</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Le droit encadre la concurrence</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 3 : RÉCUPÉRER -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <!-- Confusions à éviter -->
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques au Bac</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Personne physique</strong> (un individu) ≠ <strong>Personne morale</strong> (une entité juridique créée par les associés)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Capital social</strong> (apports des associés) ≠ <strong>Chiffre d'affaires</strong> (ventes de l'entreprise)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Associé</strong> (parts sociales, SARL) ≠ <strong>Actionnaire</strong> (actions, SA/SAS) — mais en SAS les deux termes s'utilisent</span>
+    </div>
+  </div>
+
+  <!-- Moyens mnémotechniques -->
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>EI = moi tout seul</strong>, <strong>Société = on crée quelqu'un d'autre</strong> (la personne morale)</div>
+    <div class="mnemo-item"><strong>Limitée = je ne perds que ce que j'ai mis</strong> (mes apports)</div>
+    <div class="mnemo-item"><strong>SARL = petite</strong> (100 associés max), <strong>SA = grande</strong> (capital 37 000 EUR min), <strong>SAS = souple</strong> (liberté des statuts)</div>
+    <div class="mnemo-item"><strong>NNI pour les apports</strong> : <strong>N</strong>uméraire (argent) + <strong>N</strong>ature (biens) + <strong>I</strong>ndustrie (compétences, mais pas dans le capital)</div>
+  </div>
+
+</div>
+
+<!-- Fréquences BAC -->
+<div class="recup">
+  <div class="freq-box recup-full">
+    <div class="tree-label" style="margin-bottom:8px">Fréquence au Bac (sujets analysés)</div>
+
+    <div class="freq-row">
+      <span class="freq-notion">Formes juridiques (EI vs société)</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f2"></div></div>
+      <span class="freq-stars">★★☆☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Responsabilité limitée / illimitée</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f1"></div></div>
+      <span class="freq-stars">★☆☆☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Personnalité morale</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f1"></div></div>
+      <span class="freq-stars">★☆☆☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Concurrence</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f1"></div></div>
+      <span class="freq-stars">★☆☆☆☆</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
+  Révizo · Mémo Thème 8 · Droit STMG · Avril 2026 · Sources : annales post-réforme, BO 2019, consignes de correction
+</div>
+
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tip-overlay" id="tipOverlay" onclick="closeTip()">
+  <div class="tip-card" onclick="event.stopPropagation()">
+    <button class="tip-close" onclick="closeTip()">&times;</button>
+    <div class="tip-term" id="tipTerm"></div>
+    <div class="tip-def" id="tipDef"></div>
+    <div class="tip-example" id="tipEx"></div>
+    <div class="tip-bac" id="tipBac"></div>
+  </div>
+</div>
+
+<script>
+const TIPS = {
+  ei: {
+    term: "Entrepreneur individuel (EI)",
+    def: "Personne seule qui exerce une activité en son nom propre. Pas de personne morale créée. Depuis la loi de 2022, les patrimoines professionnel et personnel sont automatiquement séparés : seul le patrimoine professionnel répond des dettes professionnelles.",
+    ex: "Un plombier qui s'installe à son compte est un entrepreneur individuel. S'il a des dettes professionnelles, depuis 2022, sa maison personnelle est protégée.",
+    bac: "★★☆☆☆ — La réforme de 2022 sur la protection du patrimoine est un point d'actualité"
+  },
+  micro_entrepreneur: {
+    term: "Micro-entrepreneur",
+    def: "Régime simplifié de l'entrepreneur individuel : comptabilité allégée, cotisations calculées sur le chiffre d'affaires, plafonds de CA à ne pas dépasser. Idéal pour tester une activité ou exercer une activité complémentaire.",
+    ex: "Un étudiant qui donne des cours particuliers peut devenir micro-entrepreneur : déclaration simplifiée, cotisations proportionnelles au CA réalisé.",
+    bac: "★☆☆☆☆ — Rarement testé seul"
+  },
+  patrimoine_pro: {
+    term: "Patrimoine professionnel",
+    def: "Ensemble des biens utiles à l'activité professionnelle : fonds de commerce, matériel, véhicule professionnel, stock, créances clients. Depuis 2022, seul ce patrimoine répond des dettes professionnelles de l'EI.",
+    ex: "Le camion de livraison, les outils, le stock de marchandises d'un artisan font partie de son patrimoine professionnel.",
+    bac: "★★☆☆☆ — Distinction patrimoine pro / perso liée à la réforme 2022"
+  },
+  patrimoine_perso: {
+    term: "Patrimoine personnel",
+    def: "Biens personnels de l'entrepreneur : résidence principale, épargne personnelle, voiture privée. Depuis la loi de 2022, ce patrimoine est automatiquement protégé des créanciers professionnels (plus besoin de déclaration d'insaisissabilité).",
+    ex: "La maison familiale d'un commerçant en difficulté ne peut plus être saisie par ses créanciers professionnels depuis 2022.",
+    bac: "★★☆☆☆ — La protection automatique depuis 2022 est le point clé"
+  },
+  societe: {
+    term: "Société",
+    def: "Entité juridique distincte de ses fondateurs, créée par des statuts et l'immatriculation au Registre du Commerce et des Sociétés (RCS). La société possède un patrimoine propre, distinct de celui des associés.",
+    ex: "Deux amis créent une SARL pour ouvrir un restaurant. La SARL a son propre compte bancaire, ses propres dettes, son propre patrimoine. Ce n'est pas la même chose que les biens personnels des deux amis.",
+    bac: "★☆☆☆☆ — Notion de base pour comprendre la personnalité morale"
+  },
+  personne_morale: {
+    term: "Personne morale",
+    def: "La société, une fois immatriculée, a sa propre existence juridique : un nom (dénomination sociale), un domicile (siège social), un patrimoine propre, une nationalité, et peut agir en justice. C'est une 'personne' au sens du droit, distincte des associés.",
+    ex: "La SARL 'Chez Marcel' peut signer des contrats, emprunter à la banque, poursuivre un client en justice — tout cela en son nom propre, pas au nom de Marcel.",
+    bac: "★☆☆☆☆ — Distinction personne physique / personne morale"
+  },
+  personnalite_juridique: {
+    term: "Personnalité juridique",
+    def: "Capacité d'être titulaire de droits et d'obligations. Les personnes physiques (individus) l'ont de naissance. Les sociétés l'acquièrent par l'immatriculation au RCS. Sans immatriculation, pas de personnalité juridique.",
+    ex: "Tant que les statuts ne sont pas déposés et la société immatriculée, elle n'existe pas juridiquement. Les fondateurs agissent en leur nom propre.",
+    bac: "★☆☆☆☆ — Notion transversale en droit"
+  },
+  sarl: {
+    term: "SARL — Société à Responsabilité Limitée",
+    def: "1 à 100 associés. Capital libre (pas de minimum). Responsabilité limitée aux apports. Dirigée par un ou plusieurs gérants. Parts sociales dont la cession est soumise à agrément (les autres associés doivent accepter le nouvel associé).",
+    ex: "Deux associés créent une SARL avec 5 000 EUR de capital chacun. Si la société fait faillite avec 100 000 EUR de dettes, chacun ne perd que ses 5 000 EUR d'apport.",
+    bac: "★☆☆☆☆ — Caractéristiques rarement demandées en détail"
+  },
+  sa: {
+    term: "SA — Société Anonyme",
+    def: "Minimum 2 actionnaires (7 si cotée en bourse). Capital minimum de 37 000 EUR. Actions librement cessibles. Direction : Conseil d'administration + Directeur Général. Forme adaptée aux grandes entreprises et à l'introduction en bourse.",
+    ex: "Total, LVMH, Renault sont des SA cotées en bourse. Leurs actions sont achetées et vendues librement sur les marchés financiers.",
+    bac: "★☆☆☆☆ — Rarement testé en détail"
+  },
+  sas: {
+    term: "SAS — Société par Actions Simplifiée",
+    def: "Minimum 1 associé (SASU si un seul). Capital libre. Grande liberté statutaire : les associés organisent librement le fonctionnement dans les statuts. Dirigée par un Président. Forme la plus populaire en France pour sa souplesse.",
+    ex: "La plupart des start-ups choisissent la SAS car les fondateurs peuvent organiser librement les règles de gouvernance et d'entrée/sortie des investisseurs.",
+    bac: "★☆☆☆☆ — La SAS comme forme dominante est un fait à connaître"
+  },
+  capital_social: {
+    term: "Capital social",
+    def: "Montant total des apports réalisés par les associés lors de la création de la société. Il figure dans les statuts. Attention : ce n'est PAS l'argent en caisse de l'entreprise. Le capital peut avoir été investi, dépensé, ou transformé en biens.",
+    ex: "Une SAS créée avec 10 000 EUR de capital social : les associés ont apporté 10 000 EUR. Mais après 6 mois, la société peut avoir 50 000 EUR en caisse (si elle a bien vendu) ou 2 000 EUR (si elle a dépensé).",
+    bac: "★☆☆☆☆ — Distinction capital / trésorerie / CA"
+  },
+  apports: {
+    term: "Apports des associés",
+    def: "3 types d'apports possibles : Numéraire (argent), Nature (biens : local, brevet, véhicule...), Industrie (compétences et savoir-faire — donne droit aux bénéfices mais ne compte PAS dans le capital social).",
+    ex: "Un associé apporte 20 000 EUR (numéraire), un autre apporte un local commercial (nature), un troisième apporte son expertise technique (industrie).",
+    bac: "★☆☆☆☆ — La distinction des 3 types d'apports est à connaître"
+  },
+  resp_limitee: {
+    term: "Responsabilité limitée aux apports",
+    def: "L'associé ne peut perdre QUE le montant de ses apports. Son patrimoine personnel est protégé en cas de dettes de la société. C'est le cas en SARL, SA et SAS.",
+    ex: "Un associé a apporté 10 000 EUR dans une SARL. La société fait faillite avec 200 000 EUR de dettes. L'associé perd ses 10 000 EUR mais pas sa maison ni son épargne.",
+    bac: "★★☆☆☆ — Avantage majeur de la forme sociétaire"
+  },
+  resp_illimitee: {
+    term: "Responsabilité illimitée",
+    def: "L'entrepreneur répond des dettes sur TOUT son patrimoine (professionnel ET personnel). C'était le cas de l'EI avant 2022. C'est encore le cas en SNC (Société en Nom Collectif, rare).",
+    ex: "Avant 2022, un commerçant en EI dont l'activité faisait faillite pouvait voir sa maison personnelle saisie pour payer les dettes professionnelles.",
+    bac: "★☆☆☆☆ — Surtout utile en opposition avec la responsabilité limitée"
+  },
+  associe: {
+    term: "Associé (SARL)",
+    def: "Détient des PARTS SOCIALES dans une SARL. La cession des parts est soumise à agrément : les autres associés doivent donner leur accord pour qu'un nouveau vienne les rejoindre. Les parts ne sont pas librement cessibles.",
+    ex: "Un associé de SARL veut vendre ses parts à un ami. Les autres associés votent : s'ils refusent, la vente ne se fait pas.",
+    bac: "★☆☆☆☆ — Distinction associé/actionnaire"
+  },
+  actionnaire: {
+    term: "Actionnaire (SA/SAS)",
+    def: "Détient des ACTIONS dans une SA ou SAS. En SA, les actions sont en principe librement cessibles (pas besoin de l'accord des autres). En SAS, les statuts peuvent prévoir des clauses d'agrément.",
+    ex: "Un actionnaire de Total peut vendre ses actions en bourse à n'importe qui, sans demander l'accord des autres actionnaires.",
+    bac: "★☆☆☆☆ — Distinction actions (cessibles) / parts sociales (agrément)"
+  },
+  liberte_commerce: {
+    term: "Liberté du commerce et de l'industrie",
+    def: "Principe fondamental : toute personne peut exercer le commerce ou l'activité économique de son choix. Ce principe a des limites : réglementations (autorisations, diplômes), interdiction de la concurrence déloyale, clauses de non-concurrence.",
+    ex: "N'importe qui peut ouvrir une boulangerie. Mais il faut un diplôme pour utiliser le titre 'artisan boulanger'. Et on ne peut pas s'installer juste à côté pour copier le concept d'un concurrent.",
+    bac: "★☆☆☆☆ — Principe de cadrage"
+  },
+  concurrence_deloyale: {
+    term: "Concurrence déloyale",
+    def: "Comportements qui faussent la concurrence entre entreprises. 4 formes principales : imitation (copier un concurrent), dénigrement (dire du mal d'un concurrent), désorganisation (débaucher massivement ses salariés), parasitisme (profiter de la notoriété d'un autre). Sanctionnée par les tribunaux (dommages et intérêts).",
+    ex: "Un restaurant ouvre avec un nom et un décor quasi identiques à un restaurant célèbre voisin pour profiter de sa notoriété = parasitisme = concurrence déloyale.",
+    bac: "★☆☆☆☆ — Les 4 formes sont à connaître"
+  },
+  anticoncurrentielles: {
+    term: "Pratiques anticoncurrentielles",
+    def: "Pratiques interdites par le droit de la concurrence : ententes entre concurrents (se mettre d'accord sur les prix, se répartir les marchés) et abus de position dominante (une entreprise en situation de monopole ou quasi-monopole abuse de sa puissance pour évincer les concurrents). Sanctionnées par l'Autorité de la concurrence (amendes lourdes).",
+    ex: "Trois opérateurs téléphoniques se mettent secrètement d'accord pour fixer les mêmes prix = entente = pratique anticoncurrentielle = amende de l'Autorité de la concurrence.",
+    bac: "★☆☆☆☆ — Distinction concurrence déloyale / pratiques anticoncurrentielles"
+  }
+};
+
+// Open tip
+document.querySelectorAll('[data-tip]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.getAttribute('data-tip');
+    const tip = TIPS[key];
+    if (!tip) return;
+    document.getElementById('tipTerm').textContent = tip.term;
+    document.getElementById('tipDef').textContent = tip.def;
+    document.getElementById('tipEx').textContent = tip.ex;
+    document.getElementById('tipBac').textContent = tip.bac;
+    document.getElementById('tipOverlay').classList.add('show');
+  });
+});
+
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
+}
+</script>
+
+</body>
+</html>

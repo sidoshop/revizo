@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo · Économie STMG · Méthode Jour J</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  background: #f0ede6;
+  color: #1e1c18;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+.nav {
+  background: #1e1c18;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+}
+.nav-logo {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #f5c842;
+  margin-right: 12px;
+  text-decoration: none;
+}
+.nav a {
+  color: #ccc8be;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.nav a:hover { background: rgba(255,255,255,.08); color: #fff; }
+.nav a.active { background: #b5415a; color: #fff; font-weight: 700; }
+.nav-spacer { flex: 1; }
+
+/* ── HEADER ── */
+.header {
+  background: #1e1c18;
+  padding: 32px 24px 40px;
+  text-align: center;
+  position: relative;
+}
+.header-badge {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f5c842;
+  background: rgba(245,200,66,.12);
+  padding: 4px 16px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+.header h1 {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 2.2rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.header p {
+  color: #a09880;
+  font-size: 0.95rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.print-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: #f5c842;
+  color: #1e1c18;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.print-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(245,200,66,.4); }
+
+/* ── MAIN ── */
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+/* ── TABS ── */
+.tabs-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 2px solid #ddd8cf;
+  background: #fff;
+  color: #5a5448;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tab-btn:hover { border-color: #a09880; }
+.tab-btn.active { background: #1e1c18; color: #f5c842; border-color: #1e1c18; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── STEP CARDS ── */
+.step-card {
+  background: #fffdf8;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.step-num {
+  background: #1e1c18;
+  color: #f5c842;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-time {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #b5415a;
+  background: #fdeef2;
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin-left: 8px;
+  display: inline-block;
+}
+.step-do { font-weight: 700; margin-bottom: 4px; }
+.step-dont { color: #8a8478; font-style: italic; font-size: 0.9rem; }
+
+/* ── CALLOUT BOX ── */
+.callout {
+  background: #fffdf8;
+  border-left: 4px solid #f5c842;
+  border-radius: 0 12px 12px 0;
+  padding: 18px 24px;
+  margin: 20px 0;
+  font-size: 0.95rem;
+}
+.callout strong { color: #b5415a; }
+.callout-rose {
+  border-left-color: #b5415a;
+  background: #fdeef2;
+}
+.callout-green {
+  border-left-color: #3a9d5c;
+  background: #eef8f1;
+}
+
+/* ── TABLES ── */
+.table-wrap {
+  overflow-x: auto;
+  margin: 16px 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fffdf8;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  font-size: 0.9rem;
+}
+thead th {
+  background: #1e1c18;
+  color: #f5c842;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  padding: 12px 16px;
+  text-align: left;
+  white-space: nowrap;
+}
+tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eae6dd;
+  vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #f7f5ef; }
+td strong { color: #1e1c18; }
+
+/* ── CITATION BOXES ── */
+.cite-good, .cite-bad {
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 8px 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.cite-good { background: #eef8f1; border-left: 4px solid #3a9d5c; }
+.cite-bad { background: #fdeef2; border-left: 4px solid #b5415a; }
+.cite-label { font-weight: 700; margin-bottom: 4px; }
+.cite-good .cite-label { color: #3a9d5c; }
+.cite-bad .cite-label { color: #b5415a; }
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  color: #1e1c18;
+}
+.section-subtitle {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  margin: 24px 0 12px;
+  color: #b5415a;
+}
+
+/* ── INTRO TEXT ── */
+.intro-text {
+  color: #5a5448;
+  font-size: 0.92rem;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+/* ── AEI BOX ── */
+.aei-box {
+  background: #fffdf8;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  margin: 20px 0;
+}
+.aei-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+.aei-item:last-child { margin-bottom: 0; }
+.aei-letter {
+  background: #b5415a;
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.aei-content strong { color: #1e1c18; }
+.aei-content em { color: #5a5448; font-size: 0.9rem; }
+
+/* ── CHECKLIST ── */
+.checklist-section {
+  background: #1e1c18;
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-top: 40px;
+  color: #fff;
+}
+.checklist-section h2 {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #f5c842;
+  margin-bottom: 16px;
+}
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  font-size: 0.92rem;
+}
+.check-item:last-child { border-bottom: none; }
+.check-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #f5c842;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+}
+.check-item label { cursor: pointer; color: #e8e4db; }
+.check-item input:checked + label { text-decoration: line-through; color: #8a8478; }
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  padding: 32px 20px;
+  color: #8a8478;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.5rem; }
+  .print-btn { position: static; margin-top: 16px; }
+  .header { text-align: center; }
+  .step-card { flex-direction: column; gap: 8px; padding: 16px; }
+  .tab-btn { padding: 8px 12px; font-size: 0.78rem; }
+  .checklist-section { padding: 20px 16px; }
+  thead th, tbody td { padding: 10px 10px; font-size: 0.82rem; }
+}
+
+/* ── PRINT ── */
+@media print {
+  .nav, .tabs-bar, .print-btn { display: none !important; }
+  body { padding: 0; background: white; }
+  .header { background: #1e1c18; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .tab-panel { display: block !important; page-break-inside: avoid; }
+  .tab-panel + .tab-panel { border-top: 2px solid #ddd; padding-top: 24px; margin-top: 24px; }
+  .main { max-width: 100%; padding: 16px; }
+  .step-num, thead th, .aei-letter, .checklist-section {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+</style>
+</head>
+<body data-subject="eco">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Économie</span>
+  <a href="memos-eco.html">Mémos</a>
+  <a href="flashcards-eco.html">Flashcards</a>
+  <a href="questions-bac-eco.html">Questions Bac</a>
+  <a href="methode-jour-j-eco.html" class="active">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<!-- ══════════ HEADER ══════════ -->
+<header class="header">
+  <div class="header-badge">Révizo · Économie · Terminale STMG</div>
+  <h1>⚡ Méthode Jour J</h1>
+  <p>Zéro contenu de cours · Que des actions et des réflexes · Imprimable</p>
+  <button class="print-btn" onclick="window.print()">🖨️ Imprimer</button>
+</header>
+
+<!-- ══════════ MAIN ══════════ -->
+<div class="main">
+
+  <!-- ── TAB BAR ── -->
+  <div class="tabs-bar">
+    <button class="tab-btn active" data-tab="tab1">1. Les 15 premières minutes</button>
+    <button class="tab-btn" data-tab="tab2">2. Décoder ce qu'on te demande</button>
+    <button class="tab-btn" data-tab="tab3">3. Lier questions &amp; documents</button>
+    <button class="tab-btn" data-tab="tab4">4. Si je bloque</button>
+    <button class="tab-btn" data-tab="tab5">5. Gratter des points</button>
+  </div>
+
+  <!-- ══════════ TAB 1 — Les 15 premières minutes ══════════ -->
+  <div id="tab1" class="tab-panel active">
+    <h2 class="section-title">Les 15 premières minutes</h2>
+    <p class="intro-text">Tu as 4 heures pour Droit + Économie. Prévois environ 2h pour chaque partie. Ne te précipite pas. Ces 15 premières minutes sont un investissement.</p>
+
+    <!-- Étape 1 -->
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-do">Lire le sujet EN ENTIER sans écrire — partie Droit ET Économie <span class="step-time">3 min</span></div>
+        <div class="step-dont">Ne pas commencer à répondre</div>
+      </div>
+    </div>
+
+    <!-- Étape 2 -->
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-do">Choisir par quelle partie commencer (celle où tu te sens le plus à l'aise) <span class="step-time">2 min</span></div>
+        <div class="step-dont">Ne pas toujours commencer par la même par habitude</div>
+      </div>
+    </div>
+
+    <!-- Étape 3 -->
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-do">Relire les questions de la partie choisie — ENTOURER les verbes d'action (analyser, calculer, distinguer...) <span class="step-time">3 min</span></div>
+        <div class="step-dont">Ne pas lire les documents avant les questions</div>
+      </div>
+    </div>
+
+    <!-- Étape 4 -->
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-do">Repérer quel document correspond à quelle question (écrire le n° du document à côté de chaque question) <span class="step-time">3 min</span></div>
+        <div class="step-dont">Ne pas lire tous les documents d'un coup</div>
+      </div>
+    </div>
+
+    <!-- Étape 5 -->
+    <div class="step-card">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-do">Lire les 2 sujets d'argumentation au choix — choisir celui où tu as le plus de choses à dire <span class="step-time">2 min</span></div>
+        <div class="step-dont">Ne pas choisir le sujet "le plus court" — c'est un piège</div>
+      </div>
+    </div>
+
+    <!-- Étape 6 -->
+    <div class="step-card">
+      <div class="step-num">6</div>
+      <div>
+        <div class="step-do">Sur ton brouillon, noter 3-4 mots-clés pour l'argumentation (les notions du cours que tu vas mobiliser) <span class="step-time">2 min</span></div>
+        <div class="step-dont">Ne pas commencer à rédiger l'argumentation en premier</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Règle d'or :</strong> Commence par les questions courtes (Q1 à Q4), termine par l'argumentation. L'argumentation vaut 4 points mais si tu la fais en premier tu risques de manquer de temps pour les questions faciles.
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 2 — Décoder ce qu'on te demande ══════════ -->
+  <div id="tab2" class="tab-panel">
+    <h2 class="section-title">Décoder ce qu'on te demande</h2>
+    <h3 class="section-subtitle">Le tableau des verbes d'action</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Verbe</th><th>Ce qu'on attend VRAIMENT</th><th>Piège à éviter</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Rappelez</strong></td>
+            <td>Donner la définition exacte d'une notion du cours</td>
+            <td>Ne pas inventer — si tu ne sais pas, utilise les documents pour trouver des indices</td>
+          </tr>
+          <tr>
+            <td><strong>Présentez</strong></td>
+            <td>Définir la notion + l'illustrer avec le cas du sujet</td>
+            <td>Ne pas recopier le document — il faut reformuler avec tes mots</td>
+          </tr>
+          <tr>
+            <td><strong>Identifiez</strong></td>
+            <td>Repérer une information précise dans les documents</td>
+            <td>Ne pas inventer — la réponse est DANS le document</td>
+          </tr>
+          <tr>
+            <td><strong>Distinguez</strong></td>
+            <td>Définir A, définir B, puis dire CE QUI LES DIFFÉRENCIE</td>
+            <td>Ne pas juste définir les deux côte à côte — il faut un critère de différence</td>
+          </tr>
+          <tr>
+            <td><strong>Comparez</strong></td>
+            <td>Mettre en parallèle deux données avec des chiffres précis</td>
+            <td>Ne pas juste dire "c'est plus" ou "c'est moins" — quantifier</td>
+          </tr>
+          <tr>
+            <td><strong>Commentez</strong></td>
+            <td>Dégager une tendance + donner des chiffres + interpréter économiquement</td>
+            <td>Ne pas lister les chiffres année par année — synthétiser</td>
+          </tr>
+          <tr>
+            <td><strong>Analysez</strong></td>
+            <td>Décomposer un phénomène + expliquer chaque élément</td>
+            <td>Ne pas juste décrire ce que tu vois</td>
+          </tr>
+          <tr>
+            <td><strong>Expliquez</strong></td>
+            <td>Donner la CAUSE (le pourquoi) avec un mécanisme du cours</td>
+            <td>Ne pas juste constater le résultat</td>
+          </tr>
+          <tr>
+            <td><strong>Montrez que</strong></td>
+            <td>Argumenter dans le sens demandé par la question</td>
+            <td>Ne pas juste dire "oui" — il faut des preuves</td>
+          </tr>
+          <tr>
+            <td><strong>Justifiez</strong></td>
+            <td>Donner la raison en s'appuyant sur une notion du cours</td>
+            <td>Ne pas donner ton avis personnel — utiliser le cours</td>
+          </tr>
+          <tr>
+            <td><strong>Calculez</strong></td>
+            <td>Poser la formule + le calcul + le résultat + COMMENTER</td>
+            <td>Ne pas oublier le commentaire (il vaut autant que le calcul)</td>
+          </tr>
+          <tr>
+            <td><strong>Appréciez</strong></td>
+            <td>Donner un jugement argumenté et NUANCÉ</td>
+            <td>Ne pas oublier la nuance (avantages ET limites)</td>
+          </tr>
+          <tr>
+            <td><strong>Rédiger une argumentation</strong></td>
+            <td>Introduction (définitions + problématique) → Axe 1 (argument + mécanisme + exemple) → Axe 2 (limites + mécanisme + exemple) → Conclusion nuancée</td>
+            <td>Ne pas faire une liste de points — il faut un TEXTE rédigé et structuré</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="section-subtitle">Les formulations pièges</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Tu lis dans le sujet</th><th>Ce que ça veut dire</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>"à l'aide de vos connaissances ET des documents"</strong></td>
+            <td>Tu dois utiliser le cours ET les données — pas l'un sans l'autre</td>
+          </tr>
+          <tr>
+            <td><strong>"à l'aide du document X"</strong></td>
+            <td>La réponse est dans ce document précis — va le lire</td>
+          </tr>
+          <tr>
+            <td><strong>"à l'aide de vos connaissances"</strong></td>
+            <td>Le cours suffit — pas besoin des documents pour cette question</td>
+          </tr>
+          <tr>
+            <td><strong>"en vous appuyant sur la situation de l'entreprise"</strong></td>
+            <td>Utilise le cas concret du sujet, pas un exemple générique</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 3 — Lier les questions aux documents ══════════ -->
+  <div id="tab3" class="tab-panel">
+    <h2 class="section-title">Lier les questions aux documents</h2>
+    <h3 class="section-subtitle">Comment repérer quel document utiliser</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Indice dans la question</th><th>Ce que tu fais</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>"d'après le document 3"</strong></td>
+            <td>Tu utilises le document 3 — c'est explicite</td>
+          </tr>
+          <tr>
+            <td><strong>Pas de numéro de document</strong></td>
+            <td>Regarde les titres des documents — celui qui parle du même thème que la question</td>
+          </tr>
+          <tr>
+            <td><strong>Le document est un tableau de chiffres</strong></td>
+            <td>Tu vas devoir lire des données, probablement calculer ou commenter une évolution</td>
+          </tr>
+          <tr>
+            <td><strong>Le document est un texte</strong></td>
+            <td>Tu vas devoir en extraire des arguments ou des informations factuelles</td>
+          </tr>
+          <tr>
+            <td><strong>Le document est un graphique</strong></td>
+            <td>Tu vas devoir dégager une tendance et donner des chiffres</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="section-subtitle">Comment citer un document dans ta réponse</h3>
+
+    <div class="cite-good">
+      <div class="cite-label">Bonne citation</div>
+      "D'après le document 2, le taux de chômage est passé de 9,5% en 2019 à 7,3% en 2023, soit une baisse de 2,2 points."
+    </div>
+    <div class="cite-bad">
+      <div class="cite-label">Mauvaise citation</div>
+      "Le chômage a baissé (document 2)."
+    </div>
+
+    <div class="callout" style="margin-top: 16px;">
+      <strong>Règle :</strong> toujours préciser le numéro du document + une donnée précise (chiffre, fait).
+    </div>
+
+    <h3 class="section-subtitle">Si aucun document ne correspond à la question</h3>
+    <p style="margin-top: 8px; font-size: 0.93rem;">Ça arrive, surtout pour les questions de définition ("Rappelez ce qu'est..."). Dans ce cas, c'est une question de COURS — mobilise tes connaissances directement.</p>
+  </div>
+
+  <!-- ══════════ TAB 4 — Si je bloque ══════════ -->
+  <div id="tab4" class="tab-panel">
+    <h2 class="section-title">Si je bloque</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Situation</th><th>Solution immédiate</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Je ne comprends pas la question</strong></td>
+            <td>Souligne le verbe d'action → reformule : "On me demande de [verbe] [quoi]". Relis le tableau des verbes (onglet 2).</td>
+          </tr>
+          <tr>
+            <td><strong>Je ne connais pas la notion</strong></td>
+            <td>Regarde les documents du sujet — ils contiennent souvent des indices. Écris ce que tu sais, même partiellement. 3 lignes imparfaites > 0 ligne.</td>
+          </tr>
+          <tr>
+            <td><strong>Je ne sais pas quel document utiliser</strong></td>
+            <td>Relis les titres des documents. Compare les mots de la question avec les mots des titres.</td>
+          </tr>
+          <tr>
+            <td><strong>Mon calcul tombe sur un chiffre bizarre</strong></td>
+            <td>Vérifie tes données (bonne ligne, bonne colonne). Même si le résultat semble faux, laisse-le et COMMENTE — tu auras des points pour la méthode.</td>
+          </tr>
+          <tr>
+            <td><strong>Je n'ai plus le temps</strong></td>
+            <td>Réponds en mots-clés structurés plutôt que rien. Pour l'argumentation : écris au moins l'intro (définitions) et 2-3 arguments en phrases courtes. Des points partiels > zéro point.</td>
+          </tr>
+          <tr>
+            <td><strong>Je ne sais pas choisir entre les 2 sujets d'argumentation</strong></td>
+            <td>Choisis celui où tu peux citer le plus de NOTIONS DU COURS. C'est ça qui rapporte des points.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 5 — Astuces pour gratter des points ══════════ -->
+  <div id="tab5" class="tab-panel">
+    <h2 class="section-title">Astuces pour gratter des points</h2>
+    <h3 class="section-subtitle">Les 7 réflexes qui font la différence</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Réflexe</th><th>Pourquoi ça rapporte des points</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Toujours définir les termes clés</strong></td>
+            <td>Les correcteurs le disent : la majorité des élèves ne définissent pas. Juste définir te place au-dessus de la moyenne.</td>
+          </tr>
+          <tr>
+            <td><strong>Utiliser le vocabulaire exact du cours</strong></td>
+            <td>Jamais de synonymes. "Politique budgétaire" et pas "quand l'État dépense de l'argent". Les correcteurs repèrent les mots du cours.</td>
+          </tr>
+          <tr>
+            <td><strong>Faire le lien avec l'entreprise du sujet</strong></td>
+            <td>Pas de réponse générique. "L'entreprise Camélia, spécialisée dans..." montre que tu as lu le sujet.</td>
+          </tr>
+          <tr>
+            <td><strong>Donner des chiffres précis des documents</strong></td>
+            <td>"Le taux est passé de 5,2% à 8,1%" plutôt que "le taux a augmenté".</td>
+          </tr>
+          <tr>
+            <td><strong>Structurer l'argumentation en axes</strong></td>
+            <td>Intro → Axe 1 → Axe 2 → Conclusion. Visible et facile à corriger = le correcteur voit tes arguments.</td>
+          </tr>
+          <tr>
+            <td><strong>Commenter CHAQUE calcul</strong></td>
+            <td>Le commentaire vaut autant que le calcul. "Ce résultat signifie que..." est obligatoire.</td>
+          </tr>
+          <tr>
+            <td><strong>Conclure de façon nuancée</strong></td>
+            <td>"Cela dépend de..." est mieux que "oui" ou "non" catégorique. Les correcteurs valorisent la nuance.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="section-subtitle">La méthode AEI — ton arme pour l'argumentation</h3>
+    <p style="margin-bottom: 12px; font-size: 0.92rem;">Pour CHAQUE argument de ton argumentation :</p>
+
+    <div class="aei-box">
+      <div class="aei-item">
+        <div class="aei-letter">A</div>
+        <div class="aei-content">
+          <strong>Affirmation</strong><br>
+          <em>"La politique de relance permet de stimuler la croissance."</em>
+        </div>
+      </div>
+      <div class="aei-item">
+        <div class="aei-letter">E</div>
+        <div class="aei-content">
+          <strong>Explication</strong><br>
+          <em>"En augmentant les dépenses publiques, l'État soutient la demande globale, ce qui pousse les entreprises à produire davantage."</em>
+        </div>
+      </div>
+      <div class="aei-item">
+        <div class="aei-letter">I</div>
+        <div class="aei-content">
+          <strong>Illustration</strong><br>
+          <em>"Par exemple, le plan de relance de 100 milliards d'euros en 2020 a contribué à la reprise de la croissance en France."</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-rose">
+      <strong>Retiens :</strong> Un argument sans explication = une opinion. Un argument sans exemple = du cours non appliqué. AEI = les 3 sont indispensables.
+    </div>
+  </div>
+
+  <!-- ══════════ CHECKLIST (toujours visible) ══════════ -->
+  <div class="checklist-section">
+    <h2>Checklist — Avant de rendre ta copie</h2>
+    <div class="check-item">
+      <input type="checkbox" id="ck1"><label for="ck1">J'ai répondu à TOUTES les questions (même partiellement)</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck2"><label for="ck2">Chaque réponse utilise au moins un mot du cours (pas de langage courant)</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck3"><label for="ck3">Chaque réponse fait référence à l'entreprise/situation du sujet</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck4"><label for="ck4">Mes calculs sont POSÉS (formule visible) ET COMMENTÉS</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck5"><label for="ck5">J'ai cité les numéros des documents utilisés</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck6"><label for="ck6">Mon argumentation a une intro (définitions), 2 axes, et une conclusion</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck7"><label for="ck7">J'ai relu pour corriger les fautes qui changent le sens</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck8"><label for="ck8">J'ai vérifié que j'ai bien répondu à ce qu'on m'a DEMANDÉ (pas à ce que j'avais envie de dire)</label>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="footer">
+  Révizo · Économie STMG · Méthode Jour J · Avril 2026<br>
+  Imprimable en 3 pages · Utilisable sans relire les autres documents
+</div>
+
+<!-- ══════════ JS ══════════ -->
+<script>
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// Checklist persistence via localStorage
+const STORAGE_KEY = 'revizo_checklist_eco';
+
+function saveChecklist() {
+  const states = {};
+  document.querySelectorAll('.checklist-section input[type="checkbox"]').forEach(cb => {
+    states[cb.id] = cb.checked;
+  });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(states)); } catch(e) {}
+}
+
+function loadChecklist() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (saved) {
+      Object.keys(saved).forEach(id => {
+        const cb = document.getElementById(id);
+        if (cb) cb.checked = saved[id];
+      });
+    }
+  } catch(e) {}
+}
+
+loadChecklist();
+document.querySelectorAll('.checklist-section input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener('change', saveChecklist);
+});
+</script>
+
+</body>
+</html>

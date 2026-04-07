@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Flashcards Droit STMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; min-height: 100vh; padding-top: 64px; }
+
+/* NAV */
+.sli-nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.sli-nav a { text-decoration:none }
+.sli-nav-logo { font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18 }
+.sli-nav-logo span { color:#b5415a }
+.sli-nav-links { display:flex;gap:2px }
+.sli-nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none }
+.sli-nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.sli-nl.on { background:#1e1c18;color:#f5c842 }
+.badge { font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;background:#1e1c18;color:#f5c842;padding:3px 10px;border-radius:20px;letter-spacing:.02em }
+@media print { .sli-nav { display:none!important } body { padding-top:0 } }
+
+/* LAYOUT */
+.page { max-width: 820px; margin: 0 auto; padding: 28px 20px 48px; }
+
+/* HEADER */
+.fc-header { text-align: center; margin-bottom: 22px; }
+.fc-badge { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #1e1c18; color: #f5c842; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+.fc-title { font-family: 'Nunito', sans-serif; font-size: 30px; font-weight: 900; color: #1e1c18; margin-bottom: 4px; }
+.fc-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+
+/* STATS BAR */
+.stats-bar { background: #fffdf8; border-radius: 12px; padding: 12px 20px; display: flex; align-items: center; gap: 14px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.06); flex-wrap: wrap; }
+.stat-item { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: #5a5448; white-space: nowrap; }
+.stat-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.d-new-color { background: #c8c0b4; }
+.d-nope-color { background: #b5415a; }
+.d-ok-color { background: #1a7a3c; }
+.progress-track { flex: 1; min-width: 80px; height: 7px; background: #e0dbd2; border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #1a7a3c, #2cad60); border-radius: 4px; transition: width 0.35s; }
+
+/* FILTER BAR */
+.filter-section-label { font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 700; color: #a09880; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; margin-top: 4px; }
+.filter-bar { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+.filter-btn { font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 800; padding: 5px 13px; border-radius: 20px; border: 2px solid transparent; cursor: pointer; transition: all 0.13s; opacity: 0.6; }
+.filter-btn:hover { opacity: 0.85; }
+.filter-btn.active { opacity: 1; }
+.f-all { background: #e0dbd2; color: #5a5448; }
+.f-all.active { background: #1e1c18; color: #fffdf8; border-color: #1e1c18; }
+.f-rose { background: #f9d0d9; color: #b5415a; }
+.f-rose.active { border-color: #b5415a; }
+.f-bleu { background: #cce2f8; color: #2a69a8; }
+.f-bleu.active { border-color: #2a69a8; }
+.f-violet { background: #ead8f5; color: #7030a0; }
+.f-violet.active { border-color: #7030a0; }
+.f-jaune { background: #fde8a0; color: #946e00; }
+.f-jaune.active { border-color: #946e00; }
+.f-form { background: #2c2920; color: #f5c842; }
+.f-form.active { border-color: #f5c842; }
+.f-vert { background: #c8e6c8; color: #2a6a2a; }
+.f-vert.active { border-color: #2a6a2a; }
+.f-gris { background: #d8d8d8; color: #4a4a4a; }
+.f-gris.active { border-color: #4a4a4a; }
+
+/* TOOLBAR */
+.toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 10px; }
+.toolbar-left { display: flex; gap: 8px; }
+.tool-btn { font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 700; padding: 6px 13px; border-radius: 8px; border: 1.5px solid #ddd8cf; background: #fff; color: #5a5448; cursor: pointer; transition: all 0.13s; }
+.tool-btn:hover { border-color: #a09880; }
+.tool-btn.on { background: #1e1c18; color: #fffdf8; border-color: #1e1c18; }
+.kbd-hint { font-size: 10px; color: #a09880; font-weight: 600; }
+
+/* CARD AREA */
+.card-area { perspective: 1200px; margin-bottom: 14px; }
+.card-wrap { position: relative; height: 290px; cursor: pointer; user-select: none; }
+.card-inner { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.42s cubic-bezier(.4,0,.2,1); }
+.card-inner.flipped { transform: rotateY(180deg); }
+.card-face { position: absolute; inset: 0; border-radius: 18px; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 36px; text-align: center; }
+.card-back { transform: rotateY(180deg); overflow-y: auto; }
+
+/* Card colors */
+.card-rose .card-front  { background: linear-gradient(135deg, #b5415a 0%, #d05070 100%); box-shadow: 0 8px 32px rgba(181,65,90,.35); }
+.card-rose .card-back   { background: #fdeef2; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-bleu .card-front  { background: linear-gradient(135deg, #2a69a8 0%, #3a82c8 100%); box-shadow: 0 8px 32px rgba(42,105,168,.35); }
+.card-bleu .card-back   { background: #e8f3ff; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-violet .card-front { background: linear-gradient(135deg, #7030a0 0%, #9055b8 100%); box-shadow: 0 8px 32px rgba(112,48,160,.35); }
+.card-violet .card-back  { background: #f5eeff; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-jaune .card-front { background: linear-gradient(135deg, #946e00 0%, #b88c00 100%); box-shadow: 0 8px 32px rgba(148,110,0,.35); }
+.card-jaune .card-back  { background: #fef8e2; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-form .card-front  { background: linear-gradient(135deg, #1e1c18 0%, #2c2920 100%); box-shadow: 0 8px 32px rgba(0,0,0,.4); }
+.card-form .card-back   { background: #fde8a0; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-vert .card-front  { background: linear-gradient(135deg, #2a6a2a 0%, #3a8a3a 100%); box-shadow: 0 8px 32px rgba(42,106,42,.35); }
+.card-vert .card-back   { background: #eef6ee; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-gris .card-front  { background: linear-gradient(135deg, #6a6a6a 0%, #8a8a8a 100%); box-shadow: 0 8px 32px rgba(106,106,106,.35); }
+.card-gris .card-back   { background: #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+
+/* Card front content */
+.card-chap-tag { font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 3px 12px; border-radius: 20px; background: rgba(255,255,255,.2); color: rgba(255,255,255,.9); margin-bottom: 16px; }
+.card-form .card-chap-tag { background: rgba(245,200,66,.25); color: #f5c842; }
+.card-notion { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #fff; line-height: 1.25; }
+.card-form .card-notion { color: #f5c842; font-size: 24px; }
+.card-hint { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 16px; font-weight: 600; }
+
+/* Card back content */
+.back-tag { font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 12px; border-radius: 20px; margin-bottom: 6px; display: inline-block; }
+.card-rose   .back-tag { background: rgba(181,65,90,.15);  color: #b5415a; }
+.card-bleu   .back-tag { background: rgba(42,105,168,.15); color: #2a69a8; }
+.card-violet .back-tag { background: rgba(112,48,160,.15); color: #7030a0; }
+.card-jaune  .back-tag { background: rgba(148,110,0,.15);  color: #946e00; }
+.card-form   .back-tag { background: rgba(30,28,24,.1);    color: #7a5800; }
+.card-vert   .back-tag { background: rgba(42,106,42,.15);  color: #2a6a2a; }
+.card-gris   .back-tag { background: rgba(106,106,106,.15); color: #4a4a4a; }
+
+.cat-badge { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+.cat-vocabulaire { background: #e0dbd2; color: #5a5448; }
+.cat-distinction { background: #cce2f8; color: #2a69a8; }
+.cat-formule     { background: #fde8a0; color: #946e00; }
+.cat-piege       { background: #fdeef2; color: #b5415a; }
+.cat-methode     { background: #e6f5ec; color: #1a7a3c; }
+.cat-article     { background: #ead8f5; color: #7030a0; }
+
+.card-def { font-size: 16px; font-weight: 600; line-height: 1.6; text-align: left; }
+.card-def ul { list-style: none; padding: 0; margin: 8px 0 0; text-align: left; }
+.card-def ul li { position: relative; padding-left: 20px; margin-bottom: 6px; }
+.card-def ul li::before { content: '•'; position: absolute; left: 0; font-weight: 900; color: inherit; opacity: 0.5; }
+.card-rose   .card-def { color: #7a2038; }
+.card-bleu   .card-def { color: #1a4f82; }
+.card-violet .card-def { color: #4a1a7a; }
+.card-jaune  .card-def { color: #7a5800; }
+.card-form   .card-def { color: #5a4000; }
+.card-vert   .card-def { color: #1a5a1a; }
+.card-gris   .card-def { color: #3a3a3a; }
+.card-formula { font-family: monospace; font-size: 14px; font-weight: 700; background: rgba(30,28,24,.12); padding: 8px 16px; border-radius: 8px; margin-top: 12px; color: #1e1c18; }
+
+/* Mastery badge on card corner */
+.mastery-badge { position: absolute; top: 13px; right: 13px; z-index: 5; width: 28px; height: 28px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+.mastery-badge.ok   { display: flex; background: #1a7a3c; }
+.mastery-badge.nope { display: flex; background: #b5415a; }
+
+/* CONTROLS */
+.controls { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.nav-btn { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; padding: 10px 18px; border-radius: 10px; border: 2px solid #ddd8cf; background: #fff; color: #5a5448; cursor: pointer; transition: all 0.13s; }
+.nav-btn:hover:not(:disabled) { border-color: #1e1c18; color: #1e1c18; }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+.card-counter { flex: 1; text-align: center; }
+.counter-main { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: #1e1c18; }
+.counter-name { font-size: 11px; color: #7a6a58; font-weight: 600; margin-top: 2px; }
+.flip-btn { font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; padding: 10px 18px; border-radius: 10px; border: none; background: #1e1c18; color: #fffdf8; cursor: pointer; transition: background 0.13s; white-space: nowrap; }
+.flip-btn:hover { background: #2c2920; }
+
+/* MASTERY BUTTONS */
+.mastery-row { display: flex; gap: 10px; margin-bottom: 16px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+.mastery-row.visible { opacity: 1; pointer-events: all; }
+.btn-nope { flex: 1; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; padding: 11px; border-radius: 10px; border: none; background: #fdeef2; color: #b5415a; cursor: pointer; transition: background 0.13s; }
+.btn-nope:hover { background: #f9d0d9; }
+.btn-ok   { flex: 1; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; padding: 11px; border-radius: 10px; border: none; background: #e6f5ec; color: #1a7a3c; cursor: pointer; transition: background 0.13s; }
+.btn-ok:hover { background: #bce8cd; }
+
+/* DOT TRACK */
+.dot-track { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
+.dot { width: 11px; height: 11px; border-radius: 50%; cursor: pointer; transition: transform 0.1s; flex-shrink: 0; outline: none; border: none; padding: 0; }
+.dot:hover { transform: scale(1.4); }
+.dot.cur { outline: 2.5px solid #1e1c18; outline-offset: 2px; }
+.d-new  { background: #c8c0b4; }
+.d-ok   { background: #1a7a3c; }
+.d-nope { background: #b5415a; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 60px 20px; color: #7a6a58; }
+.empty-state .big { font-size: 40px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; font-weight: 600; }
+</style>
+</head>
+<body data-subject="droit">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Droit</span>
+  <a href="memos-droit.html">Mémos</a>
+  <a href="flashcards-droit.html" class="active">Flashcards</a>
+  <a href="questions-bac-droit.html">Questions Bac</a>
+  <a href="methode-jour-j-droit.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<div class="page">
+
+  <div class="fc-header">
+    <div class="fc-badge">Droit STMG</div>
+    <div class="fc-title">Flashcards Droit</div>
+    <div class="fc-sub">77 cartes · Filtre par thème et catégorie · Suivi de maîtrise</div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-item"><span class="stat-dot d-new-color"></span><span id="stat-new">– à voir</span></div>
+    <div class="stat-item"><span class="stat-dot d-nope-color"></span><span id="stat-nope">– à revoir</span></div>
+    <div class="stat-item"><span class="stat-dot d-ok-color"></span><span id="stat-ok">– maîtrisées</span></div>
+    <div class="progress-track"><div id="progress-fill" class="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- FILTER: Par thème -->
+  <div class="filter-section-label">Par thème</div>
+  <div class="filter-bar" id="filter-theme">
+    <button class="filter-btn f-all active" data-filter="all" onclick="setThemeFilter('all')">Tout</button>
+    <button class="filter-btn f-bleu"   data-filter="t5"    onclick="setThemeFilter('t5')">Thème 5 · Contrat</button>
+    <button class="filter-btn f-rose"   data-filter="t6"    onclick="setThemeFilter('t6')">Thème 6 · Responsabilité</button>
+    <button class="filter-btn f-violet" data-filter="t7"    onclick="setThemeFilter('t7')">Thème 7 · Travail</button>
+    <button class="filter-btn f-jaune"  data-filter="t8"    onclick="setThemeFilter('t8')">Thème 8 · Entreprendre</button>
+    <button class="filter-btn f-gris"   data-filter="trans" onclick="setThemeFilter('trans')">Transversal</button>
+  </div>
+
+  <!-- FILTER: Par catégorie -->
+  <div class="filter-section-label">Par catégorie</div>
+  <div class="filter-bar" id="filter-cat">
+    <button class="filter-btn f-all active" data-filter="all"         onclick="setCatFilter('all')">Tout</button>
+    <button class="filter-btn f-gris"       data-filter="vocabulaire" onclick="setCatFilter('vocabulaire')">Vocabulaire</button>
+    <button class="filter-btn f-bleu"       data-filter="distinction" onclick="setCatFilter('distinction')">A ≠ B Distinction</button>
+    <button class="filter-btn f-rose"       data-filter="piege"       onclick="setCatFilter('piege')">Piège</button>
+    <button class="filter-btn f-violet"     data-filter="article"     onclick="setCatFilter('article')">Article</button>
+    <button class="filter-btn f-vert"       data-filter="methode"     onclick="setCatFilter('methode')">Méthode</button>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button id="shuffle-btn" class="tool-btn" onclick="toggleShuffle()">Mélanger</button>
+      <button class="tool-btn" onclick="resetCurrent()">Réinitialiser</button>
+    </div>
+    <span class="kbd-hint">← → pour naviguer · Espace pour retourner</span>
+  </div>
+
+  <!-- CARD AREA -->
+  <div class="card-area">
+    <div id="card-wrap" class="card-wrap card-bleu" onclick="flipCard()">
+      <div id="card-inner" class="card-inner">
+        <!-- Front -->
+        <div class="card-face card-front">
+          <div id="front-tag" class="card-chap-tag"></div>
+          <div id="front-notion" class="card-notion"></div>
+          <div class="card-hint">Cliquer pour voir la définition</div>
+        </div>
+        <!-- Back -->
+        <div class="card-face card-back">
+          <div id="back-tag" class="back-tag"></div>
+          <div id="back-cat" class="cat-badge"></div>
+          <div id="back-def" class="card-def"></div>
+          <div id="back-formula" class="card-formula" style="display:none;"></div>
+        </div>
+      </div>
+      <div id="mastery-badge" class="mastery-badge"></div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button id="btn-prev" class="nav-btn" onclick="prev()">← Précédente</button>
+    <div class="card-counter">
+      <div id="counter-main" class="counter-main">1 / 77</div>
+      <div id="counter-name" class="counter-name"></div>
+    </div>
+    <button id="flip-btn" class="flip-btn" onclick="flipCard()">Voir la définition</button>
+    <button id="btn-next" class="nav-btn" onclick="next()">Suivante →</button>
+  </div>
+
+  <!-- MASTERY BUTTONS -->
+  <div id="mastery-row" class="mastery-row">
+    <button class="btn-nope" onclick="markMastery('nope')">À revoir</button>
+    <button class="btn-ok"   onclick="markMastery('ok')">Je sais !</button>
+  </div>
+
+  <!-- DOT TRACK -->
+  <div id="dot-track" class="dot-track"></div>
+
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const CARDS = [
+  // THÈME 5 — Le contrat — bleu (15 cartes)
+  {id:1, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Contrat (art. 1101 C. civ.)', def:'Accord de volontés entre deux ou plusieurs parties destiné à créer, modifier, transmettre ou éteindre des obligations. Il fait naître des droits et des obligations pour chaque partie.'},
+  {id:2, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Quelles sont les 3 conditions de validité d\'un contrat (art. 1128) ?', def:'1. Le consentement des parties (libre et éclairé)\n2. La capacité juridique (pas de mineur non émancipé, pas de majeur protégé)\n3. Un contenu licite et certain (objet légal et déterminé)\nSi une condition manque = nullité du contrat.'},
+  {id:3, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Consentement', def:'Accord libre et éclairé d\'une personne pour s\'engager dans un contrat. Il ne doit pas être affecté par un vice (erreur, dol, violence). Sans consentement valable, le contrat est nul.'},
+  {id:4, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Quels sont les 3 vices du consentement ?', def:'1. L\'erreur : se tromper sur une qualité essentielle (art. 1132)\n2. Le dol : manoeuvres ou dissimulation pour tromper l\'autre partie (art. 1137)\n3. La violence : contrainte physique ou morale pour forcer à contracter (art. 1140)\nConséquence : nullité du contrat.'},
+  {id:5, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Dol', def:'Vice du consentement consistant en des manoeuvres, mensonges ou dissimulation d\'information pour tromper l\'autre partie et obtenir son consentement. Le dol est une erreur PROVOQUÉE intentionnellement. Ex. : cacher un vice dans un véhicule vendu.'},
+  {id:6, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Capacité juridique', def:'Aptitude d\'une personne à être titulaire de droits et à les exercer elle-même. Un mineur non émancipé ou un majeur sous tutelle n\'a pas la pleine capacité juridique. Défaut de capacité = nullité possible du contrat.'},
+  {id:7, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Clause abusive (art. L212-1 C. conso)', def:'Clause d\'un contrat entre un professionnel et un consommateur qui crée un déséquilibre significatif entre les droits et obligations des parties, au détriment du consommateur. Sanction : la clause est réputée non écrite (elle disparaît, le reste du contrat subsiste).'},
+  {id:8, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Obligation de moyens', def:'Le débiteur s\'engage à faire tout son possible, sans garantir le résultat. En cas de litige, c\'est au CRÉANCIER de prouver que le débiteur n\'a pas fait les efforts nécessaires. Ex. : un médecin s\'engage à soigner, pas à guérir.'},
+  {id:9, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Obligation de résultat', def:'Le débiteur s\'engage à atteindre un résultat précis. En cas d\'échec, sa responsabilité est AUTOMATIQUE (pas besoin de prouver la faute). Ex. : un transporteur s\'engage à livrer le colis intact.'},
+  {id:10, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Inexécution du contrat', def:'Fait pour une partie de ne pas respecter ses obligations contractuelles. L\'autre partie dispose de remèdes : exception d\'inexécution, exécution forcée, résolution du contrat, réduction du prix, dommages-intérêts (art. 1217).'},
+  {id:11, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Résolution du contrat', def:'Anéantissement rétroactif du contrat pour inexécution des obligations. Le contrat est détruit comme s\'il n\'avait jamais existé. À distinguer de la nullité (problème de formation) : la résolution sanctionne un problème d\'EXÉCUTION.'},
+  {id:12, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Exception d\'inexécution', def:'Droit pour une partie de suspendre sa propre obligation tant que l\'autre partie n\'exécute pas la sienne. C\'est un moyen de pression, pas une rupture du contrat. Ex. : refuser de payer tant que la marchandise n\'est pas livrée.'},
+  {id:13, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'vocabulaire', notion:'Mise en demeure', def:'Acte formel par lequel un créancier demande au débiteur d\'exécuter son obligation dans un délai déterminé. C\'est souvent une étape préalable obligatoire avant de réclamer des dommages-intérêts ou la résolution du contrat.'},
+  {id:14, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'distinction', notion:'Quelle différence entre obligation de moyens et obligation de résultat ?', def:'Moyens : le débiteur doit ESSAYER (le créancier doit prouver la faute). Ex. : médecin, avocat.\nRésultat : le débiteur doit RÉUSSIR (la responsabilité est automatique si le résultat n\'est pas atteint). Ex. : transporteur, vendeur.\nL\'enjeu est la CHARGE DE LA PREUVE.'},
+  {id:15, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'distinction', notion:'Quelle différence entre nullité et résolution d\'un contrat ?', def:'Nullité : le contrat est anéanti parce qu\'il était MAL FORMÉ dès le départ (vice du consentement, défaut de capacité). Le contrat n\'a jamais existé.\nRésolution : le contrat est anéanti parce qu\'il a été MAL EXÉCUTÉ après sa formation. Le contrat était valable mais une partie n\'a pas respecté ses obligations.'},
+
+  // THÈME 6 — La responsabilité — rose (15 cartes)
+  {id:16, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'vocabulaire', notion:'Responsabilité civile', def:'Obligation de réparer le dommage causé à autrui. But : RÉPARER (indemniser la victime). À distinguer de la responsabilité pénale (but : PUNIR). Deux branches : contractuelle (entre cocontractants) et délictuelle (entre tiers).'},
+  {id:17, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'vocabulaire', notion:'Quels sont les 3 types de dommage ?', def:'1. Dommage CORPOREL : atteinte au corps (blessure, handicap, décès)\n2. Dommage MATÉRIEL : atteinte aux biens (destruction, dégradation)\n3. Dommage MORAL : atteinte aux sentiments, à l\'honneur, à la réputation\nUn même fait peut causer les 3 types de dommages.'},
+  {id:18, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'vocabulaire', notion:'Lien de causalité', def:'Relation directe entre la faute commise et le dommage subi par la victime. C\'est la 3e condition de la responsabilité civile (avec la faute et le dommage). Sans lien de causalité prouvé, pas de responsabilité.'},
+  {id:19, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'vocabulaire', notion:'Force majeure', def:'Événement qui exonère de responsabilité. 3 caractères cumulatifs : IMPRÉVISIBLE (on ne pouvait pas l\'anticiper), IRRÉSISTIBLE (on ne pouvait pas l\'empêcher), EXTÉRIEUR (il ne dépend pas de la volonté du responsable). Ex. : séisme, pandémie exceptionnelle.'},
+  {id:20, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'distinction', notion:'Quelle différence entre responsabilité civile et responsabilité pénale ?', def:'Civile : obligation de RÉPARER un dommage (indemniser la victime, versement de dommages-intérêts). Juridiction : tribunal civil ou prud\'hommes.\nPénale : obligation de SUBIR UNE SANCTION pour un comportement interdit par la loi (amende, prison). Juridiction : tribunal correctionnel ou cour d\'assises.\nUn même fait peut engager les deux.'},
+  {id:21, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'distinction', notion:'Quelle différence entre responsabilité contractuelle et responsabilité délictuelle ?', def:'Contractuelle : entre COCONTRACTANTS, pour inexécution d\'une obligation du contrat (art. 1231-1). Ex. : un fournisseur qui ne livre pas.\nDélictuelle : entre TIERS (pas de contrat entre eux), pour un fait dommageable (art. 1240). Ex. : un passant blessé par un objet tombé d\'un balcon.\nOn ne peut pas choisir l\'une ou l\'autre.'},
+  {id:22, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'distinction', notion:'Quelle différence entre responsabilité du fait personnel, du fait d\'autrui et du fait des choses ?', def:'Fait personnel (art. 1240) : on répare le dommage causé par SA PROPRE faute.\nFait d\'autrui (art. 1242) : on répare le dommage causé par une PERSONNE dont on répond (enfant, salarié).\nFait des choses (art. 1242 al.1) : on répare le dommage causé par une CHOSE dont on est gardien.\nLes deux derniers sont de plein droit (pas besoin de prouver la faute du responsable).'},
+  {id:23, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'vocabulaire', notion:'Responsabilité du fait personnel (art. 1240 C. civ.)', def:'\"Tout fait quelconque de l\'homme, qui cause à autrui un dommage, oblige celui par la faute duquel il est arrivé à le réparer.\" 3 conditions : faute (intentionnelle ou négligence) + dommage + lien de causalité. C\'est le fondement général de la responsabilité civile.'},
+  {id:24, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'vocabulaire', notion:'Responsabilité du fait d\'autrui (art. 1242 C. civ.)', def:'On est responsable du dommage causé par les personnes dont on a la charge. Deux cas principaux :\n- Parents pour leurs enfants mineurs (responsabilité de plein droit)\n- Employeurs pour leurs salariés dans l\'exercice de leurs fonctions\nPas besoin de prouver une faute du parent ou de l\'employeur.'},
+  {id:25, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'vocabulaire', notion:'Trouble anormal de voisinage', def:'Nuisance qui excède les inconvénients normaux du voisinage (bruit excessif, odeurs, pollution). Responsabilité SANS FAUTE : il suffit de prouver le caractère ANORMAL du trouble. Ex. : travaux de construction très bruyants pendant des mois.'},
+  {id:26, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'vocabulaire', notion:'Préjudice écologique (art. 1246 C. civ.)', def:'Atteinte non négligeable aux éléments ou aux fonctions des écosystèmes. Réparé en priorité EN NATURE (restauration du milieu), à défaut par dommages-intérêts. Ex. : pollution d\'une rivière par une usine.'},
+  {id:27, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'vocabulaire', notion:'Quelles sont les 3 causes d\'exonération de responsabilité ?', def:'1. La FORCE MAJEURE : événement imprévisible, irrésistible, extérieur\n2. Le FAIT D\'UN TIERS : un tiers est la véritable cause du dommage\n3. La FAUTE DE LA VICTIME : la victime a contribué à son propre dommage\nL\'exonération peut être totale ou partielle.'},
+  {id:28, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'vocabulaire', notion:'Réparation en nature vs réparation par équivalent', def:'En nature : rétablir la situation antérieure au dommage (reconstruire, remplacer, restaurer).\nPar équivalent : verser une somme d\'argent (dommages-intérêts) quand la réparation en nature est impossible.\nPrincipe : réparation INTÉGRALE du préjudice.'},
+  {id:29, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'piege', notion:'Vrai ou faux : pour engager la responsabilité pour trouble anormal de voisinage, il faut prouver une faute du voisin.', def:'FAUX. Le trouble anormal de voisinage est un régime de responsabilité SANS FAUTE. Il suffit de prouver que le trouble dépasse les inconvénients normaux du voisinage. Le caractère anormal s\'apprécie selon l\'intensité, la durée, la fréquence du trouble.'},
+  {id:30, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'piege', notion:'Vrai ou faux : si la victime a commis une faute, le responsable est totalement exonéré.', def:'FAUX. La faute de la victime n\'entraîne une exonération TOTALE que si elle est la cause exclusive du dommage. Sinon, il y a partage de responsabilité : le juge répartit la charge entre le responsable et la victime selon la gravité de chaque faute.'},
+
+  // THÈME 7 — Le travail subordonné — violet (25 cartes)
+  {id:31, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Quels sont les 3 éléments du contrat de travail ?', def:'1. Une PRESTATION DE TRAVAIL (le salarié effectue un travail)\n2. Une RÉMUNÉRATION (le salarié reçoit un salaire)\n3. Un LIEN DE SUBORDINATION (le salarié est sous l\'autorité de l\'employeur)\nCes 3 éléments sont CUMULATIFS. S\'il en manque un, ce n\'est pas un contrat de travail.'},
+  {id:32, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Lien de subordination', def:'Critère ESSENTIEL du contrat de travail. Le salarié est placé sous l\'autorité de l\'employeur qui peut : donner des ordres et directives, contrôler l\'exécution du travail, sanctionner les manquements (jurisprudence Société Générale, Cass. 1996). C\'est ce qui distingue le salarié du travailleur indépendant.'},
+  {id:33, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'CDI (Contrat à Durée Indéterminée)', def:'Contrat de DROIT COMMUN, sans date de fin. C\'est la forme normale du contrat de travail. Peut être rompu par licenciement (initiative employeur), démission (initiative salarié) ou rupture conventionnelle (accord mutuel).'},
+  {id:34, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'CDD (Contrat à Durée Déterminée)', def:'Contrat d\'EXCEPTION, avec une date de fin prévue. Autorisé uniquement pour des motifs précis : remplacement d\'un salarié absent, surcroît temporaire d\'activité, emploi saisonnier. Durée max : 18 mois en principe. Doit être écrit et motiver le recours au CDD.'},
+  {id:35, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Pouvoir de direction de l\'employeur', def:'Pouvoir d\'organiser le travail dans l\'entreprise : fixer les horaires, répartir les tâches, définir les objectifs, donner des instructions aux salariés. Découle directement du lien de subordination. Limité par la loi et le contrat de travail.'},
+  {id:36, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Pouvoir disciplinaire de l\'employeur', def:'Pouvoir de sanctionner les fautes des salariés. Échelle des sanctions : avertissement, blâme, mise à pied disciplinaire, rétrogradation, licenciement pour faute. La sanction doit être proportionnée à la faute et respecter une procédure (entretien préalable, notification écrite).'},
+  {id:37, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Licenciement', def:'Rupture du contrat de travail à l\'INITIATIVE DE L\'EMPLOYEUR. Deux types : pour motif personnel (lié à la personne du salarié) ou pour motif économique (lié à la situation de l\'entreprise). Doit reposer sur une cause réelle et sérieuse.'},
+  {id:38, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Cause réelle et sérieuse (licenciement)', def:'Condition de validité du licenciement. RÉELLE : des faits objectifs, vérifiables, précis (pas de motif vague ou inventé). SÉRIEUSE : des faits suffisamment graves pour rendre impossible le maintien du salarié dans l\'entreprise. Sans cause réelle et sérieuse = licenciement abusif = dommages-intérêts.'},
+  {id:39, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Rupture conventionnelle', def:'Mode de rupture du CDI d\'un COMMUN ACCORD entre employeur et salarié. Procédure : entretiens, convention signée, délai de rétractation de 15 jours, homologation par la DREETS. Le salarié a droit aux allocations chômage. Ni un licenciement ni une démission.'},
+  {id:40, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Démission', def:'Rupture du contrat de travail à l\'initiative du SALARIÉ. Le salarié n\'a pas à justifier sa décision mais doit respecter un préavis. Pas de droit aux allocations chômage (sauf cas exceptionnels comme un projet de reconversion validé).'},
+  {id:41, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Clause de non-concurrence', def:'Clause interdisant au salarié d\'exercer une activité concurrente APRÈS la rupture du contrat. 4 conditions de validité cumulatives : limitée dans le TEMPS, limitée dans l\'ESPACE, limitée à une ACTIVITÉ spécifique, assortie d\'une CONTREPARTIE FINANCIÈRE. Sans ces 4 conditions, la clause est nulle.'},
+  {id:42, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Clause de mobilité', def:'Clause du contrat permettant à l\'employeur de muter le salarié dans une zone géographique DÉFINIE À L\'AVANCE. Conditions : la zone doit être précisément délimitée, la mutation doit être justifiée par l\'intérêt de l\'entreprise, et le délai de prévenance doit être raisonnable.'},
+  {id:43, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Modification du contrat de travail', def:'Changement d\'un élément ESSENTIEL du contrat : rémunération, qualification, durée du travail, lieu de travail (si pas de clause de mobilité). L\'employeur DOIT obtenir l\'accord du salarié. Le salarié peut REFUSER sans commettre de faute.'},
+  {id:44, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Changement des conditions de travail', def:'Changement d\'un élément SECONDAIRE : horaires (dans le même volume), tâches (dans la même qualification), lieu (dans le même secteur géographique). Relève du pouvoir de direction. Le salarié ne peut PAS REFUSER sans risquer une sanction disciplinaire.'},
+  {id:45, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Vie privée du salarié au travail', def:'Le salarié conserve des droits fondamentaux dans l\'entreprise. L\'employeur ne peut pas : lire les messages personnels, sanctionner pour des faits de vie privée (sauf trouble objectif dans l\'entreprise), surveiller de manière disproportionnée. Le droit au respect de la vie privée ne s\'arrête pas aux portes de l\'entreprise.'},
+  {id:46, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Droit de retrait', def:'Droit du salarié de se retirer d\'une situation de travail dont il a un motif raisonnable de penser qu\'elle présente un DANGER GRAVE ET IMMINENT pour sa vie ou sa santé. Aucune sanction ne peut être prise si l\'exercice est légitime. Le salarié doit alerter l\'employeur.'},
+  {id:47, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Droit de grève', def:'Droit CONSTITUTIONNEL des salariés de cesser collectivement le travail pour des revendications professionnelles. Conditions : arrêt collectif et concerté + revendications professionnelles. Le gréviste ne peut pas être licencié sauf faute lourde.'},
+  {id:48, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'vocabulaire', notion:'Conseil de prud\'hommes', def:'Juridiction compétente pour les litiges INDIVIDUELS entre employeur et salarié liés au contrat de travail (licenciement abusif, salaire impayé, harcèlement). Composé de juges élus (conseillers salariés et employeurs). Étape de CONCILIATION obligatoire avant le jugement.'},
+  {id:49, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'distinction', notion:'Quelle différence entre licenciement pour motif personnel et licenciement pour motif économique ?', def:'Personnel : motif lié À LA PERSONNE du salarié (faute, insuffisance professionnelle, inaptitude). L\'employeur reproche quelque chose au salarié.\nÉconomique : motif lié À LA SITUATION DE L\'ENTREPRISE (difficultés économiques, mutations technologiques, réorganisation). Pas de reproche au salarié.\nLes deux exigent une cause réelle et sérieuse.'},
+  {id:50, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'distinction', notion:'Quelle différence entre CDI et CDD ?', def:'CDI : pas de date de fin, c\'est la NORME. Peut être rompu à tout moment (licenciement, démission, rupture conventionnelle).\nCDD : date de fin prévue, c\'est l\'EXCEPTION. Autorisé seulement pour un motif précis et temporaire. Ne peut pas être rompu avant le terme sauf cas limitatifs.'},
+  {id:51, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'distinction', notion:'Quelle différence entre modification du contrat et changement des conditions de travail ?', def:'Modification du contrat : touche un élément ESSENTIEL (salaire, qualification, durée). L\'accord du salarié est OBLIGATOIRE. Le salarié peut refuser.\nChangement des conditions : touche un élément SECONDAIRE (horaires, tâches mineures). Relève du pouvoir de direction. Le salarié ne peut PAS refuser.\nConfondre les deux = erreur classique au Bac.'},
+  {id:52, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'distinction', notion:'Quelle différence entre contrat de travail et contrat d\'entreprise ?', def:'Contrat de travail : le SALARIÉ exécute un travail sous la direction de l\'EMPLOYEUR (lien de subordination). Le salarié est dépendant.\nContrat d\'entreprise : un PRESTATAIRE indépendant exécute un travail pour un CLIENT, sans lien de subordination. Le prestataire est libre de son organisation.\nL\'enjeu : la requalification en contrat de travail si la subordination est démontrée.'},
+  {id:53, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'piege', notion:'Vrai ou faux : un salarié peut refuser une modification de ses horaires de travail.', def:'ÇA DÉPEND. Si c\'est un simple changement des conditions de travail (mêmes horaires décalés, ex. 8h-16h vers 9h-17h) = le salarié ne peut pas refuser. Si c\'est une modification du contrat (passage de jour à nuit, de temps plein à temps partiel) = le salarié PEUT refuser. Il faut qualifier la nature du changement.'},
+  {id:54, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'piege', notion:'Vrai ou faux : un employeur peut licencier un salarié pour un motif lié à sa vie privée.', def:'EN PRINCIPE NON. La vie privée du salarié est protégée. Mais EXCEPTION : si les faits de vie privée causent un TROUBLE OBJECTIF dans l\'entreprise (ex. : un salarié d\'une banque condamné pour escroquerie), le licenciement peut être justifié. C\'est l\'appréciation du juge.'},
+  {id:55, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'piege', notion:'Vrai ou faux : un auto-entrepreneur ne peut jamais être requalifié en salarié.', def:'FAUX. Si les conditions d\'un contrat de travail sont réunies (prestation, rémunération, ET surtout lien de subordination), le juge peut requalifier la relation en contrat de travail, même si les parties ont choisi le statut d\'auto-entrepreneur. Les faits priment sur la qualification choisie.'},
+  {id:56, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'piege', notion:'Vrai ou faux : une clause de non-concurrence sans contrepartie financière est valable.', def:'FAUX. La contrepartie financière est l\'une des 4 conditions CUMULATIVES de validité de la clause de non-concurrence. Sans elle, la clause est NULLE. Les 3 autres conditions : limitation dans le temps, dans l\'espace, et à une activité spécifique.'},
+  {id:57, chap:'t7', chapLabel:'Thème 7 · Travail', color:'violet', cat:'piege', notion:'Vrai ou faux : un licenciement sans cause réelle et sérieuse est automatiquement annulé.', def:'FAUX. Le licenciement sans cause réelle et sérieuse n\'est pas annulé : il a quand même lieu. Mais il est qualifié d\'ABUSIF, et le salarié a droit à des dommages-intérêts dont le montant est encadré par le barème Macron. L\'annulation (nullité) est réservée à des cas spéciaux (discrimination, grossesse, grève).'},
+
+  // THÈME 8 — Entreprendre — jaune (8 cartes)
+  {id:58, chap:'t8', chapLabel:'Thème 8 · Entreprendre', color:'jaune', cat:'vocabulaire', notion:'Entrepreneur individuel', def:'Personne qui exerce seule une activité économique, sans créer de personne morale. Depuis la loi de 2022 : séparation automatique du patrimoine personnel et professionnel. Seul le patrimoine professionnel répond des dettes de l\'activité.'},
+  {id:59, chap:'t8', chapLabel:'Thème 8 · Entreprendre', color:'jaune', cat:'vocabulaire', notion:'Personnalité morale', def:'Aptitude d\'un groupement (société, association) à être titulaire de droits et d\'obligations, comme une personne physique. La société, une fois immatriculée, a un nom (dénomination sociale), un domicile (siège social) et un patrimoine propre distinct de celui de ses associés.'},
+  {id:60, chap:'t8', chapLabel:'Thème 8 · Entreprendre', color:'jaune', cat:'vocabulaire', notion:'SARL, SA, SAS : quelles différences essentielles ?', def:'SARL : 1 à 100 associés, capital libre, gérant, adaptée aux petites structures.\nSA : min. 2 actionnaires (7 si cotée), capital min. 37 000 euros, conseil d\'administration, adaptée aux grandes entreprises.\nSAS : 1 associé min., capital libre, président, grande liberté statutaire, la plus utilisée aujourd\'hui.'},
+  {id:61, chap:'t8', chapLabel:'Thème 8 · Entreprendre', color:'jaune', cat:'vocabulaire', notion:'Capital social', def:'Somme des apports des associés lors de la création de la société. 3 types d\'apports : en numéraire (argent), en nature (bien matériel/immatériel), en industrie (compétences -- ne compte pas dans le capital). Le capital social est une garantie pour les créanciers.'},
+  {id:62, chap:'t8', chapLabel:'Thème 8 · Entreprendre', color:'jaune', cat:'vocabulaire', notion:'Quels sont les 3 types d\'apports ?', def:'1. Apport en NUMÉRAIRE : somme d\'argent\n2. Apport en NATURE : bien matériel ou immatériel (local, véhicule, brevet)\n3. Apport en INDUSTRIE : compétences, savoir-faire, travail personnel\nSeuls les apports en numéraire et en nature composent le capital social.'},
+  {id:63, chap:'t8', chapLabel:'Thème 8 · Entreprendre', color:'jaune', cat:'distinction', notion:'Quelle différence entre responsabilité limitée et responsabilité illimitée ?', def:'Limitée : l\'associé ne risque de perdre que le montant de ses APPORTS. Son patrimoine personnel est protégé (SARL, SA, SAS).\nIllimitée : l\'entrepreneur répond des dettes sur l\'ENSEMBLE de son patrimoine (historiquement entrepreneur individuel, avant réforme 2022).\nLe choix de la forme juridique détermine le niveau de responsabilité.'},
+  {id:64, chap:'t8', chapLabel:'Thème 8 · Entreprendre', color:'jaune', cat:'piege', notion:'Vrai ou faux : un entrepreneur individuel risque toujours de perdre sa maison en cas de faillite.', def:'FAUX depuis la loi du 14 février 2022. Désormais, la séparation des patrimoines est AUTOMATIQUE pour l\'entrepreneur individuel. Seul le patrimoine professionnel répond des dettes de l\'activité. Le patrimoine personnel (maison, épargne personnelle) est protégé.'},
+  {id:65, chap:'t8', chapLabel:'Thème 8 · Entreprendre', color:'jaune', cat:'piege', notion:'Vrai ou faux : l\'apport en industrie compte dans le capital social.', def:'FAUX. L\'apport en industrie (compétences, savoir-faire) donne droit à des parts sociales mais ne compose PAS le capital social. Seuls les apports en numéraire (argent) et en nature (biens) sont comptabilisés dans le capital.'},
+
+  // ARTICLES — bleu/rose selon thème (6 cartes)
+  {id:66, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'article', notion:'Que dit l\'article 1101 du Code civil ?', def:'Il définit le CONTRAT : accord de volontés entre deux ou plusieurs personnes destiné à créer, modifier, transmettre ou éteindre des obligations. C\'est l\'article fondateur du droit des contrats.'},
+  {id:67, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'article', notion:'Que dit l\'article 1128 du Code civil ?', def:'Il fixe les 3 CONDITIONS DE VALIDITÉ du contrat : 1) le consentement des parties, 2) leur capacité de contracter, 3) un contenu licite et certain. Si une condition manque, le contrat peut être annulé (nullité).'},
+  {id:68, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'article', notion:'Que dit l\'article 1130 du Code civil ?', def:'Il introduit les VICES DU CONSENTEMENT : l\'erreur, le dol et la violence vicient le consentement lorsqu\'ils sont déterminants (sans le vice, la partie n\'aurait pas contracté ou aurait contracté à des conditions différentes). Conséquence : nullité relative du contrat.'},
+  {id:69, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'article', notion:'Que dit l\'article 1217 du Code civil ?', def:'Il liste les REMÈDES À L\'INEXÉCUTION du contrat : refuser d\'exécuter ou suspendre l\'exécution (exception d\'inexécution), poursuivre l\'exécution forcée, obtenir une réduction du prix, provoquer la résolution du contrat, demander des dommages-intérêts.'},
+  {id:70, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'article', notion:'Que dit l\'article 1240 du Code civil ?', def:'C\'est le fondement de la RESPONSABILITÉ DU FAIT PERSONNEL : tout fait quelconque de l\'homme qui cause un dommage oblige celui par la faute duquel il est arrivé à le réparer. 3 conditions : faute + dommage + lien de causalité. L\'article le plus cité au Bac de droit.'},
+  {id:71, chap:'t6', chapLabel:'Thème 6 · Responsabilité', color:'rose', cat:'article', notion:'Que dit l\'article 1242 du Code civil ?', def:'Il fonde deux régimes de responsabilité : la RESPONSABILITÉ DU FAIT DES CHOSES (alinéa 1 : on est responsable du dommage causé par les choses dont on a la garde) et la RESPONSABILITÉ DU FAIT D\'AUTRUI (parents pour enfants, employeurs pour salariés). Responsabilité de plein droit.'},
+
+  // TRANSVERSAL — gris (8 cartes : 4 méthode + 4 pièges)
+  {id:72, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'methode', notion:'Qu\'est-ce que le syllogisme juridique ?', def:'Raisonnement en 3 étapes utilisé dans TOUTES les réponses de droit au Bac :\n1. RÈGLE DE DROIT : \"Selon l\'article X du Code civil...\"\n2. APPLICATION AUX FAITS : \"En l\'espèce, M. Dupont a...\"\n3. SOLUTION : \"Par conséquent, on peut en déduire que...\"\nC\'est l\'équivalent de la méthode AEI en économie, mais spécifique au droit.'},
+  {id:73, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'methode', notion:'Comment répondre à la Q1 : \'Résumez les faits en utilisant des qualifications juridiques\' ?', def:'1. Identifier les PARTIES (employeur/salarié, vendeur/acheteur, auteur du dommage/victime)\n2. Qualifier les FAITS avec le vocabulaire juridique (contrat de travail, licenciement, faute, dol, dommage...)\n3. Présenter CHRONOLOGIQUEMENT les faits importants\n4. Ne PAS donner d\'avis juridique, rester factuel\nAstuce : remplacer chaque mot du langage courant par son équivalent juridique.'},
+  {id:74, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'methode', notion:'Comment répondre aux Q2-Q3 : argumentation juridique contradictoire ?', def:'Pour CHAQUE partie au litige, utiliser le syllogisme :\n1. RÈGLE : citer l\'article ou le principe applicable\n2. FAITS : appliquer la règle aux faits du cas\n3. SOLUTION : conclure en faveur de cette partie\nIMPORTANT : donner les arguments des DEUX côtés, même si l\'un vous semble plus fort. Les correcteurs valorisent l\'argumentation contradictoire.'},
+  {id:75, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'methode', notion:'Quelle est la différence entre la méthode en droit (syllogisme) et la méthode en économie (AEI) ?', def:'DROIT = syllogisme : Règle de droit (article) -> Application aux faits -> Solution. On part d\'une règle JURIDIQUE.\nÉCONOMIE = AEI : Affirmation -> Explication du mécanisme -> Illustration. On part d\'une IDÉE économique.\nNe jamais utiliser la méthode AEI en droit et inversement. C\'est une erreur fréquente sanctionnée par les correcteurs.'},
+  {id:76, chap:'trans', chapLabel:'Transversal', color:'gris', cat:'piege', notion:'Vrai ou faux : en Q2-Q3 de droit, il suffit de donner les arguments d\'une seule partie.', def:'FAUX. Les Q2-Q3 demandent une argumentation CONTRADICTOIRE. Il faut présenter les arguments des DEUX parties au litige, chacun avec un syllogisme juridique. Les correcteurs retirent des points si une seule partie est traitée, même si l\'argumentation est correcte.'},
+  {id:77, chap:'t5', chapLabel:'Thème 5 · Contrat', color:'bleu', cat:'piege', notion:'Vrai ou faux : le dol et l\'erreur sont la même chose.', def:'FAUX. L\'erreur est SPONTANÉE : la partie se trompe toute seule sur une qualité essentielle. Le dol est PROVOQUÉ : l\'autre partie trompe INTENTIONNELLEMENT par des manoeuvres ou une dissimulation. Le dol est plus grave car il suppose une intention de tromper.'},
+];
+
+// Category display config
+const CAT_CONFIG = {
+  vocabulaire: { label: 'Vocabulaire', cls: 'cat-vocabulaire' },
+  distinction: { label: 'A ≠ B Distinction', cls: 'cat-distinction' },
+  piege:       { label: 'Piège', cls: 'cat-piege' },
+  article:     { label: 'Article', cls: 'cat-article' },
+  methode:     { label: 'Méthode', cls: 'cat-methode' },
+};
+
+// ─── COMPUTE FILTER COUNTS ──────────────────────────────────────────────────
+function countBy(key, val) {
+  return CARDS.filter(c => c[key] === val).length;
+}
+
+// Set counts on filter buttons at init
+(function setCounts() {
+  // Theme counts
+  const themeBtns = document.querySelectorAll('#filter-theme .filter-btn');
+  themeBtns.forEach(btn => {
+    const f = btn.dataset.filter;
+    const count = f === 'all' ? CARDS.length : CARDS.filter(c => c.chap === f).length;
+    btn.textContent = btn.textContent + ' · ' + count;
+  });
+  // Cat counts
+  const catBtns = document.querySelectorAll('#filter-cat .filter-btn');
+  catBtns.forEach(btn => {
+    const f = btn.dataset.filter;
+    const count = f === 'all' ? CARDS.length : CARDS.filter(c => c.cat === f).length;
+    btn.textContent = btn.textContent + ' · ' + count;
+  });
+})();
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let filterTheme = 'all';
+let filterCat = 'all';
+let deck = [...CARDS];
+let idx = 0;
+let flipped = false;
+let shuffled = false;
+let mastery = {};
+
+// Persist mastery in localStorage
+(function loadMastery() {
+  try { const s = localStorage.getItem('revizo_mastery_droit'); if(s) mastery = JSON.parse(s); } catch(e) {}
+})();
+function saveMastery() {
+  try { localStorage.setItem('revizo_mastery_droit', JSON.stringify(mastery)); } catch(e) {}
+}
+
+// ─── DECK MANAGEMENT ─────────────────────────────────────────────────────────
+function getBase() {
+  return CARDS.filter(c =>
+    (filterTheme === 'all' || c.chap === filterTheme) &&
+    (filterCat === 'all' || c.cat === filterCat)
+  );
+}
+
+function setThemeFilter(f) {
+  filterTheme = f;
+  deck = getBase();
+  if(shuffled) shuffle(deck);
+  idx = 0; flipped = false;
+  render();
+}
+
+function setCatFilter(f) {
+  filterCat = f;
+  deck = getBase();
+  if(shuffled) shuffle(deck);
+  idx = 0; flipped = false;
+  render();
+}
+
+function toggleShuffle() {
+  shuffled = !shuffled;
+  deck = getBase();
+  if(shuffled) shuffle(deck);
+  idx = 0; flipped = false;
+  render();
+}
+
+function shuffle(arr) {
+  for(let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function resetCurrent() {
+  deck.forEach(c => delete mastery[c.id]);
+  saveMastery();
+  render();
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+function flipCard() {
+  if(deck.length === 0) return;
+  flipped = !flipped;
+  render();
+}
+
+function next() { if(idx < deck.length - 1) { idx++; flipped = false; render(); } }
+function prev() { if(idx > 0) { idx--; flipped = false; render(); } }
+function goTo(i) { idx = i; flipped = false; render(); }
+
+function markMastery(status) {
+  const card = deck[idx];
+  mastery[card.id] = status;
+  saveMastery();
+  render();
+  if(idx < deck.length - 1) {
+    setTimeout(() => { idx++; flipped = false; render(); }, 280);
+  }
+}
+
+// ─── FORMAT DEF ─────────────────────────────────────────────────────────────
+function formatDef(text) {
+  // Detect numbered lists like "1) ... 2) ... 3) ..." or "1. ... 2. ... 3. ..."
+  const numberedPattern = /(?:^|\s)(\d)[.)]\s/g;
+  const matches = text.match(numberedPattern);
+  if (matches && matches.length >= 2) {
+    // Split on numbered items, build bullet list
+    const parts = text.split(/\d[.)]\s/);
+    const intro = parts[0].trim();
+    const items = parts.slice(1).map(p => p.trim()).filter(Boolean);
+    let html = intro ? '<span>' + intro + '</span>' : '';
+    html += '<ul>' + items.map(it => '<li>' + it + '</li>').join('') + '</ul>';
+    return html;
+  }
+  // Detect newline-separated lists (like distinctions: "A = ...\nB = ...")
+  if (text.includes('\n')) {
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length >= 2 && lines.length <= 5) {
+      return '<ul>' + lines.map(l => '<li>' + l + '</li>').join('') + '</ul>';
+    }
+    return text.replace(/\n/g, '<br>');
+  }
+  return text;
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function render() {
+  // Empty state
+  if(deck.length === 0) {
+    document.getElementById('card-wrap').innerHTML = '<div class="empty-state"><div class="big">🔍</div><p>Aucune carte ne correspond à ces filtres.<br>Essayez une autre combinaison.</p></div>';
+    document.getElementById('counter-main').textContent = '0 / 0';
+    document.getElementById('counter-name').textContent = '';
+    document.getElementById('btn-prev').disabled = true;
+    document.getElementById('btn-next').disabled = true;
+    document.getElementById('mastery-row').className = 'mastery-row';
+    document.getElementById('dot-track').innerHTML = '';
+    updateStats();
+    updateFilterButtons();
+    return;
+  }
+
+  // Ensure card HTML is present
+  const wrap = document.getElementById('card-wrap');
+  if(!document.getElementById('card-inner')) {
+    wrap.innerHTML = '<div id="card-inner" class="card-inner"><div class="card-face card-front"><div id="front-tag" class="card-chap-tag"></div><div id="front-notion" class="card-notion"></div><div class="card-hint">Cliquer pour voir la définition</div></div><div class="card-face card-back"><div id="back-tag" class="back-tag"></div><div id="back-cat" class="cat-badge"></div><div id="back-def" class="card-def"></div><div id="back-formula" class="card-formula" style="display:none;"></div></div></div><div id="mastery-badge" class="mastery-badge"></div>';
+  }
+
+  const card = deck[idx];
+  const m = mastery[card.id];
+
+  // Filter buttons
+  updateFilterButtons();
+
+  // Card class
+  document.getElementById('card-wrap').className = 'card-wrap card-' + card.color;
+  document.getElementById('card-inner').className = 'card-inner' + (flipped ? ' flipped' : '');
+
+  // Front
+  document.getElementById('front-tag').textContent = card.chapLabel;
+  document.getElementById('front-notion').textContent = card.notion;
+
+  // Back
+  document.getElementById('back-tag').textContent = card.chapLabel;
+
+  // Category badge
+  const catEl = document.getElementById('back-cat');
+  const catConf = CAT_CONFIG[card.cat];
+  if(catConf) {
+    catEl.textContent = catConf.label;
+    catEl.className = 'cat-badge ' + catConf.cls;
+    catEl.style.display = 'inline-block';
+  } else {
+    catEl.style.display = 'none';
+  }
+
+  // Definition with line breaks
+  const defEl = document.getElementById('back-def');
+  defEl.innerHTML = formatDef(card.def);
+
+  const formulaEl = document.getElementById('back-formula');
+  if(card.formula) { formulaEl.textContent = card.formula; formulaEl.style.display = 'block'; }
+  else { formulaEl.style.display = 'none'; }
+
+  // Mastery badge
+  const badge = document.getElementById('mastery-badge');
+  badge.className = 'mastery-badge' + (m === 'ok' ? ' ok' : m === 'nope' ? ' nope' : '');
+  badge.textContent = m === 'ok' ? '✓' : m === 'nope' ? '✕' : '';
+
+  // Counter
+  document.getElementById('counter-main').textContent = (idx + 1) + ' / ' + deck.length;
+  document.getElementById('counter-name').textContent = card.notion;
+
+  // Nav buttons
+  document.getElementById('btn-prev').disabled = (idx === 0);
+  document.getElementById('btn-next').disabled = (idx === deck.length - 1);
+
+  // Flip button
+  document.getElementById('flip-btn').textContent = flipped ? 'Cacher' : 'Voir la définition';
+
+  // Mastery row
+  document.getElementById('mastery-row').className = 'mastery-row' + (flipped ? ' visible' : '');
+
+  // Shuffle button
+  document.getElementById('shuffle-btn').className = 'tool-btn' + (shuffled ? ' on' : '');
+
+  // Stats
+  updateStats();
+
+  // Dots
+  renderDots();
+}
+
+function updateFilterButtons() {
+  document.querySelectorAll('#filter-theme .filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filterTheme);
+  });
+  document.querySelectorAll('#filter-cat .filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filterCat);
+  });
+}
+
+function updateStats() {
+  const okCount   = deck.filter(c => mastery[c.id] === 'ok').length;
+  const nopeCount = deck.filter(c => mastery[c.id] === 'nope').length;
+  const newCount  = deck.length - okCount - nopeCount;
+  document.getElementById('stat-new').textContent   = newCount + ' à voir';
+  document.getElementById('stat-nope').textContent  = nopeCount + ' à revoir';
+  document.getElementById('stat-ok').textContent    = okCount + ' maîtrisées';
+  document.getElementById('progress-fill').style.width = (deck.length ? (okCount / deck.length * 100) : 0) + '%';
+}
+
+function renderDots() {
+  const track = document.getElementById('dot-track');
+  track.innerHTML = '';
+  deck.forEach((card, i) => {
+    const m = mastery[card.id];
+    const dot = document.createElement('button');
+    dot.className = 'dot ' + (i === idx ? 'cur ' : '') + (m === 'ok' ? 'd-ok' : m === 'nope' ? 'd-nope' : 'd-new');
+    dot.title = card.notion;
+    dot.setAttribute('aria-label', card.notion);
+    dot.onclick = () => goTo(i);
+    track.appendChild(dot);
+  });
+}
+
+// ─── KEYBOARD ────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if(e.target.tagName === 'BUTTON' && e.code !== 'Space') return;
+  if(e.code === 'ArrowRight') next();
+  else if(e.code === 'ArrowLeft') prev();
+  else if(e.code === 'Space') { e.preventDefault(); flipCard(); }
+  else if(e.code === 'Digit1' && flipped) markMastery('ok');
+  else if(e.code === 'Digit2' && flipped) markMastery('nope');
+});
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>

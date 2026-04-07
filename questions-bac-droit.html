@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Questions Bac Droit STMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito Sans', sans-serif; }
+body { background: #f0ede6; color: #1e1c18; min-height: 100vh; }
+
+/* Nav */
+.nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.nav a { text-decoration:none }
+.nav-logo { font-family:'Inter',sans-serif;font-size:1.15rem;font-weight:900;color:#1e1c18 }
+.nav-logo .zo { color:#b5415a }
+.nav-links { display:flex;gap:4px }
+.nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none;transition:background .15s }
+.nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.nl.on { background:#1e1c18;color:#f5c842 }
+
+/* Hero */
+.hero { max-width:900px;margin:0 auto;padding:100px 24px 40px;text-align:center }
+.hero-badge { display:inline-block;background:#1e1c18;color:#f5c842;font-size:0.6rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:6px 20px;border-radius:20px;margin-bottom:20px }
+.hero h1 { font-family:'Nunito',sans-serif;font-size:3.2rem;font-weight:900;color:#1e1c18;line-height:1.1;margin-bottom:12px }
+.hero-sub { font-size:1.05rem;line-height:1.7;color:#7a6a58;font-weight:500;max-width:620px;margin:0 auto }
+
+/* Protocol Box */
+.protocol-box { max-width:860px;margin:0 auto 40px;background:#1e1c18;border-radius:16px;padding:28px 32px;color:#f5c842 }
+.protocol-box h3 { font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px }
+.protocol-box ol { list-style:none;counter-reset:proto;padding:0 }
+.protocol-box ol li { counter-increment:proto;font-size:0.92rem;line-height:1.8;color:#fffdf8;font-weight:500 }
+.protocol-box ol li::before { content:counter(proto) ". ";color:#f5c842;font-weight:800 }
+.protocol-box .proto-warn { margin-top:14px;font-size:0.85rem;color:#f5c842;font-weight:700;font-style:italic;border-top:1px solid rgba(245,200,66,.2);padding-top:12px }
+
+/* Content area */
+.content { max-width:900px;margin:0 auto;padding:0 24px 60px }
+.section-title { font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:#1e1c18;margin-bottom:20px;padding-bottom:8px;border-bottom:3px solid #f5c842 }
+
+/* Table */
+.table-wrap { overflow-x:auto;margin-bottom:32px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.06) }
+table { width:100%;border-collapse:collapse;background:#fffdf8;font-size:0.85rem }
+thead { background:#1e1c18;color:#f5c842 }
+th { font-family:'Inter',sans-serif;font-weight:700;text-align:left;padding:12px 16px;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase }
+td { padding:10px 16px;border-bottom:1px solid rgba(30,28,24,.08);line-height:1.5 }
+tbody tr:hover { background:rgba(245,200,66,.06) }
+
+/* Highlight box */
+.highlight-box { background:#fef8e2;border-left:4px solid #f5c842;border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:40px }
+.highlight-box h4 { font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;color:#946e00;margin-bottom:12px }
+.highlight-box ol { padding-left:20px }
+.highlight-box ol li { font-size:0.9rem;line-height:1.7;margin-bottom:4px;color:#1e1c18 }
+.highlight-box ol li strong { color:#946e00 }
+
+/* Accordions */
+.accordion { margin-bottom:16px;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);background:#fffdf8 }
+.accordion-header { display:flex;align-items:center;justify-content:space-between;padding:18px 24px;cursor:pointer;background:#fffdf8;border:none;width:100%;text-align:left;transition:background .15s;gap:12px }
+.accordion-header:hover { background:rgba(245,200,66,.08) }
+.accordion-header.open { background:rgba(245,200,66,.12) }
+.acc-type { font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18;flex:1 }
+.acc-type .type-num { color:#b5415a }
+.acc-theme-tag { font-size:0.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:12px;margin-left:10px;white-space:nowrap;vertical-align:middle }
+
+.accordion.th-bleu .accordion-header { border-left:4px solid #2a69a8 }
+.accordion.th-bleu .acc-type .type-num { color:#2a69a8 }
+.accordion.th-bleu .acc-theme-tag { background:#e8f3ff;color:#2a69a8 }
+.accordion.th-bleu .accordion-header:hover { background:rgba(42,105,168,.06) }
+.accordion.th-bleu .accordion-header.open { background:rgba(42,105,168,.1) }
+
+.accordion.th-rose .accordion-header { border-left:4px solid #b5415a }
+.accordion.th-rose .acc-type .type-num { color:#b5415a }
+.accordion.th-rose .acc-theme-tag { background:#fdeef2;color:#b5415a }
+.accordion.th-rose .accordion-header:hover { background:rgba(181,65,90,.06) }
+.accordion.th-rose .accordion-header.open { background:rgba(181,65,90,.1) }
+
+.accordion.th-jaune .accordion-header { border-left:4px solid #946e00 }
+.accordion.th-jaune .acc-type .type-num { color:#946e00 }
+.accordion.th-jaune .acc-theme-tag { background:#fef8e2;color:#946e00 }
+.accordion.th-jaune .accordion-header:hover { background:rgba(148,110,0,.06) }
+.accordion.th-jaune .accordion-header.open { background:rgba(148,110,0,.1) }
+
+.accordion.th-gris .accordion-header { border-left:4px solid #7a6a58 }
+.accordion.th-gris .acc-type .type-num { color:#7a6a58 }
+.accordion.th-gris .acc-theme-tag { background:rgba(30,28,24,.07);color:#5a5448 }
+.accordion.th-gris .accordion-header:hover { background:rgba(30,28,24,.04) }
+.accordion.th-gris .accordion-header.open { background:rgba(30,28,24,.07) }
+
+.acc-stars { font-size:0.95rem;color:#f5c842;white-space:nowrap;letter-spacing:2px }
+.acc-chevron { font-size:1.2rem;color:#a09880;transition:transform .2s;flex-shrink:0 }
+.accordion-header.open .acc-chevron { transform:rotate(180deg) }
+.accordion-body { display:none;padding:0 24px 24px;animation:fadeIn .25s ease }
+.accordion-body.show { display:block }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+
+/* Accordion inner sections */
+.acc-section { margin-bottom:18px }
+.acc-section:last-child { margin-bottom:0 }
+.acc-label { font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:8px }
+.acc-text { font-size:0.9rem;line-height:1.7;color:#1e1c18 }
+.acc-text ul { padding-left:20px }
+.acc-text ul li { margin-bottom:4px }
+.acc-exams { display:flex;flex-wrap:wrap;gap:6px;margin-top:4px }
+.acc-exam-tag { font-size:0.72rem;font-weight:700;background:rgba(181,65,90,.1);color:#b5415a;padding:3px 10px;border-radius:12px }
+
+/* Question type box */
+.question-box { background:#e8f3ff;border-radius:10px;padding:16px 20px;font-size:0.92rem;line-height:1.6;color:#1a4f82;font-weight:600 }
+.question-box .variant { font-size:0.82rem;font-weight:500;color:#5a7fa8;margin-top:6px;font-style:italic }
+
+/* Two column test */
+.two-col { display:grid;grid-template-columns:1fr 1fr;gap:14px }
+@media(max-width:600px){ .two-col{grid-template-columns:1fr} }
+.col-not { background:#fdeef2;border-radius:10px;padding:14px 18px }
+.col-not h5 { font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:800;color:#b5415a;margin-bottom:6px }
+.col-not p { font-size:0.85rem;line-height:1.6;color:#7a2038 }
+.col-yes { background:#eef6ee;border-radius:10px;padding:14px 18px }
+.col-yes h5 { font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:800;color:#2d7a3a;margin-bottom:6px }
+.col-yes p { font-size:0.85rem;line-height:1.6;color:#1e5a28 }
+.signal-box { background:rgba(245,200,66,.12);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:0.82rem;color:#7a5800;font-weight:600 }
+
+/* Steps */
+.steps { padding-left:0;list-style:none;counter-reset:step }
+.steps li { counter-increment:step;font-size:0.88rem;line-height:1.7;margin-bottom:6px;padding-left:28px;position:relative }
+.steps li::before { content:"ETAPE " counter(step);position:absolute;left:0;font-family:'Inter',sans-serif;font-size:0.6rem;font-weight:800;color:#b5415a;letter-spacing:0.5px }
+.steps .mots { font-size:0.82rem;color:#7a6a58;font-weight:600;padding-left:0;margin-top:8px }
+.steps .longueur { font-size:0.82rem;color:#7a6a58;font-weight:600;padding-left:0;margin-top:4px }
+
+/* Template box */
+.template-box { background:#1e1c18;border-radius:12px;padding:20px 24px;font-family:'Courier New',Courier,monospace;font-size:0.82rem;line-height:1.8;color:#fffdf8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word }
+
+/* Example box */
+.example-box { background:#eef6ee;border-radius:12px;padding:18px 22px;font-size:0.88rem;line-height:1.7;color:#1e5a28 }
+.example-box strong { color:#2d7a3a }
+.example-box .ex-q { font-weight:700;margin-bottom:8px }
+.example-box .ex-axe { margin-bottom:6px }
+
+/* Error box */
+.error-box { background:#fdeef2;border-left:4px solid #b5415a;border-radius:0 12px 12px 0;padding:14px 20px;font-size:0.88rem;line-height:1.6;color:#7a2038 }
+
+/* Tip box */
+.tip-box { background:#e8f3ff;border-left:4px solid #2a69a8;border-radius:0 12px 12px 0;padding:14px 20px;font-size:0.88rem;line-height:1.6;color:#1a4f82 }
+
+/* Observation box */
+.obs-box { background:rgba(181,65,90,.06);border-left:4px solid #b5415a;border-radius:0 12px 12px 0;padding:16px 20px;margin-top:24px }
+.obs-box h4 { font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:800;color:#b5415a;margin-bottom:8px }
+.obs-box ol { padding-left:20px }
+.obs-box ol li { font-size:0.85rem;line-height:1.7;margin-bottom:3px;color:#1e1c18 }
+
+/* Auto-eval */
+.autoeval { margin-top:48px }
+.eval-table { width:100%;border-collapse:collapse;background:#fffdf8;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06) }
+.eval-table thead { background:#1e1c18;color:#f5c842 }
+.eval-table th { font-family:'Inter',sans-serif;font-weight:700;text-align:center;padding:12px 14px;font-size:0.72rem;letter-spacing:1px;text-transform:uppercase }
+.eval-table th:first-child { text-align:left }
+.eval-table td { padding:12px 14px;border-bottom:1px solid rgba(30,28,24,.06);text-align:center;font-size:0.85rem }
+.eval-table td:first-child { text-align:left;font-weight:700;color:#1e1c18 }
+.eval-table input[type="radio"] { width:18px;height:18px;cursor:pointer;accent-color:#b5415a }
+.eval-reset { display:inline-block;margin-top:12px;background:none;border:2px solid rgba(30,28,24,.15);border-radius:8px;padding:8px 18px;font-size:0.8rem;font-weight:700;color:#7a6a58;cursor:pointer;transition:all .15s }
+.eval-reset:hover { border-color:#b5415a;color:#b5415a }
+
+/* Defense list */
+.defense-list { padding-left:20px;margin-top:8px }
+.defense-list li { font-size:0.85rem;line-height:1.7;margin-bottom:2px }
+.defense-list li strong { color:#2a69a8 }
+
+/* Frequent topics list */
+.freq-list { padding-left:20px;margin-top:8px }
+.freq-list li { font-size:0.85rem;line-height:1.7;margin-bottom:2px;font-style:italic;color:#1a4f82 }
+
+/* Footer */
+.footer { max-width:900px;margin:0 auto;padding:32px 24px 48px;text-align:center;font-size:0.78rem;color:#a09880;line-height:1.7 }
+
+/* Mobile */
+@media(max-width:700px){
+  .nav { padding:0 14px }
+  .nav-links { gap:2px }
+  .nl { font-size:0.68rem;padding:5px 8px }
+  .hero h1 { font-size:2.2rem }
+  .hero { padding-top:84px }
+  .protocol-box { padding:20px 18px }
+  .accordion-header { padding:14px 16px }
+  .acc-type { font-size:0.92rem }
+  .accordion-body { padding:0 16px 18px }
+  .template-box { font-size:0.75rem;padding:14px 16px }
+  .two-col { grid-template-columns:1fr }
+  table { font-size:0.78rem }
+  th,td { padding:8px 10px }
+}
+
+/* Print */
+@media print {
+  .nav { display:none }
+  .hero { padding-top:20px }
+  .accordion-body { display:block !important }
+  .acc-chevron { display:none }
+  .protocol-box { background:#eee;color:#333 }
+  .protocol-box h3,.protocol-box ol li::before,.protocol-box .proto-warn { color:#333 }
+  .template-box { background:#eee;color:#333 }
+  body { background:#fff }
+}
+</style>
+</head>
+<body data-subject="droit">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Droit</span>
+  <a href="memos-droit.html">Mémos</a>
+  <a href="flashcards-droit.html">Flashcards</a>
+  <a href="questions-bac-droit.html" class="active">Questions Bac</a>
+  <a href="methode-jour-j-droit.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Droit STMG</div>
+  <h1>Questions Bac · Droit</h1>
+  <p class="hero-sub">5 types de questions · 22 annales analysées · La méthode du syllogisme juridique, corrigés et templates</p>
+</section>
+
+<!-- PROTOCOL -->
+<div class="protocol-box">
+  <h3>Comment utiliser ce document</h3>
+  <ol>
+    <li>Lis la question type</li>
+    <li>Réponds seul·e sur une feuille — même 3 lignes</li>
+    <li>Compare avec la réponse attendue</li>
+    <li>Identifie ce que tu as oublié</li>
+    <li>Relis UNIQUEMENT ce point dans le Document Notions</li>
+  </ol>
+  <div class="proto-warn">Ne jamais lire le corrigé directement : ça ne sert à rien pour mémoriser. La méthode en Droit est le SYLLOGISME JURIDIQUE : règle de droit, application aux faits, solution. Chaque réponse doit suivre cette structure.</div>
+</div>
+
+<div class="content">
+
+<!-- RECAP TABLE -->
+<h2 class="section-title">Les 22 sujets analysés</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Année</th><th>Session</th><th>Cas juridique</th><th>Thème</th></tr>
+</thead>
+<tbody>
+<tr><td>2021</td><td>Métropole</td><td>BT Mécanique</td><td>Le contrat de travail, le licenciement</td></tr>
+<tr><td>2021</td><td>Centres étrangers</td><td>Répar'mobile</td><td>La responsabilité civile extracontractuelle</td></tr>
+<tr><td>2021</td><td>Remplacement</td><td>UNIPUR</td><td>Le licenciement, les types de licenciement</td></tr>
+<tr><td>2021</td><td>Espagne</td><td>MAXI</td><td>La formation du contrat, les conditions de validité</td></tr>
+<tr><td>2022</td><td>Métropole</td><td>Restaurant de montagne</td><td>La responsabilité civile, le dommage réparable</td></tr>
+<tr><td>2022</td><td>Nouvelle-Calédonie</td><td>GUERIN</td><td>Le droit de retrait, la santé au travail</td></tr>
+<tr><td>2022</td><td>Polynésie</td><td>Bastide</td><td>Le contrat de travail, la modification du contrat</td></tr>
+<tr><td>2022</td><td>Polynésie remp.</td><td>Balzana / Cat &amp; Cie</td><td>La propriété intellectuelle, la contrefaçon</td></tr>
+<tr><td>2022</td><td>Métropole remp.</td><td>SécuritéPlus</td><td>Le licenciement pour motif économique</td></tr>
+<tr><td>2023</td><td>Métropole</td><td>Pompes à Chaleur</td><td>La responsabilité du fait des produits défectueux</td></tr>
+<tr><td>2023</td><td>La Réunion</td><td>INVESTIX</td><td>Le droit de propriété et ses limites</td></tr>
+<tr><td>2023</td><td>Liban</td><td>Beebop</td><td>Les vices du consentement, l'erreur</td></tr>
+<tr><td>2023</td><td>Centres étrangers</td><td>AgriSol</td><td>Le bail commercial, les obligations du bailleur</td></tr>
+<tr><td>2023</td><td>Remplacement</td><td>TransExpress</td><td>Le contrat de travail, la clause de non-concurrence</td></tr>
+<tr><td>2024</td><td>Métropole</td><td>SARL Camélia</td><td>Le licenciement pour faute, la procédure disciplinaire</td></tr>
+<tr><td>2024</td><td>Centres étrangers</td><td>Mme De Gouges</td><td>La discrimination au travail, l'égalité de traitement</td></tr>
+<tr><td>2024</td><td>Remplacement</td><td>SolarTech</td><td>La responsabilité civile contractuelle, l'inexécution</td></tr>
+<tr><td>2024</td><td>Polynésie</td><td>MerBleue</td><td>Le contrat de vente, la garantie légale de conformité</td></tr>
+<tr><td>2024</td><td>Nouvelle-Calédonie</td><td>UrbanVert</td><td>Le trouble anormal de voisinage</td></tr>
+<tr><td>2025</td><td>Métropole</td><td>ArchiDij974</td><td>La rupture du contrat de travail, la démission et le licenciement</td></tr>
+<tr><td>2025</td><td>Centres étrangers</td><td>NovaBois</td><td>La formation du contrat, le dol</td></tr>
+<tr><td>2025</td><td>Remplacement</td><td>LogiPro</td><td>La responsabilité du commettant du fait du préposé</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- 5 CONSTANTES -->
+<div class="highlight-box">
+  <h4>Les 5 constantes du Bac Droit STMG</h4>
+  <ol>
+    <li><strong>La qualification juridique est TOUJOURS demandée (Q1)</strong> — chaque sujet commence par « Résumez les faits en qualifiant juridiquement la situation »</li>
+    <li><strong>L'argumentation contradictoire est TOUJOURS demandée (Q2-Q3)</strong> — on te demande les arguments des DEUX parties, jamais d'une seule</li>
+    <li><strong>Le thème 7 (le droit du travail) domine</strong> — environ 45 % des sujets portent sur le contrat de travail, le licenciement ou les conditions de travail</li>
+    <li><strong>La question 4 est TOUJOURS une réflexion sur le rôle du droit</strong> — une question ouverte qui demande de prendre du recul sur l'utilité d'un principe juridique</li>
+    <li><strong>Le syllogisme juridique est LA méthode attendue</strong> — règle de droit, application aux faits, solution : c'est la structure de CHAQUE argument</li>
+  </ol>
+</div>
+
+<!-- 5 TYPES DE QUESTIONS -->
+<h2 class="section-title">Les 5 types de questions récurrentes</h2>
+
+<!-- TYPE 1 -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 1</span> — Qualifier juridiquement les faits <span class="acc-theme-tag">Transversal</span></span>
+    <span class="acc-stars">★★★★★</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-text">TOUS les sujets sans exception — c'est toujours la question 1</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <ul>
+          <li>Qualification juridique</li>
+          <li>Parties au litige</li>
+          <li>Relation juridique (contrat, responsabilité, propriété)</li>
+          <li>Vocabulaire juridique précis</li>
+        </ul>
+        <p style="margin-top:6px;font-size:0.82rem;color:#7a6a58;font-style:italic">Il n'y a pas de thème spécifique : la qualification s'applique à TOUS les thèmes du programme.</p>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        « Résumez les faits en utilisant des qualifications juridiques. »
+        <div class="variant">Variantes : « Qualifiez juridiquement la situation présentée. » / « Présentez les faits en qualifiant les parties et leur relation juridique. »</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Raconter l'histoire du cas avec les mots du texte.</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>TRADUIRE chaque fait en langage juridique. Remplacer chaque mot courant par son équivalent en droit.</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal dans la question : « qualifications juridiques », « qualifiez » — on veut du vocabulaire de juriste, pas de la narration.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <ol class="steps">
+        <li>Identifier les parties et leur donner leur qualité juridique (employeur/salarié, vendeur/acheteur, bailleur/preneur, etc.)</li>
+        <li>Identifier la relation juridique qui les lie (contrat de travail, contrat de vente, responsabilité civile, etc.)</li>
+        <li>Identifier le litige ou le problème juridique (inexécution, vice du consentement, licenciement abusif, etc.)</li>
+        <li>Traduire chaque fait en vocabulaire juridique</li>
+      </ol>
+      <p class="steps mots">Mots obligatoires : les qualifications exactes (pas « patron » mais « employeur », pas « viré » mais « licencié »)</p>
+      <p class="steps longueur">Longueur attendue : 5 à 10 lignes</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box"><span style="color:#f5c842">[Partie A]</span>, <span style="color:#f5c842">[qualité juridique]</span>, a conclu un <span style="color:#f5c842">[type de contrat]</span> avec <span style="color:#f5c842">[Partie B]</span>,
+<span style="color:#f5c842">[qualité juridique]</span>. <span style="color:#f5c842">[Fait qualifié juridiquement : objet du contrat, obligations]</span>.
+Or, <span style="color:#f5c842">[problème juridique : ce qui ne s'est pas passé comme prévu]</span>.
+Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualification du problème]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Exemple corrigé — 2023 Liban · Beebop</div>
+      <div class="example-box">
+        <div class="ex-q">Question : « Résumez les faits en qualifiant juridiquement la situation. »</div>
+        <div class="ex-axe">John Beebop, <strong>acheteur</strong>, a conclu un <strong>contrat de vente immobilière</strong> avec Maxime Foley, <strong>vendeur</strong>. L'élément déterminant de l'achat était un graffiti attribué à un artiste célèbre. Or, cette attribution s'avère erronée, ce qui constitue potentiellement un <strong>vice du consentement</strong> (erreur sur les qualités essentielles de la chose, article 1132 du Code civil). Le litige porte sur la <strong>nullité du contrat pour erreur</strong>.</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Raconter l'histoire mot pour mot sans aucun vocabulaire juridique. « Un monsieur a acheté une maison et le dessin n'était pas de qui il croyait » — cette réponse vaut zéro point. Il faut écrire « acheteur », « contrat de vente », « erreur sur les qualités essentielles ».</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">&#128161; <strong>Astuce :</strong> Chaque nom commun de l'histoire doit devenir un terme juridique. Fais l'exercice mentalement : patron = employeur, employé = salarié, accord = contrat, produit cassé = défaut de conformité. Si tu n'as pas transformé au moins 5 mots, ta qualification est incomplète.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TYPE 2 -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 2</span> — Développer l'argumentation juridique d'une partie <span class="acc-theme-tag">Transversal</span></span>
+    <span class="acc-stars">★★★★★</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-text">TOUS les sujets — c'est toujours la question 2 (et parfois la question 3)</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <p>Dépend du thème du sujet. Mais la MÉTHODE est toujours la même : le syllogisme juridique.</p>
+        <ul style="margin-top:8px">
+          <li>Art. 1103 — force obligatoire du contrat</li>
+          <li>Art. 1130-1133 — vices du consentement</li>
+          <li>Art. 1217 — sanctions de l'inexécution</li>
+          <li>Art. 1240 — responsabilité pour faute</li>
+          <li>Art. L1232-1 — licenciement pour motif personnel</li>
+          <li>Art. L1233-3 — licenciement économique</li>
+          <li>Art. L4131-1 — droit de retrait</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        « Développez l'argumentation juridique de [partie A]. »
+        <div class="variant">Variantes : « Proposez les arguments juridiques que pourrait invoquer [partie A]. » / « Quels arguments juridiques [partie A] peut-il/elle avancer ? »</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Donner ton opinion sur qui a raison.</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>Construire un raisonnement juridique structuré en suivant le syllogisme : règle de droit, puis application aux faits, puis conclusion.</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal : « argumentation juridique », « arguments » — on veut du droit, pas des sentiments.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <p class="acc-text" style="margin-bottom:8px">Pour CHAQUE argument (il en faut 2 ou 3) :</p>
+      <ol class="steps">
+        <li>MAJEURE : Énoncer la règle de droit applicable (article de loi ou principe juridique)</li>
+        <li>MINEURE : Appliquer cette règle aux faits précis du cas</li>
+        <li>CONCLUSION : En déduire la conséquence favorable à la partie</li>
+      </ol>
+      <p class="steps mots">Mots obligatoires : « en vertu de », « en l'espèce », « par conséquent »</p>
+      <p class="steps longueur">Longueur attendue : 10 à 15 lignes (2 ou 3 arguments développés)</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box"><span style="color:#f5c842">Argument 1 :</span>
+En vertu de <span style="color:#f5c842">[article X / principe juridique]</span>, <span style="color:#f5c842">[énoncer la règle de droit]</span>.
+En l'espèce, <span style="color:#f5c842">[appliquer la règle aux faits précis du cas]</span>.
+Par conséquent, <span style="color:#f5c842">[conclusion favorable à la partie]</span>.
+
+<span style="color:#f5c842">Argument 2 :</span>
+L'article <span style="color:#f5c842">[Y]</span> dispose que <span style="color:#f5c842">[énoncer une autre règle]</span>.
+Dans le cas présent, <span style="color:#f5c842">[application aux faits]</span>.
+Il en résulte que <span style="color:#f5c842">[conclusion favorable]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Exemple corrigé — 2022 Nouvelle-Calédonie · GUERIN</div>
+      <div class="example-box">
+        <div class="ex-q">Question : « Développez l'argumentation juridique de M. Guérin. »</div>
+        <div class="ex-axe"><strong>Argument 1 :</strong> En vertu de l'article L4131-1 du Code du travail, le salarié peut exercer son droit de retrait s'il a un motif raisonnable de penser que sa situation de travail présente un danger grave et imminent pour sa vie ou sa santé. En l'espèce, M. Guérin travaille depuis 20 ans avec un acide puissant sans ventilation ni équipements de protection adéquats, et il a développé une maladie cutanée malgré ses alertes répétées auprès de son employeur. Par conséquent, l'exercice de son droit de retrait est légitime.</div>
+        <div class="ex-axe"><strong>Argument 2 :</strong> En vertu de l'article L4121-1 du Code du travail, l'employeur est tenu d'assurer la sécurité et de protéger la santé physique et mentale de ses salariés. En l'espèce, l'employeur n'a fourni ni ventilation ni équipements de protection malgré les demandes de M. Guérin. Par conséquent, l'employeur a manqué à son obligation de sécurité et le licenciement de M. Guérin est dépourvu de cause réelle et sérieuse.</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Donner des opinions personnelles au lieu d'arguments juridiques. Écrire « je pense que M. Guérin a raison parce que c'est injuste » vaut zéro point. Il faut toujours commencer par la RÈGLE DE DROIT, jamais par son avis.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">&#128161; <strong>Astuce :</strong> Commence TOUJOURS par « En vertu de... » — ça te force à chercher la règle de droit en premier. Si tu ne connais pas le numéro d'article exact, cite le principe général (« le principe de bonne foi contractuelle », « l'obligation de sécurité de l'employeur »). C'est mieux que rien et ça rapporte des points.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TYPE 3 -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 3</span> — Développer l'argumentation de la partie adverse <span class="acc-theme-tag">Transversal</span></span>
+    <span class="acc-stars">★★★★★</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-text">TOUS les sujets — c'est la question 3 (parfois combinée avec la Q2)</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <p>Mêmes notions que le TYPE 2, mais appliquées au profit de L'AUTRE partie.</p>
+        <ul style="margin-top:8px">
+          <li>Arguments de défense courants : bonne foi, respect de la procédure, force majeure, fait de la victime, fait d'un tiers, clause contractuelle, antériorité, absence de preuve</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        « Développez l'argumentation juridique de [partie B]. »
+        <div class="variant">Variantes : « Proposez les arguments que pourrait opposer [partie B]. » / « Quels moyens de défense [partie B] pourrait-il/elle invoquer ? »</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Dire que la partie B a tort.</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>Trouver des arguments juridiques VALABLES pour la partie qui semble avoir tort. En droit, les DEUX parties ont TOUJOURS des arguments.</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal : on te demande d'argumenter pour la partie « adverse » — celle qui semble perdante à première lecture.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <p class="acc-text" style="margin-bottom:8px">Même méthode que le TYPE 2 : syllogisme juridique pour chaque argument.</p>
+      <ol class="steps">
+        <li>MAJEURE : Règle de droit favorable à cette partie</li>
+        <li>MINEURE : Application aux faits en montrant ce qui joue en sa faveur</li>
+        <li>CONCLUSION : Déduction favorable à cette partie</li>
+      </ol>
+      <p class="steps mots">La difficulté : trouver sur quoi s'appuyer. Pense à ce que la partie adverse ne savait pas, à ce qu'elle a respecté, aux exceptions légales.</p>
+      <p class="steps longueur">Longueur attendue : 10 à 15 lignes (2 ou 3 arguments)</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box"><span style="color:#f5c842">Argument 1 :</span>
+En vertu de <span style="color:#f5c842">[article / principe]</span>, <span style="color:#f5c842">[règle de droit]</span>.
+En l'espèce, <span style="color:#f5c842">[montrer que les faits jouent en faveur de cette partie :
+elle a respecté la procédure / elle était de bonne foi / elle ne pouvait pas
+savoir / une clause du contrat la protège]</span>.
+Par conséquent, <span style="color:#f5c842">[conclusion favorable à la partie adverse]</span>.
+
+<span style="color:#f5c842">Argument 2 :</span>
+Le principe de <span style="color:#f5c842">[X]</span> prévoit que <span style="color:#f5c842">[règle]</span>.
+Or, dans le cas présent, <span style="color:#f5c842">[application montrant que les conditions ne sont
+pas réunies pour donner raison à l'autre partie]</span>.
+Dès lors, <span style="color:#f5c842">[conclusion]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Exemple corrigé — 2022 Nouvelle-Calédonie · GUERIN (partie employeur)</div>
+      <div class="example-box">
+        <div class="ex-q">Question : « Développez l'argumentation juridique de l'employeur. »</div>
+        <div class="ex-axe"><strong>Argument 1 :</strong> En vertu de l'article L4131-1 du Code du travail, le droit de retrait suppose un danger « grave et imminent ». En l'espèce, M. Guérin travaille dans ces conditions depuis 20 ans sans incident majeur, ce qui pourrait remettre en question le caractère « imminent » du danger. Par conséquent, l'employeur peut soutenir que les conditions du droit de retrait n'étaient pas réunies.</div>
+        <div class="ex-axe"><strong>Argument 2 :</strong> En vertu du pouvoir de direction de l'employeur, celui-ci est en droit d'organiser le travail et de prendre les décisions qu'il juge nécessaires. En l'espèce, l'employeur peut arguer qu'il avait planifié des améliorations des conditions de travail et que l'absence non justifiée du salarié a désorganisé l'entreprise. Par conséquent, le licenciement repose sur une cause réelle et sérieuse.</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Ne pas trouver assez d'arguments pour la partie qui semble « perdante ». Au Bac, on DOIT argumenter pour les deux côtés. Même l'employeur qui a licencié abusivement, même le vendeur qui a menti — il y a TOUJOURS un angle de défense.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">&#128161; <strong>Astuce :</strong> Quand tu bloques, passe en revue cette liste de défenses possibles :
+        <ul class="defense-list">
+          <li><strong>La bonne foi</strong> : « Il ne savait pas / il ne pouvait pas savoir »</li>
+          <li><strong>Le respect de la procédure</strong> : « Il a respecté toutes les étapes légales »</li>
+          <li><strong>La force majeure</strong> : « Un événement imprévisible et irrésistible l'a empêché d'exécuter »</li>
+          <li><strong>Le fait de la victime</strong> : « C'est l'autre partie qui a contribué à son propre dommage »</li>
+          <li><strong>Le fait d'un tiers</strong> : « Un tiers est à l'origine du problème »</li>
+          <li><strong>La clause contractuelle</strong> : « Le contrat prévoyait cette situation »</li>
+          <li><strong>L'absence de preuve</strong> : « Rien ne prouve que... »</li>
+        </ul>
+        Au moins un de ces arguments s'applique toujours.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TYPE 4 -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 4</span> — Répondre à une question de réflexion sur le rôle du droit <span class="acc-theme-tag">Transversal</span></span>
+    <span class="acc-stars">★★★★★</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-text">TOUS les sujets — c'est toujours la question 4 (parfois avec un choix entre 2 sujets)</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <ul>
+          <li>Protection des parties faibles</li>
+          <li>Équilibre des droits et obligations</li>
+          <li>Sécurité juridique</li>
+          <li>Rôle pacificateur du droit</li>
+          <li>Hiérarchie des normes</li>
+          <li>Accès à la justice</li>
+        </ul>
+        <p style="margin-top:6px;font-size:0.82rem;color:#7a6a58;font-style:italic">Le thème dépend du sujet, mais la réflexion est toujours sur le POURQUOI du droit, pas sur le QUOI.</p>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        « Expliquez pourquoi le droit limite le pouvoir de l'employeur. »
+        <div class="variant">Variantes : « Justifiez la diversité des régimes de responsabilité. » / « Le droit assure-t-il une protection renforcée du consommateur ? » / « Pourquoi la Cour de cassation est-elle indispensable ? » / « Expliquez le rôle pacificateur du droit. » / « Les enjeux de la protection du droit de propriété. »</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Les sujets de réflexion les plus fréquents dans les annales</div>
+      <div class="acc-text">
+        <ul class="freq-list">
+          <li>« Pourquoi le droit limite-t-il le pouvoir de l'employeur ? »</li>
+          <li>« Les enjeux de la protection du droit de propriété »</li>
+          <li>« La diversité des régimes de responsabilité »</li>
+          <li>« Le droit assure-t-il une protection renforcée du consommateur ? »</li>
+          <li>« Pourquoi la Cour de cassation est-elle indispensable ? »</li>
+          <li>« Le rôle pacificateur du droit »</li>
+          <li>« Le droit protège-t-il efficacement le salarié ? »</li>
+          <li>« Pourquoi le droit encadre-t-il la formation du contrat ? »</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Réciter le cours sur le thème.</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>Montrer que tu comprends POURQUOI les règles juridiques existent, à quoi elles servent, quel équilibre elles cherchent à maintenir.</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal : « expliquez pourquoi », « justifiez », « les enjeux de » — on attend une prise de recul, pas une simple définition.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <ol class="steps">
+        <li>Définir les termes juridiques clés de la question</li>
+        <li>Expliquer le principe avec référence à la loi ou à un principe général</li>
+        <li>Illustrer avec des exemples (tirés du cas du sujet ET/OU de culture juridique générale)</li>
+        <li>Montrer l'équilibre : le droit protège mais il limite aussi ; il donne des droits mais il impose des obligations</li>
+      </ol>
+      <p class="steps mots">Mots obligatoires : les termes de la question + équilibre / protection / sécurité juridique</p>
+      <p class="steps longueur">Longueur attendue : 10 à 20 lignes</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box">Le droit <span style="color:#f5c842">[verbe de la question : protège / limite / encadre]</span> parce que
+<span style="color:#f5c842">[raison 1 : principe juridique + explication]</span>.
+
+En effet, <span style="color:#f5c842">[développement avec exemple concret : article de loi ou situation
+du cas étudié]</span>. Par exemple, <span style="color:#f5c842">[illustration]</span>.
+
+Par ailleurs, <span style="color:#f5c842">[raison 2 : autre aspect du rôle du droit]</span>.
+<span style="color:#f5c842">[Développement + exemple]</span>.
+
+Cependant, cette protection <span style="color:#f5c842">[ou cette limitation]</span> doit être équilibrée avec
+<span style="color:#f5c842">[droit ou liberté opposée]</span>. Ainsi, le droit cherche à concilier <span style="color:#f5c842">[intérêt 1]</span>
+et <span style="color:#f5c842">[intérêt 2]</span>, ce qui montre que son rôle est de <span style="color:#f5c842">[conclusion sur la
+fonction du droit]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Exemple corrigé — Sujet type « Pourquoi le droit limite-t-il le pouvoir de l'employeur ? »</div>
+      <div class="example-box">
+        <div class="ex-axe">Le droit limite le pouvoir de l'employeur pour protéger le salarié, qui est dans une situation de <strong>subordination juridique</strong>. En effet, le contrat de travail crée un lien de subordination : le salarié est soumis aux directives de l'employeur. Sans encadrement légal, ce déséquilibre pourrait mener à des abus.</div>
+        <div class="ex-axe">C'est pourquoi le Code du travail impose des règles : l'employeur doit respecter une <strong>procédure de licenciement</strong> (entretien préalable, notification, motif réel et sérieux), garantir la <strong>sécurité</strong> de ses salariés (article L4121-1), et respecter les <strong>libertés fondamentales</strong> (non-discrimination, droit de grève).</div>
+        <div class="ex-axe">Cependant, le droit ne supprime pas le pouvoir de l'employeur : il le conserve à travers le <strong>pouvoir de direction</strong>, le <strong>pouvoir disciplinaire</strong> et le <strong>pouvoir réglementaire</strong>. Le droit cherche donc un <strong>équilibre</strong> entre la protection du salarié et la liberté d'entreprendre de l'employeur.</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Répondre trop brièvement ou juste répéter le cours sans expliquer le POURQUOI. « Le droit protège le salarié avec l'article L1232-1 » ne suffit pas. Il faut expliquer POURQUOI cette protection existe (déséquilibre, subordination, risque d'abus).</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">&#128161; <strong>Astuce :</strong> Termine toujours par l'idée d'ÉQUILIBRE. Le droit ne protège jamais un seul côté : il cherche toujours à concilier des intérêts opposés (protection du salarié vs liberté d'entreprendre, droit de propriété vs intérêt général, liberté contractuelle vs protection du consommateur). Montrer cet équilibre, c'est ce qui distingue une copie moyenne d'une bonne copie.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TYPE 5 -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 5</span> — Identifier / qualifier une situation juridique <span class="acc-theme-tag">Variable</span></span>
+    <span class="acc-stars">★★★☆☆</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-text">Environ 1 sujet sur 3 — souvent en sous-question</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <p>Les catégories juridiques :</p>
+        <ul style="margin-top:8px">
+          <li>Types de licenciement : personnel / économique / faute grave / faute lourde</li>
+          <li>Types de contrat : CDD / CDI / contrat de vente / bail</li>
+          <li>Types de responsabilité : contractuelle / extracontractuelle / du fait personnel / du fait d'autrui / du fait des choses</li>
+          <li>Types de vices du consentement : erreur / dol / violence</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        « Déterminez si la situation constitue un licenciement pour motif personnel ou économique. »
+        <div class="variant">Variantes : « Précisez le type de responsabilité engagée. » / « Qualifiez le vice du consentement en cause. » / « Identifiez le régime de responsabilité applicable. »</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Choisir au hasard une catégorie.</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>Vérifier méthodiquement si les CONDITIONS de la catégorie juridique sont réunies dans les faits.</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal : « déterminez », « précisez », « qualifiez » — on attend un raisonnement de qualification, pas une simple réponse.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <ol class="steps">
+        <li>Définir la catégorie juridique et ses conditions (c'est la majeure du syllogisme)</li>
+        <li>Vérifier chaque condition en la confrontant aux faits du cas (c'est la mineure)</li>
+        <li>Conclure : la situation correspond ou ne correspond pas à la catégorie</li>
+      </ol>
+      <p class="steps longueur">Longueur attendue : 5 à 8 lignes</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box"><span style="color:#f5c842">[Catégorie juridique]</span> se définit par <span style="color:#f5c842">[conditions : 1, 2, 3]</span>.
+En l'espèce :
+- Condition 1 : <span style="color:#f5c842">[vérifiée ou non dans les faits]</span>
+- Condition 2 : <span style="color:#f5c842">[vérifiée ou non dans les faits]</span>
+- Condition 3 : <span style="color:#f5c842">[vérifiée ou non dans les faits]</span>
+Par conséquent, la situation constitue bien <span style="color:#f5c842">[ou ne constitue pas]</span> un/une
+<span style="color:#f5c842">[catégorie juridique]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Exemple corrigé — 2021 Remplacement · UNIPUR</div>
+      <div class="example-box">
+        <div class="ex-q">Question : « Précisez le type de licenciement subi par Joséphine. »</div>
+        <div class="ex-axe">Le <strong>licenciement pour motif personnel</strong> repose sur un motif inhérent à la personne du salarié (insuffisance professionnelle, faute, inaptitude). Le <strong>licenciement pour motif économique</strong> repose sur des difficultés économiques, des mutations technologiques ou une réorganisation de l'entreprise.</div>
+        <div class="ex-axe">En l'espèce, Joséphine a été licenciée en raison de ses résultats jugés insuffisants par l'employeur. Le motif est lié à sa personne (sa performance), et non à une cause économique externe.</div>
+        <div class="ex-axe">Par conséquent, il s'agit d'un <strong>licenciement pour motif personnel</strong>, plus précisément pour insuffisance professionnelle.</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Donner la réponse sans vérifier les conditions. Écrire « c'est un licenciement économique » sans expliquer pourquoi, c'est perdre la moitié des points. Le correcteur veut VOIR ton raisonnement.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">&#128161; <strong>Astuce :</strong> C'est un mini-syllogisme. La démarche est exactement la même que pour les TYPE 2 et 3, mais en plus court. Définis, vérifie, conclus.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SUJETS TOMBÉS AU BAC -->
+<h2 class="section-title" style="margin-top:48px">Les sujets tombés au Bac (récapitulatif)</h2>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Année</th><th>Session</th><th>Cas juridique</th><th>Thème principal</th><th>Question de réflexion (Q4)</th></tr>
+</thead>
+<tbody>
+<tr><td>2021</td><td>Métropole</td><td>BT Mécanique</td><td>Contrat de travail, licenciement</td><td>Pourquoi le droit limite-t-il le pouvoir de l'employeur ?</td></tr>
+<tr><td>2021</td><td>Centres étrangers</td><td>Répar'mobile</td><td>Responsabilité civile extracontractuelle</td><td>La diversité des régimes de responsabilité</td></tr>
+<tr><td>2021</td><td>Remplacement</td><td>UNIPUR</td><td>Licenciement, types de licenciement</td><td>Le droit protège-t-il efficacement le salarié ?</td></tr>
+<tr><td>2021</td><td>Espagne</td><td>MAXI</td><td>Formation du contrat, conditions de validité</td><td>Pourquoi le droit encadre-t-il la formation du contrat ?</td></tr>
+<tr><td>2022</td><td>Métropole</td><td>Restaurant de montagne</td><td>Responsabilité civile, dommage</td><td>La diversité des régimes de responsabilité</td></tr>
+<tr><td>2022</td><td>Nouvelle-Calédonie</td><td>GUERIN</td><td>Droit de retrait, santé au travail</td><td>Pourquoi le droit protège-t-il la santé du salarié ?</td></tr>
+<tr><td>2022</td><td>Polynésie</td><td>Bastide</td><td>Contrat de travail, modification</td><td>Le pouvoir de l'employeur et ses limites</td></tr>
+<tr><td>2022</td><td>Polynésie remp.</td><td>Balzana / Cat &amp; Cie</td><td>Propriété intellectuelle</td><td>Les enjeux de la protection du droit de propriété</td></tr>
+<tr><td>2022</td><td>Métropole remp.</td><td>SécuritéPlus</td><td>Licenciement économique</td><td>Le rôle pacificateur du droit</td></tr>
+<tr><td>2023</td><td>Métropole</td><td>Pompes à Chaleur</td><td>Responsabilité du fait des produits défectueux</td><td>Le droit assure-t-il une protection renforcée du consommateur ?</td></tr>
+<tr><td>2023</td><td>La Réunion</td><td>INVESTIX</td><td>Droit de propriété et ses limites</td><td>Les enjeux de la protection du droit de propriété</td></tr>
+<tr><td>2023</td><td>Liban</td><td>Beebop</td><td>Vices du consentement, erreur</td><td>Pourquoi le droit encadre-t-il la formation du contrat ?</td></tr>
+<tr><td>2023</td><td>Centres étrangers</td><td>AgriSol</td><td>Bail commercial</td><td>La force obligatoire du contrat</td></tr>
+<tr><td>2023</td><td>Remplacement</td><td>TransExpress</td><td>Clause de non-concurrence</td><td>Le droit concilie-t-il liberté et protection ?</td></tr>
+<tr><td>2024</td><td>Métropole</td><td>SARL Camélia</td><td>Licenciement pour faute</td><td>Le droit protège-t-il efficacement le salarié ?</td></tr>
+<tr><td>2024</td><td>Centres étrangers</td><td>Mme De Gouges</td><td>Discrimination au travail</td><td>Le rôle du droit dans la lutte contre les discriminations</td></tr>
+<tr><td>2024</td><td>Remplacement</td><td>SolarTech</td><td>Responsabilité contractuelle</td><td>Pourquoi la Cour de cassation est-elle indispensable ?</td></tr>
+<tr><td>2024</td><td>Polynésie</td><td>MerBleue</td><td>Garantie légale de conformité</td><td>Le droit assure-t-il une protection renforcée du consommateur ?</td></tr>
+<tr><td>2024</td><td>Nouvelle-Calédonie</td><td>UrbanVert</td><td>Trouble anormal de voisinage</td><td>Le droit de propriété et ses limites</td></tr>
+<tr><td>2025</td><td>Métropole</td><td>ArchiDij974</td><td>Rupture du contrat de travail</td><td>Pourquoi le droit limite-t-il le pouvoir de l'employeur ?</td></tr>
+<tr><td>2025</td><td>Centres étrangers</td><td>NovaBois</td><td>Formation du contrat, dol</td><td>Le rôle pacificateur du droit</td></tr>
+<tr><td>2025</td><td>Remplacement</td><td>LogiPro</td><td>Responsabilité du commettant</td><td>La diversité des régimes de responsabilité</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="obs-box">
+  <h4>Observation : la question de réflexion tourne autour de 4 grands axes</h4>
+  <ol>
+    <li>Pourquoi le droit protège-t-il la partie faible ? (salarié, consommateur, victime)</li>
+    <li>Comment le droit concilie-t-il des intérêts opposés ? (liberté vs protection, propriété vs intérêt général)</li>
+    <li>À quoi servent les différents régimes juridiques ? (responsabilité, contrats, licenciement)</li>
+    <li>Quel est le rôle des institutions juridiques ? (Cour de cassation, hiérarchie des normes, accès à la justice)</li>
+  </ol>
+</div>
+
+<!-- AUTO-ÉVALUATION -->
+<div class="autoeval">
+  <h2 class="section-title">Auto-évaluation</h2>
+  <p style="font-size:0.88rem;color:#7a6a58;margin-bottom:16px">Coche ton niveau pour chaque type de question après t'être entraîné·e :</p>
+  <div class="table-wrap">
+  <table class="eval-table" id="evalTable">
+    <thead>
+      <tr>
+        <th>Type de question</th>
+        <th>Je sais faire seul·e</th>
+        <th>J'ai besoin de revoir</th>
+        <th>Je ne sais pas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>TYPE 1 — Qualifier juridiquement les faits</td>
+        <td><input type="radio" name="eval_1" value="ok" /></td>
+        <td><input type="radio" name="eval_1" value="revoir" /></td>
+        <td><input type="radio" name="eval_1" value="nsp" /></td>
+      </tr>
+      <tr>
+        <td>TYPE 2 — Développer l'argumentation d'une partie (syllogisme)</td>
+        <td><input type="radio" name="eval_2" value="ok" /></td>
+        <td><input type="radio" name="eval_2" value="revoir" /></td>
+        <td><input type="radio" name="eval_2" value="nsp" /></td>
+      </tr>
+      <tr>
+        <td>TYPE 3 — Développer l'argumentation de la partie adverse</td>
+        <td><input type="radio" name="eval_3" value="ok" /></td>
+        <td><input type="radio" name="eval_3" value="revoir" /></td>
+        <td><input type="radio" name="eval_3" value="nsp" /></td>
+      </tr>
+      <tr>
+        <td>TYPE 4 — Répondre à une question de réflexion sur le rôle du droit</td>
+        <td><input type="radio" name="eval_4" value="ok" /></td>
+        <td><input type="radio" name="eval_4" value="revoir" /></td>
+        <td><input type="radio" name="eval_4" value="nsp" /></td>
+      </tr>
+      <tr>
+        <td>TYPE 5 — Identifier / qualifier une situation juridique</td>
+        <td><input type="radio" name="eval_5" value="ok" /></td>
+        <td><input type="radio" name="eval_5" value="revoir" /></td>
+        <td><input type="radio" name="eval_5" value="nsp" /></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <button class="eval-reset" onclick="resetEval()">Réinitialiser</button>
+</div>
+
+</div><!-- /content -->
+
+<!-- FOOTER -->
+<div class="footer">
+  Révizo · Droit STMG · Questions Bac · Avril 2026<br>
+  Sources : 22 annales post-réforme (2021-2025) · Consignes de correction 2022-2024 · Rapports de correcteurs
+</div>
+
+<script>
+/* Accordion toggle */
+function toggleAcc(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  if (isOpen) {
+    header.classList.remove('open');
+    body.classList.remove('show');
+  } else {
+    header.classList.add('open');
+    body.classList.add('show');
+  }
+}
+
+/* Auto-évaluation localStorage */
+const STORAGE_KEY = 'revizo_autoeval_droit';
+
+function saveEval() {
+  const data = {};
+  for (let i = 1; i <= 5; i++) {
+    const checked = document.querySelector('input[name="eval_' + i + '"]:checked');
+    if (checked) data['eval_' + i] = checked.value;
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadEval() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (!data) return;
+    for (let i = 1; i <= 5; i++) {
+      if (data['eval_' + i]) {
+        const radio = document.querySelector('input[name="eval_' + i + '"][value="' + data['eval_' + i] + '"]');
+        if (radio) radio.checked = true;
+      }
+    }
+  } catch(e) {}
+}
+
+function resetEval() {
+  for (let i = 1; i <= 5; i++) {
+    const radios = document.querySelectorAll('input[name="eval_' + i + '"]');
+    radios.forEach(r => r.checked = false);
+  }
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+/* Listen for changes */
+document.getElementById('evalTable').addEventListener('change', saveEval);
+
+/* Load on page ready */
+loadEval();
+</script>
+
+</body>
+</html>

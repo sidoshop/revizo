@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Questions Bac · Économie STMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito Sans', sans-serif; }
+body { background: #f0ede6; color: #1e1c18; min-height: 100vh; }
+
+/* Nav */
+.nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.nav a { text-decoration:none }
+.nav-logo { font-family:'Inter',sans-serif;font-size:1.15rem;font-weight:900;color:#1e1c18 }
+.nav-logo .zo { color:#b5415a }
+.nav-links { display:flex;gap:4px }
+.nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none;transition:background .15s }
+.nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.nl.on { background:#1e1c18;color:#f5c842 }
+
+/* Hero */
+.hero { max-width:900px;margin:0 auto;padding:100px 24px 40px;text-align:center }
+.hero-badge { display:inline-block;background:#1e1c18;color:#f5c842;font-size:0.6rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:6px 20px;border-radius:20px;margin-bottom:20px }
+.hero h1 { font-family:'Nunito',sans-serif;font-size:3.2rem;font-weight:900;color:#1e1c18;line-height:1.1;margin-bottom:12px }
+.hero-sub { font-size:1.05rem;line-height:1.7;color:#7a6a58;font-weight:500;max-width:620px;margin:0 auto }
+
+/* Protocol Box */
+.protocol-box { max-width:860px;margin:0 auto 40px;background:#1e1c18;border-radius:16px;padding:28px 32px;color:#f5c842 }
+.protocol-box h3 { font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px }
+.protocol-box ol { list-style:none;counter-reset:proto;padding:0 }
+.protocol-box ol li { counter-increment:proto;font-size:0.92rem;line-height:1.8;color:#fffdf8;font-weight:500 }
+.protocol-box ol li::before { content:counter(proto) ". ";color:#f5c842;font-weight:800 }
+.protocol-box .proto-warn { margin-top:14px;font-size:0.85rem;color:#f5c842;font-weight:700;font-style:italic;border-top:1px solid rgba(245,200,66,.2);padding-top:12px }
+
+/* Content area */
+.content { max-width:900px;margin:0 auto;padding:0 24px 60px }
+.section-title { font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:#1e1c18;margin-bottom:20px;padding-bottom:8px;border-bottom:3px solid #f5c842 }
+
+/* Table */
+.table-wrap { overflow-x:auto;margin-bottom:32px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.06) }
+table { width:100%;border-collapse:collapse;background:#fffdf8;font-size:0.85rem }
+thead { background:#1e1c18;color:#f5c842 }
+th { font-family:'Inter',sans-serif;font-weight:700;text-align:left;padding:12px 16px;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase }
+td { padding:10px 16px;border-bottom:1px solid rgba(30,28,24,.08);line-height:1.5 }
+tbody tr:hover { background:rgba(245,200,66,.06) }
+
+/* Highlight box */
+.highlight-box { background:#fef8e2;border-left:4px solid #f5c842;border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:40px }
+.highlight-box h4 { font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;color:#946e00;margin-bottom:12px }
+.highlight-box ol { padding-left:20px }
+.highlight-box ol li { font-size:0.9rem;line-height:1.7;margin-bottom:4px;color:#1e1c18 }
+.highlight-box ol li strong { color:#946e00 }
+
+/* Accordions */
+.accordion { margin-bottom:16px;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);background:#fffdf8 }
+.accordion-header { display:flex;align-items:center;justify-content:space-between;padding:18px 24px;cursor:pointer;background:#fffdf8;border:none;width:100%;text-align:left;transition:background .15s;gap:12px }
+.accordion-header:hover { background:rgba(245,200,66,.08) }
+.accordion-header.open { background:rgba(245,200,66,.12) }
+.acc-type { font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18;flex:1 }
+.acc-type .type-num { color:#b5415a }
+.acc-theme-tag { font-size:0.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:12px;margin-left:10px;white-space:nowrap;vertical-align:middle }
+
+.accordion.th-bleu .accordion-header { border-left:4px solid #2a69a8 }
+.accordion.th-bleu .acc-type .type-num { color:#2a69a8 }
+.accordion.th-bleu .acc-theme-tag { background:#e8f3ff;color:#2a69a8 }
+.accordion.th-bleu .accordion-header:hover { background:rgba(42,105,168,.06) }
+.accordion.th-bleu .accordion-header.open { background:rgba(42,105,168,.1) }
+
+.accordion.th-rose .accordion-header { border-left:4px solid #b5415a }
+.accordion.th-rose .acc-type .type-num { color:#b5415a }
+.accordion.th-rose .acc-theme-tag { background:#fdeef2;color:#b5415a }
+.accordion.th-rose .accordion-header:hover { background:rgba(181,65,90,.06) }
+.accordion.th-rose .accordion-header.open { background:rgba(181,65,90,.1) }
+
+.accordion.th-jaune .accordion-header { border-left:4px solid #946e00 }
+.accordion.th-jaune .acc-type .type-num { color:#946e00 }
+.accordion.th-jaune .acc-theme-tag { background:#fef8e2;color:#946e00 }
+.accordion.th-jaune .accordion-header:hover { background:rgba(148,110,0,.06) }
+.accordion.th-jaune .accordion-header.open { background:rgba(148,110,0,.1) }
+
+.accordion.th-gris .accordion-header { border-left:4px solid #7a6a58 }
+.accordion.th-gris .acc-type .type-num { color:#7a6a58 }
+.accordion.th-gris .acc-theme-tag { background:rgba(30,28,24,.07);color:#5a5448 }
+.accordion.th-gris .accordion-header:hover { background:rgba(30,28,24,.04) }
+.accordion.th-gris .accordion-header.open { background:rgba(30,28,24,.07) }
+
+.acc-stars { font-size:0.95rem;color:#f5c842;white-space:nowrap;letter-spacing:2px }
+.acc-chevron { font-size:1.2rem;color:#a09880;transition:transform .2s;flex-shrink:0 }
+.accordion-header.open .acc-chevron { transform:rotate(180deg) }
+.accordion-body { display:none;padding:0 24px 24px;animation:fadeIn .25s ease }
+.accordion-body.show { display:block }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+
+/* Accordion inner sections */
+.acc-section { margin-bottom:18px }
+.acc-section:last-child { margin-bottom:0 }
+.acc-label { font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:8px }
+.acc-text { font-size:0.9rem;line-height:1.7;color:#1e1c18 }
+.acc-text ul { padding-left:20px }
+.acc-text ul li { margin-bottom:4px }
+.acc-exams { display:flex;flex-wrap:wrap;gap:6px;margin-top:4px }
+.acc-exam-tag { font-size:0.72rem;font-weight:700;background:rgba(181,65,90,.1);color:#b5415a;padding:3px 10px;border-radius:12px }
+
+/* Question type box */
+.question-box { background:#e8f3ff;border-radius:10px;padding:16px 20px;font-size:0.92rem;line-height:1.6;color:#1a4f82;font-weight:600 }
+.question-box .variant { font-size:0.82rem;font-weight:500;color:#5a7fa8;margin-top:6px;font-style:italic }
+
+/* Two column test */
+.two-col { display:grid;grid-template-columns:1fr 1fr;gap:14px }
+@media(max-width:600px){ .two-col{grid-template-columns:1fr} }
+.col-not { background:#fdeef2;border-radius:10px;padding:14px 18px }
+.col-not h5 { font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:800;color:#b5415a;margin-bottom:6px }
+.col-not p { font-size:0.85rem;line-height:1.6;color:#7a2038 }
+.col-yes { background:#eef6ee;border-radius:10px;padding:14px 18px }
+.col-yes h5 { font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:800;color:#2d7a3a;margin-bottom:6px }
+.col-yes p { font-size:0.85rem;line-height:1.6;color:#1e5a28 }
+.signal-box { background:rgba(245,200,66,.12);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:0.82rem;color:#7a5800;font-weight:600 }
+
+/* Steps */
+.steps { padding-left:0;list-style:none;counter-reset:step }
+.steps li { counter-increment:step;font-size:0.88rem;line-height:1.7;margin-bottom:6px;padding-left:28px;position:relative }
+.steps li::before { content:"ETAPE " counter(step);position:absolute;left:0;font-family:'Inter',sans-serif;font-size:0.6rem;font-weight:800;color:#b5415a;letter-spacing:0.5px }
+.steps .mots { font-size:0.82rem;color:#7a6a58;font-weight:600;padding-left:0;margin-top:8px }
+.steps .longueur { font-size:0.82rem;color:#7a6a58;font-weight:600;padding-left:0;margin-top:4px }
+
+/* Template box */
+.template-box { background:#1e1c18;border-radius:12px;padding:20px 24px;font-family:'Courier New',Courier,monospace;font-size:0.82rem;line-height:1.8;color:#fffdf8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word }
+
+/* Example box */
+.example-box { background:#eef6ee;border-radius:12px;padding:18px 22px;font-size:0.88rem;line-height:1.7;color:#1e5a28 }
+.example-box strong { color:#2d7a3a }
+.example-box .ex-q { font-weight:700;margin-bottom:8px }
+.example-box .ex-axe { margin-bottom:6px }
+
+/* Error box */
+.error-box { background:#fdeef2;border-left:4px solid #b5415a;border-radius:0 12px 12px 0;padding:14px 20px;font-size:0.88rem;line-height:1.6;color:#7a2038 }
+
+/* Tip box */
+.tip-box { background:#e8f3ff;border-left:4px solid #2a69a8;border-radius:0 12px 12px 0;padding:14px 20px;font-size:0.88rem;line-height:1.6;color:#1a4f82 }
+
+/* Observation box */
+.obs-box { background:rgba(181,65,90,.06);border-left:4px solid #b5415a;border-radius:0 12px 12px 0;padding:16px 20px;margin-top:24px }
+.obs-box h4 { font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:800;color:#b5415a;margin-bottom:8px }
+.obs-box ol { padding-left:20px }
+.obs-box ol li { font-size:0.85rem;line-height:1.7;margin-bottom:3px;color:#1e1c18 }
+
+/* Auto-eval */
+.autoeval { margin-top:48px }
+.eval-table { width:100%;border-collapse:collapse;background:#fffdf8;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06) }
+.eval-table thead { background:#1e1c18;color:#f5c842 }
+.eval-table th { font-family:'Inter',sans-serif;font-weight:700;text-align:center;padding:12px 14px;font-size:0.72rem;letter-spacing:1px;text-transform:uppercase }
+.eval-table th:first-child { text-align:left }
+.eval-table td { padding:12px 14px;border-bottom:1px solid rgba(30,28,24,.06);text-align:center;font-size:0.85rem }
+.eval-table td:first-child { text-align:left;font-weight:700;color:#1e1c18 }
+.eval-table input[type="radio"] { width:18px;height:18px;cursor:pointer;accent-color:#b5415a }
+.eval-reset { display:inline-block;margin-top:12px;background:none;border:2px solid rgba(30,28,24,.15);border-radius:8px;padding:8px 18px;font-size:0.8rem;font-weight:700;color:#7a6a58;cursor:pointer;transition:all .15s }
+.eval-reset:hover { border-color:#b5415a;color:#b5415a }
+
+/* Footer */
+.footer { max-width:900px;margin:0 auto;padding:32px 24px 48px;text-align:center;font-size:0.78rem;color:#a09880;line-height:1.7 }
+
+/* Mobile */
+@media(max-width:700px){
+  .nav { padding:0 14px }
+  .nav-links { gap:2px }
+  .nl { font-size:0.68rem;padding:5px 8px }
+  .hero h1 { font-size:2.2rem }
+  .hero { padding-top:84px }
+  .protocol-box { padding:20px 18px }
+  .accordion-header { padding:14px 16px }
+  .acc-type { font-size:0.92rem }
+  .accordion-body { padding:0 16px 18px }
+  .template-box { font-size:0.75rem;padding:14px 16px }
+  .two-col { grid-template-columns:1fr }
+  table { font-size:0.78rem }
+  th,td { padding:8px 10px }
+}
+
+/* Print */
+@media print {
+  .nav { display:none }
+  .hero { padding-top:20px }
+  .accordion-body { display:block !important }
+  .acc-chevron { display:none }
+  .protocol-box { background:#eee;color:#333 }
+  .protocol-box h3,.protocol-box ol li::before,.protocol-box .proto-warn { color:#333 }
+  .template-box { background:#eee;color:#333 }
+  body { background:#fff }
+}
+</style>
+</head>
+<body data-subject="eco">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Économie</span>
+  <a href="memos-eco.html">Mémos</a>
+  <a href="flashcards-eco.html">Flashcards</a>
+  <a href="questions-bac-eco.html" class="active">Questions Bac</a>
+  <a href="methode-jour-j-eco.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Révizo · Économie · Terminale STMG</div>
+  <h1>🎯 Questions Bac</h1>
+  <p class="hero-sub">7 types de questions · 15 annales analysées · Corrigés et templates</p>
+</section>
+
+<!-- PROTOCOL -->
+<div class="protocol-box">
+  <h3>Comment utiliser ce document</h3>
+  <ol>
+    <li>Lis la question type</li>
+    <li>Réponds seul·e sur une feuille — même 3 lignes</li>
+    <li>Compare avec la réponse attendue</li>
+    <li>Identifie ce que tu as oublié</li>
+    <li>Relis UNIQUEMENT ce point dans le Document Notions</li>
+  </ol>
+  <div class="proto-warn">Ne jamais lire le corrigé directement : ça ne sert à rien pour mémoriser.</div>
+</div>
+
+<div class="content">
+
+<!-- RECAP TABLE -->
+<h2 class="section-title">Les 15 sujets analysés</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Année</th><th>Session</th><th>Entreprise / Cas</th><th>Thèmes économiques testés</th></tr>
+</thead>
+<tbody>
+<tr><td>2021</td><td>Métropole</td><td>BT Mécanique / Energymax</td><td>Pouvoir d'achat, dépense publique, relance par la demande, croissance</td></tr>
+<tr><td>2021</td><td>Centres étrangers</td><td>Repar'mobile</td><td>Croissance, déficit public / commerce extérieur UE, protectionnisme</td></tr>
+<tr><td>2021</td><td>Remplacement</td><td>UNIPUR</td><td>Épargne, inégalités / politique budgétaire de relance</td></tr>
+<tr><td>2021</td><td>Espagne</td><td>MAXI</td><td>Gains de productivité, emploi, facteurs de production</td></tr>
+<tr><td>2022</td><td>Métropole</td><td>Restaurant de montagne</td><td>Chômage, politiques de l'emploi / PIB comme mesure de richesse</td></tr>
+<tr><td>2022</td><td>Nouvelle-Calédonie</td><td>GUERIN / Echinox</td><td>Épargne, IDE, plan de relance / commerce international et croissance</td></tr>
+<tr><td>2022</td><td>Polynésie</td><td>Bastide</td><td>Chômage (calcul taux BIT), inégalités / IDE</td></tr>
+<tr><td>2022</td><td>Polynésie remp.</td><td>Balzana / Cat &amp; Cie</td><td>Politique monétaire (taux directeur), relance / répartition VA</td></tr>
+<tr><td>2022</td><td>Métropole remp.</td><td>SécuritéPlus</td><td>Dette publique, déficit, protection sociale</td></tr>
+<tr><td>2023</td><td>Métropole</td><td>Pompes à Chaleur</td><td>Balance commerciale, IDE, politique de relance et importations</td></tr>
+<tr><td>2023</td><td>La Réunion</td><td>INVESTIX</td><td>Offre/demande/prix, élasticité-prix, pouvoir d'achat</td></tr>
+<tr><td>2023</td><td>Liban</td><td>Beebop</td><td>Déficit/dette publique, dépenses publiques, politique budgétaire en crise</td></tr>
+<tr><td>2024</td><td>Métropole</td><td>SARL Camélia</td><td>Déficit/dette, prélèvements obligatoires, compétitivité, croissance</td></tr>
+<tr><td>2024</td><td>Centres étrangers</td><td>Mme De Gouges</td><td>Biens collectifs/communs, externalités, intervention de l'État</td></tr>
+<tr><td>2025</td><td>Métropole</td><td>ArchiDij974</td><td>Commerce international, contributions au PIB, droits de douane, libre-échange</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- 5 CONSTANTES -->
+<div class="highlight-box">
+  <h4>Les 5 constantes du Bac Économie STMG</h4>
+  <ol>
+    <li><strong>La croissance économique et le PIB</strong> sont au coeur de presque tous les sujets</li>
+    <li><strong>Le rôle de l'État</strong> (politique budgétaire, fiscale ou de relance) est toujours présent</li>
+    <li><strong>L'argumentation structurée</strong> est la dernière question de chaque sujet (4 points, 2 sujets au choix)</li>
+    <li><strong>Les verbes d'action</strong> (analyser, justifier, montrer que) guident toujours la réponse attendue</li>
+    <li><strong>Les données chiffrées</strong> (tableaux, graphiques) sont à exploiter — pas juste à décrire</li>
+  </ol>
+</div>
+
+<!-- 7 TYPES DE QUESTIONS -->
+<h2 class="section-title">Les 7 types de questions récurrentes</h2>
+
+<!-- TYPE 1 -->
+<div class="accordion th-bleu">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 1</span> — Argumenter sur l'efficacité d'une politique économique <span class="acc-theme-tag">Thème 6 · État</span></span>
+    <span class="acc-stars">★★★★★</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-exams">
+        <span class="acc-exam-tag">2021 Métropole</span>
+        <span class="acc-exam-tag">2021 CE</span>
+        <span class="acc-exam-tag">2021 Remp.</span>
+        <span class="acc-exam-tag">2022 Polynésie remp.</span>
+        <span class="acc-exam-tag">2023 Métropole</span>
+        <span class="acc-exam-tag">2023 Liban</span>
+        <span class="acc-exam-tag">2024 Métropole</span>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <ul>
+          <li>Politique budgétaire, politique monétaire</li>
+          <li>Politique de relance, politique de la demande / de l'offre</li>
+          <li>Déficit public, dette publique</li>
+          <li>Prélèvements obligatoires, croissance économique</li>
+        </ul>
+        <p style="margin-top:6px;font-size:0.82rem;color:#7a6a58;font-style:italic">→ Voir Notions, Thème 6</p>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        "La politique budgétaire de relance est-elle efficace pour soutenir la croissance économique ?"
+        <div class="variant">Variantes : "Les déficits publics favorisent-ils la croissance ?" / "La réduction des prélèvements obligatoires favorise-t-elle la croissance ?" / "La politique de relance peut-elle influencer la balance commerciale ?"</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Réciter le cours sur la politique budgétaire.</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>Construire un raisonnement nuancé avec des arguments POUR et CONTRE, en mobilisant des mécanismes économiques précis.</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal dans la question : "est-elle efficace", "favorise-t-elle", "permet-elle" → on attend une réponse en deux temps (oui mais / non mais).</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <ol class="steps">
+        <li>Définir les termes clés de la question (politique budgétaire, croissance, etc.)</li>
+        <li>AXE 1 : Arguments en faveur + mécanisme économique + exemple</li>
+        <li>AXE 2 : Limites / arguments contre + mécanisme + exemple</li>
+        <li>Conclusion nuancée : répondre à la question en prenant position de manière argumentée</li>
+      </ol>
+      <p class="steps mots">Mots du cours obligatoires : politique budgétaire, relance, demande, déficit, dette, croissance, PIB</p>
+      <p class="steps longueur">Longueur attendue : 15 à 25 lignes</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box"><span style="color:#f5c842">[Définition des termes]</span> La politique budgétaire consiste à utiliser le budget de l'État
+pour agir sur l'activité économique. La croissance économique désigne <span style="color:#f5c842">[définition]</span>.
+
+D'une part, la politique de relance peut stimuler la croissance. En effet, en augmentant
+les dépenses publiques <span style="color:#f5c842">[ou en baissant les impôts]</span>, l'État soutient la demande globale :
+les ménages consomment davantage, les entreprises produisent plus, ce qui entraîne
+une hausse du PIB. Par exemple, <span style="color:#f5c842">[exemple du sujet ou d'actualité]</span>.
+
+D'autre part, cette politique présente des limites. Elle creuse le déficit public et
+alimente la dette, ce qui peut <span style="color:#f5c842">[conséquence]</span>. De plus, la relance peut profiter aux
+importations plutôt qu'à la production nationale, <span style="color:#f5c842">[dégradant la balance commerciale]</span>.
+Par exemple, <span style="color:#f5c842">[exemple]</span>.
+
+En conclusion, la politique de relance peut être efficace à court terme pour relancer
+la croissance, mais ses effets à long terme dépendent de <span style="color:#f5c842">[condition : niveau de dette,
+ouverture commerciale, etc.]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Exemple corrigé — 2024 Métropole · SARL Camélia</div>
+      <div class="example-box">
+        <div class="ex-q">Question : "La réduction des prélèvements obligatoires favorise-t-elle la croissance économique ?"</div>
+        <div class="ex-axe"><strong>AXE 1 :</strong> Oui — baisser les impôts augmente le pouvoir d'achat des ménages et la compétitivité des entreprises (mécanisme offre + demande). Ex. : baisse des charges CICE.</div>
+        <div class="ex-axe"><strong>AXE 2 :</strong> Limites — moins de recettes = moins de services publics, creuse le déficit. Les entreprises n'investissent pas forcément l'argent économisé. Ex. : la France a un déficit malgré les baisses de charges.</div>
+        <div class="ex-axe"><strong>Conclusion :</strong> efficace si ciblée et compensée, mais pas suffisante seule.</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">⚠️ <strong>Erreur classique :</strong> Donner une liste d'arguments sans les développer ni les relier à un mécanisme économique. Les correcteurs veulent voir le MÉCANISME, pas juste l'idée.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">💡 <strong>Astuce :</strong> La conclusion nuancée est valorisée. "Cela dépend de..." est mieux que "oui" ou "non" catégorique.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TYPE 2 -->
+<div class="accordion th-rose">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 2</span> — Analyser une situation d'emploi ou de chômage <span class="acc-theme-tag">Thème 7 · Emploi</span></span>
+    <span class="acc-stars">★★★★☆</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-exams">
+        <span class="acc-exam-tag">2021 Espagne</span>
+        <span class="acc-exam-tag">2022 Métropole</span>
+        <span class="acc-exam-tag">2022 Polynésie</span>
+        <span class="acc-exam-tag">2024 Remplacement</span>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <ul>
+          <li>Marché du travail, population active</li>
+          <li>Taux de chômage, chômage conjoncturel / structurel</li>
+          <li>Politiques actives / passives de l'emploi</li>
+          <li>SMIC, flexibilité</li>
+        </ul>
+        <p style="margin-top:6px;font-size:0.82rem;color:#7a6a58;font-style:italic">→ Voir Notions, Thème 7</p>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        "L'intervention de l'État permet-elle de soutenir l'emploi ?"
+        <div class="variant">Variantes : "Quelles politiques pour réduire le chômage ?" / "Les inégalités constituent-elles un frein à la croissance ?"</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Réciter la liste des politiques de l'emploi.</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>Montrer qu'on comprend les MÉCANISMES du chômage ET les moyens d'action de l'État, avec leurs limites.</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal : "permet-elle", "soutenir l'emploi" → argumentation pour/contre.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <ol class="steps">
+        <li>Définir les termes (chômage, marché du travail, intervention de l'État)</li>
+        <li>AXE 1 : Les politiques qui fonctionnent (actives : formation, aides à l'embauche + passives : filet de sécurité) + exemples</li>
+        <li>AXE 2 : Limites (coût pour les finances publiques, effets d'aubaine, chômage structurel résistant) + exemples</li>
+        <li>Conclusion nuancée</li>
+      </ol>
+      <p class="steps mots">Mots obligatoires : chômage, marché du travail, politique active, politique passive, conjoncturel, structurel</p>
+      <p class="steps longueur">Longueur : 15 à 25 lignes</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box">Le chômage désigne la situation où <span style="color:#f5c842">[définition]</span>. L'État peut intervenir par des
+politiques actives (qui agissent sur les causes) et passives (qui amortissent les effets).
+
+D'une part, l'État dispose de leviers efficaces. Les politiques actives comme
+<span style="color:#f5c842">[formation professionnelle / contrats aidés / allègements de charges]</span> permettent de
+<span style="color:#f5c842">[mécanisme]</span>. Par exemple, <span style="color:#f5c842">[exemple]</span>. Les politiques passives comme <span style="color:#f5c842">[allocations chômage]</span>
+assurent <span style="color:#f5c842">[protection sociale]</span>.
+
+D'autre part, ces politiques ont des limites. <span style="color:#f5c842">[Le chômage structurel résiste aux mesures
+conjoncturelles / les contrats aidés créent des effets d'aubaine / le coût pèse sur
+le déficit]</span>. Par exemple, <span style="color:#f5c842">[exemple]</span>.
+
+En conclusion, l'État peut réduire le chômage conjoncturel par la relance et les
+politiques actives, mais le chômage structurel nécessite des <span style="color:#f5c842">[réformes plus profondes]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">⚠️ <strong>Erreur classique :</strong> Confondre offre et demande de travail. Les SALARIÉS offrent du travail, les ENTREPRISES demandent du travail.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">💡 <strong>Astuce :</strong> Toujours distinguer conjoncturel et structurel — ça montre que tu maîtrises les nuances.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TYPE 3 -->
+<div class="accordion th-jaune">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 3</span> — Argumenter sur le libre-échange et le commerce international <span class="acc-theme-tag">Thème 8 · Commerce</span></span>
+    <span class="acc-stars">★★★★☆</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-exams">
+        <span class="acc-exam-tag">2021 CE</span>
+        <span class="acc-exam-tag">2022 Nouvelle-Calédonie</span>
+        <span class="acc-exam-tag">2022 Polynésie</span>
+        <span class="acc-exam-tag">2023 Métropole</span>
+        <span class="acc-exam-tag">2025 Métropole</span>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <ul>
+          <li>Libre-échange, protectionnisme</li>
+          <li>Barrières tarifaires / non tarifaires</li>
+          <li>Mondialisation, IDE, OMC</li>
+          <li>Balance commerciale, économies d'échelle, avantage comparatif</li>
+        </ul>
+        <p style="margin-top:6px;font-size:0.82rem;color:#7a6a58;font-style:italic">→ Voir Notions, Thème 8</p>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        "Le libre-échange favorise-t-il la croissance économique ?"
+        <div class="variant">Variantes : "Les accords commerciaux profitent-ils aux entreprises ?" / "Le développement du commerce international favorise-t-il la croissance ?" / "Les IDE ont-ils des effets positifs ?"</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Faire la liste avantages/inconvénients du libre-échange.</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>Montrer qu'on comprend les mécanismes économiques qui lient ouverture commerciale et croissance.</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal : "favorise-t-il" → pour/contre attendu.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <ol class="steps">
+        <li>Définir libre-échange + croissance économique</li>
+        <li>AXE 1 (POUR) : baisse des prix pour les consommateurs, spécialisation (avantage comparatif), économies d'échelle, stimulation de l'innovation, IDE qui créent de l'emploi</li>
+        <li>AXE 2 (LIMITES) : concurrence déloyale (dumping social/environnemental), délocalisations et pertes d'emploi, dépendance, creusement des inégalités entre pays</li>
+        <li>Conclusion nuancée</li>
+      </ol>
+      <p class="steps mots">Mots obligatoires : libre-échange, protectionnisme, mondialisation, échanges, croissance</p>
+      <p class="steps longueur">Longueur : 15 à 25 lignes</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box"><span style="color:#f5c842">[Définition]</span> Le libre-échange désigne <span style="color:#f5c842">[définition]</span>. La croissance économique correspond à <span style="color:#f5c842">[définition]</span>.
+
+D'une part, le libre-échange peut favoriser la croissance. En effet, l'ouverture
+commerciale permet aux consommateurs d'accéder à des produits moins chers, aux
+entreprises de se spécialiser selon leur avantage comparatif et de réaliser des
+économies d'échelle. De plus, les IDE créent de l'emploi et stimulent l'innovation.
+Par exemple, <span style="color:#f5c842">[exemple du sujet]</span>.
+
+D'autre part, le libre-échange présente des limites. La concurrence internationale
+peut entraîner des délocalisations et des pertes d'emploi dans les secteurs non
+compétitifs. Le dumping social ou environnemental crée une concurrence déloyale.
+Par exemple, <span style="color:#f5c842">[exemple]</span>.
+
+En conclusion, le libre-échange favorise la croissance globale mais peut créer des
+perdants, d'où la nécessité d'un cadre de régulation <span style="color:#f5c842">[OMC, accords]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Exemple corrigé — 2025 Métropole · ArchiDij974</div>
+      <div class="example-box">
+        <div class="ex-q">Question : "Le libre-échange favorise-t-il la croissance économique ?"</div>
+        <div class="ex-axe"><strong>AXE 1 :</strong> Oui — accès à un marché plus large permet les économies d'échelle, la spécialisation augmente la productivité, les consommateurs bénéficient de prix plus bas. Ex. : l'intégration européenne a stimulé la croissance des pays membres.</div>
+        <div class="ex-axe"><strong>AXE 2 :</strong> Limites — la concurrence peut détruire des emplois dans les secteurs non compétitifs, les droits de douane protègent parfois des industries stratégiques. Ex. : les droits de douane américains sur les importations chinoises.</div>
+        <div class="ex-axe"><strong>Conclusion :</strong> le libre-échange favorise la croissance globale mais peut créer des perdants, d'où la nécessité d'un cadre de régulation (OMC, accords).</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">⚠️ <strong>Erreur classique :</strong> Confondre libre-échange (doctrine/choix politique) et mondialisation (processus factuel).</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">💡 <strong>Astuce :</strong> Utiliser l'entreprise du sujet comme exemple — les correcteurs valorisent le lien avec le cas concret.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TYPE 4 -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 4</span> — Calculer et commenter un indicateur économique <span class="acc-theme-tag">Transversal</span></span>
+    <span class="acc-stars">★★★☆☆</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-exams">
+        <span class="acc-exam-tag">2021 Remp.</span>
+        <span class="acc-exam-tag">2022 Nouvelle-Calédonie</span>
+        <span class="acc-exam-tag">2022 Polynésie</span>
+        <span class="acc-exam-tag">2023 La Réunion</span>
+        <span class="acc-exam-tag">2023 Liban</span>
+        <span class="acc-exam-tag">2025 Métropole</span>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <ul>
+          <li>Taux de variation, taux de chômage, taux d'épargne</li>
+          <li>Élasticité-prix, déficit public</li>
+          <li>PIB nominal / réel, coefficient multiplicateur</li>
+        </ul>
+        <p style="margin-top:6px;font-size:0.82rem;color:#7a6a58;font-style:italic">→ Voir Notions, Formules + Rappels Première</p>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        "Retrouvez par le calcul le taux de chômage pour l'année [X]."
+        <div class="variant">Variantes : "Calculez la propension moyenne à épargner pour [année]." / "Retrouvez par le calcul l'élasticité-prix de la demande."</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Juste poser le calcul et donner le résultat.</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>Poser le calcul de façon visible + donner le résultat + COMMENTER (interpréter économiquement).</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal : "retrouvez par le calcul", "calculez" → le calcul ne suffit pas, le commentaire est attendu.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <ol class="steps">
+        <li>Rappeler la formule utilisée</li>
+        <li>Poser le calcul avec les données du sujet (écrire les chiffres)</li>
+        <li>Donner le résultat avec l'unité (%, points, euros)</li>
+        <li>Commenter : que signifie ce résultat ? Est-ce élevé/faible ? Quelle tendance ?</li>
+      </ol>
+      <p class="steps longueur">Longueur : 3 à 5 lignes</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box">Le <span style="color:#f5c842">[indicateur]</span> se calcule ainsi : <span style="color:#f5c842">[formule]</span>.
+Application : (<span style="color:#f5c842">[valeur A]</span> / <span style="color:#f5c842">[valeur B]</span>) × 100 = <span style="color:#f5c842">[résultat]</span>%.
+Ce résultat signifie que <span style="color:#f5c842">[interprétation économique]</span>.
+<span style="color:#f5c842">[Comparaison si les données le permettent : "ce taux est en hausse/baisse par rapport à..."]</span></div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Exemple corrigé — 2022 Polynésie · Bastide</div>
+      <div class="example-box">
+        <div class="ex-q">Question : "Calculez le taux de chômage au sens du BIT pour 2019."</div>
+        <div class="ex-axe"><strong>Formule :</strong> Taux de chômage = (Nombre de chômeurs / Population active) × 100</div>
+        <div class="ex-axe"><strong>Calcul :</strong> (2 440 000 / 29 070 000) × 100 = 8,4%</div>
+        <div class="ex-axe"><strong>Commentaire :</strong> En 2019, 8,4% de la population active était au chômage au sens du BIT, ce qui signifie que près d'un actif sur douze cherchait un emploi sans en trouver.</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">⚠️ <strong>Erreur classique :</strong> Oublier le commentaire. Le calcul seul ne rapporte pas tous les points. Les correcteurs insistent : le commentaire est AUSSI important que le calcul.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">💡 <strong>Astuce :</strong> Toujours écrire la formule AVANT de poser le calcul — ça montre que tu sais ce que tu fais, même si le résultat est faux.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TYPE 5 -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 5</span> — Distinguer deux notions proches <span class="acc-theme-tag">Transversal</span></span>
+    <span class="acc-stars">★★★☆☆</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-exams">
+        <span class="acc-exam-tag">2022 Métropole</span>
+        <span class="acc-exam-tag">2022 Polynésie remp.</span>
+        <span class="acc-exam-tag">2023 Liban</span>
+        <span class="acc-exam-tag">2024 Métropole</span>
+        <span class="acc-exam-tag">2024 CE</span>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <ul>
+          <li>Déficit / dette</li>
+          <li>Budgétaire / monétaire</li>
+          <li>Chômage structurel / conjoncturel</li>
+          <li>Actif / passif</li>
+          <li>Bien public / bien commun</li>
+          <li>Libre-échange / protectionnisme</li>
+          <li>Croissance / développement</li>
+        </ul>
+        <p style="margin-top:6px;font-size:0.82rem;color:#7a6a58;font-style:italic">→ Voir Notions, encadrés "Confusions à éviter"</p>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        "Distinguez le déficit public de la dette publique."
+        <div class="variant">Variantes : "Distinguez les politiques actives et passives de l'emploi." / "Distinguez un bien public d'un bien commun."</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Définir les deux notions séparément.</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>Montrer ce qui les DIFFÉRENCIE explicitement.</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal : "distinguez" → il faut opposer, pas juste juxtaposer.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <ol class="steps">
+        <li>Définir la notion A</li>
+        <li>Définir la notion B</li>
+        <li>Expliciter la différence (critère de distinction)</li>
+        <li>Donner un exemple pour chacune</li>
+      </ol>
+      <p class="steps mots">Mots obligatoires : les termes exacts des deux notions</p>
+      <p class="steps longueur">Longueur : 5 à 8 lignes</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box"><span style="color:#f5c842">[Notion A]</span> désigne <span style="color:#f5c842">[définition]</span>. Par exemple, <span style="color:#f5c842">[exemple]</span>.
+<span style="color:#f5c842">[Notion B]</span> désigne <span style="color:#f5c842">[définition]</span>. Par exemple, <span style="color:#f5c842">[exemple]</span>.
+La différence est que <span style="color:#f5c842">[A]</span> correspond à <span style="color:#f5c842">[critère]</span> tandis que <span style="color:#f5c842">[B]</span> correspond à <span style="color:#f5c842">[critère]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Exemple corrigé — 2023 Liban · Beebop</div>
+      <div class="example-box">
+        <div class="ex-q">Question : "Distinguez déficit public et dette publique, et retrouvez par le calcul le déficit pour 2021."</div>
+        <div class="ex-axe"><strong>Déficit public :</strong> la différence entre les dépenses et les recettes publiques sur UNE année. Si les dépenses dépassent les recettes, il y a déficit.</div>
+        <div class="ex-axe"><strong>Dette publique :</strong> le TOTAL des emprunts accumulés par l'État pour financer l'ensemble des déficits passés. C'est un stock.</div>
+        <div class="ex-axe"><strong>Différence :</strong> le déficit est un flux annuel, la dette est un stock cumulé. Chaque déficit alimente la dette.</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">⚠️ <strong>Erreur classique :</strong> Définir les deux notions sans jamais dire en quoi elles sont DIFFÉRENTES. Il faut un critère de distinction explicite.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TYPE 6 -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 6</span> — Expliquer un mécanisme économique à partir des documents <span class="acc-theme-tag">Transversal</span></span>
+    <span class="acc-stars">★★★★★</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-exams">
+        <span class="acc-exam-tag">Présent dans TOUS les sujets</span>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <p>Toutes — dépend du sujet. Mais le mécanisme le plus fréquent : chaîne causale (A entraîne B qui provoque C).</p>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        "Expliquez comment la hausse des prix affecte le pouvoir d'achat des ménages."
+        <div class="variant">Variantes : "Montrez en quoi les dépenses publiques soutiennent la consommation." / "Établissez un lien entre le taux directeur de la BCE et la croissance."</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Recopier les données du document.</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>Construire une chaîne causale logique en utilisant les données ET le cours.</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal : "expliquez", "montrez en quoi", "établissez un lien" → il faut un raisonnement causal.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <ol class="steps">
+        <li>Identifier le point de départ (ce qui est donné dans le document)</li>
+        <li>Dérouler la chaîne causale : A → B → C (chaque étape avec un mécanisme du cours)</li>
+        <li>Appuyer avec des données chiffrées du document</li>
+      </ol>
+      <p class="steps mots">Mots obligatoires : les termes économiques précis (pas des synonymes)</p>
+      <p class="steps longueur">Longueur : 5 à 10 lignes</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box">D'après le document <span style="color:#f5c842">[X]</span>, on observe que <span style="color:#f5c842">[donnée chiffrée / fait]</span>.
+Cela s'explique par le mécanisme suivant : <span style="color:#f5c842">[A]</span> entraîne <span style="color:#f5c842">[B]</span>, ce qui provoque <span style="color:#f5c842">[C]</span>.
+En effet, <span style="color:#f5c842">[explication du mécanisme avec vocabulaire du cours]</span>.
+On peut le vérifier avec <span style="color:#f5c842">[autre donnée du document]</span> qui montre que <span style="color:#f5c842">[confirmation]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">⚠️ <strong>Erreur classique :</strong> Paraphraser le document sans apporter de connaissances du cours. Les correcteurs valorisent la COMBINAISON document + cours.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">💡 <strong>Astuce :</strong> Commencer par "D'après le document X" puis enchaîner avec "En effet, d'un point de vue économique..." — ça montre que tu utilises les deux sources.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TYPE 7 -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 7</span> — Commenter l'évolution de données (tableau / graphique) <span class="acc-theme-tag">Transversal</span></span>
+    <span class="acc-stars">★★★☆☆</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <div class="acc-section">
+      <div class="acc-label">Apparaît dans</div>
+      <div class="acc-exams">
+        <span class="acc-exam-tag">2021 CE</span>
+        <span class="acc-exam-tag">2022 Nouvelle-Calédonie</span>
+        <span class="acc-exam-tag">2023 Métropole</span>
+        <span class="acc-exam-tag">2023 La Réunion</span>
+        <span class="acc-exam-tag">2025 Métropole</span>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Notions mobilisées</div>
+      <div class="acc-text">
+        <ul>
+          <li>Lecture de tableaux et graphiques</li>
+          <li>Taux de variation</li>
+          <li>Interprétation de tendances</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Question type</div>
+      <div class="question-box">
+        "Commentez l'évolution de la balance commerciale française depuis 2000."
+        <div class="variant">Variantes : "Comparez l'évolution du taux de chômage et du taux d'emploi." / "Commentez l'évolution des dépenses publiques."</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Ce que cette question teste vraiment</div>
+      <div class="two-col">
+        <div class="col-not">
+          <h5>Ce n'est PAS</h5>
+          <p>Juste lire les chiffres à voix haute ("en 2020 c'est 5%, en 2021 c'est 6%").</p>
+        </div>
+        <div class="col-yes">
+          <h5>C'est</h5>
+          <p>Dégager une TENDANCE, quantifier avec des chiffres PRÉCIS, puis INTERPRÉTER.</p>
+        </div>
+      </div>
+      <div class="signal-box">Signal : "commentez", "comparez" → tendance + chiffres + explication.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">La réponse qu'on attend de toi</div>
+      <ol class="steps">
+        <li>Identifier la tendance générale (hausse, baisse, stabilité, retournement)</li>
+        <li>Quantifier avec les chiffres extrêmes ou significatifs du document</li>
+        <li>Interpréter économiquement (pourquoi cette évolution ?)</li>
+      </ol>
+      <p class="steps longueur">Longueur : 5 à 8 lignes</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box">D'après le document <span style="color:#f5c842">[X]</span>, on observe une <span style="color:#f5c842">[tendance]</span> de <span style="color:#f5c842">[l'indicateur]</span> entre <span style="color:#f5c842">[date début]</span>
+et <span style="color:#f5c842">[date fin]</span>. En effet, <span style="color:#f5c842">[indicateur]</span> est passé de <span style="color:#f5c842">[valeur 1]</span> à <span style="color:#f5c842">[valeur 2]</span>, soit une
+<span style="color:#f5c842">[hausse/baisse]</span> de <span style="color:#f5c842">[variation chiffrée]</span>.
+Cette évolution s'explique par <span style="color:#f5c842">[mécanisme économique ou contexte]</span>.
+<span style="color:#f5c842">[Si applicable : on note cependant une inflexion en [date] due à [cause].]</span></div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">⚠️ <strong>Erreur classique :</strong> Lister les chiffres année par année sans dégager de tendance. Les correcteurs veulent une SYNTHÈSE, pas un inventaire.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">💡 <strong>Astuce :</strong> Toujours donner le chiffre de début ET de fin pour montrer l'amplitude. Et utiliser un taux de variation si possible.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SUJETS D'ARGUMENTATION -->
+<h2 class="section-title" style="margin-top:48px">Sujets d'argumentation tombés au Bac</h2>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Année</th><th>Session</th><th>Sujet d'argumentation (choix)</th></tr>
+</thead>
+<tbody>
+<tr><td>2021</td><td>Métropole</td><td>Les politiques économiques de demande permettent-elles toujours de relancer la croissance ?</td></tr>
+<tr><td>2021</td><td>CE Afrique</td><td>Les déficits publics favorisent-ils la croissance ? / Les accords commerciaux profitent-ils aux entreprises européennes ?</td></tr>
+<tr><td>2021</td><td>Remplacement</td><td>Les inégalités expliquent-elles les différences de taux d'épargne ? / La politique budgétaire de relance suffit-elle pour la reprise ?</td></tr>
+<tr><td>2022</td><td>Métropole</td><td>L'intervention de l'État permet-elle de soutenir l'emploi ? / Le PIB permet-il de mesurer la richesse ?</td></tr>
+<tr><td>2022</td><td>Nouvelle-Calédonie</td><td>L'épargne permet-elle une dynamique de croissance ? / Le commerce international favorise-t-il la croissance ?</td></tr>
+<tr><td>2022</td><td>Polynésie</td><td>Les inégalités constituent-elles un frein à la croissance ? / Les IDE ont-ils des effets positifs ?</td></tr>
+<tr><td>2022</td><td>Polynésie remp.</td><td>La politique monétaire de taux bas favorise-t-elle la croissance ? / Faut-il augmenter la part des salaires dans la VA ?</td></tr>
+<tr><td>2023</td><td>Métropole</td><td>La politique de relance peut-elle influencer la balance commerciale ?</td></tr>
+<tr><td>2023</td><td>La Réunion</td><td>Les actions de l'État sont-elles efficaces pour soutenir le pouvoir d'achat ?</td></tr>
+<tr><td>2023</td><td>Liban</td><td>La politique budgétaire est-elle efficace en temps de crise ?</td></tr>
+<tr><td>2024</td><td>Métropole</td><td>La réduction des prélèvements obligatoires favorise-t-elle la croissance ?</td></tr>
+<tr><td>2024</td><td>CE</td><td>L'intervention de l'État permet-elle la protection des biens communs ?</td></tr>
+<tr><td>2025</td><td>Métropole</td><td>Le libre-échange favorise-t-il la croissance économique ?</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="obs-box">
+  <h4>Observation : 3 grands débats récurrents</h4>
+  <ol>
+    <li>L'État doit-il intervenir davantage ? (politique budgétaire, fiscale, monétaire)</li>
+    <li>Le commerce international est-il bénéfique ? (libre-échange, IDE, mondialisation)</li>
+    <li>Les indicateurs économiques mesurent-ils la réalité ? (PIB, inégalités, bien-être)</li>
+  </ol>
+</div>
+
+<!-- AUTO-ÉVALUATION -->
+<div class="autoeval">
+  <h2 class="section-title">Auto-évaluation</h2>
+  <p style="font-size:0.88rem;color:#7a6a58;margin-bottom:16px">Coche ton niveau pour chaque type de question après t'être entraîné·e :</p>
+  <div class="table-wrap">
+  <table class="eval-table" id="evalTable">
+    <thead>
+      <tr>
+        <th>Type de question</th>
+        <th>Je sais faire seul·e</th>
+        <th>J'ai besoin de revoir</th>
+        <th>Je ne sais pas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>TYPE 1 — Argumenter sur une politique économique</td>
+        <td><input type="radio" name="eval_1" value="ok" /></td>
+        <td><input type="radio" name="eval_1" value="revoir" /></td>
+        <td><input type="radio" name="eval_1" value="nsp" /></td>
+      </tr>
+      <tr>
+        <td>TYPE 2 — Analyser emploi / chômage</td>
+        <td><input type="radio" name="eval_2" value="ok" /></td>
+        <td><input type="radio" name="eval_2" value="revoir" /></td>
+        <td><input type="radio" name="eval_2" value="nsp" /></td>
+      </tr>
+      <tr>
+        <td>TYPE 3 — Argumenter libre-échange / commerce</td>
+        <td><input type="radio" name="eval_3" value="ok" /></td>
+        <td><input type="radio" name="eval_3" value="revoir" /></td>
+        <td><input type="radio" name="eval_3" value="nsp" /></td>
+      </tr>
+      <tr>
+        <td>TYPE 4 — Calculer et commenter un indicateur</td>
+        <td><input type="radio" name="eval_4" value="ok" /></td>
+        <td><input type="radio" name="eval_4" value="revoir" /></td>
+        <td><input type="radio" name="eval_4" value="nsp" /></td>
+      </tr>
+      <tr>
+        <td>TYPE 5 — Distinguer deux notions</td>
+        <td><input type="radio" name="eval_5" value="ok" /></td>
+        <td><input type="radio" name="eval_5" value="revoir" /></td>
+        <td><input type="radio" name="eval_5" value="nsp" /></td>
+      </tr>
+      <tr>
+        <td>TYPE 6 — Expliquer un mécanisme à partir d'un document</td>
+        <td><input type="radio" name="eval_6" value="ok" /></td>
+        <td><input type="radio" name="eval_6" value="revoir" /></td>
+        <td><input type="radio" name="eval_6" value="nsp" /></td>
+      </tr>
+      <tr>
+        <td>TYPE 7 — Commenter l'évolution de données</td>
+        <td><input type="radio" name="eval_7" value="ok" /></td>
+        <td><input type="radio" name="eval_7" value="revoir" /></td>
+        <td><input type="radio" name="eval_7" value="nsp" /></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <button class="eval-reset" onclick="resetEval()">Réinitialiser</button>
+</div>
+
+</div><!-- /content -->
+
+<!-- FOOTER -->
+<div class="footer">
+  Révizo · Économie STMG · Questions Bac · Avril 2026<br>
+  Sources : 15 annales post-réforme (2021-2025) · Consignes de correction 2022-2024 · Rapports de correcteurs
+</div>
+
+<script>
+/* Accordion toggle */
+function toggleAcc(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  if (isOpen) {
+    header.classList.remove('open');
+    body.classList.remove('show');
+  } else {
+    header.classList.add('open');
+    body.classList.add('show');
+  }
+}
+
+/* Auto-évaluation localStorage */
+const STORAGE_KEY = 'revizo_autoeval_eco';
+
+function saveEval() {
+  const data = {};
+  for (let i = 1; i <= 7; i++) {
+    const checked = document.querySelector('input[name="eval_' + i + '"]:checked');
+    if (checked) data['eval_' + i] = checked.value;
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadEval() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (!data) return;
+    for (let i = 1; i <= 7; i++) {
+      if (data['eval_' + i]) {
+        const radio = document.querySelector('input[name="eval_' + i + '"][value="' + data['eval_' + i] + '"]');
+        if (radio) radio.checked = true;
+      }
+    }
+  } catch(e) {}
+}
+
+function resetEval() {
+  for (let i = 1; i <= 7; i++) {
+    const radios = document.querySelectorAll('input[name="eval_' + i + '"]');
+    radios.forEach(r => r.checked = false);
+  }
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+/* Listen for changes */
+document.getElementById('evalTable').addEventListener('change', saveEval);
+
+/* Load on page ready */
+loadEval();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Mémo Thème 7 · L'État, l'emploi et le chômage</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── PRINT-FIRST DESIGN ─── */
+@page { size: A4; margin: 12mm; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; }
+
+/* NAV (screen only) */
+.sli-nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.sli-nav a { text-decoration:none }
+.sli-nav-logo { font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18 }
+.sli-nav-logo span { color:#b5415a }
+.sli-nav-links { display:flex;gap:2px }
+.sli-nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none }
+.sli-nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.sli-nl.on { background:#1e1c18;color:#f5c842 }
+
+/* ─── MEMO LAYOUT ─── */
+.memo { max-width: 900px; margin: 0 auto; padding: 80px 20px 40px; }
+
+/* Header */
+.memo-hd { text-align: center; margin-bottom: 20px; }
+.memo-badge { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #b5415a; color: #fff; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+.memo-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 2px; }
+.memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+.memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #b5415a; margin-top: 8px; font-style: italic; }
+
+/* ─── ARBRE STRUCTURE (ENCODER) ─── */
+.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.tree-full { grid-column: 1 / -1; }
+
+.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
+.tree-card.c-bleu  { border-left-color: #2a69a8; }
+.tree-card.c-rose  { border-left-color: #b5415a; }
+.tree-card.c-jaune { border-left-color: #946e00; }
+.tree-card.c-vert  { border-left-color: #1a7a3c; }
+.tree-card.c-violet { border-left-color: #7030a0; }
+
+.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
+.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
+.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
+.tree-def strong { color: #1e1c18; }
+.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
+.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(42,105,168,.08); color: #2a69a8; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+
+/* Sub-items inside tree cards */
+.tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
+.tree-chip[data-tip] { cursor: pointer; transition: transform .1s, box-shadow .1s; }
+.tree-chip[data-tip]:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+/* Tooltip popup */
+.tip-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; z-index:9000; background:rgba(30,28,24,.25); }
+.tip-overlay.show { display:flex; align-items:center; justify-content:center; animation: fadeIn .15s ease; }
+.tip-card { background:#fffdf8; border-radius:16px; padding:20px 24px; max-width:380px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,.18); position:relative; }
+.tip-close { position:absolute; top:10px; right:14px; font-size:18px; cursor:pointer; color:#a09880; background:none; border:none; font-weight:700; }
+.tip-close:hover { color:#1e1c18; }
+.tip-term { font-family:'Nunito',sans-serif; font-size:16px; font-weight:900; color:#1e1c18; margin-bottom:6px; }
+.tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
+.tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:rgba(42,105,168,.06); border-radius:8px; border-left:3px solid #2a69a8; }
+.tip-bac { font-size:10px; font-weight:700; color:#b5415a; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+
+/* Schema */
+.schema-section { margin-bottom: 16px; }
+.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
+.schema-box svg { display: block; margin: 0 auto; }
+
+.chip-bleu   { background: #e8f3ff; color: #2a69a8; }
+.chip-rose   { background: #fdeef2; color: #b5415a; }
+.chip-jaune  { background: #fef8e2; color: #946e00; }
+.chip-vert   { background: #e6f5ec; color: #1a7a3c; }
+.chip-violet { background: #f3eafc; color: #7030a0; }
+.chip-gris   { background: rgba(30,28,24,.07); color: #5a5448; }
+
+/* ─── SECTION BOTTOM: RECUPERER ─── */
+.recup { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.recup-full { grid-column: 1 / -1; }
+
+/* Confusion box */
+.confuse-box { background: #fdeef2; border-radius: 12px; padding: 14px 16px; }
+.confuse-box .tree-label { color: #b5415a; }
+.confuse-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 11px; line-height: 1.5; }
+.confuse-row:last-child { margin-bottom: 0; }
+.confuse-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.confuse-text strong { font-weight: 800; }
+
+/* Mnemo box */
+.mnemo-box { background: #e8f3ff; border-radius: 12px; padding: 14px 16px; }
+.mnemo-box .tree-label { color: #2a69a8; }
+.mnemo-item { font-size: 11px; line-height: 1.6; margin-bottom: 4px; }
+.mnemo-item:last-child { margin-bottom: 0; }
+
+/* Bac frequency bar */
+.freq-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; }
+.freq-row:last-child { margin-bottom: 0; }
+.freq-bar-track { flex: 1; height: 6px; background: #e8e4dc; border-radius: 3px; overflow: hidden; }
+.freq-bar-fill { height: 100%; border-radius: 3px; }
+.freq-bar-fill.f5 { width: 100%; background: #b5415a; }
+.freq-bar-fill.f4 { width: 80%; background: #d46a1a; }
+.freq-bar-fill.f3 { width: 60%; background: #946e00; }
+.freq-bar-fill.f2 { width: 40%; background: #2a69a8; }
+.freq-bar-fill.f1 { width: 20%; background: #a09880; }
+.freq-notion { font-weight: 700; min-width: 160px; }
+.freq-stars { color: #f5c842; font-size: 10px; min-width: 50px; text-align: right; letter-spacing: 1px; }
+
+/* Link chain */
+.chain { background: #fef8e2; border-radius: 12px; padding: 14px 16px; }
+.chain .tree-label { color: #946e00; }
+.chain-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
+.chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
+
+/* ─── PRINT ─── */
+@media print {
+  .sli-nav { display: none !important; }
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .memo { padding: 0; max-width: 100%; }
+  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain { break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .tree, .recup { grid-template-columns: 1fr; }
+  .tree-full, .recup-full { grid-column: 1; }
+  .memo { padding: 74px 12px 30px; }
+}
+</style>
+</head>
+<body data-subject="eco">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Économie</span>
+  <a href="memos-eco.html" class="active">Mémos</a>
+  <a href="flashcards-eco.html">Flashcards</a>
+  <a href="questions-bac-eco.html">Questions Bac</a>
+  <a href="methode-jour-j-eco.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<div class="memo">
+
+<!-- HEADER -->
+<div class="memo-hd">
+  <div class="memo-badge">Mémo · Économie · Thème 7</div>
+  <div class="memo-title">Quelle est l'influence de l'État sur l'emploi et le chômage ?</div>
+  <div class="memo-sub">Terminale STMG · 1 page · Encoder · Comprendre · Récupérer</div>
+  <div class="memo-question">"Comment fonctionne le marché du travail, pourquoi le chômage, et que peut faire l'État ?"</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="schema-section">
+  <div class="schema-box">
+    <svg viewBox="0 0 800 340" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+
+      <!-- Niveau 1 : Le marché du travail -->
+      <rect x="250" y="8" width="300" height="44" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">NIVEAU 1</text>
+      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Le marché du travail</text>
+
+      <!-- 2 sous-branches : Offre / Demande -->
+      <line x1="400" y1="52" x2="400" y2="66" stroke="#a09880" stroke-width="2"/>
+      <line x1="250" y1="66" x2="550" y2="66" stroke="#a09880" stroke-width="2"/>
+      <line x1="250" y1="66" x2="250" y2="78" stroke="#a09880" stroke-width="2"/>
+      <line x1="550" y1="66" x2="550" y2="78" stroke="#a09880" stroke-width="2"/>
+
+      <rect x="150" y="78" width="200" height="32" rx="8" fill="#fdeef2"/>
+      <text x="250" y="98" text-anchor="middle" font-size="10" font-weight="700" fill="#b5415a">Offre de travail (salariés)</text>
+
+      <rect x="450" y="78" width="200" height="32" rx="8" fill="#fdeef2"/>
+      <text x="550" y="98" text-anchor="middle" font-size="10" font-weight="700" fill="#b5415a">Demande de travail (employeurs)</text>
+
+      <!-- Flèche vers Niveau 2 -->
+      <line x1="400" y1="110" x2="400" y2="130" stroke="#a09880" stroke-width="2" marker-end="url(#arrow7)"/>
+
+      <!-- Niveau 2 : Le chômage -->
+      <rect x="280" y="130" width="240" height="38" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+      <text x="400" y="154" text-anchor="middle" font-size="12" font-weight="900" fill="#7030a0">Le chômage (3 types)</text>
+
+      <!-- 3 branches chômage -->
+      <line x1="400" y1="168" x2="400" y2="182" stroke="#a09880" stroke-width="2"/>
+      <line x1="180" y1="182" x2="620" y2="182" stroke="#a09880" stroke-width="2"/>
+      <line x1="180" y1="182" x2="180" y2="194" stroke="#a09880" stroke-width="2"/>
+      <line x1="400" y1="182" x2="400" y2="194" stroke="#a09880" stroke-width="2"/>
+      <line x1="620" y1="182" x2="620" y2="194" stroke="#a09880" stroke-width="2"/>
+
+      <rect x="110" y="194" width="140" height="32" rx="8" fill="#f3eafc"/>
+      <text x="180" y="214" text-anchor="middle" font-size="10" font-weight="700" fill="#7030a0">Conjoncturel</text>
+
+      <rect x="330" y="194" width="140" height="32" rx="8" fill="#f3eafc"/>
+      <text x="400" y="214" text-anchor="middle" font-size="10" font-weight="700" fill="#7030a0">Structurel</text>
+
+      <rect x="550" y="194" width="140" height="32" rx="8" fill="#f3eafc"/>
+      <text x="620" y="214" text-anchor="middle" font-size="10" font-weight="700" fill="#7030a0">Frictionnel</text>
+
+      <!-- Flèche vers Niveau 3 -->
+      <line x1="400" y1="226" x2="400" y2="244" stroke="#a09880" stroke-width="2" marker-end="url(#arrow7)"/>
+
+      <!-- Niveau 3 : Les politiques de l'emploi -->
+      <rect x="240" y="244" width="320" height="38" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+      <text x="400" y="268" text-anchor="middle" font-size="12" font-weight="900" fill="#2a69a8">Les politiques de l'emploi (2 types)</text>
+
+      <!-- 2 branches politiques -->
+      <line x1="400" y1="282" x2="400" y2="294" stroke="#a09880" stroke-width="2"/>
+      <line x1="260" y1="294" x2="540" y2="294" stroke="#a09880" stroke-width="2"/>
+      <line x1="260" y1="294" x2="260" y2="306" stroke="#a09880" stroke-width="2"/>
+      <line x1="540" y1="294" x2="540" y2="306" stroke="#a09880" stroke-width="2"/>
+
+      <rect x="180" y="306" width="160" height="28" rx="8" fill="#e6f5ec"/>
+      <text x="260" y="324" text-anchor="middle" font-size="10" font-weight="700" fill="#1a7a3c">Actives (causes)</text>
+
+      <rect x="460" y="306" width="160" height="28" rx="8" fill="#fef8e2"/>
+      <text x="540" y="324" text-anchor="middle" font-size="10" font-weight="700" fill="#946e00">Passives (effets)</text>
+
+      <!-- Arrow marker -->
+      <defs><marker id="arrow7" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
+
+      <!-- Ancre visuelle T7 Éco -->
+      <g transform="translate(28, 28)">
+        <circle cx="0" cy="0" r="20" fill="#2a69a8"/>
+        <text x="0" y="6" text-anchor="middle"
+          font-family="Inter, sans-serif"
+          font-size="11" font-weight="900"
+          fill="#ffffff">E&amp;C</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- Barre indicateurs (dashed) -->
+<div class="recup" style="margin-bottom:16px">
+  <div class="chain recup-full" style="background:#fef8e2;border:2px dashed #946e00;">
+    <div class="tree-label" style="color:#946e00">Indicateurs clés</div>
+    <div style="font-size:11px;font-weight:700;color:#5a4e00;text-align:center;margin-top:4px;">
+      Taux de chômage = Chômeurs / Pop. active × 100 &nbsp;|&nbsp; Taux d'emploi &nbsp;|&nbsp; Taux d'activité
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 1 : ENCODER — L'arbre du thème -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="tree">
+
+  <div class="tree-card c-rose tree-full">
+    <div class="tree-label">Le point de départ <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">Le marché du travail</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="offre_travail">Offre de travail</span>
+      <span class="tree-chip chip-rose" data-tip="demande_travail">Demande de travail</span>
+      <span class="tree-chip chip-rose" data-tip="salaire_equilibre">Salaire d'équilibre</span>
+      <span class="tree-chip chip-rose" data-tip="smic">SMIC</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Lieu abstrait où se confrontent l'<strong>offre</strong> (salariés) et la <strong>demande</strong> (employeurs). Le prix = le salaire.</div>
+  </div>
+
+  <!-- Population active et indicateurs -->
+  <div class="tree-card c-rose">
+    <div class="tree-label">Les chiffres à connaître <span class="freq">★★★★☆</span></div>
+    <div class="tree-h">Population active et indicateurs</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="pop_active">Population active</span>
+      <span class="tree-chip chip-rose" data-tip="taux_chomage">Taux de chômage</span>
+      <span class="tree-chip chip-rose" data-tip="taux_emploi">Taux d'emploi</span>
+      <span class="tree-chip chip-gris" data-tip="taux_variation_t7">Taux de variation</span>
+    </div>
+    <div class="tree-def">Pop. active = actifs occupés + chômeurs. Le taux de chômage se <strong>CALCULE</strong> (tombé en 2022).</div>
+  </div>
+
+  <!-- Les types de chômage -->
+  <div class="tree-card c-violet">
+    <div class="tree-label">Les 3 causes <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">Les types de chômage</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="conjoncturel">Conjoncturel</span>
+      <span class="tree-chip chip-violet" data-tip="structurel">Structurel</span>
+      <span class="tree-chip chip-violet" data-tip="frictionnel">Frictionnel</span>
+    </div>
+    <div class="tree-def">3 causes différentes = 3 remèdes différents</div>
+  </div>
+
+  <!-- Politiques actives -->
+  <div class="tree-card c-bleu">
+    <div class="tree-label">Agir sur les causes <span class="freq">★★★★☆</span></div>
+    <div class="tree-h">Politiques actives</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="formation">Formation</span>
+      <span class="tree-chip chip-bleu" data-tip="contrats_aides">Contrats aidés</span>
+      <span class="tree-chip chip-bleu" data-tip="allegements">Allègements de charges</span>
+    </div>
+    <div class="tree-def">Agissent sur les <strong>CAUSES</strong> du chômage</div>
+  </div>
+
+  <!-- Politiques passives -->
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Amortir les effets <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">Politiques passives</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="allocations">Allocations chômage</span>
+      <span class="tree-chip chip-jaune" data-tip="preretraites">Préretraites</span>
+    </div>
+    <div class="tree-def">Amortissent les <strong>CONSÉQUENCES</strong> du chômage</div>
+  </div>
+
+  <!-- Flexisécurité -->
+  <div class="tree-card c-vert">
+    <div class="tree-label">Le modèle hybride <span class="freq">★★☆☆☆</span></div>
+    <div class="tree-h">Flexisécurité</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="flexibilite">Flexibilité</span>
+      <span class="tree-chip chip-vert" data-tip="securite">Sécurité</span>
+    </div>
+    <div class="tree-def">Modèle combinant facilité de licenciement + protection du salarié (modèle danois)</div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 2 : CHAÎNE LOGIQUE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <div class="chain recup-full">
+    <div class="tree-label">La chaîne logique du thème 7</div>
+    <div class="chain-flow">
+      <span class="chain-node">Marché du travail déséquilibré</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Chômage (3 types)</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">L'État agit</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Politiques actives + passives</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Mais coût pour les finances publiques</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 3 : RÉCUPÉRER -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <!-- Confusions à éviter -->
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques au Bac</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Offre de travail</strong> = les SALARIÉS (pas les entreprises) ≠ <strong>Demande</strong> = les EMPLOYEURS</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Structurel</strong> = problème de FOND (durable) ≠ <strong>Conjoncturel</strong> = problème TEMPORAIRE</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Active</strong> = agir sur les CAUSES ≠ <strong>Passive</strong> = amortir les EFFETS</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Taux de chômage</strong> = chômeurs / pop. ACTIVE (pas pop. totale)</span>
+    </div>
+  </div>
+
+  <!-- Moyens mnémotechniques -->
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>O/D inversé</strong> : en éco du travail, les salariés OFFRENT, les entreprises DEMANDENT — c'est l'inverse du langage courant</div>
+    <div class="mnemo-item"><strong>CON-jonc-turel = CON-joncture</strong> : lié à la conjoncture (situation économique du moment)</div>
+    <div class="mnemo-item"><strong>STRUC-turel = STRUC-ture</strong> : lié à la structure profonde du marché</div>
+    <div class="mnemo-item"><strong>Active = Active les causes</strong> : formation, aide à l'embauche → on agit</div>
+    <div class="mnemo-item"><strong>Passive = on subit Passivement</strong> : allocations → on compense</div>
+    <div class="mnemo-item"><strong>Taux de chômage : le dénominateur est ACTIF</strong> : (chômeurs / pop. active) × 100</div>
+  </div>
+
+</div>
+
+<!-- Fréquences BAC -->
+<div class="recup">
+  <div class="freq-box recup-full">
+    <div class="tree-label" style="margin-bottom:8px">Fréquence au Bac (15 sujets analysés)</div>
+
+    <div class="freq-row">
+      <span class="freq-notion">Politiques de l'emploi</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">★★★★☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Taux de chômage (calcul)</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">★★★★☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Chômage structurel / conjoncturel</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Marché du travail</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Flexisécurité</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f2"></div></div>
+      <span class="freq-stars">★★☆☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Inégalités et emploi</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
+  Révizo · Mémo Thème 7 · Économie STMG · Avril 2026 · Sources : 15 annales post-réforme, BO 2019, consignes de correction
+</div>
+
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tip-overlay" id="tipOverlay" onclick="closeTip()">
+  <div class="tip-card" onclick="event.stopPropagation()">
+    <button class="tip-close" onclick="closeTip()">&times;</button>
+    <div class="tip-term" id="tipTerm"></div>
+    <div class="tip-def" id="tipDef"></div>
+    <div class="tip-example" id="tipEx"></div>
+    <div class="tip-bac" id="tipBac"></div>
+  </div>
+</div>
+
+<script>
+const TIPS = {
+  offre_travail: {
+    term: "Offre de travail",
+    def: "Quantité de travail que les SALARIÉS proposent sur le marché. Attention : en économie, ce sont les salariés qui 'offrent' leur travail, PAS les entreprises.",
+    ex: "Un étudiant qui cherche un job d'été augmente l'offre de travail. Plus le salaire est élevé, plus de personnes veulent travailler.",
+    bac: "★★★☆☆ — Piège classique au Bac : ne pas inverser offre et demande"
+  },
+  demande_travail: {
+    term: "Demande de travail",
+    def: "Quantité de travail que les EMPLOYEURS souhaitent embaucher. Ce sont les entreprises qui 'demandent' du travail pour produire.",
+    ex: "Un restaurant qui embauche 3 serveurs pour l'été : c'est de la demande de travail. Plus le salaire est bas, plus les entreprises veulent embaucher.",
+    bac: "★★★☆☆"
+  },
+  salaire_equilibre: {
+    term: "Salaire d'équilibre",
+    def: "Sur le marché du travail, c'est le salaire auquel la quantité de travail offerte par les salariés = la quantité demandée par les employeurs. En théorie, à ce salaire, il n'y a pas de chômage.",
+    ex: "En réalité, le marché du travail n'atteint jamais vraiment l'équilibre parfait (rigidités, SMIC, qualifications inadaptées).",
+    bac: "★★☆☆☆"
+  },
+  smic: {
+    term: "SMIC (Salaire Minimum)",
+    def: "Salaire Minimum Interprofessionnel de Croissance. Salaire horaire en dessous duquel aucun employeur ne peut payer un salarié en France. C'est un exemple de rigidité du marché du travail — il empêche le salaire de baisser en dessous d'un seuil.",
+    ex: "En 2024, le SMIC est d'environ 1 400 EUR net par mois. C'est un plancher : même si un employeur voudrait payer moins, la loi l'interdit.",
+    bac: "★★☆☆☆"
+  },
+  pop_active: {
+    term: "Population active",
+    def: "Ensemble des personnes de 15 ans et plus qui ont un emploi (actifs occupés) OU qui en cherchent un (chômeurs). Population active = actifs occupés + chômeurs. Les retraités, étudiants non actifs, et personnes au foyer ne sont PAS dans la population active.",
+    ex: "La France compte environ 30 millions d'actifs. Si 3 millions sont au chômage, la population active = 27 millions occupés + 3 millions chômeurs = 30 millions.",
+    bac: "★★★★☆"
+  },
+  taux_chomage: {
+    term: "Taux de chômage",
+    def: "Formule : (Nombre de chômeurs / Population active) × 100. Attention : le dénominateur est la population ACTIVE, pas la population totale. Résultat en %. Un chômeur au sens du BIT : sans emploi + recherche active + disponible immédiatement.",
+    ex: "Si 3 millions de chômeurs pour 30 millions d'actifs : (3/30) × 100 = 10%. Ce calcul est tombé au Bac en 2022 (Polynésie).",
+    bac: "★★★★☆ — Calcul tombé au Bac. TOUJOURS commenter le résultat."
+  },
+  taux_emploi: {
+    term: "Taux d'emploi",
+    def: "Formule : (Actifs occupés / Population en âge de travailler) × 100. Mesure la proportion de personnes en âge de travailler qui ont effectivement un emploi. Complémentaire du taux de chômage.",
+    ex: "Un taux d'emploi de 68% signifie que 68% des 15-64 ans ont un emploi. Les 32% restants incluent les chômeurs, les étudiants, les retraités anticipés, etc.",
+    bac: "★★★☆☆"
+  },
+  conjoncturel: {
+    term: "Chômage conjoncturel",
+    def: "Chômage TEMPORAIRE lié à un ralentissement de l'activité économique. Quand la demande baisse (crise), les entreprises produisent moins et embauchent moins. Il disparaît quand l'économie repart.",
+    ex: "La montée brutale du chômage pendant le Covid (2020) = chômage conjoncturel. L'économie était en pause, pas en panne structurelle. Dès la reprise, le chômage a rebaissé.",
+    bac: "★★★☆☆ — CON-joncturel = lié à la CON-joncture (situation du moment)"
+  },
+  structurel: {
+    term: "Chômage structurel",
+    def: "Chômage DURABLE lié à des problèmes de fond du marché du travail : inadéquation entre les qualifications des travailleurs et les besoins des entreprises, rigidités (SMIC, réglementation), mutations technologiques.",
+    ex: "Les ouvriers non qualifiés remplacés par des robots dans l'industrie automobile = chômage structurel. Même si l'économie va bien, ces emplois ne reviendront pas.",
+    bac: "★★★☆☆ — STRUC-turel = problème de STRUC-ture profonde"
+  },
+  frictionnel: {
+    term: "Chômage frictionnel",
+    def: "Chômage de COURTE DURÉE entre deux emplois. C'est le temps normal de recherche d'un nouveau travail après avoir quitté le précédent. Il est inévitable et même sain pour l'économie.",
+    ex: "Un ingénieur qui démissionne pour trouver un poste mieux payé : pendant les 2 mois de recherche, il est en chômage frictionnel. Ce n'est pas un problème économique.",
+    bac: "★☆☆☆☆ — Rarement testé seul"
+  },
+  formation: {
+    term: "Formation professionnelle (politique active)",
+    def: "L'État finance la formation des chômeurs pour qu'ils acquièrent les compétences demandées par les entreprises. Objectif : réduire l'inadéquation entre offre et demande de travail (chômage structurel).",
+    ex: "France Travail (ex-Pôle emploi) propose des formations en numérique, en langues, en gestion. Un ancien ouvrier textile peut se reconvertir en technicien informatique.",
+    bac: "★★★★☆ — Politique active = agit sur les causes"
+  },
+  contrats_aides: {
+    term: "Contrats aidés",
+    def: "L'État subventionne l'embauche de certains publics (jeunes, seniors, chômeurs longue durée) en prenant en charge une partie du salaire. Objectif : inciter les entreprises à embaucher des personnes qu'elles n'auraient pas recrutées seules.",
+    ex: "Les emplois francs : une entreprise qui embauche un habitant d'un quartier prioritaire reçoit une prime de 5 000 EUR/an pendant 3 ans.",
+    bac: "★★★☆☆ — Limite : effets d'aubaine (l'entreprise aurait embauché quand même)"
+  },
+  allegements: {
+    term: "Allègements de charges",
+    def: "L'État réduit les cotisations sociales patronales, surtout sur les bas salaires, pour rendre l'embauche moins coûteuse. Objectif : baisser le coût du travail pour encourager les entreprises à recruter.",
+    ex: "Les allègements Fillon : les cotisations patronales sont réduites pour les salariés payés entre 1 et 1,6 SMIC. Cela représente des milliards d'euros par an.",
+    bac: "★★★☆☆ — C'est une politique d'offre appliquée à l'emploi"
+  },
+  allocations: {
+    term: "Allocations chômage (politique passive)",
+    def: "Revenus versés par France Travail (ex-Pôle emploi) aux chômeurs qui remplissent les conditions (avoir travaillé suffisamment longtemps, être inscrit, rechercher activement). Financées par les cotisations des salariés et employeurs.",
+    ex: "Un salarié licencié après 2 ans de CDI peut toucher environ 57% de son ancien salaire brut pendant 24 mois maximum. Ça lui permet de vivre pendant sa recherche.",
+    bac: "★★★☆☆ — Politique passive = amortit les conséquences, ne crée pas d'emploi"
+  },
+  preretraites: {
+    term: "Préretraites (politique passive)",
+    def: "Dispositif permettant à des salariés âgés de quitter le marché du travail avant l'âge légal de la retraite, avec un revenu de remplacement. Objectif : libérer des postes pour les plus jeunes.",
+    ex: "Un ouvrier de 58 ans dans une usine qui ferme peut partir en préretraite plutôt que d'être au chômage. Mais ça coûte cher à la collectivité.",
+    bac: "★☆☆☆☆ — Moins utilisé aujourd'hui, mais bon exemple de politique passive"
+  },
+  flexibilite: {
+    term: "Flexibilité du marché du travail",
+    def: "Capacité pour les entreprises d'adapter facilement leur main-d'œuvre (embaucher, licencier, modifier les horaires). Plus le marché est flexible, plus les entreprises ajustent vite, mais moins les salariés sont protégés.",
+    ex: "Aux États-Unis, le marché est très flexible : on peut être licencié du jour au lendemain ('at-will employment'). En France, le Code du travail impose des procédures strictes.",
+    bac: "★★☆☆☆"
+  },
+  securite: {
+    term: "Sécurité (dans la flexisécurité)",
+    def: "Protection offerte aux salariés : indemnisation généreuse du chômage, formation continue, accompagnement à la reconversion. L'idée : si on flexibilise le marché, il faut compenser par plus de protection.",
+    ex: "Au Danemark, un salarié licencié touche 90% de son ancien salaire pendant 2 ans ET bénéficie d'un accompagnement intensif pour retrouver un emploi.",
+    bac: "★★☆☆☆"
+  },
+  taux_variation_t7: {
+    term: "Taux de variation (rappel 1ère)",
+    def: "Formule : ((Valeur finale − Valeur initiale) / Valeur initiale) × 100. Résultat en %. Utilisé pour commenter l'évolution du chômage, de l'emploi, de la population active d'une année à l'autre.",
+    ex: "Le nombre de chômeurs passe de 3,2 à 2,8 millions : ((2,8 − 3,2) / 3,2) × 100 = −12,5%. Le chômage a baissé de 12,5%.",
+    bac: "★★★☆☆ — TOUJOURS poser la formule, donner le résultat, puis commenter"
+  }
+};
+
+// Open tip
+document.querySelectorAll('[data-tip]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.getAttribute('data-tip');
+    const tip = TIPS[key];
+    if (!tip) return;
+    document.getElementById('tipTerm').textContent = tip.term;
+    document.getElementById('tipDef').textContent = tip.def;
+    document.getElementById('tipEx').textContent = tip.ex;
+    document.getElementById('tipBac').textContent = tip.bac;
+    document.getElementById('tipOverlay').classList.add('show');
+  });
+});
+
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTip(); });
+</script>
+
+</body>
+</html>

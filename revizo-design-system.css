@@ -1,0 +1,72 @@
+/* ============================================
+   RÉVIZO — Design System
+   Inclure en <link> dans chaque page HTML
+   ============================================ */
+
+:root {
+  /* Base — identique sur toutes les pages */
+  --color-bg:        #f0ede6;
+  --color-text:      #1e1c18;
+  --color-muted:     #a09880;
+  --color-highlight: #f5c842;
+  --color-accent:    #b5415a;
+
+  /* Couleurs internes des cartes — partagées entre matières */
+  --chip-bleu:       #2a69a8;
+  --chip-bleu-bg:    #e8f3ff;
+  --chip-rose:       #b5415a;
+  --chip-rose-bg:    #fdeef2;
+  --chip-jaune:      #946e00;
+  --chip-jaune-bg:   #fef8e2;
+  --chip-vert:       #1a7a3c;
+  --chip-vert-bg:    #e6f5ec;
+  --chip-violet:     #7030a0;
+  --chip-violet-bg:  #f3eafc;
+  --chip-gris:       #5a5448;
+  --chip-gris-bg:    rgba(30,28,24,0.07);
+
+  /* Token matière active — écrasé par data-subject */
+  --color-primary:   #2a69a8;
+  --color-primary-bg:#e8f3ff;
+  --color-primary-dark: #1a5c8a;
+}
+
+/* Épreuve Éco-Droit — Économie */
+[data-subject="eco"] {
+  --color-primary:      #2a69a8;
+  --color-primary-bg:   #e8f3ff;
+  --color-primary-dark: #1a5c8a;
+  --color-epreuve:      #1a3d5c;
+}
+
+/* Épreuve Éco-Droit — Droit */
+[data-subject="droit"] {
+  --color-primary:      #1a7a3c;
+  --color-primary-bg:   #e6f5ec;
+  --color-primary-dark: #145e2d;
+  --color-epreuve:      #1a3d5c;
+}
+
+/* Épreuve SGDN — Sciences de gestion */
+[data-subject="sgdn"] {
+  --color-primary:      #7030a0;
+  --color-primary-bg:   #f3eafc;
+  --color-primary-dark: #571d7a;
+  --color-epreuve:      #3d1a5c;
+}
+
+/* Épreuve SGDN — Management */
+[data-subject="management"] {
+  --color-primary:      #b8540a;
+  --color-primary-bg:   #fff2e6;
+  --color-primary-dark: #8a3e07;
+  --color-epreuve:      #3d1a5c;
+}
+
+/* Épreuve Philo */
+[data-subject="philo"] {
+  --color-primary:      #4a4a4a;
+  --color-primary-bg:   #eeeeee;
+  --color-primary-dark: #2e2e2e;
+  --color-epreuve:      #2e2e2e;
+}

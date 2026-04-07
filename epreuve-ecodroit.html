@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Révizo — Éco-Droit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="revizo-design-system.css">
+  <link rel="stylesheet" href="revizo-nav.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--color-bg); color: var(--color-text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+    .page-header {
+      max-width: 700px;
+      margin: 2.5rem auto 1.5rem;
+      padding: 0 1rem;
+    }
+
+    .epreuve-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #1a3d5c;
+      background: #e8f3ff;
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 0.6rem;
+    }
+
+    .page-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.8rem;
+      color: #1a3d5c;
+      margin-bottom: 0.3rem;
+    }
+
+    .page-sub {
+      font-size: 0.9rem;
+      color: var(--color-muted);
+    }
+
+    /* Grille matières */
+    .matieres {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 1rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 500px) {
+      .matieres { grid-template-columns: 1fr; }
+    }
+
+    .matiere-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--color-text);
+      border-top: 4px solid transparent;
+      box-shadow: 0 2px 8px rgba(30,28,24,0.06);
+      transition: transform 0.15s, box-shadow 0.2s;
+      display: block;
+    }
+
+    .matiere-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(30,28,24,0.12);
+    }
+
+    .matiere-card.card-eco { border-top-color: #2a69a8; }
+    .matiere-card.card-droit { border-top-color: #1a7a3c; }
+
+    .matiere-card .m-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .matiere-card .m-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .card-eco .m-title { color: #2a69a8; }
+    .card-droit .m-title { color: #1a7a3c; }
+
+    .matiere-card .m-sub {
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    /* Mini rubriques dans la carte */
+    .m-rubriques {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .m-rubrique {
+      font-size: 0.78rem;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .m-rubrique::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .card-eco .m-rubrique::before { background: #2a69a8; }
+    .card-droit .m-rubrique::before { background: #1a7a3c; }
+
+    .m-rubrique .rub-count {
+      color: var(--color-muted);
+      font-size: 0.72rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- BARRE HAUTE -->
+  <nav class="nav-epreuve">
+    <a href="index.html" class="logo">Révi<span>zo</span></a>
+    <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+    <a href="epreuve-sgdn.html"     class="epreuve-link">SGDN</a>
+    <a href="epreuve-philo.html"    class="epreuve-link">Philo</a>
+  </nav>
+
+  <!-- EN-TÊTE -->
+  <div class="page-header">
+    <span class="epreuve-label">Épreuve Éco-Droit</span>
+    <h1 class="page-title">Choisir une matière</h1>
+    <p class="page-sub">Même épreuve, deux matières — commence par celle que tu maîtrises le moins.</p>
+  </div>
+
+  <!-- CARTES MATIÈRES -->
+  <div class="matieres">
+
+    <a href="memos-eco.html" class="matiere-card card-eco">
+      <div class="m-icon">📊</div>
+      <div class="m-title">Économie</div>
+      <div class="m-sub">Méthode AEI · Calculs · Analyse de données</div>
+      <div class="m-rubriques">
+        <div class="m-rubrique">Mémos <span class="rub-count">4 thèmes</span></div>
+        <div class="m-rubrique">Flashcards <span class="rub-count">60 cartes</span></div>
+        <div class="m-rubrique">Questions Bac <span class="rub-count">7 types</span></div>
+        <div class="m-rubrique">Méthode Jour J</div>
+        <div class="m-rubrique">Glossaire</div>
+      </div>
+    </a>
+
+    <a href="memos-droit.html" class="matiere-card card-droit">
+      <div class="m-icon">⚖️</div>
+      <div class="m-title">Droit</div>
+      <div class="m-sub">Syllogisme juridique · Qualification · Cas pratique</div>
+      <div class="m-rubriques">
+        <div class="m-rubrique">Mémos <span class="rub-count">4 thèmes</span></div>
+        <div class="m-rubrique">Flashcards <span class="rub-count">77 cartes</span></div>
+        <div class="m-rubrique">Questions Bac <span class="rub-count">5 types</span></div>
+        <div class="m-rubrique">Méthode Jour J</div>
+        <div class="m-rubrique">Glossaire</div>
+      </div>
+    </a>
+
+  </div>
+
+</body>
+</html>

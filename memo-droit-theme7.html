@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Mémo Droit Thème 7 · Le travail subordonné</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── PRINT-FIRST DESIGN ─── */
+@page { size: A4; margin: 12mm; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; }
+
+/* NAV (screen only) */
+.sli-nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.sli-nav a { text-decoration:none }
+.sli-nav-logo { font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18 }
+.sli-nav-logo span { color:#b5415a }
+.sli-nav-links { display:flex;gap:2px }
+.sli-nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none }
+.sli-nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.sli-nl.on { background:#1e1c18;color:#f5c842 }
+
+/* ─── MEMO LAYOUT ─── */
+.memo { max-width: 900px; margin: 0 auto; padding: 80px 20px 40px; }
+
+/* Header */
+.memo-hd { text-align: center; margin-bottom: 20px; }
+.memo-badge { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: var(--color-primary); color: #fff; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+.memo-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 2px; }
+.memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+.memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: var(--color-primary); margin-top: 8px; font-style: italic; }
+
+/* ─── ARBRE STRUCTURE (ENCODER) ─── */
+.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.tree-full { grid-column: 1 / -1; }
+
+.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
+.tree-card.c-bleu  { border-left-color: #2a69a8; }
+.tree-card.c-rose  { border-left-color: #b5415a; }
+.tree-card.c-jaune { border-left-color: #946e00; }
+.tree-card.c-vert  { border-left-color: #1a7a3c; }
+.tree-card.c-violet { border-left-color: #7030a0; }
+
+.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
+.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
+.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
+.tree-def strong { color: #1e1c18; }
+.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
+.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(42,105,168,.08); color: #2a69a8; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+
+/* Sub-items inside tree cards */
+.tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
+.tree-chip[data-tip] { cursor: pointer; transition: transform .1s, box-shadow .1s; }
+.tree-chip[data-tip]:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+/* Tooltip popup */
+.tip-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; z-index:9000; background:rgba(30,28,24,.25); }
+.tip-overlay.show { display:flex; align-items:center; justify-content:center; animation: fadeIn .15s ease; }
+.tip-card { background:#fffdf8; border-radius:16px; padding:20px 24px; max-width:380px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,.18); position:relative; }
+.tip-close { position:absolute; top:10px; right:14px; font-size:18px; cursor:pointer; color:#a09880; background:none; border:none; font-weight:700; }
+.tip-close:hover { color:#1e1c18; }
+.tip-term { font-family:'Nunito',sans-serif; font-size:16px; font-weight:900; color:#1e1c18; margin-bottom:6px; }
+.tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
+.tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:rgba(42,105,168,.06); border-radius:8px; border-left:3px solid #2a69a8; }
+.tip-bac { font-size:10px; font-weight:700; color:#b5415a; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+
+/* Schema */
+.schema-section { margin-bottom: 16px; }
+.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
+.schema-box svg { display: block; margin: 0 auto; }
+
+.chip-bleu   { background: #e8f3ff; color: #2a69a8; }
+.chip-rose   { background: #fdeef2; color: #b5415a; }
+.chip-jaune  { background: #fef8e2; color: #946e00; }
+.chip-vert   { background: #e6f5ec; color: #1a7a3c; }
+.chip-violet { background: #f3eafc; color: #7030a0; }
+.chip-gris   { background: rgba(30,28,24,.07); color: #5a5448; }
+
+/* ─── SECTION BOTTOM: RECUPERER ─── */
+.recup { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.recup-full { grid-column: 1 / -1; }
+
+/* Confusion box */
+.confuse-box { background: #fdeef2; border-radius: 12px; padding: 14px 16px; }
+.confuse-box .tree-label { color: #b5415a; }
+.confuse-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 11px; line-height: 1.5; }
+.confuse-row:last-child { margin-bottom: 0; }
+.confuse-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.confuse-text strong { font-weight: 800; }
+
+/* Mnemo box */
+.mnemo-box { background: #e8f3ff; border-radius: 12px; padding: 14px 16px; }
+.mnemo-box .tree-label { color: #2a69a8; }
+.mnemo-item { font-size: 11px; line-height: 1.6; margin-bottom: 4px; }
+.mnemo-item:last-child { margin-bottom: 0; }
+
+/* Bac frequency bar */
+.freq-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; }
+.freq-row:last-child { margin-bottom: 0; }
+.freq-bar-track { flex: 1; height: 6px; background: #e8e4dc; border-radius: 3px; overflow: hidden; }
+.freq-bar-fill { height: 100%; border-radius: 3px; }
+.freq-bar-fill.f5 { width: 100%; background: #b5415a; }
+.freq-bar-fill.f4 { width: 80%; background: #d46a1a; }
+.freq-bar-fill.f3 { width: 60%; background: #946e00; }
+.freq-bar-fill.f2 { width: 40%; background: #2a69a8; }
+.freq-bar-fill.f1 { width: 20%; background: #a09880; }
+.freq-notion { font-weight: 700; min-width: 160px; }
+.freq-stars { color: #f5c842; font-size: 10px; min-width: 50px; text-align: right; letter-spacing: 1px; }
+
+/* Link chain */
+.chain { background: #fef8e2; border-radius: 12px; padding: 14px 16px; }
+.chain .tree-label { color: #946e00; }
+.chain-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
+.chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
+
+/* ─── PRINT ─── */
+@media print {
+  .sli-nav { display: none !important; }
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .memo { padding: 0; max-width: 100%; }
+  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain { break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .tree, .recup { grid-template-columns: 1fr; }
+  .tree-full, .recup-full { grid-column: 1; }
+  .memo { padding: 74px 12px 30px; }
+}
+</style>
+</head>
+<body data-subject="droit">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Droit</span>
+  <a href="memos-droit.html" class="active">Mémos</a>
+  <a href="flashcards-droit.html">Flashcards</a>
+  <a href="questions-bac-droit.html">Questions Bac</a>
+  <a href="methode-jour-j-droit.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<div class="memo">
+
+<!-- HEADER -->
+<div class="memo-hd">
+  <div class="memo-badge">Mémo · Droit · Thème 7</div>
+  <div class="memo-title">Comment le droit encadre-t-il le travail subordonné ?</div>
+  <div class="memo-sub">Terminale STMG · 1 page · Encoder · Comprendre · Récupérer</div>
+  <div class="memo-question">"Quelles règles encadrent la relation employeur-salarié, du recrutement à la rupture ?"</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="schema-section">
+  <div class="schema-box">
+    <svg viewBox="0 0 800 370" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+      <!-- Niveau 1 : Le contrat de travail -->
+      <rect x="180" y="8" width="440" height="44" rx="10" fill="#e6f7f8" stroke="#0e7490" stroke-width="2"/>
+      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#0e7490" letter-spacing="1">LE CONTRAT DE TRAVAIL</text>
+      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">3 éléments : Prestation + Rémunération + Subordination</text>
+
+      <!-- Flèche -->
+      <line x1="400" y1="52" x2="400" y2="72" stroke="#a09880" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Barre horizontale -->
+      <line x1="130" y1="72" x2="670" y2="72" stroke="#a09880" stroke-width="2"/>
+      <line x1="130" y1="72" x2="130" y2="90" stroke="#a09880" stroke-width="2"/>
+      <line x1="400" y1="72" x2="400" y2="90" stroke="#a09880" stroke-width="2"/>
+      <line x1="670" y1="72" x2="670" y2="90" stroke="#a09880" stroke-width="2"/>
+
+      <!-- Branche 1 : FORMATION -->
+      <rect x="20" y="90" width="220" height="50" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+      <text x="130" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8" letter-spacing="1">FORMATION</text>
+      <text x="130" y="125" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">CDI / CDD / Intérim</text>
+      <!-- Sous-branche formation -->
+      <line x1="130" y1="140" x2="130" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <rect x="20" y="158" width="220" height="28" rx="8" fill="#e8f3ff"/>
+      <text x="130" y="176" text-anchor="middle" font-size="9" font-weight="700" fill="#2a69a8">Clauses : non-concurrence, mobilité, confidentialité</text>
+
+      <!-- Branche 2 : EXÉCUTION -->
+      <rect x="280" y="90" width="240" height="50" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+      <text x="400" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">EXÉCUTION</text>
+      <text x="400" y="125" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Pouvoirs employeur / Droits salarié</text>
+      <!-- Sous-branches exécution -->
+      <line x1="400" y1="140" x2="400" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="320" y1="158" x2="480" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="320" y1="158" x2="320" y2="170" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="480" y1="158" x2="480" y2="170" stroke="#a09880" stroke-width="1.5"/>
+      <rect x="260" y="170" width="120" height="32" rx="8" fill="#fdeef2"/>
+      <text x="320" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#b5415a">Direction</text>
+      <text x="320" y="196" text-anchor="middle" font-size="7" fill="#5a5448">Réglementaire · Disciplinaire</text>
+      <rect x="420" y="170" width="120" height="32" rx="8" fill="#e6f5ec"/>
+      <text x="480" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#1a7a3c">Vie privée</text>
+      <text x="480" y="196" text-anchor="middle" font-size="7" fill="#5a5448">Retrait · Grève</text>
+
+      <!-- Branche 3 : RUPTURE -->
+      <rect x="560" y="90" width="220" height="50" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+      <text x="670" y="108" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0" letter-spacing="1">RUPTURE</text>
+      <text x="670" y="125" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">4 modes de rupture</text>
+      <!-- Sous-branches rupture -->
+      <line x1="670" y1="140" x2="670" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="590" y1="158" x2="750" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="590" y1="158" x2="590" y2="170" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="670" y1="158" x2="670" y2="170" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="750" y1="158" x2="750" y2="170" stroke="#a09880" stroke-width="1.5"/>
+      <rect x="545" y="170" width="90" height="32" rx="8" fill="#f3eafc"/>
+      <text x="590" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#7030a0">Lic. personnel</text>
+      <text x="590" y="196" text-anchor="middle" font-size="7" fill="#5a5448">cause réelle et sérieuse</text>
+      <rect x="625" y="206" width="90" height="32" rx="8" fill="#f3eafc"/>
+      <text x="670" y="221" text-anchor="middle" font-size="8" font-weight="700" fill="#7030a0">Lic. économique</text>
+      <text x="670" y="232" text-anchor="middle" font-size="7" fill="#5a5448">lié à l'entreprise</text>
+      <rect x="705" y="170" width="90" height="32" rx="8" fill="#fdeef2"/>
+      <text x="750" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#b5415a">Rupt. conv.</text>
+      <text x="750" y="196" text-anchor="middle" font-size="7" fill="#5a5448">Démission</text>
+
+      <!-- Barre du bas : Juridiction -->
+      <rect x="40" y="320" width="720" height="38" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="400" y="336" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">JURIDICTION</text>
+      <text x="400" y="350" text-anchor="middle" font-size="10" font-weight="700" fill="#5a4e00">Conseil de prud'hommes | Protection du salarié = fil rouge de tout le thème</text>
+
+      <!-- Arrow marker -->
+      <defs><marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
+
+      <g transform="translate(28, 28)">
+        <circle cx="0" cy="0" r="20" fill="#1a7a3c"/>
+        <text x="0" y="6" text-anchor="middle"
+          font-family="Inter, sans-serif"
+          font-size="15" font-weight="900"
+          fill="#ffffff">T</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 1 : ENCODER — L'arbre du thème -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="tree">
+
+  <div class="tree-card c-rose tree-full">
+    <div class="tree-label">Le fondement <span class="freq">★★★★★</span></div>
+    <div class="tree-h">Le contrat de travail</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="contrat_travail">Contrat de travail</span>
+      <span class="tree-chip chip-rose" data-tip="lien_subordination">Lien de subordination</span>
+      <span class="tree-chip chip-rose" data-tip="prestation_travail">Prestation de travail</span>
+      <span class="tree-chip chip-rose" data-tip="remuneration">Rémunération</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px"><strong>3 éléments cumulatifs.</strong> Le <strong>lien de subordination</strong> est le critère décisif qui distingue le salarié du travailleur indépendant.</div>
+  </div>
+
+  <!-- Card 2 : Les formes du contrat -->
+  <div class="tree-card c-bleu">
+    <div class="tree-label">Les types de contrat <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">Les formes du contrat</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="cdi">CDI</span>
+      <span class="tree-chip chip-bleu" data-tip="cdd">CDD</span>
+      <span class="tree-chip chip-bleu" data-tip="interim">Intérim</span>
+      <span class="tree-chip chip-gris" data-tip="contrat_entreprise">Contrat d'entreprise</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Le <strong>CDI est la norme</strong>. Le CDD et l'intérim sont des <strong>exceptions</strong> pour des cas précis.</div>
+  </div>
+
+  <!-- Card 3 : Les clauses -->
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Clauses particulières <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">Les clauses</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="clause_nonconcurrence">Clause de non-concurrence</span>
+      <span class="tree-chip chip-jaune" data-tip="clause_mobilite">Clause de mobilité</span>
+      <span class="tree-chip chip-jaune" data-tip="clause_confidentialite">Clause de confidentialité</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Clauses qui encadrent les droits et devoirs <strong>au-delà du contrat de base</strong>.</div>
+  </div>
+
+  <!-- Card 4 : Pouvoirs de l'employeur -->
+  <div class="tree-card c-bleu">
+    <div class="tree-label">L'autorité de l'employeur <span class="freq">★★★★☆</span></div>
+    <div class="tree-h">Pouvoirs de l'employeur</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="pouvoir_direction">Pouvoir de direction</span>
+      <span class="tree-chip chip-bleu" data-tip="pouvoir_reglementaire">Pouvoir réglementaire</span>
+      <span class="tree-chip chip-bleu" data-tip="pouvoir_disciplinaire">Pouvoir disciplinaire</span>
+      <span class="tree-chip chip-jaune" data-tip="modification_contrat">Modification du contrat</span>
+      <span class="tree-chip chip-jaune" data-tip="changement_conditions">Changement des conditions</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">L'employeur a <strong>3 pouvoirs</strong>, MAIS ils sont <strong>encadrés par la loi</strong>. La distinction modification/changement des conditions est un <strong>classique du Bac</strong>.</div>
+  </div>
+
+  <!-- Card 5 : Droits du salarié -->
+  <div class="tree-card c-vert">
+    <div class="tree-label">Les protections du salarié <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">Droits du salarié</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="vie_privee">Vie privée au travail</span>
+      <span class="tree-chip chip-vert" data-tip="droit_retrait">Droit de retrait</span>
+      <span class="tree-chip chip-vert" data-tip="droit_greve">Droit de grève</span>
+      <span class="tree-chip chip-vert" data-tip="negociation_collective">Négociation collective</span>
+      <span class="tree-chip chip-gris" data-tip="prudhommes">Conseil de prud'hommes</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Le salarié conserve des <strong>libertés fondamentales</strong> dans l'entreprise. L'employeur ne peut pas tout faire.</div>
+  </div>
+
+  <!-- Card 6 : Le licenciement -->
+  <div class="tree-card c-violet">
+    <div class="tree-label">Le sujet n°1 du bac <span class="freq">★★★★★</span></div>
+    <div class="tree-h">Le licenciement</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="licenciement_personnel">Licenciement personnel</span>
+      <span class="tree-chip chip-violet" data-tip="cause_reelle_serieuse">Cause réelle et sérieuse</span>
+      <span class="tree-chip chip-rose" data-tip="faute_grave">Faute grave</span>
+      <span class="tree-chip chip-violet" data-tip="licenciement_eco">Licenciement économique</span>
+      <span class="tree-chip chip-gris" data-tip="procedure_licenciement">Procédure de licenciement</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px"><strong>LE sujet n°1 du Bac Droit.</strong> Le licenciement doit avoir une cause <strong>réelle</strong> (faits objectifs) et <strong>sérieuse</strong> (suffisamment grave).</div>
+  </div>
+
+  <!-- Card 7 : Les autres modes de rupture -->
+  <div class="tree-card c-rose">
+    <div class="tree-label">Autres fins du contrat <span class="freq">★★☆☆☆</span></div>
+    <div class="tree-h">Les autres modes de rupture</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="rupture_conventionnelle">Rupture conventionnelle</span>
+      <span class="tree-chip chip-rose" data-tip="demission">Démission</span>
+      <span class="tree-chip chip-gris" data-tip="preavis">Préavis</span>
+      <span class="tree-chip chip-gris" data-tip="indemnites">Indemnités</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">Le CDI peut aussi prendre fin par <strong>accord mutuel</strong> (rupture conventionnelle) ou <strong>décision du salarié</strong> (démission).</div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 2 : CHAÎNE LOGIQUE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <div class="chain recup-full">
+    <div class="tree-label">La chaîne logique du thème 7</div>
+    <div class="chain-flow">
+      <span class="chain-node">Contrat de travail (3 éléments)</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">L'employeur a des pouvoirs (direction, discipline)</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">MAIS le salarié a des droits (vie privée, grève, retrait)</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Si rupture : licenciement (cause réelle et sérieuse ?) ou rupture conv.</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Litige → Prud'hommes</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 3 : RÉCUPÉRER -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <!-- Confusions à éviter -->
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques au Bac</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Modification du contrat</strong> (accord du salarié OBLIGATOIRE) ≠ <strong>Changement des conditions</strong> (pouvoir de direction, pas d'accord)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Licenciement personnel</strong> (lié à LA PERSONNE) ≠ <strong>Licenciement économique</strong> (lié à L'ENTREPRISE)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Contrat de travail</strong> (subordination) ≠ <strong>Contrat d'entreprise</strong> (indépendance)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Cause réelle</strong> (faits OBJECTIFS) + <strong>sérieuse</strong> (faits GRAVES) = les deux sont nécessaires</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Vie privée du salarié</strong> est PROTÉGÉE même sur le lieu de travail (sauf trouble objectif dans l'entreprise)</span>
+    </div>
+  </div>
+
+  <!-- Moyens mnémotechniques -->
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>PRS pour le contrat</strong> : <strong>P</strong>restation + <strong>R</strong>émunération + <strong>S</strong>ubordination</div>
+    <div class="mnemo-item"><strong>Le S de Subordination = le S de Salarié</strong> : c'est LE critère qui fait le salarié</div>
+    <div class="mnemo-item"><strong>DRD pour les pouvoirs</strong> : <strong>D</strong>irection, <strong>R</strong>églementaire, <strong>D</strong>isciplinaire</div>
+    <div class="mnemo-item"><strong>Réelle = les faits, Sérieuse = la gravité</strong> : les deux conditions du licenciement</div>
+    <div class="mnemo-item"><strong>Modification = Mon accord (M=M)</strong> : il faut MON accord pour modifier MON contrat</div>
+    <div class="mnemo-item"><strong>Prud'hommes = travail</strong> : c'est LE tribunal du travail</div>
+  </div>
+
+</div>
+
+<!-- Fréquences BAC -->
+<div class="recup">
+  <div class="freq-box recup-full">
+    <div class="tree-label" style="margin-bottom:8px">Fréquence au Bac (sujets analysés)</div>
+
+    <div class="freq-row">
+      <span class="freq-notion">Licenciement (cause réelle et sérieuse)</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">★★★★★</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Lien de subordination</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">★★★★★</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Pouvoirs de l'employeur</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">★★★★☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Modification vs changement conditions</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">★★★★☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Vie privée du salarié</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Clauses (non-concurrence, mobilité)</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Droit de retrait</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f2"></div></div>
+      <span class="freq-stars">★★☆☆☆</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
+  Révizo · Mémo Thème 7 · Droit STMG · Avril 2026 · Sources : annales post-réforme, BO 2019, consignes de correction
+</div>
+
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tip-overlay" id="tipOverlay" onclick="closeTip()">
+  <div class="tip-card" onclick="event.stopPropagation()">
+    <button class="tip-close" onclick="closeTip()">&times;</button>
+    <div class="tip-term" id="tipTerm"></div>
+    <div class="tip-def" id="tipDef"></div>
+    <div class="tip-example" id="tipEx"></div>
+    <div class="tip-bac" id="tipBac"></div>
+  </div>
+</div>
+
+<script>
+const TIPS = {
+  contrat_travail: {
+    term: "Contrat de travail",
+    def: "3 éléments cumulatifs : prestation de travail, rémunération, lien de subordination. Le critère décisif = la subordination. Si pas de subordination = contrat d'entreprise (travailleur indépendant).",
+    ex: "Un livreur Uber qui choisit ses horaires et ses courses n'est PAS subordonné → pas de contrat de travail. Mais si l'entreprise lui impose des horaires et le sanctionne → requalification en contrat de travail.",
+    bac: "★★★★★ — Notion fondamentale, tombe dans la majorité des sujets de droit du travail"
+  },
+  lien_subordination: {
+    term: "Lien de subordination",
+    def: "Arrêt Société Générale 1996 : le salarié est sous l'autorité de l'employeur qui peut donner des ordres, contrôler l'exécution et sanctionner. 3 pouvoirs = subordination.",
+    ex: "Un employé de bureau reçoit des consignes de son manager, son travail est contrôlé, il peut être sanctionné s'il ne respecte pas les règles → il est subordonné.",
+    bac: "★★★★★ — LE critère qui distingue le salarié du travailleur indépendant"
+  },
+  prestation_travail: {
+    term: "Prestation de travail",
+    def: "Le salarié fournit un travail (manuel, intellectuel, créatif...). C'est sa contrepartie dans le contrat.",
+    ex: "Un développeur écrit du code, un serveur sert les clients, un comptable tient les comptes — chacun fournit sa prestation de travail.",
+    bac: "Élément du contrat de travail — rarement testé seul"
+  },
+  remuneration: {
+    term: "Rémunération",
+    def: "Le salaire versé par l'employeur en échange du travail. Sans rémunération, pas de contrat de travail (c'est du bénévolat).",
+    ex: "Le SMIC (salaire minimum) garantit un minimum légal. Au-delà, le salaire est fixé par le contrat ou la convention collective.",
+    bac: "Élément du contrat de travail — rarement testé seul"
+  },
+  cdi: {
+    term: "CDI — Contrat à Durée Indéterminée",
+    def: "C'est la NORME en droit du travail. Pas de date de fin. Peut être rompu par chaque partie (licenciement, démission, rupture conventionnelle).",
+    ex: "Un salarié embauché en CDI n'a pas de date de fin de contrat. Son employeur ne peut le licencier que pour une cause réelle et sérieuse.",
+    bac: "★★★☆☆ — Le CDI comme norme est un point de principe souvent rappelé"
+  },
+  cdd: {
+    term: "CDD — Contrat à Durée Déterminée",
+    def: "EXCEPTION : uniquement pour un motif précis (remplacement, surcroît d'activité, saison). Durée max ~18 mois. Renouvelable 2 fois.",
+    ex: "Un magasin embauche un vendeur en CDD de 3 mois pour les soldes (surcroît temporaire d'activité). Le CDD ne peut pas devenir la règle.",
+    bac: "★★★☆☆ — Distinction CDI/CDD fréquente"
+  },
+  interim: {
+    term: "Intérim (travail temporaire)",
+    def: "Relation triangulaire : l'agence d'intérim emploie le salarié et le met à disposition d'une entreprise utilisatrice. Le salarié n'a PAS de contrat avec l'entreprise où il travaille.",
+    ex: "Marie est employée par Adecco (agence d'intérim) et travaille chez Renault. Son contrat est avec Adecco, pas avec Renault.",
+    bac: "★★☆☆☆ — La relation triangulaire peut faire l'objet d'une question"
+  },
+  contrat_entreprise: {
+    term: "Contrat d'entreprise",
+    def: "Contrat de prestation de services entre un donneur d'ordre et un prestataire INDÉPENDANT. Pas de subordination. Le prestataire organise lui-même son travail.",
+    ex: "Un graphiste freelance crée un logo pour une entreprise. Il choisit ses horaires, son lieu de travail, ses outils. Pas de subordination → contrat d'entreprise.",
+    bac: "★★★☆☆ — Opposition contrat de travail / contrat d'entreprise = classique"
+  },
+  clause_nonconcurrence: {
+    term: "Clause de non-concurrence",
+    def: "Interdit au salarié après la rupture d'exercer une activité concurrente. 5 conditions de validité : indispensable à la protection des intérêts de l'entreprise, limitée dans le temps, limitée dans l'espace, spécifique à l'emploi, contrepartie financière OBLIGATOIRE.",
+    ex: "Un commercial quitte son entreprise. Sa clause lui interdit de travailler chez un concurrent pendant 1 an dans la même région. En échange, il reçoit une indemnité.",
+    bac: "★★★☆☆ — Les conditions de validité sont souvent demandées"
+  },
+  clause_mobilite: {
+    term: "Clause de mobilité",
+    def: "Permet à l'employeur de muter le salarié dans une zone géographique définie. Conditions : zone précise + délai de prévenance + pas d'atteinte disproportionnée à la vie privée.",
+    ex: "Un salarié avec une clause de mobilité Île-de-France peut être muté de Paris à Versailles. Mais pas envoyé à Marseille si ce n'est pas dans la zone prévue.",
+    bac: "★★★☆☆ — Sujets SécuritéPlus 2022, Batibatou 2024"
+  },
+  clause_confidentialite: {
+    term: "Clause de confidentialité",
+    def: "Interdit au salarié de divulguer des informations sensibles de l'entreprise (secrets de fabrication, données clients, stratégie). S'applique pendant et parfois après le contrat.",
+    ex: "Un ingénieur qui travaille sur un prototype ne peut pas révéler les détails techniques à un concurrent.",
+    bac: "★★☆☆☆ — Sujet ArchiDij 2025"
+  },
+  pouvoir_direction: {
+    term: "Pouvoir de direction",
+    def: "L'employeur donne des ordres, organise le travail, fixe les horaires, répartit les tâches. C'est le pouvoir de base de l'employeur, celui qui découle directement du lien de subordination.",
+    ex: "Le manager demande à un salarié de changer de bureau, de travailler sur un autre projet, de modifier ses horaires dans le même volume.",
+    bac: "★★★★☆ — Souvent associé à la distinction modification/changement des conditions"
+  },
+  pouvoir_reglementaire: {
+    term: "Pouvoir réglementaire",
+    def: "L'employeur établit le règlement intérieur qui fixe les règles d'hygiène, de sécurité et de discipline. Obligatoire dans les entreprises de 50 salariés et plus.",
+    ex: "Le règlement intérieur interdit de fumer dans les locaux, impose le port d'un casque sur le chantier, et prévoit les sanctions en cas de retard répété.",
+    bac: "★★☆☆☆ — Notion de cadrage, rarement testée seule"
+  },
+  pouvoir_disciplinaire: {
+    term: "Pouvoir disciplinaire",
+    def: "L'employeur peut sanctionner les fautes du salarié. Échelle des sanctions : avertissement, mise à pied disciplinaire, rétrogradation, licenciement pour faute. Encadré par la loi (procédure obligatoire).",
+    ex: "Un salarié arrive en retard de façon répétée malgré des avertissements. L'employeur peut prononcer une mise à pied disciplinaire, puis un licenciement si ça continue.",
+    bac: "★★★☆☆ — Souvent lié au licenciement pour faute"
+  },
+  modification_contrat: {
+    term: "Modification du contrat de travail",
+    def: "Touche un élément ESSENTIEL du contrat : salaire, qualification, durée du travail, lieu de travail (hors clause de mobilité). L'employeur DOIT avoir l'accord du salarié. Le salarié peut REFUSER sans commettre de faute.",
+    ex: "L'employeur veut baisser le salaire de 10% → c'est une modification. Le salarié peut refuser. L'employeur ne peut pas le licencier pour ce refus (sauf motif économique).",
+    bac: "★★★★☆ — Distinction modification/changement = question classique du Bac"
+  },
+  changement_conditions: {
+    term: "Changement des conditions de travail",
+    def: "Touche un élément SECONDAIRE : horaires dans le même volume, tâches dans la même qualification, changement de bureau. Relève du pouvoir de direction. Le salarié ne peut PAS refuser (sinon faute).",
+    ex: "L'employeur décale les horaires de 9h-17h à 8h-16h (même volume). C'est un changement des conditions. Le salarié doit accepter.",
+    bac: "★★★★☆ — Toujours en opposition avec la modification du contrat"
+  },
+  vie_privee: {
+    term: "Vie privée au travail",
+    def: "Le salarié conserve le droit au respect de sa vie privée MÊME au travail. L'employeur ne peut pas lire les messages personnels, surveiller sans information préalable, ni sanctionner pour des faits de vie privée (sauf trouble objectif caractérisé dans l'entreprise).",
+    ex: "Un salarié a un dossier 'Personnel' sur son ordinateur professionnel. L'employeur ne peut pas l'ouvrir, même sur un outil de travail.",
+    bac: "★★★☆☆ — Souvent lié à la question de la surveillance au travail"
+  },
+  droit_retrait: {
+    term: "Droit de retrait",
+    def: "Droit de quitter son poste ou de refuser d'y aller si le salarié a un motif raisonnable de penser qu'il court un danger grave et imminent pour sa vie ou sa santé. Aucune sanction possible si exercé légitimement.",
+    ex: "Un ouvrier refuse de monter sur un échafaudage instable. Il exerce son droit de retrait. L'employeur ne peut ni le sanctionner ni retenir son salaire.",
+    bac: "★★☆☆☆ — Sujet Guérin 2022"
+  },
+  droit_greve: {
+    term: "Droit de grève",
+    def: "Cessation collective et concertée du travail pour des revendications professionnelles. Droit constitutionnel. Le contrat est SUSPENDU (pas rompu). Le gréviste ne peut pas être licencié sauf faute lourde (participation personnelle à des actes illicites).",
+    ex: "Les salariés d'une usine cessent le travail ensemble pour demander une augmentation de salaire. L'employeur ne peut pas les licencier pour ce motif.",
+    bac: "★★☆☆☆ — Le principe de suspension du contrat peut être demandé"
+  },
+  negociation_collective: {
+    term: "Négociation collective",
+    def: "Dialogue entre les syndicats de salariés et les employeurs (ou organisations patronales). Aboutit à des conventions collectives et accords collectifs qui fixent les règles du secteur ou de l'entreprise (salaires, congés, conditions de travail).",
+    ex: "La convention collective de la métallurgie fixe des grilles de salaires supérieures au SMIC pour tous les salariés du secteur.",
+    bac: "★☆☆☆☆ — Rarement testé seul mais utile comme contexte"
+  },
+  prudhommes: {
+    term: "Conseil de prud'hommes",
+    def: "Tribunal spécialisé pour les litiges INDIVIDUELS entre employeur et salarié (licenciement abusif, salaire impayé, harcèlement...). Phase de conciliation obligatoire avant le jugement. Juges = conseillers salariés + conseillers employeurs (paritaire).",
+    ex: "Un salarié licencié sans cause réelle et sérieuse saisit les prud'hommes. Le conseil tente d'abord une conciliation, puis juge l'affaire.",
+    bac: "★★★☆☆ — Juridiction à connaître absolument en droit du travail"
+  },
+  licenciement_personnel: {
+    term: "Licenciement pour motif personnel",
+    def: "Rupture à l'initiative de l'employeur pour un motif lié à LA PERSONNE du salarié (insuffisance professionnelle, faute, inaptitude). Doit avoir une cause réelle et sérieuse. Procédure stricte obligatoire.",
+    ex: "Un salarié commet des erreurs répétées malgré des formations et rappels → insuffisance professionnelle → licenciement personnel possible.",
+    bac: "★★★★★ — LE sujet le plus fréquent du Bac Droit"
+  },
+  cause_reelle_serieuse: {
+    term: "Cause réelle et sérieuse",
+    def: "Réelle = faits objectifs, vérifiables, précis (pas une rumeur ni un ressenti). Sérieuse = faits suffisamment graves pour justifier le licenciement. Les DEUX conditions sont nécessaires. Sans ça = licenciement sans cause réelle et sérieuse = abusif.",
+    ex: "Un salarié est licencié pour 'mauvaise ambiance'. Ce n'est pas un fait objectif → pas de cause réelle → licenciement abusif → prud'hommes → indemnités.",
+    bac: "★★★★★ — Toujours vérifier les deux critères dans un cas pratique"
+  },
+  faute_grave: {
+    term: "Faute grave",
+    def: "Faute rendant impossible le maintien du salarié dans l'entreprise même pendant le préavis. Le salarié est renvoyé immédiatement, sans indemnité de licenciement ni préavis. Exemples : vol, violence, harcèlement avéré.",
+    ex: "Un salarié est surpris en train de voler dans la caisse. L'employeur le licencie pour faute grave : départ immédiat, pas de préavis, pas d'indemnité de licenciement.",
+    bac: "★★★☆☆ — Distinction faute simple / faute grave / faute lourde"
+  },
+  licenciement_eco: {
+    term: "Licenciement économique",
+    def: "Motif NON lié à la personne du salarié : difficultés économiques de l'entreprise, mutations technologiques, réorganisation nécessaire à la sauvegarde de la compétitivité. Obligations supplémentaires : recherche de reclassement, plan de sauvegarde de l'emploi (PSE) si 10+ licenciements.",
+    ex: "Une usine ferme à cause d'une baisse durable des commandes. Les salariés sont licenciés pour motif économique. L'employeur doit d'abord tenter de les reclasser.",
+    bac: "★★★★☆ — Distinction licenciement personnel / économique = classique"
+  },
+  procedure_licenciement: {
+    term: "Procédure de licenciement",
+    def: "Étapes obligatoires : 1) Convocation à un entretien préalable (lettre recommandée ou remise en main propre). 2) Entretien (le salarié peut être assisté). 3) Notification par lettre recommandée avec motifs précis. 4) Respect des délais. Si procédure non respectée = licenciement irrégulier.",
+    ex: "Un employeur licencie un salarié par simple SMS sans entretien préalable. Le licenciement est irrégulier : le salarié peut obtenir des dommages et intérêts aux prud'hommes.",
+    bac: "★★★☆☆ — Les étapes de la procédure peuvent être demandées"
+  },
+  rupture_conventionnelle: {
+    term: "Rupture conventionnelle",
+    def: "Rupture du CDI d'un commun accord entre l'employeur et le salarié. Procédure : un ou plusieurs entretiens → signature d'une convention → 15 jours de rétractation → homologation par la DREETS. Le salarié a droit aux allocations chômage.",
+    ex: "Un salarié veut changer de vie professionnelle, l'employeur est d'accord. Ils signent une rupture conventionnelle. Le salarié touche une indemnité et le chômage.",
+    bac: "★★☆☆☆ — Souvent en comparaison avec le licenciement et la démission"
+  },
+  demission: {
+    term: "Démission",
+    def: "Le salarié décide SEUL de quitter l'entreprise. Pas besoin de justifier sa décision. Doit respecter un préavis (durée fixée par la convention collective). PAS de droit aux allocations chômage (sauf exceptions : démission légitime, reconversion).",
+    ex: "Une salariée décide de démissionner pour rejoindre une autre entreprise. Elle doit effectuer son préavis de 2 mois avant de partir.",
+    bac: "★★☆☆☆ — Distinction démission / licenciement / rupture conventionnelle"
+  },
+  preavis: {
+    term: "Préavis",
+    def: "Période entre l'annonce de la rupture et la fin effective du contrat de travail. Sa durée dépend de la convention collective, de l'ancienneté et du statut (cadre/non-cadre). Peut être dispensé par l'employeur.",
+    ex: "Un cadre qui démissionne a souvent 3 mois de préavis. Un employé avec moins de 2 ans d'ancienneté a souvent 1 mois.",
+    bac: "★☆☆☆☆ — Notion de contexte"
+  },
+  indemnites: {
+    term: "Indemnités de fin de contrat",
+    def: "Sommes versées au salarié à la fin du contrat : indemnité de licenciement (si licenciement, sauf faute grave/lourde), indemnité compensatrice de préavis (si dispense de préavis), indemnité compensatrice de congés payés (jours non pris).",
+    ex: "Un salarié licencié après 10 ans d'ancienneté touche : indemnité de licenciement + indemnité de préavis + solde de congés payés.",
+    bac: "★☆☆☆☆ — Notion de contexte, rarement l'objet principal d'une question"
+  }
+};
+
+// Open tip
+document.querySelectorAll('[data-tip]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.getAttribute('data-tip');
+    const tip = TIPS[key];
+    if (!tip) return;
+    document.getElementById('tipTerm').textContent = tip.term;
+    document.getElementById('tipDef').textContent = tip.def;
+    document.getElementById('tipEx').textContent = tip.ex;
+    document.getElementById('tipBac').textContent = tip.bac;
+    document.getElementById('tipOverlay').classList.add('show');
+  });
+});
+
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Révizo — Mémos Économie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="revizo-design-system.css">
+  <link rel="stylesheet" href="revizo-nav.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--color-bg); color: var(--color-text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+    .page-header {
+      max-width: 700px;
+      margin: 2.5rem auto 1.5rem;
+      padding: 0 1rem;
+    }
+
+    .matiere-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-primary);
+      background: var(--color-primary-bg);
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 0.6rem;
+    }
+
+    .page-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.8rem;
+      color: var(--color-primary-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .page-sub {
+      font-size: 0.9rem;
+      color: var(--color-muted);
+    }
+
+    /* Grille mémos */
+    .memos-grid {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 1rem 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .memo-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      text-decoration: none;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-left: 4px solid transparent;
+      box-shadow: 0 2px 8px rgba(30,28,24,0.06);
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    .memo-card:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 16px rgba(30,28,24,0.1);
+    }
+
+    /* Couleurs par thème Éco — identiques aux mémos existants */
+    .memo-card.t6 { border-left-color: #2a69a8; }
+    .memo-card.t7 { border-left-color: #b5415a; }
+    .memo-card.t8 { border-left-color: #946e00; }
+    .memo-card.t9 { border-left-color: #1a7a3c; }
+
+    .memo-card .theme-badge {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .memo-card.t6 .theme-badge { color: #2a69a8; background: #e8f3ff; }
+    .memo-card.t7 .theme-badge { color: #b5415a; background: #fdeef2; }
+    .memo-card.t8 .theme-badge { color: #946e00; background: #fef8e2; }
+    .memo-card.t9 .theme-badge { color: #1a7a3c; background: #e6f5ec; }
+
+    .memo-card .memo-body { flex: 1; }
+
+    .memo-card .memo-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .memo-card .memo-chips {
+      font-size: 0.78rem;
+      color: var(--color-muted);
+    }
+
+    .memo-card .memo-arrow {
+      color: var(--color-muted);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    /* Grand Oral tag */
+    .tag-go {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #a09880;
+      background: rgba(160,152,128,0.12);
+      padding: 2px 7px;
+      border-radius: 6px;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body data-subject="eco">
+
+  <!-- BARRE HAUTE -->
+  <nav class="nav-epreuve">
+    <a href="index.html" class="logo">Révi<span>zo</span></a>
+    <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+    <a href="epreuve-sgdn.html"     class="epreuve-link">SGDN</a>
+    <a href="epreuve-philo.html"    class="epreuve-link">Philo</a>
+  </nav>
+
+  <!-- BARRE BASSE -->
+  <nav class="nav-rubriques">
+    <span class="matiere-pill">Économie</span>
+    <a href="memos-eco.html" class="active">Mémos</a>
+    <a href="flashcards-eco.html">Flashcards</a>
+    <a href="questions-bac-eco.html">Questions Bac</a>
+    <a href="methode-jour-j-eco.html">Méthode Jour J</a>
+    <a href="glossaire.html">Glossaire</a>
+  </nav>
+
+  <!-- EN-TÊTE -->
+  <div class="page-header">
+    <span class="matiere-label">Économie</span>
+    <h1 class="page-title">Mémos thématiques</h1>
+    <p class="page-sub">4 thèmes du programme · Commence par encoder la structure, puis entraîne-toi sur les flashcards.</p>
+  </div>
+
+  <!-- LISTE DES MÉMOS -->
+  <div class="memos-grid">
+
+    <a href="memo-eco-theme6.html" class="memo-card t6">
+      <span class="theme-badge">Thème 6</span>
+      <div class="memo-body">
+        <div class="memo-title">L'État dans l'économie</div>
+        <div class="memo-chips">24 notions · 4 confusions · 6 mnémos</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+    <a href="memo-eco-theme7.html" class="memo-card t7">
+      <span class="theme-badge">Thème 7</span>
+      <div class="memo-body">
+        <div class="memo-title">Emploi et chômage</div>
+        <div class="memo-chips">18 notions · 4 confusions · 6 mnémos</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+    <a href="memo-eco-theme8.html" class="memo-card t8">
+      <span class="theme-badge">Thème 8</span>
+      <div class="memo-body">
+        <div class="memo-title">Commerce international</div>
+        <div class="memo-chips">24 notions · 4 confusions · 6 mnémos</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+    <a href="memo-eco-theme9.html" class="memo-card t9">
+      <span class="theme-badge">Thème 9</span>
+      <div class="memo-body">
+        <div class="memo-title">Croissance et développement durable
+          <span class="tag-go">Grand Oral</span>
+        </div>
+        <div class="memo-chips">12 notions · 3 confusions · 4 mnémos</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+  </div>
+
+</body>
+</html>

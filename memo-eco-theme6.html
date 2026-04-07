@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Mémo Thème 6 · L'État dans l'économie</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── PRINT-FIRST DESIGN ─── */
+@page { size: A4; margin: 12mm; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; }
+
+/* NAV (screen only) */
+.sli-nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.sli-nav a { text-decoration:none }
+.sli-nav-logo { font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18 }
+.sli-nav-logo span { color:#b5415a }
+.sli-nav-links { display:flex;gap:2px }
+.sli-nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none }
+.sli-nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.sli-nl.on { background:#1e1c18;color:#f5c842 }
+
+/* ─── MEMO LAYOUT ─── */
+.memo { max-width: 900px; margin: 0 auto; padding: 80px 20px 40px; }
+
+/* Header */
+.memo-hd { text-align: center; margin-bottom: 20px; }
+.memo-badge { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #2a69a8; color: #fff; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+.memo-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 2px; }
+.memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+.memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #2a69a8; margin-top: 8px; font-style: italic; }
+
+/* ─── ARBRE STRUCTURE (ENCODER) ─── */
+.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.tree-full { grid-column: 1 / -1; }
+
+.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
+.tree-card.c-bleu  { border-left-color: #2a69a8; }
+.tree-card.c-rose  { border-left-color: #b5415a; }
+.tree-card.c-jaune { border-left-color: #946e00; }
+.tree-card.c-vert  { border-left-color: #1a7a3c; }
+.tree-card.c-violet { border-left-color: #7030a0; }
+
+.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
+.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
+.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
+.tree-def strong { color: #1e1c18; }
+.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
+.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(42,105,168,.08); color: #2a69a8; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+
+/* Sub-items inside tree cards */
+.tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
+.tree-chip[data-tip] { cursor: pointer; transition: transform .1s, box-shadow .1s; }
+.tree-chip[data-tip]:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+/* Tooltip popup */
+.tip-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; z-index:9000; background:rgba(30,28,24,.25); }
+.tip-overlay.show { display:flex; align-items:center; justify-content:center; animation: fadeIn .15s ease; }
+.tip-card { background:#fffdf8; border-radius:16px; padding:20px 24px; max-width:380px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,.18); position:relative; }
+.tip-close { position:absolute; top:10px; right:14px; font-size:18px; cursor:pointer; color:#a09880; background:none; border:none; font-weight:700; }
+.tip-close:hover { color:#1e1c18; }
+.tip-term { font-family:'Nunito',sans-serif; font-size:16px; font-weight:900; color:#1e1c18; margin-bottom:6px; }
+.tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
+.tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:rgba(42,105,168,.06); border-radius:8px; border-left:3px solid #2a69a8; }
+.tip-bac { font-size:10px; font-weight:700; color:#b5415a; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+
+/* Schema */
+.schema-section { margin-bottom: 16px; }
+.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
+.schema-box svg { display: block; margin: 0 auto; }
+
+.chip-bleu   { background: #e8f3ff; color: #2a69a8; }
+.chip-rose   { background: #fdeef2; color: #b5415a; }
+.chip-jaune  { background: #fef8e2; color: #946e00; }
+.chip-vert   { background: #e6f5ec; color: #1a7a3c; }
+.chip-violet { background: #f3eafc; color: #7030a0; }
+.chip-gris   { background: rgba(30,28,24,.07); color: #5a5448; }
+
+/* ─── SECTION BOTTOM: RECUPERER ─── */
+.recup { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.recup-full { grid-column: 1 / -1; }
+
+/* Confusion box */
+.confuse-box { background: #fdeef2; border-radius: 12px; padding: 14px 16px; }
+.confuse-box .tree-label { color: #b5415a; }
+.confuse-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 11px; line-height: 1.5; }
+.confuse-row:last-child { margin-bottom: 0; }
+.confuse-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.confuse-text strong { font-weight: 800; }
+
+/* Mnemo box */
+.mnemo-box { background: #e8f3ff; border-radius: 12px; padding: 14px 16px; }
+.mnemo-box .tree-label { color: #2a69a8; }
+.mnemo-item { font-size: 11px; line-height: 1.6; margin-bottom: 4px; }
+.mnemo-item:last-child { margin-bottom: 0; }
+
+/* Bac frequency bar */
+.freq-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; }
+.freq-row:last-child { margin-bottom: 0; }
+.freq-bar-track { flex: 1; height: 6px; background: #e8e4dc; border-radius: 3px; overflow: hidden; }
+.freq-bar-fill { height: 100%; border-radius: 3px; }
+.freq-bar-fill.f5 { width: 100%; background: #b5415a; }
+.freq-bar-fill.f4 { width: 80%; background: #d46a1a; }
+.freq-bar-fill.f3 { width: 60%; background: #946e00; }
+.freq-bar-fill.f2 { width: 40%; background: #2a69a8; }
+.freq-bar-fill.f1 { width: 20%; background: #a09880; }
+.freq-notion { font-weight: 700; min-width: 160px; }
+.freq-stars { color: #f5c842; font-size: 10px; min-width: 50px; text-align: right; letter-spacing: 1px; }
+
+/* Link chain */
+.chain { background: #fef8e2; border-radius: 12px; padding: 14px 16px; }
+.chain .tree-label { color: #946e00; }
+.chain-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
+.chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
+
+/* ─── PRINT ─── */
+@media print {
+  .sli-nav { display: none !important; }
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .memo { padding: 0; max-width: 100%; }
+  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain { break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .tree, .recup { grid-template-columns: 1fr; }
+  .tree-full, .recup-full { grid-column: 1; }
+  .memo { padding: 74px 12px 30px; }
+}
+</style>
+</head>
+<body data-subject="eco">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Économie</span>
+  <a href="memos-eco.html" class="active">Mémos</a>
+  <a href="flashcards-eco.html">Flashcards</a>
+  <a href="questions-bac-eco.html">Questions Bac</a>
+  <a href="methode-jour-j-eco.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<div class="memo">
+
+<!-- HEADER -->
+<div class="memo-hd">
+  <div class="memo-badge">Mémo · Économie · Thème 6</div>
+  <div class="memo-title">Comment l'État peut-il intervenir dans l'économie ?</div>
+  <div class="memo-sub">Terminale STMG · 1 page · Encoder · Comprendre · Récupérer</div>
+  <div class="memo-question">"Pourquoi l'État intervient-il, avec quels outils, et quelles limites ?"</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCHEMA : VUE D'ENSEMBLE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="schema-section">
+  <div class="schema-box">
+    <svg viewBox="0 0 800 320" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+      <!-- Fond -->
+      <!-- Niveau 1 : Problème -->
+      <rect x="280" y="8" width="240" height="44" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+      <text x="400" y="26" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0" letter-spacing="1">POURQUOI ?</text>
+      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Le marché a des défaillances</text>
+
+      <!-- Flèche -->
+      <line x1="400" y1="52" x2="400" y2="70" stroke="#a09880" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Niveau 2 : État intervient -->
+      <rect x="260" y="70" width="280" height="38" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+      <text x="400" y="94" text-anchor="middle" font-size="12" font-weight="900" fill="#2a69a8">L'État intervient (3 fonctions : ARS)</text>
+
+      <!-- 3 branches -->
+      <line x1="400" y1="108" x2="400" y2="128" stroke="#a09880" stroke-width="2"/>
+      <line x1="150" y1="128" x2="650" y2="128" stroke="#a09880" stroke-width="2"/>
+      <line x1="150" y1="128" x2="150" y2="145" stroke="#a09880" stroke-width="2"/>
+      <line x1="400" y1="128" x2="400" y2="145" stroke="#a09880" stroke-width="2"/>
+      <line x1="650" y1="128" x2="650" y2="145" stroke="#a09880" stroke-width="2"/>
+
+      <!-- Branche 1 : Politique budgétaire -->
+      <rect x="40" y="145" width="220" height="50" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+      <text x="150" y="163" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8" letter-spacing="1">OUTIL 1 · L'ÉTAT ★★★★★</text>
+      <text x="150" y="180" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Politique budgétaire</text>
+      <!-- Sous-branches -->
+      <line x1="150" y1="195" x2="150" y2="210" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="80" y1="210" x2="220" y2="210" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="80" y1="210" x2="80" y2="222" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="220" y1="210" x2="220" y2="222" stroke="#a09880" stroke-width="1.5"/>
+      <rect x="20" y="222" width="120" height="32" rx="8" fill="#e8f3ff"/>
+      <text x="80" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#2a69a8">Relance</text>
+      <text x="80" y="251" text-anchor="middle" font-size="7" fill="#5a5448">(+ dépenses ou - impôts)</text>
+      <rect x="160" y="222" width="120" height="32" rx="8" fill="#fef8e2"/>
+      <text x="220" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#946e00">Offre</text>
+      <text x="220" y="251" text-anchor="middle" font-size="7" fill="#5a5448">(- charges, + innovation)</text>
+
+      <!-- Branche 2 : Politique monétaire -->
+      <rect x="290" y="145" width="220" height="50" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+      <text x="400" y="163" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c" letter-spacing="1">OUTIL 2 · LA BCE ★★☆☆☆</text>
+      <text x="400" y="180" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Politique monétaire</text>
+      <line x1="400" y1="195" x2="400" y2="210" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="330" y1="210" x2="470" y2="210" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="330" y1="210" x2="330" y2="222" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="470" y1="210" x2="470" y2="222" stroke="#a09880" stroke-width="1.5"/>
+      <rect x="275" y="222" width="110" height="32" rx="8" fill="#e6f5ec"/>
+      <text x="330" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">Taux bas</text>
+      <text x="330" y="251" text-anchor="middle" font-size="7" fill="#5a5448">crédit facile = relance</text>
+      <rect x="415" y="222" width="110" height="32" rx="8" fill="#fdeef2"/>
+      <text x="470" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">Taux hauts</text>
+      <text x="470" y="251" text-anchor="middle" font-size="7" fill="#5a5448">frein à l'inflation</text>
+
+      <!-- Branche 3 : Redistribution -->
+      <rect x="540" y="145" width="220" height="50" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+      <text x="650" y="163" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a" letter-spacing="1">OUTIL 3 · SOLIDARITÉ ★★★☆☆</text>
+      <text x="650" y="180" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Redistribution</text>
+      <line x1="650" y1="195" x2="650" y2="210" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="580" y1="210" x2="720" y2="210" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="580" y1="210" x2="580" y2="222" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="720" y1="210" x2="720" y2="222" stroke="#a09880" stroke-width="1.5"/>
+      <rect x="525" y="222" width="110" height="32" rx="8" fill="#fdeef2"/>
+      <text x="580" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">Horizontale</text>
+      <text x="580" y="251" text-anchor="middle" font-size="7" fill="#5a5448">contre les risques</text>
+      <rect x="665" y="222" width="110" height="32" rx="8" fill="#fdeef2"/>
+      <text x="720" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#b5415a">Verticale</text>
+      <text x="720" y="251" text-anchor="middle" font-size="7" fill="#5a5448">réduire les écarts</text>
+
+      <!-- Financement : barre latérale -->
+      <rect x="40" y="272" width="720" height="38" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="400" y="288" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00" letter-spacing="1">FINANCEMENT</text>
+      <text x="400" y="302" text-anchor="middle" font-size="10" font-weight="700" fill="#5a4e00">Prélèvements obligatoires (impôts + cotisations) → si dépenses > recettes = Déficit → accumulation = Dette</text>
+
+      <!-- Arrow marker -->
+      <defs><marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs>
+
+      <!-- Ancre visuelle T6 Éco -->
+      <g transform="translate(28, 28)">
+        <circle cx="0" cy="0" r="20" fill="#2a69a8"/>
+        <text x="0" y="6" text-anchor="middle"
+          font-family="Inter, sans-serif"
+          font-size="11" font-weight="900"
+          fill="#ffffff">ÉÉ</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 1 : ENCODER — L'arbre du thème -->
+<!-- ═══════════════════════════════════════ -->
+
+<!-- Bloc racine : les 3 fonctions -->
+<div class="tree">
+
+  <div class="tree-card c-bleu tree-full">
+    <div class="tree-label">Le point de départ <span class="freq">★★★★★</span></div>
+    <div class="tree-h">Les 3 fonctions économiques de l'État</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="allocation">Allocation des ressources</span>
+      <span class="tree-chip chip-bleu" data-tip="redistribution">Redistribution</span>
+      <span class="tree-chip chip-bleu" data-tip="stabilisation">Stabilisation</span>
+    </div>
+    <div class="tree-def" style="margin-top:6px">L'État corrige ce que le marché ne fait pas seul : il fournit les biens publics, réduit les inégalités, et maintient la croissance et l'emploi.</div>
+  </div>
+
+  <!-- Branche 1 : Défaillances du marché -->
+  <div class="tree-card c-violet">
+    <div class="tree-label">Pourquoi l'état intervient <span class="freq">★★☆☆☆</span></div>
+    <div class="tree-h">Les défaillances du marché</div>
+    <div class="tree-def">Quand le marché <strong>échoue seul</strong>, l'État intervient. 4 cas :</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="asymetrie">Asymétrie d'info</span>
+      <span class="tree-chip chip-violet" data-tip="externalite">Externalités</span>
+      <span class="tree-chip chip-violet" data-tip="bienpublic">Biens publics</span>
+      <span class="tree-chip chip-violet" data-tip="concurrence">Concurrence imparfaite</span>
+    </div>
+    <div class="tree-ex">Ex. : la pollution est une externalité négative — le pollueur ne paye pas le coût pour la société</div>
+  </div>
+
+  <!-- Branche 2 : Financement -->
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Comment l'état finance <span class="freq">★★★★☆</span></div>
+    <div class="tree-h">Dépenses, recettes, déficit, dette</div>
+    <div class="tree-def">
+      <strong>Prélèvements obligatoires</strong> = impôts + cotisations sociales (~45% du PIB en France).<br>
+      Si <strong>dépenses &gt; recettes</strong> = déficit public (flux annuel).<br>
+      L'accumulation des déficits = <strong>dette publique</strong> (stock).
+    </div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="po">Prélèvements obligatoires</span>
+      <span class="tree-chip chip-jaune" data-tip="deficit">Déficit public</span>
+      <span class="tree-chip chip-jaune" data-tip="dette">Dette publique</span>
+    </div>
+    <div class="tree-ex">Tombé dans 6 sujets sur 15 au Bac</div>
+  </div>
+
+  <!-- Branche 3 : Politique budgétaire -->
+  <div class="tree-card c-bleu">
+    <div class="tree-label">Outil n°1 — l'état <span class="freq">★★★★★</span></div>
+    <div class="tree-h">Politique budgétaire</div>
+    <div class="tree-def">
+      L'État utilise son <strong>budget</strong> (dépenses + impôts) pour agir sur l'économie.
+    </div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="relance">Relance (demande)</span>
+      <span class="tree-chip chip-jaune" data-tip="offre">Politique d'offre</span>
+    </div>
+    <div class="tree-ex">Ex. : plan de relance post-Covid de 100 Mds EUR (2020)</div>
+  </div>
+
+  <!-- Branche 4 : Politique monétaire -->
+  <div class="tree-card c-vert">
+    <div class="tree-label">Outil n°2 — la BCE <span class="freq">★★☆☆☆</span></div>
+    <div class="tree-h">Politique monétaire</div>
+    <div class="tree-def">
+      La <strong>BCE</strong> agit via les <strong>taux directeurs</strong>. Objectif : inflation ~2%.
+    </div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="tauxbas">Taux bas → relance</span>
+      <span class="tree-chip chip-rose" data-tip="tauxhaut">Taux élevés → frein</span>
+      <span class="tree-chip chip-gris" data-tip="bce">BCE</span>
+      <span class="tree-chip chip-gris" data-tip="creation_monetaire">Création monétaire</span>
+      <span class="tree-chip chip-gris" data-tip="taux_interet">Taux d'intérêt</span>
+    </div>
+    <div class="tree-ex">Ex. : BCE remonte les taux en 2022-2023 contre l'inflation post-Covid</div>
+  </div>
+
+  <!-- Branche 5bis : Prérequis calculs (Première) -->
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Outils de calcul · rappels 1ère <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">Les formules qui tombent au Bac</div>
+    <div class="tree-def">Ces outils de Première reviennent régulièrement dans les calculs de l'épreuve.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="taux_variation">Taux de variation</span>
+      <span class="tree-chip chip-jaune" data-tip="coef_multi">Coefficient multiplicateur</span>
+      <span class="tree-chip chip-jaune" data-tip="valeur_ajoutee">Valeur ajoutée</span>
+      <span class="tree-chip chip-jaune" data-tip="autofinancement">Autofinancement</span>
+      <span class="tree-chip chip-jaune" data-tip="financement_ext">Financement externe</span>
+    </div>
+  </div>
+
+  <!-- Branche 5 : Redistribution -->
+  <div class="tree-card c-rose">
+    <div class="tree-label">Outil n°3 — solidarité <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">Redistribution</div>
+    <div class="tree-def">
+      L'État <strong>transfère</strong> des revenus pour réduire les inégalités. Deux formes :
+    </div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="horizontale">Horizontale</span>
+      <span class="tree-chip chip-rose" data-tip="verticale">Verticale</span>
+    </div>
+    <div class="tree-ex">Ex. : un salarié malade est indemnisé (horizontal) ; un cadre paye plus d'impôts (vertical)</div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 2 : CHAÎNE LOGIQUE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <div class="chain recup-full">
+    <div class="tree-label">La chaîne logique du thème 6</div>
+    <div class="chain-flow">
+      <span class="chain-node">Le marché a des défaillances</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">L'État intervient</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Via le budget (budgétaire)</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Via la BCE (monétaire)</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Via la redistribution</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Mais dette + inflation = limites</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 3 : RÉCUPÉRER -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <!-- Confusions à éviter -->
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques au Bac</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Budgétaire</strong> = l'État (budget) ≠ <strong>Monétaire</strong> = la BCE (taux)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Déficit</strong> = flux annuel (cette année) ≠ <strong>Dette</strong> = stock (toutes les années)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Bien public</strong> = éclairage public (éco) ≠ <strong>Service public</strong> = école, hôpital</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Politique de demande</strong> = relancer la conso ≠ <strong>Politique d'offre</strong> = aider les entreprises</span>
+    </div>
+  </div>
+
+  <!-- Moyens mnémotechniques -->
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>ARS</strong> = les 3 fonctions : <strong>A</strong>llocation · <strong>R</strong>edistribution · <strong>S</strong>tabilisation</div>
+    <div class="mnemo-item"><strong>Déficit → Dette</strong> : le déficit est le <strong>robinet</strong>, la dette est la <strong>baignoire</strong></div>
+    <div class="mnemo-item"><strong>BCE = taux</strong> : la BCE ne touche qu'au <strong>taux</strong> (directeur). L'État touche au <strong>budget</strong></div>
+    <div class="mnemo-item"><strong>Bien public = 2 "non"</strong> : non rival + non excluable</div>
+    <div class="mnemo-item"><strong>Relance = + ou -</strong> : + dépenses OU - impôts → + consommation → + PIB</div>
+    <div class="mnemo-item"><strong>Externalité = sans payer</strong> : effet sur un tiers SANS compensation</div>
+  </div>
+
+</div>
+
+<!-- Fréquences BAC -->
+<div class="recup">
+  <div class="freq-box recup-full">
+    <div class="tree-label" style="margin-bottom:8px">Fréquence au Bac (15 sujets analysés)</div>
+
+    <div class="freq-row">
+      <span class="freq-notion">Politique budgétaire / relance</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">★★★★★</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Croissance / PIB</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">★★★★★</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Déficit / dette publique</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">★★★★☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Prélèvements obligatoires</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Redistribution</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Défaillances du marché</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f2"></div></div>
+      <span class="freq-stars">★★☆☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Politique monétaire (BCE)</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f2"></div></div>
+      <span class="freq-stars">★★☆☆☆</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
+  Révizo · Mémo Thème 6 · Économie STMG · Avril 2026 · Sources : 15 annales post-réforme, BO 2019, consignes de correction
+</div>
+
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tip-overlay" id="tipOverlay" onclick="closeTip()">
+  <div class="tip-card" onclick="event.stopPropagation()">
+    <button class="tip-close" onclick="closeTip()">&times;</button>
+    <div class="tip-term" id="tipTerm"></div>
+    <div class="tip-def" id="tipDef"></div>
+    <div class="tip-example" id="tipEx"></div>
+    <div class="tip-bac" id="tipBac"></div>
+  </div>
+</div>
+
+<script>
+const TIPS = {
+  allocation: {
+    term: "Allocation des ressources",
+    def: "L'État fournit les biens et services que le marché ne produit pas spontanément (biens publics) et corrige les défaillances du marché (externalités, monopoles).",
+    ex: "L'État finance la défense nationale, l'éclairage public, la recherche fondamentale — des choses que le marché privé ne produirait pas seul car personne ne peut en être exclu.",
+    bac: "Notion de cadrage, rarement testée isolément"
+  },
+  redistribution: {
+    term: "Redistribution",
+    def: "L'État prélève des impôts et cotisations pour les redistribuer sous forme de prestations sociales, afin de réduire les inégalités entre les ménages.",
+    ex: "Un cadre qui gagne 5 000 EUR/mois paye plus d'impôts qu'un ouvrier à 1 500 EUR. L'ouvrier peut toucher la prime d'activité. L'écart de revenus est réduit.",
+    bac: "★★★☆☆ — Souvent mobilisée dans les questions sur l'intervention de l'État"
+  },
+  stabilisation: {
+    term: "Stabilisation",
+    def: "L'État agit pour maintenir la croissance économique, lutter contre le chômage et contrôler l'inflation. C'est le rôle contra-cyclique : en cas de crise, l'État relance ; en cas de surchauffe, il freine.",
+    ex: "Pendant la crise Covid (2020), l'État a injecté 100 milliards d'euros pour éviter un effondrement de l'économie. C'est la stabilisation en action.",
+    bac: "★★★★★ — Au cœur des sujets d'argumentation sur la politique budgétaire"
+  },
+  asymetrie: {
+    term: "Asymétrie d'information",
+    def: "Situation où un acteur du marché détient plus d'informations que l'autre sur le bien échangé. Le marché ne fonctionne pas bien car l'un des deux est désavantagé.",
+    ex: "Un vendeur de voiture d'occasion connaît les défauts du véhicule, mais l'acheteur ne les voit pas. Le vendeur peut en profiter pour vendre trop cher.",
+    bac: "★★☆☆☆ — Tombé en 2024 (centres étrangers)"
+  },
+  externalite: {
+    term: "Externalité",
+    def: "Effet positif ou négatif d'une activité économique sur un tiers, SANS compensation financière. Le marché ne prend pas en compte ce coût (ou bénéfice) pour la société.",
+    ex: "Externalité négative : une usine pollue la rivière voisine sans payer de dédommagement aux riverains. Externalité positive : une ruche d'abeilles pollinise les vergers alentour gratuitement.",
+    bac: "★★☆☆☆ — Tombé en 2024 (centres étrangers)"
+  },
+  bienpublic: {
+    term: "Bien public",
+    def: "Bien qui est à la fois NON RIVAL (la consommation par un individu n'empêche pas celle d'un autre) et NON EXCLUABLE (on ne peut empêcher personne de l'utiliser). Le marché ne les produit pas car personne ne voudrait payer.",
+    ex: "L'éclairage public : tout le monde en profite, on ne peut pas empêcher quelqu'un de marcher sous un lampadaire, et le fait qu'une personne l'utilise ne réduit pas la lumière pour les autres.",
+    bac: "★★☆☆☆ — Distinction bien public / bien commun tombée en 2024"
+  },
+  concurrence: {
+    term: "Concurrence imparfaite",
+    def: "Situation où les conditions de la concurrence parfaite ne sont pas réunies : un ou quelques acteurs dominent le marché (monopole, oligopole), faussant les prix et les quantités.",
+    ex: "Un monopole : la SNCF sur le réseau ferré français (avant l'ouverture à la concurrence). Un oligopole : les 4 opérateurs téléphoniques en France.",
+    bac: "★☆☆☆☆ — Rarement testé seul, mais utile pour justifier l'intervention de l'État"
+  },
+  po: {
+    term: "Prélèvements obligatoires",
+    def: "Ensemble des impôts et des cotisations sociales prélevés par l'État et les administrations publiques. Ils financent les dépenses publiques (éducation, santé, défense, redistribution).",
+    ex: "En France, les prélèvements obligatoires représentent environ 45% du PIB — l'un des taux les plus élevés d'Europe. Cela inclut l'impôt sur le revenu, la TVA, les cotisations salariales et patronales.",
+    bac: "★★★☆☆ — Tombé en 2024 Métropole (réduction des PO et croissance)"
+  },
+  deficit: {
+    term: "Déficit public",
+    def: "Situation où les dépenses publiques dépassent les recettes (prélèvements obligatoires) sur UNE année. C'est un FLUX annuel. Pour financer ce trou, l'État emprunte.",
+    ex: "En 2020, la France a dépensé 100 milliards de plus que ses recettes à cause du plan de relance Covid. Ce déficit a été financé par l'emprunt, augmentant la dette.",
+    bac: "★★★★☆ — Tombé 6 fois sur 15 sujets. Souvent demandé en distinction avec la dette."
+  },
+  dette: {
+    term: "Dette publique",
+    def: "Total de tous les emprunts accumulés par l'État pour financer les déficits des années passées. C'est un STOCK. Chaque déficit annuel vient s'ajouter à la dette existante.",
+    ex: "La dette publique française dépasse 3 000 milliards d'euros, soit plus de 110% du PIB. C'est l'accumulation de décennies de déficits.",
+    bac: "★★★★☆ — Toujours associée au déficit. Mnémo : le déficit est le robinet, la dette est la baignoire."
+  },
+  relance: {
+    term: "Politique de relance (demande)",
+    def: "L'État stimule la demande globale en augmentant ses dépenses publiques ou en baissant les impôts des ménages. Objectif : les ménages consomment plus, les entreprises produisent plus, le PIB augmente.",
+    ex: "Plan de relance post-Covid 2020 : l'État dépense 100 milliards (infrastructures, aides aux entreprises, chèques aux ménages) pour relancer la consommation et la production.",
+    bac: "★★★★★ — LE sujet le plus fréquent en argumentation"
+  },
+  offre: {
+    term: "Politique d'offre",
+    def: "L'État aide les entreprises à être plus compétitives : baisse des charges sociales, aides à l'innovation, simplification administrative. Objectif : les entreprises produisent mieux et moins cher.",
+    ex: "Le CICE (Crédit d'Impôt pour la Compétitivité et l'Emploi) a réduit les charges des entreprises pour qu'elles investissent et embauchent davantage.",
+    bac: "★★★★☆ — Souvent en opposition avec la politique de demande dans l'argumentation"
+  },
+  tauxbas: {
+    term: "Taux directeurs bas → Relance",
+    def: "Quand la BCE baisse ses taux directeurs, le crédit devient moins cher pour les banques, qui prêtent à des taux plus bas aux entreprises et aux ménages. Résultat : plus d'investissement, plus de consommation, relance de l'activité.",
+    ex: "Entre 2015 et 2022, la BCE a maintenu ses taux proches de 0%. Les entreprises ont pu emprunter à très bas coût pour investir.",
+    bac: "★★☆☆☆ — Tombé en 2022 (Polynésie remplacement)"
+  },
+  tauxhaut: {
+    term: "Taux directeurs élevés → Frein",
+    def: "Quand la BCE monte ses taux, le crédit devient plus cher. Les ménages et entreprises empruntent moins. La demande ralentit, ce qui freine l'inflation (hausse des prix).",
+    ex: "En 2022-2023, l'inflation post-Covid dépassait 5%. La BCE a remonté ses taux de 0% à 4,5% pour freiner la hausse des prix.",
+    bac: "★★☆☆☆ — Notion utile pour comprendre les limites de la politique monétaire"
+  },
+  bce: {
+    term: "BCE (Banque Centrale Européenne)",
+    def: "Institution qui gère la politique monétaire de la zone euro. Son objectif principal : maintenir la stabilité des prix (inflation autour de 2%). Elle est indépendante des gouvernements.",
+    ex: "La BCE siège à Francfort. Elle décide des taux directeurs pour les 20 pays de la zone euro. Les gouvernements ne peuvent pas lui donner d'ordres.",
+    bac: "★★☆☆☆ — À connaître pour la distinguer de la politique budgétaire (l'État)"
+  },
+  horizontale: {
+    term: "Redistribution horizontale",
+    def: "L'État protège tous les citoyens contre les risques de la vie : maladie, chômage, vieillesse, accidents. Ce n'est pas une question de riche ou pauvre — tout le monde cotise et tout le monde peut en bénéficier.",
+    ex: "Un salarié tombe malade : la Sécurité sociale rembourse ses soins et verse des indemnités journalières. Qu'il soit cadre ou ouvrier, il est couvert.",
+    bac: "★★★☆☆ — Souvent demandé en distinction avec la redistribution verticale"
+  },
+  verticale: {
+    term: "Redistribution verticale",
+    def: "L'État réduit les écarts de revenus entre les plus riches et les plus pauvres. Les riches payent proportionnellement plus d'impôts, et les plus pauvres reçoivent des aides.",
+    ex: "L'impôt sur le revenu est progressif : celui qui gagne 100 000 EUR paye un taux plus élevé que celui qui gagne 20 000 EUR. Le RSA verse un minimum à ceux qui n'ont rien.",
+    bac: "★★★☆☆ — Distinction horizontale/verticale peut tomber"
+  },
+  creation_monetaire: {
+    term: "Création monétaire (rappel 1ère)",
+    def: "Quand une banque accorde un crédit, elle crée de la monnaie scripturale. L'argent n'existait pas avant le prêt — il est créé au moment où la banque inscrit le montant sur le compte de l'emprunteur. 'Les crédits font les dépôts'.",
+    ex: "Une entreprise emprunte 100 000 EUR à sa banque pour acheter une machine. La banque inscrit 100 000 EUR sur le compte de l'entreprise : cet argent n'existait pas avant, il a été créé par le crédit.",
+    bac: "Prérequis 1ère — Utile pour comprendre la politique monétaire de la BCE"
+  },
+  taux_interet: {
+    term: "Taux d'intérêt (rappel 1ère)",
+    def: "Prix du crédit, exprimé en % du capital emprunté. C'est ce que l'emprunteur paye EN PLUS du remboursement. Lien direct avec la politique monétaire : quand la BCE baisse son taux directeur, les banques baissent leurs taux d'intérêt.",
+    ex: "Un prêt immobilier à 3% : pour 200 000 EUR empruntés sur 20 ans, tu rembourses environ 265 000 EUR au total. Les 65 000 EUR de plus, ce sont les intérêts.",
+    bac: "Prérequis 1ère — Indispensable pour expliquer le mécanisme taux directeur → crédit → activité"
+  },
+  taux_variation: {
+    term: "Taux de variation (rappel 1ère)",
+    def: "Formule : ((Valeur finale − Valeur initiale) / Valeur initiale) × 100. Résultat en %. Positif = hausse. Négatif = baisse. C'est LE calcul le plus demandé au Bac.",
+    ex: "Le PIB passe de 2 000 à 2 100 milliards : ((2100 − 2000) / 2000) × 100 = +5%. On dit que le PIB a augmenté de 5%.",
+    bac: "★★★☆☆ — Calcul récurrent. TOUJOURS poser la formule puis commenter le résultat."
+  },
+  coef_multi: {
+    term: "Coefficient multiplicateur (rappel 1ère)",
+    def: "Formule : Valeur d'arrivée / Valeur de départ. Permet de dire 'la valeur a été multipliée par X'. Pour convertir en % : (coefficient − 1) × 100.",
+    ex: "Le PIB passe de 2 000 à 2 400 milliards : 2400 / 2000 = 1,2. Le PIB a été multiplié par 1,2, soit une hausse de 20%.",
+    bac: "★★☆☆☆ — Moins fréquent que le taux de variation, mais utile"
+  },
+  valeur_ajoutee: {
+    term: "Valeur ajoutée (rappel 1ère)",
+    def: "Richesse réellement créée par une entreprise. Formule : Chiffre d'affaires − Consommations intermédiaires. Le PIB est la somme de toutes les valeurs ajoutées d'un pays.",
+    ex: "Un boulanger achète 200 EUR de farine (consommation intermédiaire) et vend pour 500 EUR de pain (CA). Sa valeur ajoutée = 500 − 200 = 300 EUR.",
+    bac: "★★☆☆☆ — Notion transversale, utile pour comprendre le PIB"
+  },
+  autofinancement: {
+    term: "Autofinancement (rappel 1ère)",
+    def: "L'entreprise finance ses investissements avec ses propres bénéfices (financement interne). Pas besoin d'emprunter ni de faire appel aux actionnaires. C'est le mode de financement le plus autonome.",
+    ex: "Un restaurant qui utilise ses bénéfices de l'année pour acheter un nouveau four : c'est de l'autofinancement.",
+    bac: "Prérequis 1ère — Utile pour comprendre le financement de l'économie"
+  },
+  financement_ext: {
+    term: "Financement externe (rappel 1ère)",
+    def: "L'entreprise va chercher l'argent à l'extérieur : soit en empruntant à une banque (crédit bancaire), soit en faisant appel au marché financier (émission d'actions ou d'obligations). C'est là que la création monétaire intervient.",
+    ex: "Une start-up qui lève 2 millions d'euros en vendant des actions à des investisseurs : c'est du financement externe par le marché. Un artisan qui emprunte 50 000 EUR à sa banque : c'est du financement externe par crédit.",
+    bac: "Prérequis 1ère — Distinction autofinancement / financement externe"
+  }
+};
+
+// Open tip
+document.querySelectorAll('[data-tip]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.getAttribute('data-tip');
+    const tip = TIPS[key];
+    if (!tip) return;
+    document.getElementById('tipTerm').textContent = tip.term;
+    document.getElementById('tipDef').textContent = tip.def;
+    document.getElementById('tipEx').textContent = tip.ex;
+    document.getElementById('tipBac').textContent = tip.bac;
+    document.getElementById('tipOverlay').classList.add('show');
+  });
+});
+
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTip(); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Méthode Jour J · Droit STMG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  background: #f0ede6;
+  color: #1e1c18;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+.nav {
+  background: #1e1c18;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+}
+.nav-logo {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #f5c842;
+  margin-right: 12px;
+  text-decoration: none;
+}
+.nav a {
+  color: #ccc8be;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.nav a:hover { background: rgba(255,255,255,.08); color: #fff; }
+.nav a.active { background: #b5415a; color: #fff; font-weight: 700; }
+.nav-spacer { flex: 1; }
+
+/* ── HEADER ── */
+.header {
+  background: #1e1c18;
+  padding: 32px 24px 40px;
+  text-align: center;
+  position: relative;
+}
+.header-badge {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f5c842;
+  background: rgba(245,200,66,.12);
+  padding: 4px 16px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+.header h1 {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 2.2rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.header p {
+  color: #a09880;
+  font-size: 0.95rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.print-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: #f5c842;
+  color: #1e1c18;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.print-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(245,200,66,.4); }
+
+/* ── MAIN ── */
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+/* ── TABS ── */
+.tabs-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 2px solid #ddd8cf;
+  background: #fff;
+  color: #5a5448;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tab-btn:hover { border-color: #a09880; }
+.tab-btn.active { background: #1e1c18; color: #f5c842; border-color: #1e1c18; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── STEP CARDS ── */
+.step-card {
+  background: #fffdf8;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.step-num {
+  background: #1e1c18;
+  color: #f5c842;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-time {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #b5415a;
+  background: #fdeef2;
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin-left: 8px;
+  display: inline-block;
+}
+.step-do { font-weight: 700; margin-bottom: 4px; }
+.step-dont { color: #8a8478; font-style: italic; font-size: 0.9rem; }
+
+/* ── CALLOUT BOX ── */
+.callout {
+  background: #fffdf8;
+  border-left: 4px solid #f5c842;
+  border-radius: 0 12px 12px 0;
+  padding: 18px 24px;
+  margin: 20px 0;
+  font-size: 0.95rem;
+}
+.callout strong { color: #b5415a; }
+.callout-rose {
+  border-left-color: #b5415a;
+  background: #fdeef2;
+}
+.callout-green {
+  border-left-color: #3a9d5c;
+  background: #eef8f1;
+}
+
+/* ── TABLES ── */
+.table-wrap {
+  overflow-x: auto;
+  margin: 16px 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fffdf8;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  font-size: 0.9rem;
+}
+thead th {
+  background: #1e1c18;
+  color: #f5c842;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  padding: 12px 16px;
+  text-align: left;
+  white-space: nowrap;
+}
+tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eae6dd;
+  vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #f7f5ef; }
+td strong { color: #1e1c18; }
+
+/* ── CITATION BOXES ── */
+.cite-good, .cite-bad {
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 8px 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.cite-good { background: #eef8f1; border-left: 4px solid #3a9d5c; }
+.cite-bad { background: #fdeef2; border-left: 4px solid #b5415a; }
+.cite-label { font-weight: 700; margin-bottom: 4px; }
+.cite-good .cite-label { color: #3a9d5c; }
+.cite-bad .cite-label { color: #b5415a; }
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  color: #1e1c18;
+}
+.section-subtitle {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  margin: 24px 0 12px;
+  color: #b5415a;
+}
+
+/* ── INTRO TEXT ── */
+.intro-text {
+  color: #5a5448;
+  font-size: 0.92rem;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+/* ── SYLLOGISME BOX ── */
+.aei-box {
+  background: #fffdf8;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  margin: 20px 0;
+}
+.aei-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+.aei-item:last-child { margin-bottom: 0; }
+.aei-letter {
+  background: #b5415a;
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.aei-content strong { color: #1e1c18; }
+.aei-content em { color: #5a5448; font-size: 0.9rem; }
+
+/* ── SYLLOGISME EXAMPLE ── */
+.syllogisme-example {
+  background: #1e1c18;
+  color: #e8e4db;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 16px 0;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  font-family: 'Nunito Sans', sans-serif;
+}
+.syllogisme-example .syl-label {
+  font-weight: 700;
+  color: #f5c842;
+}
+
+/* ── CHECKLIST ── */
+.checklist-section {
+  background: #1e1c18;
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-top: 40px;
+  color: #fff;
+}
+.checklist-section h2 {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #f5c842;
+  margin-bottom: 16px;
+}
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  font-size: 0.92rem;
+}
+.check-item:last-child { border-bottom: none; }
+.check-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #f5c842;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+}
+.check-item label { cursor: pointer; color: #e8e4db; }
+.check-item input:checked + label { text-decoration: line-through; color: #8a8478; }
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  padding: 32px 20px;
+  color: #8a8478;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.5rem; }
+  .print-btn { position: static; margin-top: 16px; }
+  .header { text-align: center; }
+  .step-card { flex-direction: column; gap: 8px; padding: 16px; }
+  .tab-btn { padding: 8px 12px; font-size: 0.78rem; }
+  .checklist-section { padding: 20px 16px; }
+  thead th, tbody td { padding: 10px 10px; font-size: 0.82rem; }
+}
+
+/* ── PRINT ── */
+@media print {
+  .nav, .nav-epreuve, .nav-rubriques, .tabs-bar, .print-btn { display: none !important; }
+  body { padding: 0; background: white; }
+  .header { background: #1e1c18; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .tab-panel { display: block !important; page-break-inside: avoid; }
+  .tab-panel + .tab-panel { border-top: 2px solid #ddd; padding-top: 24px; margin-top: 24px; }
+  .main { max-width: 100%; padding: 16px; }
+  .step-num, thead th, .aei-letter, .checklist-section {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+</style>
+</head>
+<body data-subject="droit">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Droit</span>
+  <a href="memos-droit.html">Mémos</a>
+  <a href="flashcards-droit.html">Flashcards</a>
+  <a href="questions-bac-droit.html">Questions Bac</a>
+  <a href="methode-jour-j-droit.html" class="active">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<!-- ══════════ HEADER ══════════ -->
+<header class="header">
+  <div class="header-badge">Droit STMG</div>
+  <h1>Méthode Jour J · Droit</h1>
+  <p>Zéro contenu de cours · Que des actions et des réflexes · Imprimable</p>
+  <button class="print-btn" onclick="window.print()">Imprimer</button>
+</header>
+
+<!-- ══════════ MAIN ══════════ -->
+<div class="main">
+
+  <!-- ── TAB BAR ── -->
+  <div class="tabs-bar">
+    <button class="tab-btn active" data-tab="tab1">1. Les 15 premières minutes</button>
+    <button class="tab-btn" data-tab="tab2">2. Le syllogisme juridique</button>
+    <button class="tab-btn" data-tab="tab3">3. La qualification juridique</button>
+    <button class="tab-btn" data-tab="tab4">4. Les verbes d'action</button>
+    <button class="tab-btn" data-tab="tab5">5. Si je bloque</button>
+    <button class="tab-btn" data-tab="tab6">6. Gratter des points</button>
+  </div>
+
+  <!-- ══════════ TAB 1 — Les 15 premières minutes ══════════ -->
+  <div id="tab1" class="tab-panel active">
+    <h2 class="section-title">Les 15 premières minutes</h2>
+    <p class="intro-text">Tu as 4 heures pour Droit + Économie. Prévois environ 2h pour chaque partie. Ne te précipite pas. Ces 15 premières minutes sont un investissement.</p>
+
+    <!-- Étape 1 -->
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-do">Lire le sujet EN ENTIER sans écrire — partie Droit ET Économie <span class="step-time">3 min</span></div>
+        <div class="step-dont">Ne pas commencer à répondre</div>
+      </div>
+    </div>
+
+    <!-- Étape 2 -->
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-do">Choisir par quelle partie commencer (celle où tu te sens le plus à l'aise) <span class="step-time">2 min</span></div>
+        <div class="step-dont">Ne pas toujours commencer par la même par habitude</div>
+      </div>
+    </div>
+
+    <!-- Étape 3 -->
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-do">Relire le cas juridique — IDENTIFIER LES PARTIES et leur RELATION JURIDIQUE (qui est qui ? quel lien entre eux ?) <span class="step-time">3 min</span></div>
+        <div class="step-dont">Ne pas lire les questions avant d'avoir compris le cas</div>
+      </div>
+    </div>
+
+    <!-- Étape 4 -->
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-do">Identifier le THÈME en jeu : contrat ? responsabilité ? travail ? propriété ? Entourer les mots-clés juridiques dans le texte <span class="step-time">3 min</span></div>
+        <div class="step-dont">Ne pas se lancer sans avoir identifié le domaine du droit concerné</div>
+      </div>
+    </div>
+
+    <!-- Étape 5 -->
+    <div class="step-card">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-do">Lire les 4 questions — noter à côté de chaque question ce qu'on te demande (qualifier, argumenter pour A, argumenter pour B, réfléchir) <span class="step-time">2 min</span></div>
+        <div class="step-dont">Ne pas confondre les questions 2 et 3 : ce sont des parties DIFFÉRENTES</div>
+      </div>
+    </div>
+
+    <!-- Étape 6 -->
+    <div class="step-card">
+      <div class="step-num">6</div>
+      <div>
+        <div class="step-do">Pour la question 4 (réflexion), noter 3-4 mots-clés du cours que tu vas mobiliser <span class="step-time">2 min</span></div>
+        <div class="step-dont">Ne pas commencer par la question 4 — elle vaut des points mais les questions 1 à 3 sont plus accessibles</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Règle d'or :</strong> Commence par la question 1 (qualification) — elle te force à comprendre le cas et te prépare pour les questions suivantes. La question 4 (réflexion) se fait en dernier.
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 2 — Le syllogisme juridique ══════════ -->
+  <div id="tab2" class="tab-panel">
+    <h2 class="section-title">La méthode du syllogisme juridique</h2>
+    <p class="intro-text">C'est LA méthode du Droit. Chaque argument, dans chaque réponse, doit suivre ces 3 étapes. Si tu ne retiens qu'une seule chose de cette fiche, c'est ça.</p>
+
+    <h3 class="section-subtitle">Les 3 étapes du syllogisme</h3>
+
+    <div class="aei-box">
+      <div class="aei-item">
+        <div class="aei-letter">M</div>
+        <div class="aei-content">
+          <strong>MAJEURE (la règle de droit)</strong><br>
+          Tu énonces l'article de loi ou le principe juridique applicable.<br>
+          <em>"En vertu de l'article L4131-1 du Code du travail, le salarié peut exercer son droit de retrait en cas de danger grave et imminent."</em>
+        </div>
+      </div>
+      <div class="aei-item">
+        <div class="aei-letter">m</div>
+        <div class="aei-content">
+          <strong>MINEURE (les faits qualifiés)</strong><br>
+          Tu appliques la règle aux faits précis du cas.<br>
+          <em>"En l'espèce, M. Guérin travaille depuis 20 ans avec un acide sans protection et a développé une maladie cutanée."</em>
+        </div>
+      </div>
+      <div class="aei-item">
+        <div class="aei-letter">C</div>
+        <div class="aei-content">
+          <strong>CONCLUSION (la solution)</strong><br>
+          Tu déduis la conséquence juridique.<br>
+          <em>"Par conséquent, l'exercice de son droit de retrait est légitime."</em>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="section-subtitle">Les phrases de liaison par étape</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Étape</th><th>Phrases types à utiliser</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>MAJEURE</strong> (règle de droit)</td>
+            <td>"En vertu de l'article [X]..." / "L'article [X] dispose que..." / "Le principe juridique de [X] prévoit que..." / "Selon l'article [X] du Code [civil/du travail]..." / "Le droit prévoit que..."</td>
+          </tr>
+          <tr>
+            <td><strong>MINEURE</strong> (application aux faits)</td>
+            <td>"En l'espèce,..." / "Dans le cas présent,..." / "Or, les faits montrent que..." / "Il ressort des faits que..." / "Dans cette affaire,..."</td>
+          </tr>
+          <tr>
+            <td><strong>CONCLUSION</strong> (solution)</td>
+            <td>"Par conséquent,..." / "Il en résulte que..." / "Dès lors,..." / "Ainsi,..." / "On peut en déduire que..."</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="section-subtitle">Le syllogisme en pratique : un argument complet</h3>
+
+    <div class="syllogisme-example">
+      <span class="syl-label">MAJEURE :</span> En vertu de l'article 1240 du Code civil, tout fait quelconque de l'homme qui cause à autrui un dommage oblige celui par la faute duquel il est arrivé à le réparer.<br><br>
+      <span class="syl-label">MINEURE :</span> En l'espèce, M. Dupont a laissé son arbre non entretenu, dont une branche est tombée sur le véhicule de Mme Martin, causant des dégâts évalués à 3 000 euros.<br><br>
+      <span class="syl-label">CONCLUSION :</span> Par conséquent, la responsabilité civile de M. Dupont pour faute personnelle est engagée et il doit réparer le préjudice subi par Mme Martin.
+    </div>
+
+    <div class="callout callout-rose">
+      <strong>Règle absolue :</strong> Commence TOUJOURS par la règle de droit. Jamais par les faits. L'ordre est sacré : règle, puis faits, puis solution. Si tu inverses, tu perds la structure et des points.
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 3 — La qualification juridique ══════════ -->
+  <div id="tab3" class="tab-panel">
+    <h2 class="section-title">La qualification juridique</h2>
+    <p class="intro-text">Qualifier, c'est traduire le langage courant en langage juridique. C'est la base de la question 1, mais ça sert aussi dans TOUTES les autres questions.</p>
+
+    <h3 class="section-subtitle">Tableau de traduction : langage courant vers langage juridique</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Langage courant</th><th>Qualification juridique</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>"le patron"</strong></td><td>l'employeur</td></tr>
+          <tr><td><strong>"l'employé"</strong></td><td>le salarié</td></tr>
+          <tr><td><strong>"le travailleur"</strong></td><td>le salarié (s'il est lié par un contrat de travail)</td></tr>
+          <tr><td><strong>"il a été viré"</strong></td><td>il a été licencié</td></tr>
+          <tr><td><strong>"il a démissionné"</strong></td><td>il a rompu son contrat de travail par démission</td></tr>
+          <tr><td><strong>"il a signé un papier"</strong></td><td>il a conclu un contrat</td></tr>
+          <tr><td><strong>"ils se sont mis d'accord"</strong></td><td>les parties ont échangé leur consentement</td></tr>
+          <tr><td><strong>"le produit était cassé"</strong></td><td>le bien présentait un défaut de conformité</td></tr>
+          <tr><td><strong>"le produit était dangereux"</strong></td><td>le produit était défectueux (responsabilité du fait des produits défectueux)</td></tr>
+          <tr><td><strong>"le défaut était caché"</strong></td><td>le bien présentait un vice caché</td></tr>
+          <tr><td><strong>"il a menti"</strong></td><td>il y a eu dol (manoeuvre frauduleuse, article 1137 du Code civil)</td></tr>
+          <tr><td><strong>"il a menacé"</strong></td><td>il y a eu violence (vice du consentement, article 1140)</td></tr>
+          <tr><td><strong>"il ne savait pas"</strong></td><td>il y a eu erreur sur les qualités essentielles (article 1132)</td></tr>
+          <tr><td><strong>"il a fait du mal"</strong></td><td>il a causé un dommage (préjudice corporel, matériel ou moral)</td></tr>
+          <tr><td><strong>"c'est sa faute"</strong></td><td>sa responsabilité civile est engagée (fait personnel, article 1240)</td></tr>
+          <tr><td><strong>"il n'a pas fait ce qu'il devait"</strong></td><td>il y a eu inexécution contractuelle (article 1217)</td></tr>
+          <tr><td><strong>"le contrat est annulé"</strong></td><td>le contrat est frappé de nullité</td></tr>
+          <tr><td><strong>"il a cassé le contrat"</strong></td><td>il a rompu le contrat (résiliation ou résolution)</td></tr>
+          <tr><td><strong>"le voisin fait du bruit"</strong></td><td>il existe un trouble anormal de voisinage</td></tr>
+          <tr><td><strong>"il a copié"</strong></td><td>il y a eu contrefaçon (atteinte à la propriété intellectuelle)</td></tr>
+          <tr><td><strong>"il est blessé"</strong></td><td>il a subi un préjudice corporel</td></tr>
+          <tr><td><strong>"il est triste à cause de ça"</strong></td><td>il a subi un préjudice moral</td></tr>
+          <tr><td><strong>"ça lui a coûté de l'argent"</strong></td><td>il a subi un préjudice matériel (ou financier)</td></tr>
+          <tr><td><strong>"le client"</strong></td><td>le consommateur (ou l'acheteur, selon le contexte)</td></tr>
+          <tr><td><strong>"le vendeur"</strong></td><td>le vendeur (professionnel ou non professionnel)</td></tr>
+          <tr><td><strong>"le propriétaire qui loue"</strong></td><td>le bailleur</td></tr>
+          <tr><td><strong>"celui qui loue"</strong></td><td>le preneur (ou le locataire)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-green">
+      <strong>Réflexe :</strong> À chaque fois que tu écris un mot courant, demande-toi : "Quel est le terme juridique ?" Si tu n'as pas transformé au moins 5 mots dans ta qualification, c'est qu'elle n'est pas assez juridique.
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 4 — Les verbes d'action en Droit ══════════ -->
+  <div id="tab4" class="tab-panel">
+    <h2 class="section-title">Les verbes d'action en Droit</h2>
+    <h3 class="section-subtitle">Le tableau des verbes d'action</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Verbe dans le sujet</th><th>Ce qu'on attend VRAIMENT</th><th>Piège à éviter</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Résumez les faits en qualifiant juridiquement</strong></td>
+            <td>Traduire CHAQUE fait en termes juridiques : parties, relation, litige</td>
+            <td>Ne pas raconter l'histoire avec les mots du texte — il faut TRANSFORMER le vocabulaire</td>
+          </tr>
+          <tr>
+            <td><strong>Développez l'argumentation juridique de [partie]</strong></td>
+            <td>Syllogisme pour chaque argument : règle de droit, puis faits, puis solution</td>
+            <td>Ne pas donner son avis personnel ("je pense que...") — il faut du DROIT</td>
+          </tr>
+          <tr>
+            <td><strong>Proposez les arguments de [partie]</strong></td>
+            <td>Même chose que "développez l'argumentation" — syllogisme obligatoire</td>
+            <td>Ne pas oublier que les DEUX parties ont des arguments valables</td>
+          </tr>
+          <tr>
+            <td><strong>Expliquez pourquoi le droit...</strong></td>
+            <td>Montrer l'UTILITÉ du principe juridique : pourquoi il existe, quel équilibre il protège</td>
+            <td>Ne pas juste définir le principe — il faut expliquer le POURQUOI</td>
+          </tr>
+          <tr>
+            <td><strong>Justifiez</strong></td>
+            <td>Donner les raisons JURIDIQUES (articles, principes) qui fondent une solution</td>
+            <td>Ne pas confondre avec "je pense que" — justifier, c'est citer du droit</td>
+          </tr>
+          <tr>
+            <td><strong>Déterminez / Qualifiez</strong></td>
+            <td>Vérifier méthodiquement si les CONDITIONS d'une catégorie juridique sont réunies</td>
+            <td>Ne pas donner la réponse sans vérifier CHAQUE condition</td>
+          </tr>
+          <tr>
+            <td><strong>Précisez</strong></td>
+            <td>Donner une information juridique exacte et complète</td>
+            <td>Ne pas rester vague — il faut être précis (type de licenciement, type de responsabilité, etc.)</td>
+          </tr>
+          <tr>
+            <td><strong>Identifiez</strong></td>
+            <td>Repérer un élément précis dans le cas (une partie, un contrat, une faute)</td>
+            <td>Ne pas inventer — la réponse est dans le texte, il faut la QUALIFIER</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="section-subtitle">Les formulations pièges</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Tu lis dans le sujet</th><th>Ce que ça veut dire</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>"à l'aide de vos connaissances ET des annexes"</strong></td>
+            <td>Tu dois utiliser le cours ET les documents — pas l'un sans l'autre</td>
+          </tr>
+          <tr>
+            <td><strong>"à l'aide de l'annexe X"</strong></td>
+            <td>La réponse est dans ce document précis — va le lire</td>
+          </tr>
+          <tr>
+            <td><strong>"à l'aide de vos connaissances"</strong></td>
+            <td>Le cours suffit — pas besoin des annexes pour cette question</td>
+          </tr>
+          <tr>
+            <td><strong>"en vous appuyant sur la situation de [cas]"</strong></td>
+            <td>Utilise les faits du cas, pas un exemple générique</td>
+          </tr>
+          <tr>
+            <td><strong>"au choix (sujet A ou sujet B)"</strong></td>
+            <td>Tu ne traites QU'UN seul sujet — choisis celui où tu as le plus de connaissances</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 5 — Si je bloque ══════════ -->
+  <div id="tab5" class="tab-panel">
+    <h2 class="section-title">Si je bloque</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Situation</th><th>Solution immédiate</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Je ne sais pas quel article citer</strong></td>
+            <td>Cite le principe juridique général. "Le principe de bonne foi contractuelle", "l'obligation de sécurité de l'employeur", "le principe de réparation intégrale du préjudice" — c'est mieux qu'aucune référence et ça rapporte des points.</td>
+          </tr>
+          <tr>
+            <td><strong>Je ne trouve pas d'arguments pour une partie</strong></td>
+            <td>Passe en revue cette liste : bonne foi, respect de la procédure, force majeure, fait de la victime, fait d'un tiers, clause contractuelle, absence de preuve, antériorité. Au moins un de ces arguments s'applique.</td>
+          </tr>
+          <tr>
+            <td><strong>Je ne sais pas qualifier juridiquement</strong></td>
+            <td>Identifie d'abord les PARTIES (qui est qui ?) et leur RELATION (contrat de travail ? contrat de vente ? voisinage ? responsabilité ?). Le type de relation te donne le vocabulaire à utiliser.</td>
+          </tr>
+          <tr>
+            <td><strong>Je ne comprends pas la question</strong></td>
+            <td>Souligne le verbe d'action et reformule : "On me demande de [qualifier / argumenter pour X / expliquer pourquoi]". Relis le tableau des verbes (onglet 4).</td>
+          </tr>
+          <tr>
+            <td><strong>Je confonds les questions 2 et 3</strong></td>
+            <td>La question 2 = arguments pour la partie A. La question 3 = arguments pour la partie B. Ce sont les MÊMES faits mais vus depuis deux camps opposés. Change de casquette.</td>
+          </tr>
+          <tr>
+            <td><strong>Je n'ai plus le temps</strong></td>
+            <td>Réponds en structure syllogisme même en abrégé : écris au minimum la règle de droit et la conclusion pour chaque argument. Des points partiels valent mieux que zéro point.</td>
+          </tr>
+          <tr>
+            <td><strong>La question 4 me semble trop vaste</strong></td>
+            <td>Commence par définir les termes de la question, donne 2 raisons avec des exemples, et conclus par l'idée d'équilibre. Même en 8 lignes, c'est valorisé.</td>
+          </tr>
+          <tr>
+            <td><strong>Je ne connais pas le thème du sujet</strong></td>
+            <td>Lis bien le cas et les annexes : ils contiennent souvent les articles de loi ou les principes nécessaires. Utilise-les dans ton syllogisme même si tu ne les connaissais pas avant.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════ TAB 6 — Astuces pour gratter des points ══════════ -->
+  <div id="tab6" class="tab-panel">
+    <h2 class="section-title">Astuces pour gratter des points</h2>
+    <h3 class="section-subtitle">Les 7 réflexes qui font la différence</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Réflexe</th><th>Pourquoi ça rapporte des points</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>TOUJOURS qualifier juridiquement</strong></td>
+            <td>Même quand la question ne le demande pas explicitement, utiliser le vocabulaire juridique montre que tu maîtrises la matière. Les correcteurs repèrent immédiatement une copie qui parle comme un juriste.</td>
+          </tr>
+          <tr>
+            <td><strong>TOUJOURS citer un article ou un principe</strong></td>
+            <td>Même si tu n'es pas sûr du numéro exact, cite le principe. "En vertu du principe de bonne foi contractuelle" est mieux que rien. Les correcteurs valorisent la référence au droit.</td>
+          </tr>
+          <tr>
+            <td><strong>TOUJOURS suivre le syllogisme</strong></td>
+            <td>Règle, puis faits, puis solution. Cet ordre est sacré. Les correcteurs le disent : les copies qui suivent le syllogisme sont systématiquement mieux notées.</td>
+          </tr>
+          <tr>
+            <td><strong>TOUJOURS argumenter pour LES DEUX parties</strong></td>
+            <td>C'est la spécificité du Droit au Bac : on te demande de défendre les deux camps. Oublier l'un des deux, c'est perdre la moitié des points des questions 2 et 3.</td>
+          </tr>
+          <tr>
+            <td><strong>Utiliser le vocabulaire juridique précis</strong></td>
+            <td>Jamais "le patron" mais "l'employeur". Jamais "il a été viré" mais "il a été licencié". Chaque terme juridique correct rapporte des points de méthode.</td>
+          </tr>
+          <tr>
+            <td><strong>Faire le lien avec le cas du sujet</strong></td>
+            <td>Pas de réponse générique. "En l'espèce, M. Guérin..." montre que tu appliques le droit aux faits précis du cas. C'est ça, le syllogisme.</td>
+          </tr>
+          <tr>
+            <td><strong>Montrer l'équilibre dans la question 4</strong></td>
+            <td>Le droit ne protège jamais un seul côté. Montrer que tu comprends la tension entre deux principes (protection vs liberté, droits vs obligations) distingue une bonne copie d'une copie moyenne.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="section-subtitle">La méthode du syllogisme — ton arme pour chaque argument</h3>
+    <p style="margin-bottom: 12px; font-size: 0.92rem;">Pour CHAQUE argument de ta copie :</p>
+
+    <div class="aei-box">
+      <div class="aei-item">
+        <div class="aei-letter">M</div>
+        <div class="aei-content">
+          <strong>Majeure (règle de droit)</strong><br>
+          <em>"En vertu de l'article [X], [énoncer le principe]."</em>
+        </div>
+      </div>
+      <div class="aei-item">
+        <div class="aei-letter">m</div>
+        <div class="aei-content">
+          <strong>Mineure (application aux faits)</strong><br>
+          <em>"En l'espèce, [appliquer la règle aux faits du cas]."</em>
+        </div>
+      </div>
+      <div class="aei-item">
+        <div class="aei-letter">C</div>
+        <div class="aei-content">
+          <strong>Conclusion (solution juridique)</strong><br>
+          <em>"Par conséquent, [déduire la conséquence]."</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-rose">
+      <strong>Retiens :</strong> Un argument sans règle de droit = une opinion. Un argument sans application aux faits = du cours récité. Un argument sans conclusion = un raisonnement inachevé. M + m + C = les 3 sont indispensables.
+    </div>
+  </div>
+
+  <!-- ══════════ CHECKLIST (toujours visible) ══════════ -->
+  <div class="checklist-section">
+    <h2>Checklist — Avant de rendre ta copie</h2>
+    <div class="check-item">
+      <input type="checkbox" id="ck1"><label for="ck1">J'ai qualifié juridiquement les faits (parties, relation, litige)</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck2"><label for="ck2">J'ai identifié les parties et leur relation juridique</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck3"><label for="ck3">Chaque argument suit le syllogisme (règle de droit, faits, solution)</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck4"><label for="ck4">J'ai argumenté pour LES DEUX parties (pas seulement celle qui a "raison")</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck5"><label for="ck5">J'ai cité au moins un article ou un principe juridique par argument</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck6"><label for="ck6">J'ai utilisé le vocabulaire juridique précis (pas de langage courant)</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck7"><label for="ck7">La question de réflexion montre un équilibre (droits vs obligations)</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck8"><label for="ck8">J'ai fait le lien avec le cas du sujet ("En l'espèce, M./Mme [nom]...")</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck9"><label for="ck9">J'ai répondu à ce qu'on m'a DEMANDÉ (pas à ce que j'avais envie de dire)</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="ck10"><label for="ck10">J'ai relu pour vérifier que chaque argument a bien ses 3 étapes (M + m + C)</label>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="footer">
+  Révizo · Droit STMG · Méthode Jour J · Avril 2026<br>
+  Imprimable en 3 pages · Utilisable sans relire les autres documents
+</div>
+
+<!-- ══════════ JS ══════════ -->
+<script>
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// Checklist persistence via localStorage
+const STORAGE_KEY = 'revizo_checklist_droit';
+
+function saveChecklist() {
+  const states = {};
+  document.querySelectorAll('.checklist-section input[type="checkbox"]').forEach(cb => {
+    states[cb.id] = cb.checked;
+  });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(states)); } catch(e) {}
+}
+
+function loadChecklist() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (saved) {
+      Object.keys(saved).forEach(id => {
+        const cb = document.getElementById(id);
+        if (cb) cb.checked = saved[id];
+      });
+    }
+  } catch(e) {}
+}
+
+loadChecklist();
+document.querySelectorAll('.checklist-section input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener('change', saveChecklist);
+});
+</script>
+
+</body>
+</html>
