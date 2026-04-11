@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Flashcards Philosophie</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; min-height: 100vh; padding-top: 64px; }
+
+.sli-nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.sli-nav a { text-decoration:none }
+.sli-nav-logo { font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18 }
+.sli-nav-logo span { color:#b5415a }
+.sli-nav-links { display:flex;gap:2px }
+.sli-nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none }
+.sli-nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.sli-nl.on { background:#1e1c18;color:#f5c842 }
+.badge { font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:700;background:#1e1c18;color:#f5c842;padding:3px 10px;border-radius:20px;letter-spacing:.02em }
+
+.page { max-width: 820px; margin: 0 auto; padding: 28px 20px 48px; }
+
+.fc-header { text-align: center; margin-bottom: 22px; }
+.fc-badge { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #1e1c18; color: #f5c842; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+.fc-title { font-family: 'Nunito', sans-serif; font-size: 30px; font-weight: 900; color: #1e1c18; margin-bottom: 4px; }
+.fc-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+
+.stats-bar { background: #fffdf8; border-radius: 12px; padding: 12px 20px; display: flex; align-items: center; gap: 14px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.06); flex-wrap: wrap; }
+.stat-item { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: #5a5448; white-space: nowrap; }
+.stat-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.d-new-color { background: #c8c0b4; }
+.d-nope-color { background: #b5415a; }
+.d-ok-color { background: #1a7a3c; }
+.progress-track { flex: 1; min-width: 80px; height: 7px; background: #e0dbd2; border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #1a7a3c, #2cad60); border-radius: 4px; transition: width 0.35s; }
+
+.filter-section-label { font-size: 11px; font-weight: 700; color: #a09880; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; margin-top: 4px; }
+.filter-bar { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+.filter-btn { font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 800; padding: 5px 13px; border-radius: 20px; border: 2px solid transparent; cursor: pointer; transition: all 0.13s; opacity: 0.6; }
+.filter-btn:hover { opacity: 0.85; }
+.filter-btn.active { opacity: 1; }
+.f-all    { background: #e0dbd2; color: #5a5448; }
+.f-all.active    { background: #1e1c18; color: #fffdf8; border-color: #1e1c18; }
+.f-bleu   { background: #cce2f8; color: #2a69a8; }
+.f-bleu.active   { border-color: #2a69a8; }
+.f-violet { background: #ead8f5; color: #7030a0; }
+.f-violet.active { border-color: #7030a0; }
+.f-vert   { background: #c8e6c8; color: #2a6a2a; }
+.f-vert.active   { border-color: #2a6a2a; }
+.f-rose   { background: #f9d0d9; color: #b5415a; }
+.f-rose.active   { border-color: #b5415a; }
+.f-jaune  { background: #fde8a0; color: #946e00; }
+.f-jaune.active  { border-color: #946e00; }
+.f-gris   { background: #d8d8d8; color: #4a4a4a; }
+.f-gris.active   { border-color: #4a4a4a; }
+.f-form   { background: #2c2920; color: #f5c842; }
+.f-form.active   { border-color: #f5c842; }
+
+.toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 10px; }
+.toolbar-left { display: flex; gap: 8px; }
+.tool-btn { font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 700; padding: 6px 13px; border-radius: 8px; border: 1.5px solid #ddd8cf; background: #fff; color: #5a5448; cursor: pointer; transition: all 0.13s; }
+.tool-btn:hover { border-color: #a09880; }
+.tool-btn.on { background: #1e1c18; color: #fffdf8; border-color: #1e1c18; }
+.kbd-hint { font-size: 10px; color: #a09880; font-weight: 600; }
+
+.card-area { perspective: 1200px; margin-bottom: 14px; }
+.card-wrap { position: relative; height: 290px; cursor: pointer; user-select: none; }
+.card-inner { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.42s cubic-bezier(.4,0,.2,1); }
+.card-inner.flipped { transform: rotateY(180deg); }
+.card-face { position: absolute; inset: 0; border-radius: 18px; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 36px; text-align: center; }
+.card-back { transform: rotateY(180deg); overflow-y: auto; }
+
+.card-bleu   .card-front { background: linear-gradient(135deg, #2a69a8 0%, #3a82c8 100%); box-shadow: 0 8px 32px rgba(42,105,168,.35); }
+.card-bleu   .card-back  { background: #e8f3ff; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-violet .card-front { background: linear-gradient(135deg, #7030a0 0%, #9055b8 100%); box-shadow: 0 8px 32px rgba(112,48,160,.35); }
+.card-violet .card-back  { background: #f5eeff; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-vert   .card-front { background: linear-gradient(135deg, #2a6a2a 0%, #3a8a3a 100%); box-shadow: 0 8px 32px rgba(42,106,42,.35); }
+.card-vert   .card-back  { background: #eef6ee; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-rose   .card-front { background: linear-gradient(135deg, #b5415a 0%, #d05070 100%); box-shadow: 0 8px 32px rgba(181,65,90,.35); }
+.card-rose   .card-back  { background: #fdeef2; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-jaune  .card-front { background: linear-gradient(135deg, #946e00 0%, #b88c00 100%); box-shadow: 0 8px 32px rgba(148,110,0,.35); }
+.card-jaune  .card-back  { background: #fef8e2; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-gris   .card-front { background: linear-gradient(135deg, #6a6a6a 0%, #8a8a8a 100%); box-shadow: 0 8px 32px rgba(106,106,106,.35); }
+.card-gris   .card-back  { background: #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.card-form   .card-front { background: linear-gradient(135deg, #1e1c18 0%, #2c2920 100%); box-shadow: 0 8px 32px rgba(0,0,0,.4); }
+.card-form   .card-back  { background: #fde8a0; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+
+.card-chap-tag { font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 3px 12px; border-radius: 20px; background: rgba(255,255,255,.2); color: rgba(255,255,255,.9); margin-bottom: 16px; }
+.card-form .card-chap-tag { background: rgba(245,200,66,.25); color: #f5c842; }
+.card-notion { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 900; color: #fff; line-height: 1.3; }
+.card-form .card-notion { color: #f5c842; font-size: 20px; }
+.card-hint { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 16px; font-weight: 600; }
+
+.back-tag { font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 12px; border-radius: 20px; margin-bottom: 6px; display: inline-block; }
+.card-bleu   .back-tag { background: rgba(42,105,168,.15); color: #2a69a8; }
+.card-violet .back-tag { background: rgba(112,48,160,.15); color: #7030a0; }
+.card-vert   .back-tag { background: rgba(42,106,42,.15);  color: #2a6a2a; }
+.card-rose   .back-tag { background: rgba(181,65,90,.15);  color: #b5415a; }
+.card-jaune  .back-tag { background: rgba(148,110,0,.15);  color: #946e00; }
+.card-gris   .back-tag { background: rgba(106,106,106,.15);color: #4a4a4a; }
+.card-form   .back-tag { background: rgba(30,28,24,.1);    color: #7a5800; }
+
+.cat-badge { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+.cat-vocabulaire { background: #e0dbd2; color: #5a5448; }
+.cat-distinction  { background: #cce2f8; color: #2a69a8; }
+.cat-piege        { background: #fdeef2; color: #b5415a; }
+.cat-methode      { background: #e6f5ec; color: #1a7a3c; }
+
+.card-def { font-size: 15px; font-weight: 600; line-height: 1.6; text-align: left; }
+.card-bleu   .card-def { color: #1a4f82; }
+.card-violet .card-def { color: #4a1a7a; }
+.card-vert   .card-def { color: #1a5a1a; }
+.card-rose   .card-def { color: #7a2038; }
+.card-jaune  .card-def { color: #7a5800; }
+.card-gris   .card-def { color: #3a3a3a; }
+.card-form   .card-def { color: #5a4000; }
+
+.mastery-badge { position: absolute; top: 13px; right: 13px; z-index: 5; width: 28px; height: 28px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+.mastery-badge.ok   { display: flex; background: #1a7a3c; }
+.mastery-badge.nope { display: flex; background: #b5415a; }
+
+.controls { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.nav-btn { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; padding: 10px 18px; border-radius: 10px; border: 2px solid #ddd8cf; background: #fff; color: #5a5448; cursor: pointer; transition: all 0.13s; }
+.nav-btn:hover:not(:disabled) { border-color: #1e1c18; color: #1e1c18; }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+.card-counter { flex: 1; text-align: center; }
+.counter-main { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: #1e1c18; }
+.counter-name { font-size: 11px; color: #7a6a58; font-weight: 600; margin-top: 2px; }
+.flip-btn { font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; padding: 10px 18px; border-radius: 10px; border: none; background: #1e1c18; color: #fffdf8; cursor: pointer; transition: background 0.13s; white-space: nowrap; }
+.flip-btn:hover { background: #2c2920; }
+
+.mastery-row { display: flex; gap: 10px; margin-bottom: 16px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+.mastery-row.visible { opacity: 1; pointer-events: all; }
+.btn-nope { flex: 1; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; padding: 11px; border-radius: 10px; border: none; background: #fdeef2; color: #b5415a; cursor: pointer; transition: background 0.13s; }
+.btn-nope:hover { background: #f9d0d9; }
+.btn-ok   { flex: 1; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; padding: 11px; border-radius: 10px; border: none; background: #e6f5ec; color: #1a7a3c; cursor: pointer; transition: background 0.13s; }
+.btn-ok:hover { background: #bce8cd; }
+
+.dot-track { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
+.dot { width: 11px; height: 11px; border-radius: 50%; cursor: pointer; transition: transform 0.1s; flex-shrink: 0; outline: none; border: none; padding: 0; }
+.dot:hover { transform: scale(1.4); }
+.dot.cur { outline: 2.5px solid #1e1c18; outline-offset: 2px; }
+.d-new  { background: #c8c0b4; }
+.d-ok   { background: #1a7a3c; }
+.d-nope { background: #b5415a; }
+
+.empty-state { text-align: center; padding: 60px 20px; color: #7a6a58; }
+.empty-state .big { font-size: 40px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link active">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Philosophie</span>
+  <a href="revizo-philo.html">Notions &amp; Sujets</a>
+  <a href="flashcards-philo.html" class="active">Flashcards</a>
+</nav>
+
+<div class="page">
+
+  <div class="fc-header">
+    <div class="fc-badge">Révizo · Philosophie · Terminale Technologique</div>
+    <div class="fc-title">🃏 Flashcards</div>
+    <div class="fc-sub">60 cartes · 7 notions + méthode · Suivi de maîtrise</div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item"><span class="stat-dot d-new-color"></span><span id="stat-new">– à voir</span></div>
+    <div class="stat-item"><span class="stat-dot d-nope-color"></span><span id="stat-nope">– à revoir</span></div>
+    <div class="stat-item"><span class="stat-dot d-ok-color"></span><span id="stat-ok">– maîtrisées</span></div>
+    <div class="progress-track"><div id="progress-fill" class="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="filter-section-label">Par notion</div>
+  <div class="filter-bar" id="filter-theme">
+    <button class="filter-btn f-all active"    data-filter="all"       onclick="setThemeFilter('all')">Tout</button>
+    <button class="filter-btn f-bleu"          data-filter="liberte"   onclick="setThemeFilter('liberte')">★★★★★ Liberté</button>
+    <button class="filter-btn f-violet"        data-filter="verite"    onclick="setThemeFilter('verite')">★★★★★ Vérité</button>
+    <button class="filter-btn f-vert"          data-filter="justice"   onclick="setThemeFilter('justice')">★★★★☆ Justice</button>
+    <button class="filter-btn f-rose"          data-filter="art"       onclick="setThemeFilter('art')">★★★★☆ Art</button>
+    <button class="filter-btn f-jaune"         data-filter="technique" onclick="setThemeFilter('technique')">★★★★☆ Technique</button>
+    <button class="filter-btn f-gris"          data-filter="nature"    onclick="setThemeFilter('nature')">★★★☆☆ Nature</button>
+    <button class="filter-btn f-gris"          data-filter="religion"  onclick="setThemeFilter('religion')">★★★☆☆ Religion</button>
+    <button class="filter-btn f-form"          data-filter="methode"   onclick="setThemeFilter('methode')">📋 Méthode</button>
+  </div>
+
+  <div class="filter-section-label">Par catégorie</div>
+  <div class="filter-bar" id="filter-cat">
+    <button class="filter-btn f-all active"    data-filter="all"         onclick="setCatFilter('all')">Tout</button>
+    <button class="filter-btn f-gris"          data-filter="vocabulaire" onclick="setCatFilter('vocabulaire')">Vocabulaire</button>
+    <button class="filter-btn f-bleu"          data-filter="distinction" onclick="setCatFilter('distinction')">A ≠ B Distinction</button>
+    <button class="filter-btn f-rose"          data-filter="piege"       onclick="setCatFilter('piege')">⚠️ Piège</button>
+    <button class="filter-btn f-vert"          data-filter="methode"     onclick="setCatFilter('methode')">📋 Méthode</button>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button id="shuffle-btn" class="tool-btn" onclick="toggleShuffle()">🔀 Mélanger</button>
+      <button class="tool-btn" onclick="resetCurrent()">↺ Réinitialiser</button>
+    </div>
+    <span class="kbd-hint">← → pour naviguer · Espace pour retourner</span>
+  </div>
+
+  <div class="card-area">
+    <div id="card-wrap" class="card-wrap card-bleu" onclick="flipCard()">
+      <div id="card-inner" class="card-inner">
+        <div class="card-face card-front">
+          <div id="front-tag" class="card-chap-tag"></div>
+          <div id="front-notion" class="card-notion"></div>
+          <div class="card-hint">Cliquer pour voir la définition</div>
+        </div>
+        <div class="card-face card-back">
+          <div id="back-tag" class="back-tag"></div>
+          <div id="back-cat" class="cat-badge"></div>
+          <div id="back-def" class="card-def"></div>
+        </div>
+      </div>
+      <div id="mastery-badge" class="mastery-badge"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="btn-prev" class="nav-btn" onclick="prev()">← Précédente</button>
+    <div class="card-counter">
+      <div id="counter-main" class="counter-main">1 / 60</div>
+      <div id="counter-name" class="counter-name"></div>
+    </div>
+    <button id="flip-btn" class="flip-btn" onclick="flipCard()">👁 Voir la définition</button>
+    <button id="btn-next" class="nav-btn" onclick="next()">Suivante →</button>
+  </div>
+
+  <div id="mastery-row" class="mastery-row">
+    <button class="btn-nope" onclick="markMastery('nope')">🔴 À revoir</button>
+    <button class="btn-ok"   onclick="markMastery('ok')">✅ Je sais !</button>
+  </div>
+
+  <div id="dot-track" class="dot-track"></div>
+
+</div>
+
+<script>
+const CARDS = [
+  // LIBERTÉ — bleu (8 cartes)
+  {id:1,  chap:'liberte', chapLabel:'Liberté', color:'bleu', cat:'vocabulaire', notion:'Qu\'est-ce que la liberté négative ?', def:'L\'absence de contrainte extérieure. Je suis libre négativement quand personne ne m\'empêche d\'agir. Exemple : sortir de prison. Mais cette liberté formelle ne garantit pas une liberté réelle (capacité effective d\'agir).'},
+  {id:2,  chap:'liberte', chapLabel:'Liberté', color:'bleu', cat:'vocabulaire', notion:'Qu\'est-ce que la liberté positive ?', def:'La capacité réelle d\'agir, de se gouverner soi-même. Elle va au-delà de l\'absence de contrainte : un chômeur est libre négativement (personne ne l\'empêche de travailler) mais pas libre positivement (il n\'en a pas les moyens).'},
+  {id:3,  chap:'liberte', chapLabel:'Liberté', color:'bleu', cat:'vocabulaire', notion:'Qu\'est-ce que le libre arbitre ?', def:'La capacité de choisir entre plusieurs possibilités indépendamment de toute cause extérieure. Pour Descartes, c\'est "la plus grande perfection de l\'homme". Pour les déterministes, c\'est une illusion.'},
+  {id:4,  chap:'liberte', chapLabel:'Liberté', color:'bleu', cat:'distinction', notion:'Quelle différence entre liberté et licence ?', def:'La liberté est la capacité d\'agir selon une loi rationnelle que l\'on se donne soi-même (Kant : autonomie). La licence, c\'est faire n\'importe quoi sans contrainte — ce que Rousseau et Kant rejettent. La vraie liberté n\'est pas l\'absence de toute règle.'},
+  {id:5,  chap:'liberte', chapLabel:'Liberté', color:'bleu', cat:'piege', notion:'PIÈGE : "Être libre, c\'est n\'obéir à personne." Vrai ou faux ?', def:'FAUX — C\'est une vision naïve. Pour Kant, la vraie liberté consiste à obéir à une loi morale que je me donne moi-même (autonomie). Pour Rousseau, obéir à la loi établie par la volonté générale, c\'est obéir à soi-même. La liberté n\'est pas l\'anarchie.'},
+  {id:6,  chap:'liberte', chapLabel:'Liberté', color:'bleu', cat:'vocabulaire', notion:'Que dit Sartre sur la liberté ? (formule clé)', def:'"L\'homme est condamné à être libre." Il n\'a pas de nature fixe — il se définit par ses choix. L\'existence précède l\'essence. Il ne peut pas se réfugier derrière une nature ou un destin : il est entièrement responsable.'},
+  {id:7,  chap:'liberte', chapLabel:'Liberté', color:'bleu', cat:'vocabulaire', notion:'Que dit Rousseau sur la liberté et la loi ?', def:'"L\'homme est né libre, et partout il est dans les fers." Mais obéir à la loi que la volonté générale a établie, c\'est obéir à soi-même — donc être libre. La loi du contrat social réalise la liberté civile. La vraie liberté n\'est pas dans l\'état de nature mais dans la société bien organisée.'},
+  {id:8,  chap:'liberte', chapLabel:'Liberté', color:'bleu', cat:'vocabulaire', notion:'Qu\'est-ce que l\'autonomie selon Kant ?', def:'L\'autonomie (auto = soi-même, nomos = loi) signifie se donner soi-même sa propre loi. La liberté morale consiste à obéir à la loi que ma raison me dicte (l\'impératif catégorique). S\'oppose à l\'hétéronomie : obéir à une loi venant de l\'extérieur (peur, désir, Dieu).'},
+
+  // VÉRITÉ — violet (8 cartes)
+  {id:9,  chap:'verite', chapLabel:'Vérité', color:'violet', cat:'vocabulaire', notion:'Qu\'est-ce que la vérité comme adéquation ?', def:'Un énoncé est vrai s\'il correspond à la réalité. C\'est la conception classique : "La neige est blanche" est vrai si et seulement si la neige est effectivement blanche. C\'est la définition la plus intuitive de la vérité.'},
+  {id:10, chap:'verite', chapLabel:'Vérité', color:'violet', cat:'distinction', notion:'Quelle différence entre vérité et certitude ?', def:'La certitude est subjective : je suis certain de quelque chose quand j\'en suis convaincu. La vérité est objective : un énoncé est vrai ou faux indépendamment de ce que je ressens. Je peux être certain d\'une chose fausse (ex. certitude que la Terre est plate).'},
+  {id:11, chap:'verite', chapLabel:'Vérité', color:'violet', cat:'distinction', notion:'Quelle différence entre vérité et opinion ?', def:'L\'opinion (doxa chez Platon) est une croyance non vérifiée, souvent partagée mais non fondée. La vérité est établie par la raison ou l\'expérience rigoureuse. Platon oppose la doxa (opinion) à l\'épistémè (connaissance vraie).'},
+  {id:12, chap:'verite', chapLabel:'Vérité', color:'violet', cat:'piege', notion:'PIÈGE : "La vérité, c\'est ce que tout le monde croit." Vrai ou faux ?', def:'FAUX — Le consensus n\'est pas un critère de vérité. Tout le monde croyait que la Terre était plate : c\'était une erreur. La vérité peut aller contre l\'opinion commune. Descartes montre que la méthode du doute est nécessaire pour atteindre des vérités certaines.'},
+  {id:13, chap:'verite', chapLabel:'Vérité', color:'violet', cat:'vocabulaire', notion:'Que dit Descartes avec "Je pense donc je suis" ?', def:'C\'est la première vérité indubitable après le doute méthodique. Même si je doute de tout, je ne peux pas douter que je suis en train de douter — donc je pense, donc j\'existe. C\'est le point fixe à partir duquel Descartes reconstruit toute connaissance certaine.'},
+  {id:14, chap:'verite', chapLabel:'Vérité', color:'violet', cat:'vocabulaire', notion:'Qu\'est-ce que la méthode du doute chez Descartes ?', def:'Le doute méthodique consiste à rejeter provisoirement tout ce dont on peut douter, pour trouver une vérité indubitable. Ce n\'est pas un scepticisme — c\'est un outil pour atteindre des certitudes solides. Résultat : "Je pense, donc je suis."'},
+  {id:15, chap:'verite', chapLabel:'Vérité', color:'violet', cat:'distinction', notion:'Quelle différence entre croire et savoir ?', def:'Croire : adhérer à une proposition sans preuve complète (peut être vrai ou faux). Savoir : avoir une connaissance justifiée et vérifiée. On peut croire sans savoir (superstition) et savoir sans croire initialement (on "sait" que la Terre est ronde même si cela semble contre-intuitif).'},
+  {id:16, chap:'verite', chapLabel:'Vérité', color:'violet', cat:'piege', notion:'PIÈGE : "La science dit la vérité absolue." Vrai ou faux ?', def:'FAUX — Les vérités scientifiques sont provisoires et révisables (Popper : une théorie est scientifique si elle est réfutable). L\'histoire des sciences est une succession de révolutions (Kuhn). Cela ne signifie pas que tout se vaut — certaines affirmations sont mieux étayées que d\'autres.'},
+
+  // JUSTICE — vert (8 cartes)
+  {id:17, chap:'justice', chapLabel:'Justice', color:'vert', cat:'vocabulaire', notion:'Quelle est la différence entre légal et légitime ?', def:'Légal = conforme à la loi en vigueur. Légitime = moralement justifié, conforme à la justice. Ces deux notions ne coïncident pas toujours : une loi peut être légale mais injuste (lois raciales), ou un acte illégal peut être légitime (désobéissance civile).'},
+  {id:18, chap:'justice', chapLabel:'Justice', color:'vert', cat:'distinction', notion:'Quelle différence entre justice égalitaire et justice équitable ?', def:'Justice égalitaire : donner la même chose à chacun (égalité formelle). Justice équitable (Rawls) : tenir compte des inégalités de départ pour donner plus à ceux qui ont moins — afin de rétablir une égalité réelle. Exemple : une rampe pour fauteuil roulant n\'est pas "inégal", c\'est équitable.'},
+  {id:19, chap:'justice', chapLabel:'Justice', color:'vert', cat:'vocabulaire', notion:'Qu\'est-ce que le "voile d\'ignorance" de Rawls ?', def:'Expérience de pensée : imaginer qu\'on choisit les règles de la société sans savoir quelle place on y occupera (riche/pauvre, homme/femme, etc.). Derrière ce voile, on choisirait une société juste — car on pourrait se retrouver dans la pire situation.'},
+  {id:20, chap:'justice', chapLabel:'Justice', color:'vert', cat:'piege', notion:'PIÈGE : "Justice = vengeance." Vrai ou faux ?', def:'FAUX — La vengeance est subjective, passionnelle et disproportionnée. La justice exige l\'impartialité, la mesure et l\'application d\'une règle générale. Aristote distingue la justice (vertu du juste milieu) de la vengeance (passion).'},
+  {id:21, chap:'justice', chapLabel:'Justice', color:'vert', cat:'vocabulaire', notion:'Que dit Adam Smith sur la justice et la bienveillance ?', def:'Selon Smith (Théorie des sentiments moraux), la justice est le pilier indispensable de la société — sans elle, la société s\'effondre. La bienveillance (aider les autres) est une vertu supplémentaire mais pas obligatoire. On peut vivre ensemble sans bienveillance, pas sans justice.'},
+  {id:22, chap:'justice', chapLabel:'Justice', color:'vert', cat:'vocabulaire', notion:'Que dit Platon sur la justice dans Les Lois ?', def:'Pour Platon, la loi est nécessaire pour que les hommes ne vivent pas "comme les bêtes les plus sauvages". La justice est le fondement de la cité : sans elle, la société s\'effondre dans la violence. L\'État est le garant de la justice.'},
+  {id:23, chap:'justice', chapLabel:'Justice', color:'vert', cat:'vocabulaire', notion:'Quelle est la différence entre droit et justice ?', def:'Le droit est positif : c\'est l\'ensemble des lois en vigueur dans une société. La justice est un idéal moral : ce qui est moralement juste, ce qui est dû à chacun. Un droit peut être injuste (loi d\'apartheid). La philosophie cherche à penser la justice comme horizon critique du droit.'},
+  {id:24, chap:'justice', chapLabel:'Justice', color:'vert', cat:'piege', notion:'PIÈGE : "Il est toujours injuste de désobéir aux lois." Vrai ou faux ?', def:'FAUX — La désobéissance civile peut être moralement justifiée quand la loi est elle-même injuste. Exemple : Rosa Parks refusant de céder sa place (loi raciale). Thoreau, Gandhi, Martin Luther King ont théorisé la désobéissance civile non-violente comme acte de justice. Légal ≠ légitime.'},
+
+  // TECHNIQUE — jaune (6 cartes)
+  {id:25, chap:'technique', chapLabel:'Technique', color:'jaune', cat:'vocabulaire', notion:'Qu\'est-ce que la technique ?', def:'L\'ensemble des procédés, outils et savoir-faire que l\'homme développe pour transformer son environnement. La technique se distingue de la science (qui cherche à comprendre) et de l\'art (qui vise l\'expression unique). Elle permet de reproduire des résultats selon des règles établies.'},
+  {id:26, chap:'technique', chapLabel:'Technique', color:'jaune', cat:'distinction', notion:'Quelle différence entre technique et science ?', def:'La science cherche à comprendre le réel (savoir théorique). La technique cherche à transformer le réel (savoir pratique, outil). La technique peut exister sans la science (artisans médiévaux), mais la science moderne génère des techniques nouvelles. La technique applique, la science explique.'},
+  {id:27, chap:'technique', chapLabel:'Technique', color:'jaune', cat:'vocabulaire', notion:'Que reproche Heidegger à la technique moderne ?', def:'La technique moderne "arraisonne" la nature — elle la traite comme un simple stock de ressources exploitables. Elle impose une vision du monde où tout est mesurable et manipulable, ce qui menace l\'essence même de l\'homme et sa relation au monde.'},
+  {id:28, chap:'technique', chapLabel:'Technique', color:'jaune', cat:'piege', notion:'PIÈGE : "Le progrès technique = progrès moral." Vrai ou faux ?', def:'FAUX — Le progrès technique est neutre sur le plan moral. La bombe atomique est un progrès technique majeur mais une catastrophe morale. La technique peut servir le meilleur ou le pire selon les fins qu\'on lui assigne. Heidegger et Marx le montrent chacun à leur manière.'},
+  {id:29, chap:'technique', chapLabel:'Technique', color:'jaune', cat:'vocabulaire', notion:'Qu\'est-ce que l\'homo faber selon Bergson ?', def:'L\'homo faber ("l\'homme fabricateur") est la définition bergsonienne de l\'homme : l\'homme se caractérise fondamentalement par sa capacité à fabriquer des outils et à transformer son environnement. La technique n\'est pas un accessoire humain, elle est constitutive de l\'humanité.'},
+  {id:30, chap:'technique', chapLabel:'Technique', color:'jaune', cat:'vocabulaire', notion:'Qu\'est-ce que l\'aliénation technique selon Marx ?', def:'Sous le capitalisme industriel, la technique aliène l\'ouvrier. Il est séparé du produit de son travail, réduit à répéter des gestes mécaniques, dépossédé de sa créativité. La machine dicte le rythme, l\'ouvrier s\'y soumet. La technique devient instrument d\'exploitation.'},
+
+  // ART — rose (8 cartes)
+  {id:31, chap:'art', chapLabel:'Art', color:'rose', cat:'vocabulaire', notion:'Qu\'est-ce que la mimèsis selon Platon ?', def:'La mimèsis, c\'est l\'imitation. Pour Platon, l\'art imite le monde sensible, qui est lui-même une imitation du monde des Idées (la vraie réalité). L\'art est donc une imitation d\'imitation, qui nous éloigne de la vérité. Platon se méfie des artistes dans La République.'},
+  {id:32, chap:'art', chapLabel:'Art', color:'rose', cat:'vocabulaire', notion:'Qu\'est-ce que la catharsis selon Aristote ?', def:'La catharsis est la purification des passions par le spectacle artistique (tragédie). En assistant à la tragédie, le spectateur ressent la pitié et la crainte, et ces émotions sont purgées, apaisées. L\'art a donc une valeur thérapeutique et éducative — contrairement à ce que pense Platon.'},
+  {id:33, chap:'art', chapLabel:'Art', color:'rose', cat:'distinction', notion:'Quelle différence entre art et technique artisanale ?', def:'La technique artisanale suit des règles reproductibles pour produire un objet utile (un meuble, un pain). L\'art vise quelque chose d\'autre : l\'expression, la beauté, l\'émotion — et produit une œuvre unique. Kant : le génie artistique crée ses propres règles.'},
+  {id:34, chap:'art', chapLabel:'Art', color:'rose', cat:'piege', notion:'PIÈGE : "L\'art est inutile — c\'est du luxe." Vrai ou faux ?', def:'FAUX selon la philosophie — L\'art répond à des besoins non matériels mais essentiels : besoin d\'expression, de sens, de communauté, de beauté. Aristote montre que l\'art est nécessaire à l\'équilibre psychologique. Hegel : l\'art dit une vérité que le concept ne peut pas exprimer.'},
+  {id:35, chap:'art', chapLabel:'Art', color:'rose', cat:'vocabulaire', notion:'Que dit Freud sur la création artistique ?', def:'Dans Le poète et l\'activité de fantaisie (1907), Freud compare le poète au jeu de l\'enfant : tous deux créent un monde imaginaire en le prenant au sérieux. L\'artiste sublime ses pulsions inassouvies dans l\'œuvre — l\'art est une forme de sublimation des désirs refoulés.'},
+  {id:36, chap:'art', chapLabel:'Art', color:'rose', cat:'vocabulaire', notion:'Qu\'est-ce que le "beau" selon Kant ?', def:'Pour Kant, le beau provoque un plaisir désintéressé (pas lié à une utilité), universel (je pense que tout le monde devrait le trouver beau) mais sans concept (on ne peut pas le démontrer). Exemple : "Ce coucher de soleil est beau" — je prétends à l\'accord universel sans pouvoir le prouver.'},
+  {id:37, chap:'art', chapLabel:'Art', color:'rose', cat:'distinction', notion:'Quelle différence entre beau et agréable ?', def:'L\'agréable est relatif à chacun (de goût et de couleur on ne discute pas). Le beau, selon Kant, est universel sans être démontrable : quand je dis "c\'est beau", je prétends à un accord universel. L\'agréable ne prétend pas à l\'universalité.'},
+  {id:38, chap:'art', chapLabel:'Art', color:'rose', cat:'piege', notion:'PIÈGE : "L\'artiste fait toujours ce qu\'il veut." Vrai ou faux ?', def:'FAUX — L\'artiste est soumis à des contraintes : matériaux (le sculpteur dépend du marbre), technique (apprendre à jouer d\'un instrument), commande (l\'artiste de cour au service du mécène). Mais il y a aussi une part d\'inspiration et de liberté. Où commence la liberté créatrice ?'},
+
+  // NATURE — gris (6 cartes)
+  {id:39, chap:'nature', chapLabel:'Nature', color:'gris', cat:'vocabulaire', notion:'Que signifie l\'opposition nature / culture ?', def:'La nature désigne ce qui est inné, donné par la naissance, spontané. La culture désigne ce qui est acquis, appris, construit par la société. L\'homme est un être de nature (corps, besoins biologiques) et de culture (langage, valeurs, techniques). La frontière est floue : la culture devient "seconde nature".'},
+  {id:40, chap:'nature', chapLabel:'Nature', color:'gris', cat:'distinction', notion:'Quelle différence entre l\'état de nature chez Hobbes et chez Rousseau ?', def:'Hobbes : l\'état de nature est une guerre de tous contre tous — la vie y est "solitaire, misérable, dangereuse". La société et la loi sont nécessaires pour en sortir. Rousseau : l\'homme naturel est bon et innocent — c\'est la société qui le corrompt. Deux visions opposées de la nature humaine.'},
+  {id:41, chap:'nature', chapLabel:'Nature', color:'gris', cat:'piege', notion:'PIÈGE : "Ce qui est naturel est forcément bon." Vrai ou faux ?', def:'FAUX — Le "sophisme naturaliste" consiste à penser que naturel = bien. Mais les maladies, les tremblements de terre, les prédateurs sont naturels et dangereux. Inversement, des choses "artificielles" peuvent être bénéfiques (médicaments, lunettes). Le naturel n\'est pas un critère moral.'},
+  {id:42, chap:'nature', chapLabel:'Nature', color:'gris', cat:'vocabulaire', notion:'Que dit Kant sur la nature et la liberté ?', def:'Kant distingue deux domaines : la nature (régie par des lois causales — déterminisme) et la liberté (le domaine moral, où l\'homme peut agir selon la raison). L\'homme appartient aux deux : comme être naturel il est déterminé, comme être raisonnable il est libre. La morale exige de s\'arracher à la nature.'},
+  {id:43, chap:'nature', chapLabel:'Nature', color:'gris', cat:'vocabulaire', notion:'Que dit Rousseau sur la nature humaine ?', def:'"L\'homme est naturellement bon, c\'est la société qui le pervertit." Dans l\'état de nature, l\'homme est innocent, guidé par la pitié naturelle. C\'est la propriété, l\'inégalité et la vie en société qui introduisent l\'envie et la corruption. La société corrompt, mais on ne peut pas revenir en arrière.'},
+  {id:44, chap:'nature', chapLabel:'Nature', color:'gris', cat:'vocabulaire', notion:'Que dit Hobbes sur l\'état de nature ?', def:'Dans l\'état de nature (avant toute société), la vie est "solitaire, misérable, dangereuse, et brève" (Léviathan). La raison naturelle de chaque homme est d\'assurer sa survie, ce qui crée une guerre de tous contre tous. La seule sortie : le contrat social — aliéner sa liberté naturelle à un souverain en échange de la sécurité.'},
+
+  // RELIGION — gris (5 cartes)
+  {id:45, chap:'religion', chapLabel:'Religion', color:'gris', cat:'vocabulaire', notion:'Que dit Marx sur la religion ?', def:'"La religion est l\'opium du peuple." Elle console les opprimés de leur misère au lieu de les pousser à changer les conditions sociales. Elle détourne l\'attention des injustices réelles en promettant une compensation dans l\'au-delà. Pour Marx, critiquer la religion est le préalable à toute émancipation.'},
+  {id:46, chap:'religion', chapLabel:'Religion', color:'gris', cat:'vocabulaire', notion:'Qu\'est-ce que le pari de Pascal ?', def:'Pascal raisonne en termes de pari : si Dieu existe et que je crois, je gagne tout (salut éternel). Si Dieu n\'existe pas et que je crois, je perds peu (quelques plaisirs). Si Dieu existe et que je ne crois pas, je perds tout. Il est donc rationnel de parier pour l\'existence de Dieu.'},
+  {id:47, chap:'religion', chapLabel:'Religion', color:'gris', cat:'distinction', notion:'Quelle différence entre foi et raison ?', def:'La raison s\'appuie sur des preuves, des démonstrations, des arguments vérifiables. La foi est une adhésion à une vérité révélée, sans preuve — parfois même contre les preuves. Ces deux modes d\'accès au vrai peuvent coexister (Thomas d\'Aquin) ou s\'opposer radicalement.'},
+  {id:48, chap:'religion', chapLabel:'Religion', color:'gris', cat:'piege', notion:'PIÈGE : "La religion, c\'est irrationnel donc inutile." Vrai ou faux ?', def:'FAUX — La religion répond à des besoins existentiels réels (sens de la mort, cohésion sociale, éthique) que la raison seule ne comble pas. Durkheim montre que la religion est fonctionnellement nécessaire à la société. Ce n\'est pas parce qu\'une croyance n\'est pas rationnellement prouvable qu\'elle n\'a aucune valeur.'},
+  {id:49, chap:'religion', chapLabel:'Religion', color:'gris', cat:'vocabulaire', notion:'Que dit Durkheim sur la religion ?', def:'Pour Durkheim, la religion est un fait social — elle n\'est pas d\'abord une relation à Dieu mais un système de croyances et de pratiques qui crée du lien collectif, soude la communauté. Ce qu\'on adore vraiment dans le religieux, c\'est la société elle-même.'},
+
+  // MÉTHODE — form/dark (11 cartes)
+  {id:50, chap:'methode', chapLabel:'Dissertation', color:'form', cat:'methode', notion:'Comment problématiser un sujet de dissertation ?', def:'1. Analyser chaque terme du sujet (définitions). 2. Identifier la tension (ce qui rend la question difficile). 3. Formuler la question réelle que le sujet soulève. 4. Montrer pourquoi on ne peut pas répondre directement par oui ou non. Exemple : "La technique nous libère-t-elle ?" → tension liberté/aliénation.'},
+  {id:51, chap:'methode', chapLabel:'Dissertation', color:'form', cat:'methode', notion:'Quelle est la structure d\'une bonne introduction ?', def:'1. Accroche (situation, exemple, citation). 2. Analyse des termes du sujet (définitions). 3. Présentation de la tension/du problème. 4. Formulation de la problématique. 5. Annonce du plan en 3 parties. L\'introduction doit montrer que la question est difficile et intéressante.'},
+  {id:52, chap:'methode', chapLabel:'Dissertation', color:'form', cat:'methode', notion:'Comment rédiger un paragraphe de dissertation ?', def:'Structure AEI : Argument (affirmation) + Explication (développement, lien avec la notion) + Illustration (exemple concret ou auteur). Puis transition vers le paragraphe suivant. Chaque paragraphe doit apporter quelque chose à la démonstration — pas simplement répéter.'},
+  {id:53, chap:'methode', chapLabel:'Dissertation', color:'form', cat:'methode', notion:'Quelle erreur est la plus souvent citée par les correcteurs ?', def:'Répondre directement par oui ou non sans problématiser. Le correcteur attend qu\'on montre pourquoi la question est difficile, pas qu\'on donne une réponse immédiate. Aussi : réciter le cours sans répondre à la question posée — les références philosophiques doivent soutenir une réponse, pas la remplacer.'},
+  {id:54, chap:'methode', chapLabel:'Dissertation', color:'form', cat:'methode', notion:'Comment utiliser un auteur dans une dissertation ?', def:'L\'auteur doit servir ton argument, pas le remplacer. Structure : 1. Formule ton argument. 2. Appuie-le sur l\'auteur : "Comme le montre Kant..." 3. Explique en quoi cet auteur t\'aide à répondre à la question posée. Ne pas raconter la vie de l\'auteur ni résumer toute sa philosophie.'},
+  {id:55, chap:'methode', chapLabel:'Dissertation', color:'form', cat:'methode', notion:'Que doit contenir une conclusion ?', def:'1. Synthèse du parcours : rappeler les étapes (thèse, antithèse, dépassement). 2. Réponse finale à la question posée. 3. Ouverture : une question voisine ou un enjeu nouveau soulevé par la réflexion. La conclusion ne doit pas introduire de nouveaux arguments.'},
+  {id:56, chap:'methode', chapLabel:'Explication de texte', color:'form', cat:'methode', notion:'Comment répondre aux questions d\'explication de texte ?', def:'1. Lire le texte deux fois. 2. Pour chaque question : a) répondre précisément à la question posée, b) utiliser des éléments du texte (citations courtes), c) apporter une explication claire. Ne pas recopier le texte — l\'expliquer avec tes propres mots.'},
+  {id:57, chap:'methode', chapLabel:'Explication de texte', color:'form', cat:'methode', notion:'Que faut-il faire dans la question de synthèse ?', def:'La dernière question demande souvent de dégager la thèse principale et de la discuter. Il faut : 1. Reformuler la thèse de l\'auteur, 2. Expliquer comment il la défend, 3. Apporter un point de vue personnel avec un argument ou un exemple. Montrer qu\'on a compris ET qu\'on réfléchit.'},
+  {id:58, chap:'methode', chapLabel:'Explication de texte', color:'form', cat:'methode', notion:'Comment choisir entre dissertation et explication de texte ?', def:'Choisir la dissertation si : tu as des arguments et des exemples sur le sujet ET tu peux construire un plan dialectique. Choisir l\'explication si : tu comprends le texte dans son ensemble, tu peux répondre précisément aux questions. Jamais choisir par défaut — les deux se préparent.'},
+  {id:59, chap:'methode', chapLabel:'Auteurs clés', color:'form', cat:'methode', notion:'Auteurs à retenir pour la LIBERTÉ', def:'★ Rousseau : "L\'homme est né libre, et partout il est dans les fers." Contrat social et liberté civile.\n★ Sartre : "L\'homme est condamné à être libre." Existence précède l\'essence.\n★ Kant : Autonomie = se donner sa propre loi morale.\n★ Spinoza : La liberté, c\'est comprendre les nécessités qui nous gouvernent.'},
+  {id:60, chap:'methode', chapLabel:'Auteurs clés', color:'form', cat:'methode', notion:'Auteurs à retenir pour la JUSTICE', def:'★ Platon : Justice = harmonie dans la cité (Les Lois, 2024).\n★ Aristote : Justice distributive (mérite) et corrective (réparer).\n★ Rawls : Voile d\'ignorance — société juste = équité.\n★ Adam Smith : Justice indispensable, bienveillance optionnelle (texte 2023 et 2025).'},
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const mastery = {};
+let filtered = [...CARDS];
+let indices = filtered.map((_,i) => i);
+let cur = 0;
+let isFlipped = false;
+let shuffled = false;
+let themeFilter = 'all';
+let catFilter = 'all';
+
+const STORAGE_KEY = 'revizo_philo_mastery';
+function loadMastery() {
+  try { const s = localStorage.getItem(STORAGE_KEY); if (s) Object.assign(mastery, JSON.parse(s)); } catch(e) {}
+}
+function saveMastery() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(mastery)); } catch(e) {}
+}
+
+function applyFilters() {
+  filtered = CARDS.filter(c => {
+    const themeOk = themeFilter === 'all' || c.chap === themeFilter;
+    const catOk   = catFilter   === 'all' || c.cat  === catFilter;
+    return themeOk && catOk;
+  });
+  if (!filtered.length) { showEmpty(); return; }
+  indices = filtered.map((_,i) => i);
+  if (shuffled) indices = shuffle(indices);
+  cur = 0;
+  render();
+}
+
+function setThemeFilter(f) {
+  themeFilter = f;
+  document.querySelectorAll('#filter-theme .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+  applyFilters();
+}
+function setCatFilter(f) {
+  catFilter = f;
+  document.querySelectorAll('#filter-cat .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+  applyFilters();
+}
+
+function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function toggleShuffle() {
+  shuffled = !shuffled;
+  document.getElementById('shuffle-btn').classList.toggle('on', shuffled);
+  indices = filtered.map((_,i) => i);
+  if (shuffled) indices = shuffle(indices);
+  cur = 0; render();
+}
+function resetCurrent() {
+  filtered.forEach(c => delete mastery[c.id]);
+  saveMastery(); updateStats(); renderDots();
+}
+
+function render() {
+  if (!filtered.length) { showEmpty(); return; }
+  const card = filtered[indices[cur]];
+  isFlipped = false;
+  document.getElementById('card-inner').classList.remove('flipped');
+  document.getElementById('flip-btn').textContent = '👁 Voir la définition';
+  document.getElementById('mastery-row').classList.remove('visible');
+
+  const wrap = document.getElementById('card-wrap');
+  wrap.className = 'card-wrap card-' + card.color;
+
+  document.getElementById('front-tag').textContent = card.chapLabel;
+  document.getElementById('front-notion').textContent = card.notion;
+  document.getElementById('back-tag').textContent = card.chapLabel;
+  document.getElementById('back-cat').className = 'cat-badge cat-' + card.cat;
+  document.getElementById('back-cat').textContent = {vocabulaire:'Vocabulaire',distinction:'A ≠ B',piege:'⚠️ Piège',methode:'📋 Méthode'}[card.cat] || card.cat;
+  document.getElementById('back-def').textContent = card.def;
+
+  const mb = document.getElementById('mastery-badge');
+  const m = mastery[card.id];
+  mb.className = 'mastery-badge' + (m ? ' '+m : '');
+  mb.textContent = m === 'ok' ? '✓' : m === 'nope' ? '✗' : '';
+
+  document.getElementById('counter-main').textContent = (cur+1) + ' / ' + filtered.length;
+  document.getElementById('counter-name').textContent = card.chapLabel;
+  document.getElementById('btn-prev').disabled = cur === 0;
+  document.getElementById('btn-next').disabled = cur === filtered.length - 1;
+  updateStats(); renderDots();
+}
+
+function flipCard() {
+  isFlipped = !isFlipped;
+  document.getElementById('card-inner').classList.toggle('flipped', isFlipped);
+  document.getElementById('flip-btn').textContent = isFlipped ? '↩ Masquer' : '👁 Voir la définition';
+  document.getElementById('mastery-row').classList.toggle('visible', isFlipped);
+}
+function prev() { if (cur > 0) { cur--; render(); } }
+function next() { if (cur < filtered.length - 1) { cur++; render(); } }
+function markMastery(v) {
+  const card = filtered[indices[cur]];
+  mastery[card.id] = v;
+  saveMastery();
+  const mb = document.getElementById('mastery-badge');
+  mb.className = 'mastery-badge ' + v;
+  mb.textContent = v === 'ok' ? '✓' : '✗';
+  updateStats(); renderDots();
+  if (cur < filtered.length - 1) setTimeout(() => { cur++; render(); }, 280);
+}
+
+function updateStats() {
+  const ok = filtered.filter(c => mastery[c.id] === 'ok').length;
+  const nope = filtered.filter(c => mastery[c.id] === 'nope').length;
+  const newC = filtered.length - ok - nope;
+  document.getElementById('stat-new').textContent = newC + ' à voir';
+  document.getElementById('stat-nope').textContent = nope + ' à revoir';
+  document.getElementById('stat-ok').textContent = ok + ' maîtrisées';
+  document.getElementById('progress-fill').style.width = (filtered.length ? (ok/filtered.length*100) : 0) + '%';
+}
+
+function renderDots() {
+  const dt = document.getElementById('dot-track');
+  dt.innerHTML = '';
+  filtered.forEach((card, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'dot ' + (mastery[card.id] === 'ok' ? 'd-ok' : mastery[card.id] === 'nope' ? 'd-nope' : 'd-new') + (i === cur ? ' cur' : '');
+    btn.title = card.chapLabel;
+    btn.onclick = () => { cur = i; render(); };
+    dt.appendChild(btn);
+  });
+}
+
+function showEmpty() {
+  document.getElementById('main-content').innerHTML = '<div class="empty-state"><div class="big">🔍</div><p>Aucune carte pour ces filtres.</p></div>';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') prev();
+  else if (e.key === 'ArrowRight') next();
+  else if (e.key === ' ') { e.preventDefault(); flipCard(); }
+});
+
+loadMastery();
+applyFilters();
+</script>
+</body>
+</html>
