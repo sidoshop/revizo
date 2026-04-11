@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>Révizo — Questions Bac Droit STMG</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="revizo-design-system.css">
@@ -121,10 +122,37 @@ tbody tr:hover { background:rgba(245,200,66,.06) }
 
 /* Steps */
 .steps { padding-left:0;list-style:none;counter-reset:step }
-.steps li { counter-increment:step;font-size:0.88rem;line-height:1.7;margin-bottom:6px;padding-left:28px;position:relative }
-.steps li::before { content:"ETAPE " counter(step);position:absolute;left:0;font-family:'Inter',sans-serif;font-size:0.6rem;font-weight:800;color:#b5415a;letter-spacing:0.5px }
+.steps li { counter-increment:step;font-size:0.88rem;line-height:1.7;margin-bottom:10px;padding-left:0;position:relative }
+.steps li::before { content:"ÉTAPE " counter(step);display:block;font-family:'Inter',sans-serif;font-size:0.6rem;font-weight:800;color:#b5415a;letter-spacing:0.5px;margin-bottom:2px }
 .steps .mots { font-size:0.82rem;color:#7a6a58;font-weight:600;padding-left:0;margin-top:8px }
 .steps .longueur { font-size:0.82rem;color:#7a6a58;font-weight:600;padding-left:0;margin-top:4px }
+
+/* Ref list (listes de référence sous les étapes) */
+.ref-list { display:flex;flex-wrap:wrap;gap:6px;margin-top:8px }
+.ref-item { display:inline-flex;align-items:center;gap:6px;border-radius:8px;padding:4px 10px;font-size:0.78rem;line-height:1.4;border-left:3px solid #ccc;background:#f7f5f0;border:1px solid #e8e4dc }
+.ref-item .ref-name { font-weight:600 }
+.ref-item .ref-stars { color:#f5c842;font-size:0.7rem;letter-spacing:1px;white-space:nowrap }
+.ref-item .ref-count { color:#a09888;font-size:0.68rem }
+.ref-item[data-def] { cursor:pointer }
+.ref-item[data-def]:hover { filter:brightness(0.96) }
+.ref-def { display:none;font-size:0.78rem;line-height:1.6;color:#1e1c18;background:#fffdf8;border:1px solid #e8e4dc;border-radius:10px;padding:10px 14px;margin-top:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06);width:100% }
+.ref-def.open { display:block }
+.ref-def strong { color:#b5415a }
+/* Couleurs par thème */
+.ref-item.th-contrat { background:#eef3fa;border:1px solid #c5d5ea;border-left:3px solid #4a7fbf }
+.ref-item.th-contrat .ref-name { color:#2c5a8f }
+.ref-item.th-resp { background:#f3eef8;border:1px solid #d5c5ea;border-left:3px solid #7b4fbf }
+.ref-item.th-resp .ref-name { color:#5a2c8f }
+.ref-item.th-travail { background:#fdf0f2;border:1px solid #eac5cb;border-left:3px solid #b5415a }
+.ref-item.th-travail .ref-name { color:#8f2c42 }
+.ref-item.th-entreprendre { background:#fef8e8;border:1px solid #ead9a0;border-left:3px solid #c5a030 }
+.ref-item.th-entreprendre .ref-name { color:#7a6420 }
+.ref-legend { display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;font-size:0.72rem;font-weight:600 }
+.ref-legend span { padding:3px 8px;border-radius:6px }
+.ref-legend .leg-contrat { background:#eef3fa;color:#2c5a8f;border-left:3px solid #4a7fbf }
+.ref-legend .leg-resp { background:#f3eef8;color:#5a2c8f;border-left:3px solid #7b4fbf }
+.ref-legend .leg-travail { background:#fdf0f2;color:#8f2c42;border-left:3px solid #b5415a }
+.ref-legend .leg-entreprendre { background:#fef8e8;color:#7a6420;border-left:3px solid #c5a030 }
 
 /* Template box */
 .template-box { background:#1e1c18;border-radius:12px;padding:20px 24px;font-family:'Courier New',Courier,monospace;font-size:0.82rem;line-height:1.8;color:#fffdf8;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word }
@@ -170,6 +198,55 @@ tbody tr:hover { background:rgba(245,200,66,.06) }
 
 /* Footer */
 .footer { max-width:900px;margin:0 auto;padding:32px 24px 48px;text-align:center;font-size:0.78rem;color:#a09880;line-height:1.7 }
+
+/* Widget pedagogique */
+.widget-bad { background:rgba(181,65,90,0.08); border-left:4px solid #b5415a; border-radius:0 12px 12px 0; padding:16px 20px; margin-bottom:12px; }
+.widget-bad h5 { font-family:'Nunito',sans-serif; font-size:0.82rem; font-weight:800; color:#b5415a; margin-bottom:6px; }
+.widget-bad p { font-size:0.88rem; line-height:1.6; color:#7a2038; font-style:italic; }
+.widget-good { background:rgba(26,122,60,0.08); border-left:4px solid #1a7a3c; border-radius:0 12px 12px 0; padding:16px 20px; margin-bottom:12px; }
+.widget-good h5 { font-family:'Nunito',sans-serif; font-size:0.82rem; font-weight:800; color:#1a7a3c; margin-bottom:6px; }
+.widget-good p { font-size:0.88rem; line-height:1.6; color:#1e5a28; }
+.widget-declic { background:rgba(30,28,24,0.06); border-left:4px solid #a09880; border-radius:0 12px 12px 0; padding:14px 20px; margin-bottom:20px; }
+.widget-declic p { font-size:0.88rem; line-height:1.6; color:#1e1c18; font-weight:600; }
+.widget-declic strong { color:#b5415a; }
+
+/* Filtres par theme */
+.filter-bar { display:flex; flex-wrap:wrap; gap:6px; margin:20px 0 16px; }
+.filter-btn { font-family:'Inter',sans-serif; font-size:0.75rem; font-weight:700; padding:6px 14px; border-radius:20px; border:1.5px solid rgba(30,28,24,0.15); background:transparent; color:#7a6a58; cursor:pointer; transition:all .15s; }
+.filter-btn:hover { border-color:#1e1c18; color:#1e1c18; }
+.filter-btn.active { background:#1e1c18; color:#f5c842; border-color:#1e1c18; }
+
+/* Exemples accordeon */
+.example-acc { margin-bottom:10px; border-radius:12px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,0.05); background:#fffdf8; }
+.example-hd { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; cursor:pointer; border:none; width:100%; text-align:left; background:#fffdf8; transition:background .15s; gap:10px; }
+.example-hd:hover { background:rgba(245,200,66,0.06); }
+.example-hd.open { background:rgba(245,200,66,0.1); }
+.example-info { flex:1; }
+.example-notion { font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:900; color:#1e1c18; }
+.example-case { font-size:0.78rem; color:#7a6a58; font-weight:500; margin-top:2px; }
+.example-stars { font-size:0.85rem; color:#f5c842; white-space:nowrap; letter-spacing:1px; }
+.example-chevron { font-size:1rem; color:#a09880; transition:transform .2s; flex-shrink:0; }
+.example-hd.open .example-chevron { transform:rotate(180deg); }
+.example-body { display:none; padding:0 18px 18px; }
+.example-body.show { display:block; animation:fadeIn .25s ease; }
+.unverified-badge { display:inline-block; background:#fef8e2; color:#946e00; font-size:0.68rem; font-weight:700; padding:2px 8px; border-radius:10px; margin-left:8px; }
+.verified-badge { display:inline-block; background:#eef6ee; color:#1a7a3c; font-size:0.68rem; font-weight:700; padding:2px 8px; border-radius:10px; margin-left:8px; }
+
+/* Mots-cles syllogisme colores */
+.kw-vertu { color:#2a69a8; font-weight:700; }
+.kw-espece { color:#7030a0; font-weight:700; }
+.kw-consequence { color:#1a7a3c; font-weight:700; }
+
+/* Switch TYPE 2/3 */
+.type-switch { display:flex; background:rgba(30,28,24,0.06); border-radius:12px; overflow:hidden; margin-bottom:20px; }
+.type-switch button { flex:1; padding:10px 16px; font-family:'Inter',sans-serif; font-size:0.82rem; font-weight:700; border:none; cursor:pointer; background:transparent; color:#7a6a58; transition:all .15s; }
+.type-switch button.active { background:#1e1c18; color:#f5c842; border-radius:10px; }
+
+/* Theme border colors for example cards */
+.example-acc[data-theme="T5"] { border-left:3px solid #2a69a8; }
+.example-acc[data-theme="T6"] { border-left:3px solid #7030a0; }
+.example-acc[data-theme="T7"] { border-left:3px solid #b5415a; }
+.example-acc[data-theme="T8"] { border-left:3px solid #946e00; }
 
 /* Mobile */
 @media(max-width:700px){
@@ -240,6 +317,856 @@ tbody tr:hover { background:rgba(245,200,66,.06) }
 
 <div class="content">
 
+<!-- 5 TYPES DE QUESTIONS -->
+<h2 class="section-title">Les 5 types de questions récurrentes</h2>
+
+<!-- ============================================================ -->
+<!-- TYPE 1 — Qualifier juridiquement les faits                    -->
+<!-- ============================================================ -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 1</span> — Qualifier juridiquement les faits</span>
+    <span class="acc-stars">★★★★★</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <!-- Widgets pedagogiques -->
+    <div class="widget-bad">
+      <h5>Ce qu'un élève écrit souvent</h5>
+      <p>"Un patron a viré un employé qui travaillait mal et l'employé n'est pas content."</p>
+    </div>
+    <div class="widget-good">
+      <h5>Ce qu'on attend de toi</h5>
+      <p>"L'employeur, la société X, a procédé au licenciement pour motif personnel de son salarié, lié par un CDI. Le salarié conteste le caractère réel et sérieux du motif. Le litige porte sur la validité du licenciement (art. L1232-1 du Code du travail)."</p>
+    </div>
+    <div class="widget-declic">
+      <p><strong>Le déclic :</strong> Chaque mot courant doit être traduit en terme juridique. « patron » = employeur, « viré » = licencié, « employé » = salarié. Si tu n'as pas transformé au moins 5 mots, ta qualification est incomplète.</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box"><span style="color:#f5c842">[Partie A]</span>, <span style="color:#f5c842">[qualité juridique]</span>, a conclu un <span style="color:#f5c842">[type de contrat]</span> avec <span style="color:#f5c842">[Partie B]</span>,
+<span style="color:#f5c842">[qualité juridique]</span>. <span style="color:#f5c842">[Fait qualifié juridiquement : objet du contrat, obligations]</span>.
+Or, <span style="color:#f5c842">[problème juridique : ce qui ne s'est pas passé comme prévu]</span>.
+Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualification du problème]</span>.</div>
+    </div>
+
+    <!-- Filtre par theme -->
+    <div class="filter-bar" data-type="type1">
+      <button class="filter-btn active" onclick="filterExamples('type1','all')">Tous (22)</button>
+      <button class="filter-btn" onclick="filterExamples('type1','T5')">T5 · Contrat</button>
+      <button class="filter-btn" onclick="filterExamples('type1','T6')">T6 · Responsabilité</button>
+      <button class="filter-btn" onclick="filterExamples('type1','T7')">T7 · Travail</button>
+      <button class="filter-btn" onclick="filterExamples('type1','T8')">T8 · Entreprendre</button>
+    </div>
+
+    <!-- 22 exemples -->
+
+    <!-- 1. BT Mécanique 2021 -->
+    <div class="example-acc" data-theme="T7">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Contrat de travail, licenciement<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">BT Mécanique · 2021 Métropole</div>
+        </div>
+        <span class="example-stars">★★★★★</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un patron a viré un employé qui travaillait mal et l'employé n'est pas content."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"L'employeur, la société BT Mécanique, a procédé au licenciement pour motif personnel de son salarié, lié par un contrat de travail à durée indéterminée (CDI). Le salarié conteste le caractère réel et sérieux du motif invoqué. Le litige porte sur la validité du licenciement au regard de l'article L1232-1 du Code du travail."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « viré » = licencié pour motif personnel · « patron » = employeur · « employé » = salarié lié par un CDI</p></div>
+      </div>
+    </div>
+
+    <!-- 2. Répar'mobile 2021 -->
+    <div class="example-acc" data-theme="T6">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Responsabilité civile extracontractuelle<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">Répar'mobile · 2021 Centres étrangers</div>
+        </div>
+        <span class="example-stars">★★★★☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un réparateur a cassé le téléphone d'un client et le client veut se faire rembourser."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"Le client, victime d'un dommage matériel (détérioration de son téléphone), engage la responsabilité civile contractuelle du réparateur, Répar'mobile, au titre de l'article 1231-1 du Code civil. Le litige porte sur l'inexécution de l'obligation de résultat du réparateur et la réparation du préjudice subi."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « a cassé » = inexécution de l'obligation de résultat · « rembourser » = réparation du dommage matériel (dommages-intérêts)</p></div>
+      </div>
+    </div>
+
+    <!-- 3. UNIPUR 2021 -->
+    <div class="example-acc" data-theme="T7">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Licenciement, types de licenciement<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">UNIPUR · 2021 Remplacement</div>
+        </div>
+        <span class="example-stars">★★★★☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Une entreprise a renvoyé des employés parce qu'elle n'avait plus assez d'argent."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"La société UNIPUR, employeur, a procédé au licenciement pour motif économique de plusieurs salariés, invoquant des difficultés économiques au sens de l'article L1233-3 du Code du travail. Le litige porte sur le respect de la procédure de licenciement économique et l'obligation de reclassement."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « renvoyé parce que plus d'argent » = licenciement économique (lié à l'entreprise, pas à la personne) · « employés » = salariés</p></div>
+      </div>
+    </div>
+
+    <!-- 4. MAXI 2021 -->
+    <div class="example-acc" data-theme="T5">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Formation du contrat, conditions de validité<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">MAXI · 2021 Espagne</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un magasin a vendu un produit à quelqu'un qui ne savait pas que c'était défectueux."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"L'acheteur (consommateur) a conclu un contrat de vente avec le vendeur, la société MAXI. Le consentement de l'acheteur a été vicié par un dol (art. 1137 du Code civil) : le vendeur a dissimulé un défaut de la chose. Le litige porte sur la nullité du contrat pour vice du consentement."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « ne savait pas » = le consentement n'était pas éclairé · « défectueux caché » = dol (dissimulation intentionnelle) → nullité</p></div>
+      </div>
+    </div>
+
+    <!-- 5. Restaurant de montagne 2022 -->
+    <div class="example-acc" data-theme="T6">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Responsabilité civile, dommage<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">Restaurant de montagne · 2022 Métropole</div>
+        </div>
+        <span class="example-stars">★★★★☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un client s'est blessé dans un restaurant et veut de l'argent pour ses blessures."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"La victime, client du restaurant, a subi un dommage corporel (blessures) dans l'établissement. Elle engage la responsabilité civile délictuelle du restaurateur sur le fondement de l'article 1242 alinéa 1 du Code civil (responsabilité du fait des choses). Le gardien de la chose ayant causé le dommage est responsable de plein droit."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « s'est blessé » = dommage corporel · « dans un restaurant » = responsabilité du fait des choses (art. 1242 al.1), pas besoin de prouver la faute du restaurateur</p></div>
+      </div>
+    </div>
+
+    <!-- 6. GUERIN 2022 -->
+    <div class="example-acc" data-theme="T7">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Droit de retrait, santé au travail<span class="verified-badge">Vérifié</span></div>
+          <div class="example-case">GUERIN · 2022 Nouvelle-Calédonie</div>
+        </div>
+        <span class="example-stars">★★★★★</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un salarié a refusé de travailler parce que c'était dangereux et son patron l'a viré."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"M. Guérin, salarié, a exercé son droit de retrait (art. L4131-1 du Code du travail) face à un danger grave et imminent pour sa santé (exposition prolongée à un acide sans protection). L'employeur a procédé à son licenciement. Le litige porte sur la légitimité du droit de retrait et le caractère abusif du licenciement."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « a refusé de travailler parce que dangereux » = exercice du droit de retrait · « viré » = licenciement contesté comme abusif</p></div>
+      </div>
+    </div>
+
+    <!-- 7. Bastide 2022 -->
+    <div class="example-acc" data-theme="T7">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Contrat de travail, modification<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">Bastide · 2022 Polynésie</div>
+        </div>
+        <span class="example-stars">★★★★☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un patron a changé les horaires de son employé et l'employé refuse."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"L'employeur a modifié un élément essentiel du contrat de travail du salarié (modification du contrat, art. L1222-6 du Code du travail). Le salarié a refusé cette modification, ce qui est son droit. Le litige porte sur la distinction entre modification du contrat (accord obligatoire) et simple changement des conditions de travail (pouvoir de direction)."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « changé les horaires » = modifier un élément du contrat ≠ simple changement des conditions de travail · La question clé : est-ce essentiel (accord obligatoire) ou secondaire (pouvoir de direction) ?</p></div>
+      </div>
+    </div>
+
+    <!-- 8. Balzana / Cat & Cie 2022 -->
+    <div class="example-acc" data-theme="T8">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Propriété intellectuelle<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">Balzana / Cat &amp; Cie · 2022 Polynésie remp.</div>
+        </div>
+        <span class="example-stars">★★☆☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Quelqu'un a copié le dessin d'un autre et l'autre veut l'empêcher."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"L'auteur, titulaire d'un droit de propriété intellectuelle (droit d'auteur) sur son œuvre originale, constate que la société Cat &amp; Cie a reproduit cette œuvre sans autorisation, commettant ainsi un acte de contrefaçon (art. L335-2 du Code de la propriété intellectuelle). Le litige porte sur l'atteinte au droit d'auteur et la réparation du préjudice."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « a copié » = contrefaçon · « dessin » = œuvre protégée par le droit d'auteur · « empêcher » = action en contrefaçon (civil + pénal)</p></div>
+      </div>
+    </div>
+
+    <!-- 9. SécuritéPlus 2022 -->
+    <div class="example-acc" data-theme="T7">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Licenciement économique<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">SécuritéPlus · 2022 Métropole remp.</div>
+        </div>
+        <span class="example-stars">★★★★☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Une entreprise de sécurité a renvoyé un agent parce qu'elle perdait des clients."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"La société SécuritéPlus, employeur, a procédé au licenciement pour motif économique de son salarié, invoquant une perte de clientèle entraînant des difficultés économiques (art. L1233-3 du Code du travail). Le litige porte sur le caractère réel et sérieux du motif économique et le respect de l'obligation de reclassement."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « perdait des clients » = difficultés économiques (motif économique, pas personnel) · l'employeur doit prouver les difficultés ET avoir cherché à reclasser le salarié</p></div>
+      </div>
+    </div>
+
+    <!-- 10. Pompes à Chaleur 2023 -->
+    <div class="example-acc" data-theme="T6">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Responsabilité du fait des produits défectueux<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">Pompes à Chaleur · 2023 Métropole</div>
+        </div>
+        <span class="example-stars">★★★★☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Une pompe à chaleur a explosé et a blessé quelqu'un, le fabricant doit payer."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"La victime a subi un dommage corporel causé par un produit défectueux (pompe à chaleur présentant un défaut de sécurité). Elle engage la responsabilité du producteur sur le fondement de l'article 1245 du Code civil (responsabilité du fait des produits défectueux). Le producteur est responsable de plein droit, sans qu'il soit nécessaire de prouver sa faute."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « a explosé » = produit défectueux · « fabricant » = producteur responsable de plein droit (pas besoin de prouver la faute, seulement le défaut + le dommage + le lien)</p></div>
+      </div>
+    </div>
+
+    <!-- 11. INVESTIX 2023 -->
+    <div class="example-acc" data-theme="T8">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Droit de propriété et ses limites<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">INVESTIX · 2023 La Réunion</div>
+        </div>
+        <span class="example-stars">★★☆☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un propriétaire ne veut pas que la mairie prenne son terrain pour construire une route."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"Le propriétaire, titulaire du droit de propriété sur son bien immobilier (art. 544 du Code civil : usus, fructus, abusus), conteste la procédure d'expropriation pour cause d'utilité publique engagée par la collectivité. Le litige porte sur les limites du droit de propriété face à l'intérêt général."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « prenne son terrain » = expropriation pour utilité publique · le droit de propriété est un droit fondamental MAIS il peut être limité dans l'intérêt général</p></div>
+      </div>
+    </div>
+
+    <!-- 12. Beebop 2023 -->
+    <div class="example-acc" data-theme="T5">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Vices du consentement, erreur<span class="verified-badge">Vérifié</span></div>
+          <div class="example-case">Beebop · 2023 Liban</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un monsieur a acheté une maison avec un dessin et le dessin n'était pas de qui il croyait."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"John Beebop, acheteur, a conclu un contrat de vente immobilière avec Maxime Foley, vendeur. L'élément déterminant de l'achat était un graffiti attribué à un artiste célèbre. Or, cette attribution s'avère erronée, ce qui constitue potentiellement un vice du consentement (erreur sur les qualités essentielles de la chose, article 1132 du Code civil). Le litige porte sur la nullité du contrat pour erreur."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « le dessin n'était pas de qui il croyait » = erreur sur les qualités essentielles → c'est un vice du consentement → le contrat peut être annulé (nullité)</p></div>
+      </div>
+    </div>
+
+    <!-- 13. AgriSol 2023 -->
+    <div class="example-acc" data-theme="T5">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Bail commercial, force obligatoire<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">AgriSol · 2023 Centres étrangers</div>
+        </div>
+        <span class="example-stars">★★☆☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un locataire d'un local commercial ne veut pas partir quand le propriétaire le lui demande."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"Le preneur (locataire commercial), titulaire d'un bail commercial, invoque son droit au renouvellement du bail face au bailleur (propriétaire) qui souhaite mettre fin au contrat. Le litige porte sur la force obligatoire du contrat (art. 1103 du Code civil) et le droit au maintien dans les lieux du preneur commercial."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « locataire ne veut pas partir » = il exerce son droit au renouvellement du bail commercial · le contrat s'impose comme une loi aux parties (force obligatoire)</p></div>
+      </div>
+    </div>
+
+    <!-- 14. TransExpress 2023 -->
+    <div class="example-acc" data-theme="T7">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Clause de non-concurrence<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">TransExpress · 2023 Remplacement</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un ancien salarié est allé travailler chez un concurrent et son ancien patron n'est pas d'accord."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"L'ancien salarié de la société TransExpress a rejoint une entreprise concurrente en violation de la clause de non-concurrence figurant dans son contrat de travail. L'employeur invoque cette clause pour obtenir réparation. Le litige porte sur la validité de la clause de non-concurrence (limitée dans le temps, l'espace, assortie d'une contrepartie financière)."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « chez un concurrent » = violation de la clause de non-concurrence · la clause n'est valable QUE si elle est limitée (temps + espace) ET avec une contrepartie financière pour le salarié</p></div>
+      </div>
+    </div>
+
+    <!-- 15. SARL Camélia 2024 -->
+    <div class="example-acc" data-theme="T7">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Licenciement pour faute<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">SARL Camélia · 2024 Métropole</div>
+        </div>
+        <span class="example-stars">★★★★★</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Une fleuriste a été virée parce qu'elle arrivait en retard et elle trouve ça injuste."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"La salariée de la SARL Camélia a fait l'objet d'un licenciement pour faute (motif personnel). L'employeur invoque des retards répétés constitutifs d'une faute justifiant la rupture du contrat. La salariée conteste le caractère réel et sérieux de la cause de licenciement (art. L1232-1 du Code du travail). Le litige porte devant le conseil de prud'hommes."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « virée parce qu'en retard » = licenciement pour faute (motif personnel) · la question : les retards sont-ils suffisamment graves pour constituer une cause réelle ET sérieuse ?</p></div>
+      </div>
+    </div>
+
+    <!-- 16. Mme De Gouges 2024 -->
+    <div class="example-acc" data-theme="T7">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Discrimination au travail<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">Mme De Gouges · 2024 Centres étrangers</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Une femme n'a pas été promue parce qu'elle est une femme et c'est pas normal."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"La salariée, Mme De Gouges, invoque une discrimination fondée sur le sexe (art. L1132-1 du Code du travail) dans l'accès à une promotion professionnelle. Le litige porte sur le traitement défavorable d'une salariée fondé sur un critère prohibé par la loi. L'employeur devra prouver que sa décision repose sur des éléments objectifs étrangers à toute discrimination."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « pas promue parce que femme » = discrimination fondée sur le sexe (critère prohibé) · en droit, c'est l'EMPLOYEUR qui doit prouver qu'il n'a pas discriminé</p></div>
+      </div>
+    </div>
+
+    <!-- 17. SolarTech 2024 -->
+    <div class="example-acc" data-theme="T5">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Responsabilité contractuelle, inexécution<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">SolarTech · 2024 Remplacement</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Une entreprise a installé des panneaux solaires mais ils ne marchent pas bien, le client n'est pas content."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"Le client (maître d'ouvrage) a conclu un contrat d'entreprise avec la société SolarTech (entrepreneur) pour l'installation de panneaux solaires. L'installation présente des défauts, constituant une inexécution de l'obligation de résultat. Le client engage la responsabilité contractuelle de SolarTech (art. 1231-1 du Code civil) et dispose des remèdes de l'article 1217 (exécution forcée, réduction du prix, résolution, dommages-intérêts)."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « ne marchent pas bien » = inexécution de l'obligation de résultat · le client peut demander la réparation, la réduction du prix ou la résolution du contrat (art. 1217)</p></div>
+      </div>
+    </div>
+
+    <!-- 18. MerBleue 2024 -->
+    <div class="example-acc" data-theme="T5">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Garantie légale de conformité<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">MerBleue · 2024 Polynésie</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un client a acheté un bateau mais il ne correspond pas à ce qu'on lui avait dit."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"Le consommateur a conclu un contrat de vente avec le vendeur professionnel MerBleue. Le bien livré n'est pas conforme aux caractéristiques convenues, ce qui constitue un défaut de conformité ouvrant droit à la garantie légale de conformité (art. L217-4 du Code de la consommation). Le consommateur peut exiger la réparation, le remplacement ou la résolution du contrat."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « ne correspond pas » = défaut de conformité (pas un vice caché, c'est différent) · le consommateur est protégé par la garantie légale de conformité (droit de la consommation)</p></div>
+      </div>
+    </div>
+
+    <!-- 19. UrbanVert 2024 -->
+    <div class="example-acc" data-theme="T6">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Trouble anormal de voisinage<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">UrbanVert · 2024 Nouvelle-Calédonie</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un voisin fait trop de bruit avec ses travaux et l'autre voisin en a marre."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"Le propriétaire voisin subit un trouble anormal de voisinage causé par les nuisances (bruit, poussière) liées aux travaux de la société UrbanVert. Le litige porte sur la responsabilité pour trouble anormal de voisinage : il n'est pas nécessaire de prouver une faute, mais seulement le caractère anormal de la nuisance qui dépasse les inconvénients normaux du voisinage."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « trop de bruit » = trouble anormal de voisinage · PAS besoin de prouver la faute, seulement le caractère ANORMAL du trouble</p></div>
+      </div>
+    </div>
+
+    <!-- 20. ArchiDij974 2025 -->
+    <div class="example-acc" data-theme="T7">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Rupture du contrat de travail<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">ArchiDij974 · 2025 Métropole</div>
+        </div>
+        <span class="example-stars">★★★★★</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un architecte a été renvoyé à cause de ce qu'il a publié sur les réseaux sociaux."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"Le salarié, architecte au sein de la société ArchiDij974, a fait l'objet d'un licenciement pour motif personnel. L'employeur invoque des publications du salarié sur les réseaux sociaux comme constitutives d'un trouble objectif dans l'entreprise. Le litige porte sur l'articulation entre la vie privée du salarié (protégée au travail) et le pouvoir disciplinaire de l'employeur."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « publié sur les réseaux » = faits de vie privée · l'employeur ne peut licencier pour des faits privés SAUF trouble objectif caractérisé dans l'entreprise</p></div>
+      </div>
+    </div>
+
+    <!-- 21. NovaBois 2025 -->
+    <div class="example-acc" data-theme="T5">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Formation du contrat, dol<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">NovaBois · 2025 Centres étrangers</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un vendeur de bois a menti sur la qualité du bois et l'acheteur veut annuler la vente."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"L'acheteur a conclu un contrat de vente avec la société NovaBois, vendeur professionnel. Le vendeur a dissimulé un défaut de qualité du bois, constitutif d'un dol (art. 1137 du Code civil : manœuvres, mensonges ou dissimulation intentionnelle d'une information déterminante). Le litige porte sur la nullité du contrat pour vice du consentement (dol) et la réparation du préjudice subi."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « a menti sur la qualité » = dol (tromperie intentionnelle du vendeur) ≠ erreur (je me trompe tout seul) · le dol = l'AUTRE m'a trompé → nullité du contrat</p></div>
+      </div>
+    </div>
+
+    <!-- 22. LogiPro 2025 -->
+    <div class="example-acc" data-theme="T6">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Responsabilité du commettant<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">LogiPro · 2025 Remplacement</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="widget-bad"><h5>Ce que l'élève écrit</h5><p>"Un livreur a causé un accident en livrant et le client blessé veut que l'entreprise paye."</p></div>
+        <div class="widget-good"><h5>Ce qu'on attend</h5><p>"Le préposé (salarié livreur) de la société LogiPro (commettant) a causé un dommage corporel à un tiers (la victime) dans l'exercice de ses fonctions. La victime engage la responsabilité civile délictuelle du commettant du fait de son préposé (art. 1242 alinéa 5 du Code civil). La responsabilité du commettant est de plein droit : pas besoin de prouver la faute de l'employeur."</p></div>
+        <div class="widget-declic"><p><strong>Le déclic :</strong> « livreur » = préposé (salarié) · « l'entreprise » = commettant (employeur) · la victime attaque l'EMPLOYEUR, pas le salarié → responsabilité du fait d'autrui (automatique)</p></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TYPE 2-3 — Argumentation contradictoire (syllogisme)          -->
+<!-- ============================================================ -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 2-3</span> — Argumentation juridique contradictoire (syllogisme)</span>
+    <span class="acc-stars">★★★★★</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <!-- Switch -->
+    <div class="type-switch">
+      <button class="active" onclick="switchType23('demandeur')">Demandeur (TYPE 2)</button>
+      <button onclick="switchType23('defenseur')">Défendeur (TYPE 3)</button>
+    </div>
+
+    <!-- Widgets pedagogiques -->
+    <div class="widget-bad">
+      <h5>Ce qu'un élève écrit souvent</h5>
+      <p>"Je pense que M. Guérin a raison parce que c'est injuste de le licencier dans ces conditions."</p>
+    </div>
+    <div class="widget-good">
+      <h5>Ce qu'on attend de toi</h5>
+      <p>"<span class="kw-vertu">En vertu de</span> l'article L4131-1 du Code du travail, le salarié peut exercer son droit de retrait... <span class="kw-espece">En l'espèce</span>, M. Guérin travaille depuis 20 ans avec un acide puissant sans protection... <span class="kw-consequence">Par conséquent</span>, l'exercice de son droit de retrait est légitime."</p>
+    </div>
+    <div class="widget-declic">
+      <p><strong>Le déclic :</strong> Chaque argument suit la structure du syllogisme juridique. Les 3 mots-clés colorés te servent de plan : <span class="kw-vertu">En vertu de</span> (la règle de droit) → <span class="kw-espece">En l'espèce</span> (les faits du cas) → <span class="kw-consequence">Par conséquent</span> (la conclusion).</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse (syllogisme)</div>
+      <div class="template-box"><span style="color:#f5c842">Argument 1 :</span>
+<span style="color:#6ba3d6">En vertu de</span> <span style="color:#f5c842">[article X / principe juridique]</span>, <span style="color:#f5c842">[énoncer la règle de droit]</span>.
+<span style="color:#a070c0">En l'espèce</span>, <span style="color:#f5c842">[appliquer la règle aux faits précis du cas]</span>.
+<span style="color:#5cb85c">Par conséquent</span>, <span style="color:#f5c842">[conclusion favorable à la partie]</span>.
+
+<span style="color:#f5c842">Argument 2 :</span>
+<span style="color:#6ba3d6">En vertu de</span> <span style="color:#f5c842">[article Y / autre principe]</span>, <span style="color:#f5c842">[énoncer une autre règle]</span>.
+<span style="color:#a070c0">En l'espèce</span>, <span style="color:#f5c842">[application aux faits]</span>.
+<span style="color:#5cb85c">Il en résulte que</span> <span style="color:#f5c842">[conclusion favorable]</span>.</div>
+    </div>
+
+    <!-- Filtre par theme -->
+    <div class="filter-bar" data-type="type23">
+      <button class="filter-btn active" onclick="filterExamples('type23','all')">Tous (5)</button>
+      <button class="filter-btn" onclick="filterExamples('type23','T5')">T5 · Contrat</button>
+      <button class="filter-btn" onclick="filterExamples('type23','T6')">T6 · Responsabilité</button>
+      <button class="filter-btn" onclick="filterExamples('type23','T7')">T7 · Travail</button>
+    </div>
+
+    <!-- 5 cas avec argumentation contradictoire -->
+
+    <!-- 1. GUERIN 2022 -->
+    <div class="example-acc" data-theme="T7">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Droit de retrait, santé au travail<span class="verified-badge">Vérifié</span></div>
+          <div class="example-case">GUERIN · 2022 Nouvelle-Calédonie</div>
+        </div>
+        <span class="example-stars">★★★★★</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <!-- TYPE 2 : Demandeur -->
+        <div class="args-demandeur">
+          <div class="acc-label" style="margin-top:8px">M. Guérin (salarié) — Demandeur</div>
+          <div class="example-box" style="margin-bottom:12px">
+            <div class="ex-axe"><strong>Argument 1 :</strong> <span class="kw-vertu">En vertu de</span> l'article L4131-1 du Code du travail, le salarié peut exercer son droit de retrait s'il a un motif raisonnable de penser que sa situation de travail présente un danger grave et imminent pour sa vie ou sa santé. <span class="kw-espece">En l'espèce</span>, M. Guérin travaille depuis 20 ans avec un acide puissant sans ventilation ni équipements de protection adéquats, et il a développé une maladie cutanée malgré ses alertes répétées auprès de son employeur. <span class="kw-consequence">Par conséquent</span>, l'exercice de son droit de retrait est légitime.</div>
+            <div class="ex-axe"><strong>Argument 2 :</strong> <span class="kw-vertu">En vertu de</span> l'article L4121-1 du Code du travail, l'employeur est tenu d'assurer la sécurité et de protéger la santé physique et mentale de ses salariés. <span class="kw-espece">En l'espèce</span>, l'employeur n'a fourni ni ventilation ni équipements de protection malgré les demandes répétées de M. Guérin. <span class="kw-consequence">Par conséquent</span>, l'employeur a manqué à son obligation de sécurité et le licenciement de M. Guérin est dépourvu de cause réelle et sérieuse.</div>
+          </div>
+        </div>
+        <!-- TYPE 3 : Défendeur -->
+        <div class="args-defenseur" style="display:none">
+          <div class="acc-label" style="margin-top:8px">L'employeur — Défendeur</div>
+          <div class="example-box" style="margin-bottom:12px">
+            <div class="ex-axe"><strong>Argument 1 :</strong> <span class="kw-vertu">En vertu de</span> l'article L4131-1 du Code du travail, le droit de retrait suppose un danger « grave et imminent ». <span class="kw-espece">En l'espèce</span>, M. Guérin travaille dans ces conditions depuis 20 ans sans incident majeur, ce qui pourrait remettre en question le caractère « imminent » du danger. <span class="kw-consequence">Par conséquent</span>, l'employeur peut soutenir que les conditions du droit de retrait n'étaient pas réunies.</div>
+            <div class="ex-axe"><strong>Argument 2 :</strong> <span class="kw-vertu">En vertu du</span> pouvoir de direction de l'employeur (art. L1221-1 du Code du travail), celui-ci est en droit d'organiser le travail et de prendre les décisions nécessaires au fonctionnement de l'entreprise. <span class="kw-espece">En l'espèce</span>, l'employeur peut arguer qu'il avait planifié des améliorations des conditions de travail et que l'absence du salarié a désorganisé l'entreprise. <span class="kw-consequence">Par conséquent</span>, le licenciement reposerait sur une cause réelle et sérieuse liée à l'insubordination du salarié.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Beebop 2023 -->
+    <div class="example-acc" data-theme="T5">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Vices du consentement, erreur<span class="verified-badge">Vérifié</span></div>
+          <div class="example-case">Beebop · 2023 Liban</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="args-demandeur">
+          <div class="acc-label" style="margin-top:8px">John Beebop (acheteur) — Demandeur</div>
+          <div class="example-box" style="margin-bottom:12px">
+            <div class="ex-axe"><strong>Argument 1 :</strong> <span class="kw-vertu">En vertu de</span> l'article 1132 du Code civil, l'erreur sur les qualités essentielles de la prestation est une cause de nullité du contrat lorsqu'elle porte sur une qualité que les parties avaient considérée comme déterminante. <span class="kw-espece">En l'espèce</span>, John Beebop a acheté le bien immobilier en raison de la présence d'un graffiti attribué à un artiste de renommée internationale, ce qui constituait l'élément déterminant de son consentement. Or, cette attribution s'avère fausse. <span class="kw-consequence">Par conséquent</span>, l'erreur porte sur une qualité essentielle et déterminante, justifiant la nullité du contrat de vente.</div>
+            <div class="ex-axe"><strong>Argument 2 :</strong> <span class="kw-vertu">En vertu de</span> l'article 1112-1 du Code civil, le vendeur a une obligation d'information précontractuelle sur les éléments déterminants du consentement de l'acheteur. <span class="kw-espece">En l'espèce</span>, le vendeur connaissait ou aurait dû connaître l'incertitude sur l'attribution du graffiti et n'en a pas informé l'acheteur. <span class="kw-consequence">Par conséquent</span>, le manquement à l'obligation d'information renforce le caractère vicié du consentement.</div>
+          </div>
+        </div>
+        <div class="args-defenseur" style="display:none">
+          <div class="acc-label" style="margin-top:8px">Maxime Foley (vendeur) — Défendeur</div>
+          <div class="example-box" style="margin-bottom:12px">
+            <div class="ex-axe"><strong>Argument 1 :</strong> <span class="kw-vertu">En vertu de</span> l'article 1132 du Code civil, l'erreur doit porter sur une qualité « convenue entre les parties » comme essentielle pour entraîner la nullité. <span class="kw-espece">En l'espèce</span>, le vendeur peut soutenir que l'attribution du graffiti n'a jamais été expressément garantie dans l'acte de vente et que l'acheteur aurait dû vérifier l'authenticité par lui-même avant de s'engager. <span class="kw-consequence">Par conséquent</span>, l'erreur est imputable à la négligence de l'acheteur et ne peut fonder une demande en nullité.</div>
+            <div class="ex-axe"><strong>Argument 2 :</strong> <span class="kw-vertu">En vertu du</span> principe de bonne foi contractuelle (art. 1104 du Code civil), chaque partie doit s'informer raisonnablement avant de contracter. <span class="kw-espece">En l'espèce</span>, l'acheteur, en tant que professionnel ou acquéreur avisé d'un bien immobilier de cette valeur, avait les moyens de faire expertiser le graffiti avant la signature. <span class="kw-consequence">Dès lors</span>, le vendeur peut invoquer la négligence de l'acheteur pour s'opposer à la nullité du contrat.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. SARL Camélia 2024 -->
+    <div class="example-acc" data-theme="T7">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Licenciement pour faute<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">SARL Camélia · 2024 Métropole</div>
+        </div>
+        <span class="example-stars">★★★★★</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="args-demandeur">
+          <div class="acc-label" style="margin-top:8px">La salariée — Demandeur</div>
+          <div class="example-box" style="margin-bottom:12px">
+            <div class="ex-axe"><strong>Argument 1 :</strong> <span class="kw-vertu">En vertu de</span> l'article L1232-1 du Code du travail, tout licenciement pour motif personnel doit être justifié par une cause réelle et sérieuse. <span class="kw-espece">En l'espèce</span>, les retards invoqués par l'employeur sont mineurs et ponctuels, et la salariée n'a jamais fait l'objet de sanctions disciplinaires préalables (avertissement, mise en demeure). <span class="kw-consequence">Par conséquent</span>, le licenciement est dépourvu de cause réelle et sérieuse et constitue un licenciement abusif ouvrant droit à des dommages-intérêts.</div>
+            <div class="ex-axe"><strong>Argument 2 :</strong> <span class="kw-vertu">En vertu du</span> principe de proportionnalité des sanctions, l'employeur doit adapter la sanction à la gravité de la faute commise. <span class="kw-espece">En l'espèce</span>, des retards de quelques minutes ne justifient pas la sanction la plus lourde (le licenciement). Un avertissement ou une mise à pied auraient été proportionnés. <span class="kw-consequence">Par conséquent</span>, la sanction est disproportionnée et le licenciement doit être requalifié en licenciement sans cause réelle et sérieuse.</div>
+          </div>
+        </div>
+        <div class="args-defenseur" style="display:none">
+          <div class="acc-label" style="margin-top:8px">L'employeur (SARL Camélia) — Défendeur</div>
+          <div class="example-box" style="margin-bottom:12px">
+            <div class="ex-axe"><strong>Argument 1 :</strong> <span class="kw-vertu">En vertu du</span> pouvoir disciplinaire de l'employeur, celui-ci peut sanctionner tout manquement du salarié à ses obligations contractuelles. <span class="kw-espece">En l'espèce</span>, les retards répétés de la salariée ont désorganisé le service et nui à la bonne marche de l'entreprise (ouverture tardive du magasin, perte de clientèle). <span class="kw-consequence">Par conséquent</span>, l'accumulation de retards constitue une cause réelle et sérieuse de licenciement.</div>
+            <div class="ex-axe"><strong>Argument 2 :</strong> <span class="kw-vertu">En vertu de</span> l'article L1222-1 du Code du travail, le contrat de travail doit être exécuté de bonne foi par les deux parties. <span class="kw-espece">En l'espèce</span>, la salariée n'a pas respecté ses horaires contractuels malgré les rappels de l'employeur, manquant ainsi à son obligation de bonne foi dans l'exécution du contrat. <span class="kw-consequence">Dès lors</span>, le licenciement repose sur des faits objectifs, vérifiables et suffisamment graves.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. UrbanVert 2024 -->
+    <div class="example-acc" data-theme="T6">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Trouble anormal de voisinage<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">UrbanVert · 2024 Nouvelle-Calédonie</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="args-demandeur">
+          <div class="acc-label" style="margin-top:8px">Le voisin (victime) — Demandeur</div>
+          <div class="example-box" style="margin-bottom:12px">
+            <div class="ex-axe"><strong>Argument 1 :</strong> <span class="kw-vertu">En vertu du</span> principe de responsabilité pour trouble anormal de voisinage (consacré par la jurisprudence et l'article 1253 du Code civil), nul ne doit causer à autrui un trouble excédant les inconvénients normaux du voisinage. <span class="kw-espece">En l'espèce</span>, les travaux de la société UrbanVert génèrent des nuisances sonores et de la poussière depuis plusieurs mois, dépassant largement les inconvénients normaux du voisinage. <span class="kw-consequence">Par conséquent</span>, le trouble anormal est caractérisé et le voisin a droit à réparation (cessation du trouble et/ou dommages-intérêts).</div>
+          </div>
+        </div>
+        <div class="args-defenseur" style="display:none">
+          <div class="acc-label" style="margin-top:8px">UrbanVert — Défendeur</div>
+          <div class="example-box" style="margin-bottom:12px">
+            <div class="ex-axe"><strong>Argument 1 :</strong> <span class="kw-vertu">En vertu du</span> droit de propriété (art. 544 du Code civil), le propriétaire a le droit d'user de son bien et d'y effectuer des travaux. <span class="kw-espece">En l'espèce</span>, les travaux sont autorisés par un permis de construire, respectent la réglementation en vigueur et sont limités dans le temps. <span class="kw-consequence">Par conséquent</span>, les nuisances sont temporaires et ne constituent pas un trouble excédant les inconvénients normaux liés à des travaux de construction.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. NovaBois 2025 -->
+    <div class="example-acc" data-theme="T5">
+      <div class="example-hd" onclick="toggleExample(this)">
+        <div class="example-info">
+          <div class="example-notion">Formation du contrat, dol<span class="unverified-badge">Non vérifié</span></div>
+          <div class="example-case">NovaBois · 2025 Centres étrangers</div>
+        </div>
+        <span class="example-stars">★★★☆☆</span>
+        <span class="example-chevron">▼</span>
+      </div>
+      <div class="example-body">
+        <div class="args-demandeur">
+          <div class="acc-label" style="margin-top:8px">L'acheteur — Demandeur</div>
+          <div class="example-box" style="margin-bottom:12px">
+            <div class="ex-axe"><strong>Argument 1 :</strong> <span class="kw-vertu">En vertu de</span> l'article 1137 du Code civil, le dol est constitué par des manœuvres, des mensonges ou la dissimulation intentionnelle d'une information déterminante par l'un des cocontractants. <span class="kw-espece">En l'espèce</span>, la société NovaBois a volontairement dissimulé les défauts de qualité du bois vendu, alors que cette qualité était déterminante du consentement de l'acheteur. <span class="kw-consequence">Par conséquent</span>, le consentement de l'acheteur a été vicié par le dol du vendeur, ce qui justifie la nullité du contrat (art. 1131 du Code civil).</div>
+            <div class="ex-axe"><strong>Argument 2 :</strong> <span class="kw-vertu">En vertu de</span> l'article 1112-1 du Code civil, le vendeur professionnel est tenu d'une obligation d'information sur les éléments déterminants du consentement de l'acheteur. <span class="kw-espece">En l'espèce</span>, le vendeur, professionnel du bois, connaissait les défauts du produit et a manqué à son obligation d'information en ne les révélant pas. <span class="kw-consequence">Par conséquent</span>, le manquement à l'obligation d'information constitue un dol par réticence, ouvrant droit à la nullité du contrat et à des dommages-intérêts.</div>
+          </div>
+        </div>
+        <div class="args-defenseur" style="display:none">
+          <div class="acc-label" style="margin-top:8px">NovaBois (vendeur) — Défendeur</div>
+          <div class="example-box" style="margin-bottom:12px">
+            <div class="ex-axe"><strong>Argument 1 :</strong> <span class="kw-vertu">En vertu de</span> l'article 1137 du Code civil, le dol suppose une intention de tromper. La simple erreur ou négligence ne constitue pas un dol. <span class="kw-espece">En l'espèce</span>, le vendeur peut soutenir qu'il ignorait les défauts du bois, qui n'étaient pas décelables au moment de la vente, et qu'il n'y avait aucune intention de tromper. <span class="kw-consequence">Par conséquent</span>, en l'absence d'intention dolosive prouvée, le contrat ne peut être annulé pour dol.</div>
+            <div class="ex-axe"><strong>Argument 2 :</strong> <span class="kw-vertu">En vertu du</span> principe caveat emptor (l'acheteur doit être vigilant), l'acheteur a l'obligation de se renseigner avant de contracter. <span class="kw-espece">En l'espèce</span>, l'acheteur, en tant que professionnel, avait les compétences pour examiner la qualité du bois avant l'achat et n'a pas demandé d'expertise. <span class="kw-consequence">Dès lors</span>, la négligence de l'acheteur contribue à son propre dommage et ne peut fonder une action en nullité.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TYPE 4 — Répondre à une question de réflexion                 -->
+<!-- ============================================================ -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 4</span> — Répondre à une question de réflexion sur le rôle du droit</span>
+    <span class="acc-stars">★★★★★</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <!-- Widgets pedagogiques -->
+    <div class="widget-bad">
+      <h5>Ce qu'un élève écrit souvent</h5>
+      <p>"Le droit protège le salarié avec l'article L1232-1."</p>
+    </div>
+    <div class="widget-good">
+      <h5>Ce qu'on attend de toi</h5>
+      <p>"Le droit limite le pouvoir de l'employeur pour protéger le salarié, qui est dans une situation de subordination juridique. Sans encadrement légal, ce déséquilibre pourrait mener à des abus. Cependant, le droit ne supprime pas ce pouvoir : il cherche un équilibre entre protection du salarié et liberté d'entreprendre."</p>
+    </div>
+    <div class="widget-declic">
+      <p><strong>Le déclic :</strong> La Q4 ne demande pas de réciter le cours. Elle demande POURQUOI les règles existent. Pense toujours en termes d'équilibre : le droit protège ET limite, il donne des droits ET impose des obligations.</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box">Le droit <span style="color:#f5c842">[verbe de la question : protège / limite / encadre]</span> parce que
+<span style="color:#f5c842">[raison 1 : principe juridique + explication]</span>.
+
+En effet, <span style="color:#f5c842">[développement avec exemple concret : article de loi ou situation
+du cas étudié]</span>. Par exemple, <span style="color:#f5c842">[illustration]</span>.
+
+Par ailleurs, <span style="color:#f5c842">[raison 2 : autre aspect du rôle du droit]</span>.
+<span style="color:#f5c842">[Développement + exemple]</span>.
+
+Cependant, cette protection <span style="color:#f5c842">[ou cette limitation]</span> doit être équilibrée avec
+<span style="color:#f5c842">[droit ou liberté opposée]</span>. Ainsi, le droit cherche à concilier <span style="color:#f5c842">[intérêt 1]</span>
+et <span style="color:#f5c842">[intérêt 2]</span>, ce qui montre que son rôle est de <span style="color:#f5c842">[conclusion sur la
+fonction du droit]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Les sujets de réflexion les plus fréquents dans les annales</div>
+      <div class="acc-text">
+        <ul class="freq-list">
+          <li>« Pourquoi le droit limite-t-il le pouvoir de l'employeur ? » (3 fois)</li>
+          <li>« La diversité des régimes de responsabilité » (3 fois)</li>
+          <li>« Le droit protège-t-il efficacement le salarié ? » (2 fois)</li>
+          <li>« Pourquoi le droit encadre-t-il la formation du contrat ? » (2 fois)</li>
+          <li>« Les enjeux de la protection du droit de propriété » (2 fois)</li>
+          <li>« Le droit assure-t-il une protection renforcée du consommateur ? » (2 fois)</li>
+          <li>« Le rôle pacificateur du droit » (2 fois)</li>
+          <li>« Pourquoi la Cour de cassation est-elle indispensable ? » (1 fois)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Exemple corrigé — « Pourquoi le droit limite-t-il le pouvoir de l'employeur ? »</div>
+      <div class="example-box">
+        <div class="ex-axe">Le droit limite le pouvoir de l'employeur pour protéger le salarié, qui est dans une situation de <strong>subordination juridique</strong>. En effet, le contrat de travail crée un lien de subordination : le salarié est soumis aux directives de l'employeur. Sans encadrement légal, ce déséquilibre pourrait mener à des abus.</div>
+        <div class="ex-axe">C'est pourquoi le Code du travail impose des règles : l'employeur doit respecter une <strong>procédure de licenciement</strong> (entretien préalable, notification, motif réel et sérieux), garantir la <strong>sécurité</strong> de ses salariés (article L4121-1), et respecter les <strong>libertés fondamentales</strong> (non-discrimination, droit de grève).</div>
+        <div class="ex-axe">Cependant, le droit ne supprime pas le pouvoir de l'employeur : il le conserve à travers le <strong>pouvoir de direction</strong>, le <strong>pouvoir disciplinaire</strong> et le <strong>pouvoir réglementaire</strong>. Le droit cherche donc un <strong>équilibre</strong> entre la protection du salarié et la liberté d'entreprendre de l'employeur.</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Répondre trop brièvement ou juste répéter le cours sans expliquer le POURQUOI. « Le droit protège le salarié avec l'article L1232-1 » ne suffit pas. Il faut expliquer POURQUOI cette protection existe (déséquilibre, subordination, risque d'abus).</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">&#128161; <strong>Astuce :</strong> Termine toujours par l'idée d'ÉQUILIBRE. Le droit ne protège jamais un seul côté : il cherche toujours à concilier des intérêts opposés (protection du salarié vs liberté d'entreprendre, droit de propriété vs intérêt général, liberté contractuelle vs protection du consommateur). Montrer cet équilibre, c'est ce qui distingue une copie moyenne d'une bonne copie.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TYPE 5 — Identifier / qualifier une situation juridique       -->
+<!-- ============================================================ -->
+<div class="accordion th-gris">
+  <div class="accordion-header" onclick="toggleAcc(this)">
+    <span class="acc-type"><span class="type-num">TYPE 5</span> — Identifier / qualifier une situation juridique</span>
+    <span class="acc-stars">★★★☆☆</span>
+    <span class="acc-chevron">▼</span>
+  </div>
+  <div class="accordion-body">
+
+    <!-- Widgets pedagogiques -->
+    <div class="widget-bad">
+      <h5>Ce qu'un élève écrit souvent</h5>
+      <p>"C'est un licenciement économique."</p>
+    </div>
+    <div class="widget-good">
+      <h5>Ce qu'on attend de toi</h5>
+      <p>"Le licenciement pour motif économique repose sur des difficultés économiques, des mutations technologiques ou une réorganisation (art. L1233-3). En l'espèce, Joséphine a été licenciée pour insuffisance professionnelle, motif lié à sa personne. Par conséquent, il s'agit d'un licenciement pour motif personnel."</p>
+    </div>
+    <div class="widget-declic">
+      <p><strong>Le déclic :</strong> Ne jamais donner la réponse sans vérifier les conditions. C'est un mini-syllogisme : définis la catégorie, vérifie chaque condition dans les faits, puis conclus.</p>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Template de réponse</div>
+      <div class="template-box"><span style="color:#f5c842">[Catégorie juridique]</span> se définit par <span style="color:#f5c842">[conditions : 1, 2, 3]</span>.
+En l'espèce :
+- Condition 1 : <span style="color:#f5c842">[vérifiée ou non dans les faits]</span>
+- Condition 2 : <span style="color:#f5c842">[vérifiée ou non dans les faits]</span>
+- Condition 3 : <span style="color:#f5c842">[vérifiée ou non dans les faits]</span>
+Par conséquent, la situation constitue bien <span style="color:#f5c842">[ou ne constitue pas]</span> un/une
+<span style="color:#f5c842">[catégorie juridique]</span>.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="acc-label">Exemple corrigé — 2021 Remplacement · UNIPUR</div>
+      <div class="example-box">
+        <div class="ex-q">Question : « Précisez le type de licenciement subi par Joséphine. »</div>
+        <div class="ex-axe">Le <strong>licenciement pour motif personnel</strong> repose sur un motif inhérent à la personne du salarié (insuffisance professionnelle, faute, inaptitude). Le <strong>licenciement pour motif économique</strong> repose sur des difficultés économiques, des mutations technologiques ou une réorganisation de l'entreprise.</div>
+        <div class="ex-axe">En l'espèce, Joséphine a été licenciée en raison de ses résultats jugés insuffisants par l'employeur. Le motif est lié à sa personne (sa performance), et non à une cause économique externe.</div>
+        <div class="ex-axe">Par conséquent, il s'agit d'un <strong>licenciement pour motif personnel</strong>, plus précisément pour insuffisance professionnelle.</div>
+      </div>
+    </div>
+
+    <div class="acc-section">
+      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Donner la réponse sans vérifier les conditions. Écrire « c'est un licenciement économique » sans expliquer pourquoi, c'est perdre la moitié des points. Le correcteur veut VOIR ton raisonnement.</div>
+    </div>
+
+    <div class="acc-section">
+      <div class="tip-box">&#128161; <strong>Astuce :</strong> C'est un mini-syllogisme. La démarche est exactement la même que pour les TYPE 2 et 3, mais en plus court. Définis, vérifie, conclus.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- OBSERVATION Q4 : LES 4 GRANDS AXES -->
+<div class="obs-box" style="margin-top:48px">
+  <h4>Les 4 grands axes de la question de réflexion (Q4)</h4>
+  <p style="font-size:0.82rem;color:#7a6a58;margin-bottom:16px">La Q4 tourne TOUJOURS autour de l'un de ces axes. Prépare 2-3 idées par axe et tu seras prêt·e pour n'importe quel sujet.</p>
+
+  <div style="margin-bottom:18px">
+    <strong style="color:#b5415a">1. Pourquoi le droit protège-t-il la partie faible ?</strong>
+    <div class="ref-list" style="margin-top:6px">
+      <span class="ref-item"><span class="ref-name">Salarié</span></span>
+      <span class="ref-item"><span class="ref-name">Consommateur</span></span>
+      <span class="ref-item"><span class="ref-name">Victime</span></span>
+    </div>
+    <ul style="font-size:0.82rem;margin:8px 0 0 18px;color:#1e1c18;line-height:1.8">
+      <li><strong>Salarié</strong> — lien de subordination → le salarié ne peut pas négocier d'égal à égal ; le droit compense ce déséquilibre (CDI par défaut, procédure de licenciement, droit de retrait, congés payés)</li>
+      <li><strong>Consommateur</strong> — asymétrie d'information → le professionnel connaît le produit, pas l'acheteur ; le droit impose des obligations (garantie légale de conformité, délai de rétractation, interdiction des clauses abusives)</li>
+      <li><strong>Victime</strong> — responsabilité sans faute → le droit facilite l'indemnisation (resp. du fait des choses, resp. du commettant, produits défectueux) pour que la victime n'ait pas à prouver une faute</li>
+    </ul>
+  </div>
+
+  <div style="margin-bottom:18px">
+    <strong style="color:#b5415a">2. Comment le droit concilie-t-il des intérêts opposés ?</strong>
+    <div class="ref-list" style="margin-top:6px">
+      <span class="ref-item"><span class="ref-name">Liberté vs protection</span></span>
+      <span class="ref-item"><span class="ref-name">Propriété vs intérêt général</span></span>
+      <span class="ref-item"><span class="ref-name">Pouvoir de l'employeur vs droits du salarié</span></span>
+    </div>
+    <ul style="font-size:0.82rem;margin:8px 0 0 18px;color:#1e1c18;line-height:1.8">
+      <li><strong>Liberté vs protection</strong> — liberté contractuelle MAIS nullité si vice du consentement ; clause de non-concurrence autorisée MAIS limitée dans le temps et l'espace</li>
+      <li><strong>Propriété vs intérêt général</strong> — droit de propriété garanti MAIS expropriation possible pour utilité publique ; trouble anormal de voisinage = limite à l'usage de son bien</li>
+      <li><strong>Employeur vs salarié</strong> — pouvoir de direction MAIS encadré par le Code du travail ; licenciement possible MAIS cause réelle et sérieuse exigée</li>
+    </ul>
+  </div>
+
+  <div style="margin-bottom:18px">
+    <strong style="color:#b5415a">3. À quoi servent les différents régimes juridiques ?</strong>
+    <div class="ref-list" style="margin-top:6px">
+      <span class="ref-item"><span class="ref-name">Responsabilité</span></span>
+      <span class="ref-item"><span class="ref-name">Contrats</span></span>
+      <span class="ref-item"><span class="ref-name">Licenciement</span></span>
+    </div>
+    <ul style="font-size:0.82rem;margin:8px 0 0 18px;color:#1e1c18;line-height:1.8">
+      <li><strong>Responsabilité</strong> — plusieurs régimes (fait personnel, fait d'autrui, fait des choses) pour couvrir TOUTES les situations de dommage ; chacun a ses propres conditions → permet une indemnisation plus juste</li>
+      <li><strong>Contrats</strong> — la force obligatoire (art. 1103) garantit la sécurité juridique ; les remèdes à l'inexécution (art. 1217) protègent la partie lésée</li>
+      <li><strong>Licenciement</strong> — plusieurs types (faute, économique, inaptitude) avec des procédures différentes → le droit adapte les règles à la cause de la rupture ; le rôle pacificateur du droit = éviter les conflits en fixant des règles claires</li>
+    </ul>
+  </div>
+
+  <div>
+    <strong style="color:#b5415a">4. Quel est le rôle des institutions juridiques ?</strong>
+    <div class="ref-list" style="margin-top:6px">
+      <span class="ref-item"><span class="ref-name">Cour de cassation</span></span>
+      <span class="ref-item"><span class="ref-name">Hiérarchie des normes</span></span>
+      <span class="ref-item"><span class="ref-name">Accès à la justice</span></span>
+    </div>
+    <ul style="font-size:0.82rem;margin:8px 0 0 18px;color:#1e1c18;line-height:1.8">
+      <li><strong>Cour de cassation</strong> — uniformise l'interprétation du droit sur tout le territoire ; ne rejuge pas les faits mais vérifie que la loi est bien appliquée → sécurité juridique</li>
+      <li><strong>Hiérarchie des normes</strong> — Constitution > loi > règlement > contrat ; garantit la cohérence du système juridique ; un contrat contraire à la loi est nul</li>
+      <li><strong>Accès à la justice</strong> — le droit donne des recours (prud'hommes, tribunal judiciaire) ; aide juridictionnelle pour les plus modestes → le droit n'existe que s'il peut être appliqué</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SUJETS TOMBÉS AU BAC -->
+<h2 class="section-title" style="margin-top:48px">Les sujets tombés au Bac (récapitulatif)</h2>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Année</th><th>Session</th><th>Cas juridique</th><th>Thème principal</th><th>Question de réflexion (Q4)</th></tr>
+</thead>
+<tbody>
+<tr><td>2021</td><td>Métropole</td><td>BT Mécanique</td><td>Contrat de travail, licenciement</td><td>Pourquoi le droit limite-t-il le pouvoir de l'employeur ?</td></tr>
+<tr><td>2021</td><td>Centres étrangers</td><td>Répar'mobile</td><td>Responsabilité civile extracontractuelle</td><td>La diversité des régimes de responsabilité</td></tr>
+<tr><td>2021</td><td>Remplacement</td><td>UNIPUR</td><td>Licenciement, types de licenciement</td><td>Le droit protège-t-il efficacement le salarié ?</td></tr>
+<tr><td>2021</td><td>Espagne</td><td>MAXI</td><td>Formation du contrat, conditions de validité</td><td>Pourquoi le droit encadre-t-il la formation du contrat ?</td></tr>
+<tr><td>2022</td><td>Métropole</td><td>Restaurant de montagne</td><td>Responsabilité civile, dommage</td><td>La diversité des régimes de responsabilité</td></tr>
+<tr><td>2022</td><td>Nouvelle-Calédonie</td><td>GUERIN</td><td>Droit de retrait, santé au travail</td><td>Pourquoi le droit protège-t-il la santé du salarié ?</td></tr>
+<tr><td>2022</td><td>Polynésie</td><td>Bastide</td><td>Contrat de travail, modification</td><td>Le pouvoir de l'employeur et ses limites</td></tr>
+<tr><td>2022</td><td>Polynésie remp.</td><td>Balzana / Cat &amp; Cie</td><td>Propriété intellectuelle</td><td>Les enjeux de la protection du droit de propriété</td></tr>
+<tr><td>2022</td><td>Métropole remp.</td><td>SécuritéPlus</td><td>Licenciement économique</td><td>Le rôle pacificateur du droit</td></tr>
+<tr><td>2023</td><td>Métropole</td><td>Pompes à Chaleur</td><td>Responsabilité du fait des produits défectueux</td><td>Le droit assure-t-il une protection renforcée du consommateur ?</td></tr>
+<tr><td>2023</td><td>La Réunion</td><td>INVESTIX</td><td>Droit de propriété et ses limites</td><td>Les enjeux de la protection du droit de propriété</td></tr>
+<tr><td>2023</td><td>Liban</td><td>Beebop</td><td>Vices du consentement, erreur</td><td>Pourquoi le droit encadre-t-il la formation du contrat ?</td></tr>
+<tr><td>2023</td><td>Centres étrangers</td><td>AgriSol</td><td>Bail commercial</td><td>La force obligatoire du contrat</td></tr>
+<tr><td>2023</td><td>Remplacement</td><td>TransExpress</td><td>Clause de non-concurrence</td><td>Le droit concilie-t-il liberté et protection ?</td></tr>
+<tr><td>2024</td><td>Métropole</td><td>SARL Camélia</td><td>Licenciement pour faute</td><td>Le droit protège-t-il efficacement le salarié ?</td></tr>
+<tr><td>2024</td><td>Centres étrangers</td><td>Mme De Gouges</td><td>Discrimination au travail</td><td>Le rôle du droit dans la lutte contre les discriminations</td></tr>
+<tr><td>2024</td><td>Remplacement</td><td>SolarTech</td><td>Responsabilité contractuelle</td><td>Pourquoi la Cour de cassation est-elle indispensable ?</td></tr>
+<tr><td>2024</td><td>Polynésie</td><td>MerBleue</td><td>Garantie légale de conformité</td><td>Le droit assure-t-il une protection renforcée du consommateur ?</td></tr>
+<tr><td>2024</td><td>Nouvelle-Calédonie</td><td>UrbanVert</td><td>Trouble anormal de voisinage</td><td>Le droit de propriété et ses limites</td></tr>
+<tr><td>2025</td><td>Métropole</td><td>ArchiDij974</td><td>Rupture du contrat de travail</td><td>Pourquoi le droit limite-t-il le pouvoir de l'employeur ?</td></tr>
+<tr><td>2025</td><td>Centres étrangers</td><td>NovaBois</td><td>Formation du contrat, dol</td><td>Le rôle pacificateur du droit</td></tr>
+<tr><td>2025</td><td>Remplacement</td><td>LogiPro</td><td>Responsabilité du commettant</td><td>La diversité des régimes de responsabilité</td></tr>
+</tbody>
+</table>
+</div>
+
+
 <!-- RECAP TABLE -->
 <h2 class="section-title">Les 22 sujets analysés</h2>
 <div class="table-wrap">
@@ -283,556 +1210,6 @@ tbody tr:hover { background:rgba(245,200,66,.06) }
     <li><strong>Le thème 7 (le droit du travail) domine</strong> — environ 45 % des sujets portent sur le contrat de travail, le licenciement ou les conditions de travail</li>
     <li><strong>La question 4 est TOUJOURS une réflexion sur le rôle du droit</strong> — une question ouverte qui demande de prendre du recul sur l'utilité d'un principe juridique</li>
     <li><strong>Le syllogisme juridique est LA méthode attendue</strong> — règle de droit, application aux faits, solution : c'est la structure de CHAQUE argument</li>
-  </ol>
-</div>
-
-<!-- 5 TYPES DE QUESTIONS -->
-<h2 class="section-title">Les 5 types de questions récurrentes</h2>
-
-<!-- TYPE 1 -->
-<div class="accordion th-gris">
-  <div class="accordion-header" onclick="toggleAcc(this)">
-    <span class="acc-type"><span class="type-num">TYPE 1</span> — Qualifier juridiquement les faits <span class="acc-theme-tag">Transversal</span></span>
-    <span class="acc-stars">★★★★★</span>
-    <span class="acc-chevron">▼</span>
-  </div>
-  <div class="accordion-body">
-
-    <div class="acc-section">
-      <div class="acc-label">Apparaît dans</div>
-      <div class="acc-text">TOUS les sujets sans exception — c'est toujours la question 1</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Notions mobilisées</div>
-      <div class="acc-text">
-        <ul>
-          <li>Qualification juridique</li>
-          <li>Parties au litige</li>
-          <li>Relation juridique (contrat, responsabilité, propriété)</li>
-          <li>Vocabulaire juridique précis</li>
-        </ul>
-        <p style="margin-top:6px;font-size:0.82rem;color:#7a6a58;font-style:italic">Il n'y a pas de thème spécifique : la qualification s'applique à TOUS les thèmes du programme.</p>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Question type</div>
-      <div class="question-box">
-        « Résumez les faits en utilisant des qualifications juridiques. »
-        <div class="variant">Variantes : « Qualifiez juridiquement la situation présentée. » / « Présentez les faits en qualifiant les parties et leur relation juridique. »</div>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Ce que cette question teste vraiment</div>
-      <div class="two-col">
-        <div class="col-not">
-          <h5>Ce n'est PAS</h5>
-          <p>Raconter l'histoire du cas avec les mots du texte.</p>
-        </div>
-        <div class="col-yes">
-          <h5>C'est</h5>
-          <p>TRADUIRE chaque fait en langage juridique. Remplacer chaque mot courant par son équivalent en droit.</p>
-        </div>
-      </div>
-      <div class="signal-box">Signal dans la question : « qualifications juridiques », « qualifiez » — on veut du vocabulaire de juriste, pas de la narration.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">La réponse qu'on attend de toi</div>
-      <ol class="steps">
-        <li>Identifier les parties et leur donner leur qualité juridique (employeur/salarié, vendeur/acheteur, bailleur/preneur, etc.)</li>
-        <li>Identifier la relation juridique qui les lie (contrat de travail, contrat de vente, responsabilité civile, etc.)</li>
-        <li>Identifier le litige ou le problème juridique (inexécution, vice du consentement, licenciement abusif, etc.)</li>
-        <li>Traduire chaque fait en vocabulaire juridique</li>
-      </ol>
-      <p class="steps mots">Mots obligatoires : les qualifications exactes (pas « patron » mais « employeur », pas « viré » mais « licencié »)</p>
-      <p class="steps longueur">Longueur attendue : 5 à 10 lignes</p>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Template de réponse</div>
-      <div class="template-box"><span style="color:#f5c842">[Partie A]</span>, <span style="color:#f5c842">[qualité juridique]</span>, a conclu un <span style="color:#f5c842">[type de contrat]</span> avec <span style="color:#f5c842">[Partie B]</span>,
-<span style="color:#f5c842">[qualité juridique]</span>. <span style="color:#f5c842">[Fait qualifié juridiquement : objet du contrat, obligations]</span>.
-Or, <span style="color:#f5c842">[problème juridique : ce qui ne s'est pas passé comme prévu]</span>.
-Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualification du problème]</span>.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Exemple corrigé — 2023 Liban · Beebop</div>
-      <div class="example-box">
-        <div class="ex-q">Question : « Résumez les faits en qualifiant juridiquement la situation. »</div>
-        <div class="ex-axe">John Beebop, <strong>acheteur</strong>, a conclu un <strong>contrat de vente immobilière</strong> avec Maxime Foley, <strong>vendeur</strong>. L'élément déterminant de l'achat était un graffiti attribué à un artiste célèbre. Or, cette attribution s'avère erronée, ce qui constitue potentiellement un <strong>vice du consentement</strong> (erreur sur les qualités essentielles de la chose, article 1132 du Code civil). Le litige porte sur la <strong>nullité du contrat pour erreur</strong>.</div>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Raconter l'histoire mot pour mot sans aucun vocabulaire juridique. « Un monsieur a acheté une maison et le dessin n'était pas de qui il croyait » — cette réponse vaut zéro point. Il faut écrire « acheteur », « contrat de vente », « erreur sur les qualités essentielles ».</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="tip-box">&#128161; <strong>Astuce :</strong> Chaque nom commun de l'histoire doit devenir un terme juridique. Fais l'exercice mentalement : patron = employeur, employé = salarié, accord = contrat, produit cassé = défaut de conformité. Si tu n'as pas transformé au moins 5 mots, ta qualification est incomplète.</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- TYPE 2 -->
-<div class="accordion th-gris">
-  <div class="accordion-header" onclick="toggleAcc(this)">
-    <span class="acc-type"><span class="type-num">TYPE 2</span> — Développer l'argumentation juridique d'une partie <span class="acc-theme-tag">Transversal</span></span>
-    <span class="acc-stars">★★★★★</span>
-    <span class="acc-chevron">▼</span>
-  </div>
-  <div class="accordion-body">
-
-    <div class="acc-section">
-      <div class="acc-label">Apparaît dans</div>
-      <div class="acc-text">TOUS les sujets — c'est toujours la question 2 (et parfois la question 3)</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Notions mobilisées</div>
-      <div class="acc-text">
-        <p>Dépend du thème du sujet. Mais la MÉTHODE est toujours la même : le syllogisme juridique.</p>
-        <ul style="margin-top:8px">
-          <li>Art. 1103 — force obligatoire du contrat</li>
-          <li>Art. 1130-1133 — vices du consentement</li>
-          <li>Art. 1217 — sanctions de l'inexécution</li>
-          <li>Art. 1240 — responsabilité pour faute</li>
-          <li>Art. L1232-1 — licenciement pour motif personnel</li>
-          <li>Art. L1233-3 — licenciement économique</li>
-          <li>Art. L4131-1 — droit de retrait</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Question type</div>
-      <div class="question-box">
-        « Développez l'argumentation juridique de [partie A]. »
-        <div class="variant">Variantes : « Proposez les arguments juridiques que pourrait invoquer [partie A]. » / « Quels arguments juridiques [partie A] peut-il/elle avancer ? »</div>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Ce que cette question teste vraiment</div>
-      <div class="two-col">
-        <div class="col-not">
-          <h5>Ce n'est PAS</h5>
-          <p>Donner ton opinion sur qui a raison.</p>
-        </div>
-        <div class="col-yes">
-          <h5>C'est</h5>
-          <p>Construire un raisonnement juridique structuré en suivant le syllogisme : règle de droit, puis application aux faits, puis conclusion.</p>
-        </div>
-      </div>
-      <div class="signal-box">Signal : « argumentation juridique », « arguments » — on veut du droit, pas des sentiments.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">La réponse qu'on attend de toi</div>
-      <p class="acc-text" style="margin-bottom:8px">Pour CHAQUE argument (il en faut 2 ou 3) :</p>
-      <ol class="steps">
-        <li>MAJEURE : Énoncer la règle de droit applicable (article de loi ou principe juridique)</li>
-        <li>MINEURE : Appliquer cette règle aux faits précis du cas</li>
-        <li>CONCLUSION : En déduire la conséquence favorable à la partie</li>
-      </ol>
-      <p class="steps mots">Mots obligatoires : « en vertu de », « en l'espèce », « par conséquent »</p>
-      <p class="steps longueur">Longueur attendue : 10 à 15 lignes (2 ou 3 arguments développés)</p>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Template de réponse</div>
-      <div class="template-box"><span style="color:#f5c842">Argument 1 :</span>
-En vertu de <span style="color:#f5c842">[article X / principe juridique]</span>, <span style="color:#f5c842">[énoncer la règle de droit]</span>.
-En l'espèce, <span style="color:#f5c842">[appliquer la règle aux faits précis du cas]</span>.
-Par conséquent, <span style="color:#f5c842">[conclusion favorable à la partie]</span>.
-
-<span style="color:#f5c842">Argument 2 :</span>
-L'article <span style="color:#f5c842">[Y]</span> dispose que <span style="color:#f5c842">[énoncer une autre règle]</span>.
-Dans le cas présent, <span style="color:#f5c842">[application aux faits]</span>.
-Il en résulte que <span style="color:#f5c842">[conclusion favorable]</span>.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Exemple corrigé — 2022 Nouvelle-Calédonie · GUERIN</div>
-      <div class="example-box">
-        <div class="ex-q">Question : « Développez l'argumentation juridique de M. Guérin. »</div>
-        <div class="ex-axe"><strong>Argument 1 :</strong> En vertu de l'article L4131-1 du Code du travail, le salarié peut exercer son droit de retrait s'il a un motif raisonnable de penser que sa situation de travail présente un danger grave et imminent pour sa vie ou sa santé. En l'espèce, M. Guérin travaille depuis 20 ans avec un acide puissant sans ventilation ni équipements de protection adéquats, et il a développé une maladie cutanée malgré ses alertes répétées auprès de son employeur. Par conséquent, l'exercice de son droit de retrait est légitime.</div>
-        <div class="ex-axe"><strong>Argument 2 :</strong> En vertu de l'article L4121-1 du Code du travail, l'employeur est tenu d'assurer la sécurité et de protéger la santé physique et mentale de ses salariés. En l'espèce, l'employeur n'a fourni ni ventilation ni équipements de protection malgré les demandes de M. Guérin. Par conséquent, l'employeur a manqué à son obligation de sécurité et le licenciement de M. Guérin est dépourvu de cause réelle et sérieuse.</div>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Donner des opinions personnelles au lieu d'arguments juridiques. Écrire « je pense que M. Guérin a raison parce que c'est injuste » vaut zéro point. Il faut toujours commencer par la RÈGLE DE DROIT, jamais par son avis.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="tip-box">&#128161; <strong>Astuce :</strong> Commence TOUJOURS par « En vertu de... » — ça te force à chercher la règle de droit en premier. Si tu ne connais pas le numéro d'article exact, cite le principe général (« le principe de bonne foi contractuelle », « l'obligation de sécurité de l'employeur »). C'est mieux que rien et ça rapporte des points.</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- TYPE 3 -->
-<div class="accordion th-gris">
-  <div class="accordion-header" onclick="toggleAcc(this)">
-    <span class="acc-type"><span class="type-num">TYPE 3</span> — Développer l'argumentation de la partie adverse <span class="acc-theme-tag">Transversal</span></span>
-    <span class="acc-stars">★★★★★</span>
-    <span class="acc-chevron">▼</span>
-  </div>
-  <div class="accordion-body">
-
-    <div class="acc-section">
-      <div class="acc-label">Apparaît dans</div>
-      <div class="acc-text">TOUS les sujets — c'est la question 3 (parfois combinée avec la Q2)</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Notions mobilisées</div>
-      <div class="acc-text">
-        <p>Mêmes notions que le TYPE 2, mais appliquées au profit de L'AUTRE partie.</p>
-        <ul style="margin-top:8px">
-          <li>Arguments de défense courants : bonne foi, respect de la procédure, force majeure, fait de la victime, fait d'un tiers, clause contractuelle, antériorité, absence de preuve</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Question type</div>
-      <div class="question-box">
-        « Développez l'argumentation juridique de [partie B]. »
-        <div class="variant">Variantes : « Proposez les arguments que pourrait opposer [partie B]. » / « Quels moyens de défense [partie B] pourrait-il/elle invoquer ? »</div>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Ce que cette question teste vraiment</div>
-      <div class="two-col">
-        <div class="col-not">
-          <h5>Ce n'est PAS</h5>
-          <p>Dire que la partie B a tort.</p>
-        </div>
-        <div class="col-yes">
-          <h5>C'est</h5>
-          <p>Trouver des arguments juridiques VALABLES pour la partie qui semble avoir tort. En droit, les DEUX parties ont TOUJOURS des arguments.</p>
-        </div>
-      </div>
-      <div class="signal-box">Signal : on te demande d'argumenter pour la partie « adverse » — celle qui semble perdante à première lecture.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">La réponse qu'on attend de toi</div>
-      <p class="acc-text" style="margin-bottom:8px">Même méthode que le TYPE 2 : syllogisme juridique pour chaque argument.</p>
-      <ol class="steps">
-        <li>MAJEURE : Règle de droit favorable à cette partie</li>
-        <li>MINEURE : Application aux faits en montrant ce qui joue en sa faveur</li>
-        <li>CONCLUSION : Déduction favorable à cette partie</li>
-      </ol>
-      <p class="steps mots">La difficulté : trouver sur quoi s'appuyer. Pense à ce que la partie adverse ne savait pas, à ce qu'elle a respecté, aux exceptions légales.</p>
-      <p class="steps longueur">Longueur attendue : 10 à 15 lignes (2 ou 3 arguments)</p>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Template de réponse</div>
-      <div class="template-box"><span style="color:#f5c842">Argument 1 :</span>
-En vertu de <span style="color:#f5c842">[article / principe]</span>, <span style="color:#f5c842">[règle de droit]</span>.
-En l'espèce, <span style="color:#f5c842">[montrer que les faits jouent en faveur de cette partie :
-elle a respecté la procédure / elle était de bonne foi / elle ne pouvait pas
-savoir / une clause du contrat la protège]</span>.
-Par conséquent, <span style="color:#f5c842">[conclusion favorable à la partie adverse]</span>.
-
-<span style="color:#f5c842">Argument 2 :</span>
-Le principe de <span style="color:#f5c842">[X]</span> prévoit que <span style="color:#f5c842">[règle]</span>.
-Or, dans le cas présent, <span style="color:#f5c842">[application montrant que les conditions ne sont
-pas réunies pour donner raison à l'autre partie]</span>.
-Dès lors, <span style="color:#f5c842">[conclusion]</span>.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Exemple corrigé — 2022 Nouvelle-Calédonie · GUERIN (partie employeur)</div>
-      <div class="example-box">
-        <div class="ex-q">Question : « Développez l'argumentation juridique de l'employeur. »</div>
-        <div class="ex-axe"><strong>Argument 1 :</strong> En vertu de l'article L4131-1 du Code du travail, le droit de retrait suppose un danger « grave et imminent ». En l'espèce, M. Guérin travaille dans ces conditions depuis 20 ans sans incident majeur, ce qui pourrait remettre en question le caractère « imminent » du danger. Par conséquent, l'employeur peut soutenir que les conditions du droit de retrait n'étaient pas réunies.</div>
-        <div class="ex-axe"><strong>Argument 2 :</strong> En vertu du pouvoir de direction de l'employeur, celui-ci est en droit d'organiser le travail et de prendre les décisions qu'il juge nécessaires. En l'espèce, l'employeur peut arguer qu'il avait planifié des améliorations des conditions de travail et que l'absence non justifiée du salarié a désorganisé l'entreprise. Par conséquent, le licenciement repose sur une cause réelle et sérieuse.</div>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Ne pas trouver assez d'arguments pour la partie qui semble « perdante ». Au Bac, on DOIT argumenter pour les deux côtés. Même l'employeur qui a licencié abusivement, même le vendeur qui a menti — il y a TOUJOURS un angle de défense.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="tip-box">&#128161; <strong>Astuce :</strong> Quand tu bloques, passe en revue cette liste de défenses possibles :
-        <ul class="defense-list">
-          <li><strong>La bonne foi</strong> : « Il ne savait pas / il ne pouvait pas savoir »</li>
-          <li><strong>Le respect de la procédure</strong> : « Il a respecté toutes les étapes légales »</li>
-          <li><strong>La force majeure</strong> : « Un événement imprévisible et irrésistible l'a empêché d'exécuter »</li>
-          <li><strong>Le fait de la victime</strong> : « C'est l'autre partie qui a contribué à son propre dommage »</li>
-          <li><strong>Le fait d'un tiers</strong> : « Un tiers est à l'origine du problème »</li>
-          <li><strong>La clause contractuelle</strong> : « Le contrat prévoyait cette situation »</li>
-          <li><strong>L'absence de preuve</strong> : « Rien ne prouve que... »</li>
-        </ul>
-        Au moins un de ces arguments s'applique toujours.
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- TYPE 4 -->
-<div class="accordion th-gris">
-  <div class="accordion-header" onclick="toggleAcc(this)">
-    <span class="acc-type"><span class="type-num">TYPE 4</span> — Répondre à une question de réflexion sur le rôle du droit <span class="acc-theme-tag">Transversal</span></span>
-    <span class="acc-stars">★★★★★</span>
-    <span class="acc-chevron">▼</span>
-  </div>
-  <div class="accordion-body">
-
-    <div class="acc-section">
-      <div class="acc-label">Apparaît dans</div>
-      <div class="acc-text">TOUS les sujets — c'est toujours la question 4 (parfois avec un choix entre 2 sujets)</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Notions mobilisées</div>
-      <div class="acc-text">
-        <ul>
-          <li>Protection des parties faibles</li>
-          <li>Équilibre des droits et obligations</li>
-          <li>Sécurité juridique</li>
-          <li>Rôle pacificateur du droit</li>
-          <li>Hiérarchie des normes</li>
-          <li>Accès à la justice</li>
-        </ul>
-        <p style="margin-top:6px;font-size:0.82rem;color:#7a6a58;font-style:italic">Le thème dépend du sujet, mais la réflexion est toujours sur le POURQUOI du droit, pas sur le QUOI.</p>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Question type</div>
-      <div class="question-box">
-        « Expliquez pourquoi le droit limite le pouvoir de l'employeur. »
-        <div class="variant">Variantes : « Justifiez la diversité des régimes de responsabilité. » / « Le droit assure-t-il une protection renforcée du consommateur ? » / « Pourquoi la Cour de cassation est-elle indispensable ? » / « Expliquez le rôle pacificateur du droit. » / « Les enjeux de la protection du droit de propriété. »</div>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Les sujets de réflexion les plus fréquents dans les annales</div>
-      <div class="acc-text">
-        <ul class="freq-list">
-          <li>« Pourquoi le droit limite-t-il le pouvoir de l'employeur ? »</li>
-          <li>« Les enjeux de la protection du droit de propriété »</li>
-          <li>« La diversité des régimes de responsabilité »</li>
-          <li>« Le droit assure-t-il une protection renforcée du consommateur ? »</li>
-          <li>« Pourquoi la Cour de cassation est-elle indispensable ? »</li>
-          <li>« Le rôle pacificateur du droit »</li>
-          <li>« Le droit protège-t-il efficacement le salarié ? »</li>
-          <li>« Pourquoi le droit encadre-t-il la formation du contrat ? »</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Ce que cette question teste vraiment</div>
-      <div class="two-col">
-        <div class="col-not">
-          <h5>Ce n'est PAS</h5>
-          <p>Réciter le cours sur le thème.</p>
-        </div>
-        <div class="col-yes">
-          <h5>C'est</h5>
-          <p>Montrer que tu comprends POURQUOI les règles juridiques existent, à quoi elles servent, quel équilibre elles cherchent à maintenir.</p>
-        </div>
-      </div>
-      <div class="signal-box">Signal : « expliquez pourquoi », « justifiez », « les enjeux de » — on attend une prise de recul, pas une simple définition.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">La réponse qu'on attend de toi</div>
-      <ol class="steps">
-        <li>Définir les termes juridiques clés de la question</li>
-        <li>Expliquer le principe avec référence à la loi ou à un principe général</li>
-        <li>Illustrer avec des exemples (tirés du cas du sujet ET/OU de culture juridique générale)</li>
-        <li>Montrer l'équilibre : le droit protège mais il limite aussi ; il donne des droits mais il impose des obligations</li>
-      </ol>
-      <p class="steps mots">Mots obligatoires : les termes de la question + équilibre / protection / sécurité juridique</p>
-      <p class="steps longueur">Longueur attendue : 10 à 20 lignes</p>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Template de réponse</div>
-      <div class="template-box">Le droit <span style="color:#f5c842">[verbe de la question : protège / limite / encadre]</span> parce que
-<span style="color:#f5c842">[raison 1 : principe juridique + explication]</span>.
-
-En effet, <span style="color:#f5c842">[développement avec exemple concret : article de loi ou situation
-du cas étudié]</span>. Par exemple, <span style="color:#f5c842">[illustration]</span>.
-
-Par ailleurs, <span style="color:#f5c842">[raison 2 : autre aspect du rôle du droit]</span>.
-<span style="color:#f5c842">[Développement + exemple]</span>.
-
-Cependant, cette protection <span style="color:#f5c842">[ou cette limitation]</span> doit être équilibrée avec
-<span style="color:#f5c842">[droit ou liberté opposée]</span>. Ainsi, le droit cherche à concilier <span style="color:#f5c842">[intérêt 1]</span>
-et <span style="color:#f5c842">[intérêt 2]</span>, ce qui montre que son rôle est de <span style="color:#f5c842">[conclusion sur la
-fonction du droit]</span>.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Exemple corrigé — Sujet type « Pourquoi le droit limite-t-il le pouvoir de l'employeur ? »</div>
-      <div class="example-box">
-        <div class="ex-axe">Le droit limite le pouvoir de l'employeur pour protéger le salarié, qui est dans une situation de <strong>subordination juridique</strong>. En effet, le contrat de travail crée un lien de subordination : le salarié est soumis aux directives de l'employeur. Sans encadrement légal, ce déséquilibre pourrait mener à des abus.</div>
-        <div class="ex-axe">C'est pourquoi le Code du travail impose des règles : l'employeur doit respecter une <strong>procédure de licenciement</strong> (entretien préalable, notification, motif réel et sérieux), garantir la <strong>sécurité</strong> de ses salariés (article L4121-1), et respecter les <strong>libertés fondamentales</strong> (non-discrimination, droit de grève).</div>
-        <div class="ex-axe">Cependant, le droit ne supprime pas le pouvoir de l'employeur : il le conserve à travers le <strong>pouvoir de direction</strong>, le <strong>pouvoir disciplinaire</strong> et le <strong>pouvoir réglementaire</strong>. Le droit cherche donc un <strong>équilibre</strong> entre la protection du salarié et la liberté d'entreprendre de l'employeur.</div>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Répondre trop brièvement ou juste répéter le cours sans expliquer le POURQUOI. « Le droit protège le salarié avec l'article L1232-1 » ne suffit pas. Il faut expliquer POURQUOI cette protection existe (déséquilibre, subordination, risque d'abus).</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="tip-box">&#128161; <strong>Astuce :</strong> Termine toujours par l'idée d'ÉQUILIBRE. Le droit ne protège jamais un seul côté : il cherche toujours à concilier des intérêts opposés (protection du salarié vs liberté d'entreprendre, droit de propriété vs intérêt général, liberté contractuelle vs protection du consommateur). Montrer cet équilibre, c'est ce qui distingue une copie moyenne d'une bonne copie.</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- TYPE 5 -->
-<div class="accordion th-gris">
-  <div class="accordion-header" onclick="toggleAcc(this)">
-    <span class="acc-type"><span class="type-num">TYPE 5</span> — Identifier / qualifier une situation juridique <span class="acc-theme-tag">Variable</span></span>
-    <span class="acc-stars">★★★☆☆</span>
-    <span class="acc-chevron">▼</span>
-  </div>
-  <div class="accordion-body">
-
-    <div class="acc-section">
-      <div class="acc-label">Apparaît dans</div>
-      <div class="acc-text">Environ 1 sujet sur 3 — souvent en sous-question</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Notions mobilisées</div>
-      <div class="acc-text">
-        <p>Les catégories juridiques :</p>
-        <ul style="margin-top:8px">
-          <li>Types de licenciement : personnel / économique / faute grave / faute lourde</li>
-          <li>Types de contrat : CDD / CDI / contrat de vente / bail</li>
-          <li>Types de responsabilité : contractuelle / extracontractuelle / du fait personnel / du fait d'autrui / du fait des choses</li>
-          <li>Types de vices du consentement : erreur / dol / violence</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Question type</div>
-      <div class="question-box">
-        « Déterminez si la situation constitue un licenciement pour motif personnel ou économique. »
-        <div class="variant">Variantes : « Précisez le type de responsabilité engagée. » / « Qualifiez le vice du consentement en cause. » / « Identifiez le régime de responsabilité applicable. »</div>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Ce que cette question teste vraiment</div>
-      <div class="two-col">
-        <div class="col-not">
-          <h5>Ce n'est PAS</h5>
-          <p>Choisir au hasard une catégorie.</p>
-        </div>
-        <div class="col-yes">
-          <h5>C'est</h5>
-          <p>Vérifier méthodiquement si les CONDITIONS de la catégorie juridique sont réunies dans les faits.</p>
-        </div>
-      </div>
-      <div class="signal-box">Signal : « déterminez », « précisez », « qualifiez » — on attend un raisonnement de qualification, pas une simple réponse.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">La réponse qu'on attend de toi</div>
-      <ol class="steps">
-        <li>Définir la catégorie juridique et ses conditions (c'est la majeure du syllogisme)</li>
-        <li>Vérifier chaque condition en la confrontant aux faits du cas (c'est la mineure)</li>
-        <li>Conclure : la situation correspond ou ne correspond pas à la catégorie</li>
-      </ol>
-      <p class="steps longueur">Longueur attendue : 5 à 8 lignes</p>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Template de réponse</div>
-      <div class="template-box"><span style="color:#f5c842">[Catégorie juridique]</span> se définit par <span style="color:#f5c842">[conditions : 1, 2, 3]</span>.
-En l'espèce :
-- Condition 1 : <span style="color:#f5c842">[vérifiée ou non dans les faits]</span>
-- Condition 2 : <span style="color:#f5c842">[vérifiée ou non dans les faits]</span>
-- Condition 3 : <span style="color:#f5c842">[vérifiée ou non dans les faits]</span>
-Par conséquent, la situation constitue bien <span style="color:#f5c842">[ou ne constitue pas]</span> un/une
-<span style="color:#f5c842">[catégorie juridique]</span>.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="acc-label">Exemple corrigé — 2021 Remplacement · UNIPUR</div>
-      <div class="example-box">
-        <div class="ex-q">Question : « Précisez le type de licenciement subi par Joséphine. »</div>
-        <div class="ex-axe">Le <strong>licenciement pour motif personnel</strong> repose sur un motif inhérent à la personne du salarié (insuffisance professionnelle, faute, inaptitude). Le <strong>licenciement pour motif économique</strong> repose sur des difficultés économiques, des mutations technologiques ou une réorganisation de l'entreprise.</div>
-        <div class="ex-axe">En l'espèce, Joséphine a été licenciée en raison de ses résultats jugés insuffisants par l'employeur. Le motif est lié à sa personne (sa performance), et non à une cause économique externe.</div>
-        <div class="ex-axe">Par conséquent, il s'agit d'un <strong>licenciement pour motif personnel</strong>, plus précisément pour insuffisance professionnelle.</div>
-      </div>
-    </div>
-
-    <div class="acc-section">
-      <div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Donner la réponse sans vérifier les conditions. Écrire « c'est un licenciement économique » sans expliquer pourquoi, c'est perdre la moitié des points. Le correcteur veut VOIR ton raisonnement.</div>
-    </div>
-
-    <div class="acc-section">
-      <div class="tip-box">&#128161; <strong>Astuce :</strong> C'est un mini-syllogisme. La démarche est exactement la même que pour les TYPE 2 et 3, mais en plus court. Définis, vérifie, conclus.</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- SUJETS TOMBÉS AU BAC -->
-<h2 class="section-title" style="margin-top:48px">Les sujets tombés au Bac (récapitulatif)</h2>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr><th>Année</th><th>Session</th><th>Cas juridique</th><th>Thème principal</th><th>Question de réflexion (Q4)</th></tr>
-</thead>
-<tbody>
-<tr><td>2021</td><td>Métropole</td><td>BT Mécanique</td><td>Contrat de travail, licenciement</td><td>Pourquoi le droit limite-t-il le pouvoir de l'employeur ?</td></tr>
-<tr><td>2021</td><td>Centres étrangers</td><td>Répar'mobile</td><td>Responsabilité civile extracontractuelle</td><td>La diversité des régimes de responsabilité</td></tr>
-<tr><td>2021</td><td>Remplacement</td><td>UNIPUR</td><td>Licenciement, types de licenciement</td><td>Le droit protège-t-il efficacement le salarié ?</td></tr>
-<tr><td>2021</td><td>Espagne</td><td>MAXI</td><td>Formation du contrat, conditions de validité</td><td>Pourquoi le droit encadre-t-il la formation du contrat ?</td></tr>
-<tr><td>2022</td><td>Métropole</td><td>Restaurant de montagne</td><td>Responsabilité civile, dommage</td><td>La diversité des régimes de responsabilité</td></tr>
-<tr><td>2022</td><td>Nouvelle-Calédonie</td><td>GUERIN</td><td>Droit de retrait, santé au travail</td><td>Pourquoi le droit protège-t-il la santé du salarié ?</td></tr>
-<tr><td>2022</td><td>Polynésie</td><td>Bastide</td><td>Contrat de travail, modification</td><td>Le pouvoir de l'employeur et ses limites</td></tr>
-<tr><td>2022</td><td>Polynésie remp.</td><td>Balzana / Cat &amp; Cie</td><td>Propriété intellectuelle</td><td>Les enjeux de la protection du droit de propriété</td></tr>
-<tr><td>2022</td><td>Métropole remp.</td><td>SécuritéPlus</td><td>Licenciement économique</td><td>Le rôle pacificateur du droit</td></tr>
-<tr><td>2023</td><td>Métropole</td><td>Pompes à Chaleur</td><td>Responsabilité du fait des produits défectueux</td><td>Le droit assure-t-il une protection renforcée du consommateur ?</td></tr>
-<tr><td>2023</td><td>La Réunion</td><td>INVESTIX</td><td>Droit de propriété et ses limites</td><td>Les enjeux de la protection du droit de propriété</td></tr>
-<tr><td>2023</td><td>Liban</td><td>Beebop</td><td>Vices du consentement, erreur</td><td>Pourquoi le droit encadre-t-il la formation du contrat ?</td></tr>
-<tr><td>2023</td><td>Centres étrangers</td><td>AgriSol</td><td>Bail commercial</td><td>La force obligatoire du contrat</td></tr>
-<tr><td>2023</td><td>Remplacement</td><td>TransExpress</td><td>Clause de non-concurrence</td><td>Le droit concilie-t-il liberté et protection ?</td></tr>
-<tr><td>2024</td><td>Métropole</td><td>SARL Camélia</td><td>Licenciement pour faute</td><td>Le droit protège-t-il efficacement le salarié ?</td></tr>
-<tr><td>2024</td><td>Centres étrangers</td><td>Mme De Gouges</td><td>Discrimination au travail</td><td>Le rôle du droit dans la lutte contre les discriminations</td></tr>
-<tr><td>2024</td><td>Remplacement</td><td>SolarTech</td><td>Responsabilité contractuelle</td><td>Pourquoi la Cour de cassation est-elle indispensable ?</td></tr>
-<tr><td>2024</td><td>Polynésie</td><td>MerBleue</td><td>Garantie légale de conformité</td><td>Le droit assure-t-il une protection renforcée du consommateur ?</td></tr>
-<tr><td>2024</td><td>Nouvelle-Calédonie</td><td>UrbanVert</td><td>Trouble anormal de voisinage</td><td>Le droit de propriété et ses limites</td></tr>
-<tr><td>2025</td><td>Métropole</td><td>ArchiDij974</td><td>Rupture du contrat de travail</td><td>Pourquoi le droit limite-t-il le pouvoir de l'employeur ?</td></tr>
-<tr><td>2025</td><td>Centres étrangers</td><td>NovaBois</td><td>Formation du contrat, dol</td><td>Le rôle pacificateur du droit</td></tr>
-<tr><td>2025</td><td>Remplacement</td><td>LogiPro</td><td>Responsabilité du commettant</td><td>La diversité des régimes de responsabilité</td></tr>
-</tbody>
-</table>
-</div>
-
-<div class="obs-box">
-  <h4>Observation : la question de réflexion tourne autour de 4 grands axes</h4>
-  <ol>
-    <li>Pourquoi le droit protège-t-il la partie faible ? (salarié, consommateur, victime)</li>
-    <li>Comment le droit concilie-t-il des intérêts opposés ? (liberté vs protection, propriété vs intérêt général)</li>
-    <li>À quoi servent les différents régimes juridiques ? (responsabilité, contrats, licenciement)</li>
-    <li>Quel est le rôle des institutions juridiques ? (Cour de cassation, hiérarchie des normes, accès à la justice)</li>
   </ol>
 </div>
 
@@ -909,13 +1286,50 @@ function toggleAcc(header) {
   }
 }
 
-/* Auto-évaluation localStorage */
-const STORAGE_KEY = 'revizo_autoeval_droit';
+/* Example accordion toggle */
+function toggleExample(hd) {
+  const body = hd.nextElementSibling;
+  const isOpen = hd.classList.contains('open');
+  if (isOpen) {
+    hd.classList.remove('open');
+    body.classList.remove('show');
+  } else {
+    hd.classList.add('open');
+    body.classList.add('show');
+  }
+}
+
+/* Filter examples by theme */
+function filterExamples(typeId, theme) {
+  const section = document.querySelector('[data-type="' + typeId + '"]');
+  if (!section) return;
+  section.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  event.target.classList.add('active');
+  var container = section.closest('.accordion-body');
+  container.querySelectorAll('.example-acc').forEach(function(acc) {
+    if (theme === 'all' || acc.dataset.theme === theme) {
+      acc.style.display = '';
+    } else {
+      acc.style.display = 'none';
+    }
+  });
+}
+
+/* Switch TYPE 2/3 */
+function switchType23(side) {
+  document.querySelectorAll('.type-switch button').forEach(function(b) { b.classList.remove('active'); });
+  event.target.classList.add('active');
+  document.querySelectorAll('.args-demandeur').forEach(function(el) { el.style.display = side === 'demandeur' ? '' : 'none'; });
+  document.querySelectorAll('.args-defenseur').forEach(function(el) { el.style.display = side === 'defenseur' ? '' : 'none'; });
+}
+
+/* Auto-evaluation localStorage */
+var STORAGE_KEY = 'revizo_autoeval_droit';
 
 function saveEval() {
-  const data = {};
-  for (let i = 1; i <= 5; i++) {
-    const checked = document.querySelector('input[name="eval_' + i + '"]:checked');
+  var data = {};
+  for (var i = 1; i <= 5; i++) {
+    var checked = document.querySelector('input[name="eval_' + i + '"]:checked');
     if (checked) data['eval_' + i] = checked.value;
   }
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -923,11 +1337,11 @@ function saveEval() {
 
 function loadEval() {
   try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    var data = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (!data) return;
-    for (let i = 1; i <= 5; i++) {
+    for (var i = 1; i <= 5; i++) {
       if (data['eval_' + i]) {
-        const radio = document.querySelector('input[name="eval_' + i + '"][value="' + data['eval_' + i] + '"]');
+        var radio = document.querySelector('input[name="eval_' + i + '"][value="' + data['eval_' + i] + '"]');
         if (radio) radio.checked = true;
       }
     }
@@ -935,9 +1349,9 @@ function loadEval() {
 }
 
 function resetEval() {
-  for (let i = 1; i <= 5; i++) {
-    const radios = document.querySelectorAll('input[name="eval_' + i + '"]');
-    radios.forEach(r => r.checked = false);
+  for (var i = 1; i <= 5; i++) {
+    var radios = document.querySelectorAll('input[name="eval_' + i + '"]');
+    radios.forEach(function(r) { r.checked = false; });
   }
   localStorage.removeItem(STORAGE_KEY);
 }
@@ -947,7 +1361,23 @@ document.getElementById('evalTable').addEventListener('change', saveEval);
 
 /* Load on page ready */
 loadEval();
-</script>
 
+/* Ref-item : clic pour afficher la definition */
+document.querySelectorAll('.ref-item[data-def]').forEach(function(item) {
+  item.addEventListener('click', function() {
+    var defBox = this.closest('li').querySelector('.ref-def');
+    if (!defBox) return;
+    if (defBox.classList.contains('open') && defBox.dataset.src === this.querySelector('.ref-name').textContent) {
+      defBox.classList.remove('open');
+      defBox.innerHTML = '';
+      defBox.dataset.src = '';
+    } else {
+      defBox.innerHTML = '<strong>' + this.querySelector('.ref-name').textContent + '</strong> — ' + this.dataset.def;
+      defBox.classList.add('open');
+      defBox.dataset.src = this.querySelector('.ref-name').textContent;
+    }
+  });
+});
+</script>
 </body>
 </html>
