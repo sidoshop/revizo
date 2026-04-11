@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>Révizo — Questions Bac · Économie STMG</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="revizo-design-system.css">
@@ -121,8 +122,8 @@ tbody tr:hover { background:rgba(245,200,66,.06) }
 
 /* Steps */
 .steps { padding-left:0;list-style:none;counter-reset:step }
-.steps li { counter-increment:step;font-size:0.88rem;line-height:1.7;margin-bottom:6px;padding-left:28px;position:relative }
-.steps li::before { content:"ETAPE " counter(step);position:absolute;left:0;font-family:'Inter',sans-serif;font-size:0.6rem;font-weight:800;color:#b5415a;letter-spacing:0.5px }
+.steps li { counter-increment:step;font-size:0.88rem;line-height:1.7;margin-bottom:10px;padding-left:0;position:relative }
+.steps li::before { content:"ÉTAPE " counter(step);display:block;font-family:'Inter',sans-serif;font-size:0.6rem;font-weight:800;color:#b5415a;letter-spacing:0.5px;margin-bottom:2px }
 .steps .mots { font-size:0.82rem;color:#7a6a58;font-weight:600;padding-left:0;margin-top:8px }
 .steps .longueur { font-size:0.82rem;color:#7a6a58;font-weight:600;padding-left:0;margin-top:4px }
 
@@ -197,7 +198,7 @@ tbody tr:hover { background:rgba(245,200,66,.06) }
 <nav class="nav-epreuve">
   <a href="index.html" class="logo">Révi<span>zo</span></a>
   <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
-  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="revizo-msgn.html" class="epreuve-link">SGDN</a>
   <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
 </nav>
 <nav class="nav-rubriques">
@@ -230,45 +231,6 @@ tbody tr:hover { background:rgba(245,200,66,.06) }
 </div>
 
 <div class="content">
-
-<!-- RECAP TABLE -->
-<h2 class="section-title">Les 15 sujets analysés</h2>
-<div class="table-wrap">
-<table>
-<thead>
-<tr><th>Année</th><th>Session</th><th>Entreprise / Cas</th><th>Thèmes économiques testés</th></tr>
-</thead>
-<tbody>
-<tr><td>2021</td><td>Métropole</td><td>BT Mécanique / Energymax</td><td>Pouvoir d'achat, dépense publique, relance par la demande, croissance</td></tr>
-<tr><td>2021</td><td>Centres étrangers</td><td>Repar'mobile</td><td>Croissance, déficit public / commerce extérieur UE, protectionnisme</td></tr>
-<tr><td>2021</td><td>Remplacement</td><td>UNIPUR</td><td>Épargne, inégalités / politique budgétaire de relance</td></tr>
-<tr><td>2021</td><td>Espagne</td><td>MAXI</td><td>Gains de productivité, emploi, facteurs de production</td></tr>
-<tr><td>2022</td><td>Métropole</td><td>Restaurant de montagne</td><td>Chômage, politiques de l'emploi / PIB comme mesure de richesse</td></tr>
-<tr><td>2022</td><td>Nouvelle-Calédonie</td><td>GUERIN / Echinox</td><td>Épargne, IDE, plan de relance / commerce international et croissance</td></tr>
-<tr><td>2022</td><td>Polynésie</td><td>Bastide</td><td>Chômage (calcul taux BIT), inégalités / IDE</td></tr>
-<tr><td>2022</td><td>Polynésie remp.</td><td>Balzana / Cat &amp; Cie</td><td>Politique monétaire (taux directeur), relance / répartition VA</td></tr>
-<tr><td>2022</td><td>Métropole remp.</td><td>SécuritéPlus</td><td>Dette publique, déficit, protection sociale</td></tr>
-<tr><td>2023</td><td>Métropole</td><td>Pompes à Chaleur</td><td>Balance commerciale, IDE, politique de relance et importations</td></tr>
-<tr><td>2023</td><td>La Réunion</td><td>INVESTIX</td><td>Offre/demande/prix, élasticité-prix, pouvoir d'achat</td></tr>
-<tr><td>2023</td><td>Liban</td><td>Beebop</td><td>Déficit/dette publique, dépenses publiques, politique budgétaire en crise</td></tr>
-<tr><td>2024</td><td>Métropole</td><td>SARL Camélia</td><td>Déficit/dette, prélèvements obligatoires, compétitivité, croissance</td></tr>
-<tr><td>2024</td><td>Centres étrangers</td><td>Mme De Gouges</td><td>Biens collectifs/communs, externalités, intervention de l'État</td></tr>
-<tr><td>2025</td><td>Métropole</td><td>ArchiDij974</td><td>Commerce international, contributions au PIB, droits de douane, libre-échange</td></tr>
-</tbody>
-</table>
-</div>
-
-<!-- 5 CONSTANTES -->
-<div class="highlight-box">
-  <h4>Les 5 constantes du Bac Économie STMG</h4>
-  <ol>
-    <li><strong>La croissance économique et le PIB</strong> sont au coeur de presque tous les sujets</li>
-    <li><strong>Le rôle de l'État</strong> (politique budgétaire, fiscale ou de relance) est toujours présent</li>
-    <li><strong>L'argumentation structurée</strong> est la dernière question de chaque sujet (4 points, 2 sujets au choix)</li>
-    <li><strong>Les verbes d'action</strong> (analyser, justifier, montrer que) guident toujours la réponse attendue</li>
-    <li><strong>Les données chiffrées</strong> (tableaux, graphiques) sont à exploiter — pas juste à décrire</li>
-  </ol>
-</div>
 
 <!-- 7 TYPES DE QUESTIONS -->
 <h2 class="section-title">Les 7 types de questions récurrentes</h2>
@@ -971,6 +933,45 @@ Cette évolution s'explique par <span style="color:#f5c842">[mécanisme économi
     <li>L'État doit-il intervenir davantage ? (politique budgétaire, fiscale, monétaire)</li>
     <li>Le commerce international est-il bénéfique ? (libre-échange, IDE, mondialisation)</li>
     <li>Les indicateurs économiques mesurent-ils la réalité ? (PIB, inégalités, bien-être)</li>
+  </ol>
+</div>
+
+<!-- RECAP TABLE -->
+<h2 class="section-title">Les 15 sujets analysés</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Année</th><th>Session</th><th>Entreprise / Cas</th><th>Thèmes économiques testés</th></tr>
+</thead>
+<tbody>
+<tr><td>2021</td><td>Métropole</td><td>BT Mécanique / Energymax</td><td>Pouvoir d'achat, dépense publique, relance par la demande, croissance</td></tr>
+<tr><td>2021</td><td>Centres étrangers</td><td>Repar'mobile</td><td>Croissance, déficit public / commerce extérieur UE, protectionnisme</td></tr>
+<tr><td>2021</td><td>Remplacement</td><td>UNIPUR</td><td>Épargne, inégalités / politique budgétaire de relance</td></tr>
+<tr><td>2021</td><td>Espagne</td><td>MAXI</td><td>Gains de productivité, emploi, facteurs de production</td></tr>
+<tr><td>2022</td><td>Métropole</td><td>Restaurant de montagne</td><td>Chômage, politiques de l'emploi / PIB comme mesure de richesse</td></tr>
+<tr><td>2022</td><td>Nouvelle-Calédonie</td><td>GUERIN / Echinox</td><td>Épargne, IDE, plan de relance / commerce international et croissance</td></tr>
+<tr><td>2022</td><td>Polynésie</td><td>Bastide</td><td>Chômage (calcul taux BIT), inégalités / IDE</td></tr>
+<tr><td>2022</td><td>Polynésie remp.</td><td>Balzana / Cat &amp; Cie</td><td>Politique monétaire (taux directeur), relance / répartition VA</td></tr>
+<tr><td>2022</td><td>Métropole remp.</td><td>SécuritéPlus</td><td>Dette publique, déficit, protection sociale</td></tr>
+<tr><td>2023</td><td>Métropole</td><td>Pompes à Chaleur</td><td>Balance commerciale, IDE, politique de relance et importations</td></tr>
+<tr><td>2023</td><td>La Réunion</td><td>INVESTIX</td><td>Offre/demande/prix, élasticité-prix, pouvoir d'achat</td></tr>
+<tr><td>2023</td><td>Liban</td><td>Beebop</td><td>Déficit/dette publique, dépenses publiques, politique budgétaire en crise</td></tr>
+<tr><td>2024</td><td>Métropole</td><td>SARL Camélia</td><td>Déficit/dette, prélèvements obligatoires, compétitivité, croissance</td></tr>
+<tr><td>2024</td><td>Centres étrangers</td><td>Mme De Gouges</td><td>Biens collectifs/communs, externalités, intervention de l'État</td></tr>
+<tr><td>2025</td><td>Métropole</td><td>ArchiDij974</td><td>Commerce international, contributions au PIB, droits de douane, libre-échange</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- 5 CONSTANTES -->
+<div class="highlight-box">
+  <h4>Les 5 constantes du Bac Économie STMG</h4>
+  <ol>
+    <li><strong>La croissance économique et le PIB</strong> sont au coeur de presque tous les sujets</li>
+    <li><strong>Le rôle de l'État</strong> (politique budgétaire, fiscale ou de relance) est toujours présent</li>
+    <li><strong>L'argumentation structurée</strong> est la dernière question de chaque sujet (4 points, 2 sujets au choix)</li>
+    <li><strong>Les verbes d'action</strong> (analyser, justifier, montrer que) guident toujours la réponse attendue</li>
+    <li><strong>Les données chiffrées</strong> (tableaux, graphiques) sont à exploiter — pas juste à décrire</li>
   </ol>
 </div>
 
