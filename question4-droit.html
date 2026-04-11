@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Révizo — Question 4 · Réflexion Droit STMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito Sans', sans-serif; }
+body { background: #f0ede6; color: #1e1c18; min-height: 100vh; }
+
+.hero { max-width:900px; margin:0 auto; padding:100px 24px 32px; text-align:center; }
+.hero-badge { display:inline-block; background:#1e1c18; color:#f5c842; font-size:0.6rem; font-weight:800; letter-spacing:3px; text-transform:uppercase; padding:6px 20px; border-radius:20px; margin-bottom:20px; }
+.hero h1 { font-family:'Nunito',sans-serif; font-size:2.8rem; font-weight:900; color:#1e1c18; line-height:1.1; margin-bottom:12px; }
+.hero-sub { font-size:1rem; line-height:1.7; color:#7a6a58; font-weight:500; max-width:620px; margin:0 auto; }
+
+.content { max-width:900px; margin:0 auto; padding:0 24px 60px; }
+.section-title { font-family:'Nunito',sans-serif; font-size:1.5rem; font-weight:900; color:#1e1c18; margin-bottom:20px; padding-bottom:8px; border-bottom:3px solid #f5c842; }
+
+/* Widgets */
+.widget-good { background:rgba(26,122,60,0.08); border-left:4px solid #1a7a3c; border-radius:0 12px 12px 0; padding:16px 20px; margin-bottom:12px; }
+.widget-good h5 { font-family:'Nunito',sans-serif; font-size:0.82rem; font-weight:800; color:#1a7a3c; margin-bottom:6px; }
+.widget-good p { font-size:0.88rem; line-height:1.6; color:#1e5a28; }
+.widget-declic { background:rgba(30,28,24,0.06); border-left:4px solid #a09880; border-radius:0 12px 12px 0; padding:14px 20px; margin-bottom:20px; }
+.widget-declic p { font-size:0.88rem; line-height:1.6; color:#1e1c18; font-weight:600; }
+.widget-declic strong { color:#b5415a; }
+
+/* Template */
+.template-box { background:#1e1c18; border-radius:12px; padding:20px 24px; font-family:'Courier New',Courier,monospace; font-size:0.82rem; line-height:1.8; color:#fffdf8; overflow-x:auto; white-space:pre-wrap; word-wrap:break-word; margin-bottom:32px; }
+
+/* Sujets fréquents */
+.freq-card { display:flex; align-items:center; justify-content:space-between; background:#fffdf8; border-radius:10px; padding:12px 16px; margin-bottom:8px; }
+.freq-card span:first-child { font-size:0.9rem; font-weight:700; color:#1e1c18; }
+.freq-stars { color:#f5c842; white-space:nowrap; margin-left:12px; letter-spacing:1px; }
+.freq-count { font-size:0.72rem; color:#7a6a58; font-weight:600; }
+
+/* Example */
+.example-box { background:#eef6ee; border-radius:12px; padding:18px 22px; font-size:0.88rem; line-height:1.7; color:#1e5a28; margin-bottom:24px; }
+.example-box strong { color:#2d7a3a; }
+.ex-axe { margin-bottom:10px; }
+
+/* Error + tip */
+.error-box { background:#fdeef2; border-left:4px solid #b5415a; border-radius:0 12px 12px 0; padding:14px 20px; font-size:0.88rem; line-height:1.6; color:#7a2038; margin-bottom:16px; }
+.tip-box { background:#e8f3ff; border-left:4px solid #2a69a8; border-radius:0 12px 12px 0; padding:14px 20px; font-size:0.88rem; line-height:1.6; color:#1a4f82; margin-bottom:32px; }
+
+/* Axes */
+.obs-box { background:rgba(181,65,90,.06); border-left:4px solid #b5415a; border-radius:0 12px 12px 0; padding:20px 24px; margin-top:16px; }
+.obs-box h4 { font-family:'Nunito',sans-serif; font-size:1.1rem; font-weight:900; color:#b5415a; margin-bottom:10px; }
+.axe-title { font-family:'Nunito',sans-serif; font-size:1rem; font-weight:900; color:#b5415a; margin-top:24px; margin-bottom:10px; }
+.axe-list { font-size:0.88rem; margin:0 0 0 18px; color:#1e1c18; line-height:1.9; padding:0; }
+.axe-list li { margin-bottom:6px; }
+.axe-list li strong { color:#1e1c18; }
+.ref-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; margin-bottom:8px; }
+.ref-item { display:inline-flex; align-items:center; gap:6px; border-radius:8px; padding:4px 10px; font-size:0.78rem; line-height:1.4; background:#f7f5f0; border:1px solid #e8e4dc; }
+.ref-item .ref-name { font-weight:600; }
+
+/* Footer */
+.footer { max-width:900px; margin:0 auto; padding:32px 24px 48px; text-align:center; font-size:0.78rem; color:#a09880; line-height:1.7; }
+
+@media(max-width:700px){
+  .hero h1 { font-size:2rem; }
+  .hero { padding-top:84px; }
+  .template-box { font-size:0.75rem; padding:14px 16px; }
+  .freq-card { padding:10px 12px; }
+  .freq-card span:first-child { font-size:0.82rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Droit</span>
+  <a href="memos-droit.html">Mémos</a>
+  <a href="flashcards-droit.html">Flashcards</a>
+  <a href="vocabulaire-droit.html">Vocabulaire</a>
+  <a href="questions-bac-droit.html">Questions Bac</a>
+  <a href="question4-droit.html" class="active">Question 4</a>
+  <a href="methode-jour-j-droit.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">Droit STMG · Question 4</div>
+  <h1>La question de réflexion</h1>
+  <p class="hero-sub">La Q4 ne demande pas de réciter le cours. Elle demande <strong>pourquoi</strong> les règles existent. C'est toujours une question sur le <strong>rôle du droit</strong>.</p>
+</section>
+
+<div class="content">
+
+<!-- MÉTHODE -->
+<h2 class="section-title">La méthode</h2>
+
+<div class="widget-good">
+  <h5>Ce qu'on attend de toi</h5>
+  <p>"Le droit limite le pouvoir de l'employeur pour protéger le salarié, qui est dans une situation de subordination juridique. Sans encadrement légal, ce déséquilibre pourrait mener à des abus. Cependant, le droit ne supprime pas ce pouvoir : il cherche un équilibre entre protection du salarié et liberté d'entreprendre."</p>
+</div>
+<div class="widget-declic">
+  <p><strong>Le déclic :</strong> Pense toujours en termes d'<strong>équilibre</strong>. Le droit protège ET limite, il donne des droits ET impose des obligations. Termine ta réponse par cette idée d'équilibre — c'est ce qui distingue une copie moyenne d'une bonne copie.</p>
+</div>
+
+<div class="template-box">Le droit <span style="color:#f5c842">[verbe de la question : protège / limite / encadre]</span> parce que
+<span style="color:#f5c842">[raison 1 : principe juridique + explication]</span>.
+
+En effet, <span style="color:#f5c842">[développement avec exemple concret : article de loi ou situation
+du cas étudié]</span>. Par exemple, <span style="color:#f5c842">[illustration]</span>.
+
+Par ailleurs, <span style="color:#f5c842">[raison 2 : autre aspect du rôle du droit]</span>.
+<span style="color:#f5c842">[Développement + exemple]</span>.
+
+Cependant, cette protection <span style="color:#f5c842">[ou cette limitation]</span> doit être équilibrée avec
+<span style="color:#f5c842">[droit ou liberté opposée]</span>. Ainsi, le droit cherche à concilier <span style="color:#f5c842">[intérêt 1]</span>
+et <span style="color:#f5c842">[intérêt 2]</span>, ce qui montre que son rôle est de <span style="color:#f5c842">[conclusion sur la
+fonction du droit]</span>.</div>
+
+<!-- SUJETS FRÉQUENTS -->
+<h2 class="section-title">Les sujets tombés au Bac</h2>
+
+<div class="freq-card" style="border-left:3px solid #b5415a"><span>Pourquoi le droit limite-t-il le pouvoir de l'employeur ?</span><span class="freq-stars">★★★★★ <span class="freq-count">3/22</span></span></div>
+<div class="freq-card" style="border-left:3px solid #7030a0"><span>La diversité des régimes de responsabilité</span><span class="freq-stars">★★★★★ <span class="freq-count">3/22</span></span></div>
+<div class="freq-card" style="border-left:3px solid #b5415a"><span>Le droit protège-t-il efficacement le salarié ?</span><span class="freq-stars">★★★★☆ <span class="freq-count">2/22</span></span></div>
+<div class="freq-card" style="border-left:3px solid #2a69a8"><span>Pourquoi le droit encadre-t-il la formation du contrat ?</span><span class="freq-stars">★★★★☆ <span class="freq-count">2/22</span></span></div>
+<div class="freq-card" style="border-left:3px solid #946e00"><span>Les enjeux de la protection du droit de propriété</span><span class="freq-stars">★★★★☆ <span class="freq-count">2/22</span></span></div>
+<div class="freq-card" style="border-left:3px solid #2a69a8"><span>Le droit assure-t-il une protection renforcée du consommateur ?</span><span class="freq-stars">★★★★☆ <span class="freq-count">2/22</span></span></div>
+<div class="freq-card" style="border-left:3px solid #b5415a"><span>Le rôle pacificateur du droit</span><span class="freq-stars">★★★★☆ <span class="freq-count">2/22</span></span></div>
+<div class="freq-card" style="border-left:3px solid #7a6a58"><span>Le droit concilie-t-il liberté et protection ?</span><span class="freq-stars">★★☆☆☆ <span class="freq-count">1/22</span></span></div>
+<div class="freq-card" style="border-left:3px solid #7a6a58"><span>Pourquoi la Cour de cassation est-elle indispensable ?</span><span class="freq-stars">★★☆☆☆ <span class="freq-count">1/22</span></span></div>
+<div class="freq-card" style="border-left:3px solid #7a6a58"><span>Le rôle du droit dans la lutte contre les discriminations</span><span class="freq-stars">★★☆☆☆ <span class="freq-count">1/22</span></span></div>
+
+<!-- EXEMPLE CORRIGÉ -->
+<h2 class="section-title" style="margin-top:40px">Exemple corrigé</h2>
+<p style="font-size:0.85rem;color:#7a6a58;margin-bottom:12px;font-weight:600">« Pourquoi le droit limite-t-il le pouvoir de l'employeur ? » — Tombé 3 fois (★★★★★)</p>
+<div class="example-box">
+  <div class="ex-axe">Le droit limite le pouvoir de l'employeur pour protéger le salarié, qui est dans une situation de <strong>subordination juridique</strong>. En effet, le contrat de travail crée un lien de subordination : le salarié est soumis aux directives de l'employeur. Sans encadrement légal, ce déséquilibre pourrait mener à des abus.</div>
+  <div class="ex-axe">C'est pourquoi le Code du travail impose des règles : l'employeur doit respecter une <strong>procédure de licenciement</strong> (entretien préalable, notification, motif réel et sérieux), garantir la <strong>sécurité</strong> de ses salariés (article L4121-1), et respecter les <strong>libertés fondamentales</strong> (non-discrimination, droit de grève).</div>
+  <div class="ex-axe">Cependant, le droit ne supprime pas le pouvoir de l'employeur : il le conserve à travers le <strong>pouvoir de direction</strong>, le <strong>pouvoir disciplinaire</strong> et le <strong>pouvoir réglementaire</strong>. Le droit cherche donc un <strong>équilibre</strong> entre la protection du salarié et la liberté d'entreprendre de l'employeur.</div>
+</div>
+
+<div class="error-box">&#9888;&#65039; <strong>Erreur classique :</strong> Répondre trop brièvement ou juste répéter le cours sans expliquer le POURQUOI. « Le droit protège le salarié avec l'article L1232-1 » ne suffit pas. Il faut expliquer POURQUOI cette protection existe (déséquilibre, subordination, risque d'abus).</div>
+
+<div class="tip-box">&#128161; <strong>Astuce :</strong> Termine toujours par l'idée d'ÉQUILIBRE. Le droit ne protège jamais un seul côté : il cherche toujours à concilier des intérêts opposés. Montrer cet équilibre, c'est ce qui distingue une copie moyenne d'une bonne copie.</div>
+
+<!-- LES 4 GRANDS AXES -->
+<div class="obs-box">
+  <h4>Les 4 grands axes — prépare 2-3 idées par axe</h4>
+  <p style="font-size:0.85rem;color:#7a6a58;margin-bottom:16px">La Q4 tourne TOUJOURS autour de l'un de ces 4 axes. Si tu as 2-3 idées pour chaque, tu es prêt·e pour n'importe quel sujet.</p>
+
+  <div class="axe-title">1. Pourquoi le droit protège-t-il la partie faible ?</div>
+  <div class="ref-list">
+    <span class="ref-item"><span class="ref-name">Salarié</span></span>
+    <span class="ref-item"><span class="ref-name">Consommateur</span></span>
+    <span class="ref-item"><span class="ref-name">Victime</span></span>
+  </div>
+  <ul class="axe-list">
+    <li><strong>Salarié</strong> — lien de subordination → le salarié ne peut pas négocier d'égal à égal ; le droit compense ce déséquilibre (CDI par défaut, procédure de licenciement, droit de retrait, congés payés)</li>
+    <li><strong>Consommateur</strong> — asymétrie d'information → le professionnel connaît le produit, pas l'acheteur ; le droit impose des obligations (garantie légale de conformité, délai de rétractation, interdiction des clauses abusives)</li>
+    <li><strong>Victime</strong> — si la victime devait toujours prouver que quelqu'un a fait une faute, beaucoup ne seraient jamais indemnisées. Le droit crée donc des cas où la responsabilité est <strong>automatique</strong> : le gardien d'une chose (art. 1242 al.1), l'employeur pour son salarié (art. 1242), le producteur d'un produit défectueux (art. 1245). Dans ces cas, la victime prouve juste le dommage et le lien — pas la faute.</li>
+  </ul>
+
+  <div class="axe-title">2. Comment le droit concilie-t-il des intérêts opposés ?</div>
+  <div class="ref-list">
+    <span class="ref-item"><span class="ref-name">Liberté vs protection</span></span>
+    <span class="ref-item"><span class="ref-name">Propriété vs intérêt général</span></span>
+    <span class="ref-item"><span class="ref-name">Employeur vs salarié</span></span>
+  </div>
+  <ul class="axe-list">
+    <li><strong>Liberté vs protection</strong> — liberté contractuelle MAIS nullité si vice du consentement ; clause de non-concurrence autorisée MAIS limitée dans le temps et l'espace</li>
+    <li><strong>Propriété vs intérêt général</strong> — un propriétaire peut faire ce qu'il veut de son bien (art. 544), MAIS l'État peut lui reprendre pour construire une route ou un hôpital (<strong>expropriation</strong> pour utilité publique). De même, si l'usage de son bien gêne les voisins au-delà du raisonnable, le juge peut l'en empêcher (<strong>trouble anormal de voisinage</strong>).</li>
+    <li><strong>Employeur vs salarié</strong> — pouvoir de direction MAIS encadré par le Code du travail ; licenciement possible MAIS cause réelle et sérieuse exigée</li>
+  </ul>
+
+  <div class="axe-title">3. À quoi servent les différents régimes juridiques ?</div>
+  <div class="ref-list">
+    <span class="ref-item"><span class="ref-name">Responsabilité</span></span>
+    <span class="ref-item"><span class="ref-name">Contrats</span></span>
+    <span class="ref-item"><span class="ref-name">Licenciement</span></span>
+  </div>
+  <ul class="axe-list">
+    <li><strong>Responsabilité</strong> — plusieurs régimes (fait personnel, fait d'autrui, fait des choses) pour couvrir TOUTES les situations de dommage ; chacun a ses propres conditions → permet une indemnisation plus juste</li>
+    <li><strong>Contrats</strong> — la force obligatoire (art. 1103) garantit la sécurité juridique ; les remèdes à l'inexécution (art. 1217) protègent la partie lésée</li>
+    <li><strong>Licenciement</strong> — plusieurs types (faute, économique, inaptitude) avec des procédures différentes → le droit adapte les règles à la cause de la rupture ; le rôle pacificateur du droit = éviter les conflits en fixant des règles claires</li>
+  </ul>
+
+  <div class="axe-title">4. Quel est le rôle des institutions juridiques ?</div>
+  <div class="ref-list">
+    <span class="ref-item"><span class="ref-name">Cour de cassation</span></span>
+    <span class="ref-item"><span class="ref-name">Hiérarchie des normes</span></span>
+    <span class="ref-item"><span class="ref-name">Accès à la justice</span></span>
+  </div>
+  <ul class="axe-list">
+    <li><strong>Cour de cassation</strong> — uniformise l'interprétation du droit sur tout le territoire ; ne rejuge pas les faits mais vérifie que la loi est bien appliquée → sécurité juridique</li>
+    <li><strong>Hiérarchie des normes</strong> — Constitution > loi > règlement > contrat ; garantit la cohérence du système juridique ; un contrat contraire à la loi est nul</li>
+    <li><strong>Accès à la justice</strong> — le droit donne des recours (prud'hommes, tribunal judiciaire) ; aide juridictionnelle pour les plus modestes → le droit n'existe que s'il peut être appliqué</li>
+  </ul>
+</div>
+
+</div>
+
+<div class="footer">
+  Révizo · Droit STMG · Question 4 · Avril 2026<br>
+  Sources : 22 annales post-réforme (2021-2025) · Consignes de correction · Rapports de correcteurs
+</div>
+
+</body>
+</html>
