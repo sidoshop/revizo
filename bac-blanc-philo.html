@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Révizo — Bac Blanc Philosophie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="revizo-design-system.css">
+  <link rel="stylesheet" href="revizo-nav.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--color-bg); color: var(--color-text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+    /* PAGE HEADER */
+    .page-header {
+      max-width: 760px;
+      margin: 2rem auto 1rem;
+      padding: 0 1rem;
+    }
+    .epreuve-label {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #2e2e2e; background: #eeeeee;
+      display: inline-block; padding: 3px 10px; border-radius: 20px; margin-bottom: 0.5rem;
+    }
+    .page-title {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.7rem; color: #2e2e2e; margin-bottom: 0.25rem;
+    }
+    .page-sub { font-size: 0.85rem; color: var(--color-muted); }
+
+    /* TOOLBAR */
+    .toolbar {
+      max-width: 760px; margin: 0 auto 1.5rem; padding: 0 1rem;
+      display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;
+    }
+    .btn-print {
+      background: #2e2e2e; color: white; border: none; border-radius: 8px;
+      padding: 0.5rem 1.1rem; font-size: 0.82rem; font-weight: 700; cursor: pointer;
+    }
+    .btn-print:hover { background: #444; }
+    .timer-box {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: #fff; border: 2px solid #2e2e2e; border-radius: 8px;
+      padding: 0.4rem 0.9rem; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.1rem;
+    }
+    .timer-box .timer-label { font-size: 0.72rem; font-weight: 700; color: var(--color-muted); text-transform: uppercase; }
+    .timer-controls { display: flex; gap: 0.4rem; }
+    .timer-controls button {
+      background: #eee; border: none; border-radius: 6px; padding: 0.3rem 0.6rem;
+      font-size: 0.78rem; font-weight: 700; cursor: pointer;
+    }
+    .timer-controls button:hover { background: #ddd; }
+    .timer-running { color: #b5415a; }
+
+    /* EXAM PAPER */
+    .exam-paper {
+      max-width: 760px; margin: 0 auto 2rem; padding: 0 1rem;
+    }
+
+    /* Official exam header */
+    .exam-header {
+      background: #fff; border: 2px solid #2e2e2e; border-radius: 16px;
+      padding: 1.5rem 2rem; margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .exam-header .exam-title {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.4rem;
+      text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.5rem;
+    }
+    .exam-header .exam-meta {
+      font-size: 0.82rem; color: var(--color-muted); margin-bottom: 0.4rem;
+    }
+    .exam-header .exam-instruction {
+      font-size: 0.85rem; font-style: italic; color: #555; margin-top: 0.75rem;
+      border-top: 1px solid #eee; padding-top: 0.75rem;
+    }
+
+    /* Sujet block */
+    .sujet-block {
+      background: #fff; border-radius: 16px; border-left: 5px solid #2e2e2e;
+      padding: 1.5rem; margin-bottom: 1.25rem;
+      box-shadow: 0 2px 8px rgba(30,28,24,0.06);
+    }
+    .sujet-num {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #2e2e2e; background: #eeeeee;
+      display: inline-block; padding: 2px 9px; border-radius: 20px; margin-bottom: 0.6rem;
+    }
+    .sujet-type {
+      font-size: 0.78rem; font-weight: 700; color: var(--color-muted); margin-bottom: 0.5rem;
+    }
+    .sujet-question {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.3rem;
+      color: #2e2e2e; margin-bottom: 0;
+    }
+
+    /* Texte philosophique */
+    .texte-philo {
+      background: #fafafa; border: 1px solid #e0e0e0; border-radius: 10px;
+      padding: 1.25rem 1.5rem; margin-top: 1rem; font-style: italic;
+      line-height: 1.7; font-size: 0.9rem; color: #2e2e2e;
+    }
+    .texte-philo p { margin-bottom: 0.75rem; }
+    .texte-philo p:last-child { margin-bottom: 0; }
+    .texte-source {
+      font-style: normal; font-weight: 700; font-size: 0.82rem;
+      color: var(--color-muted); margin-top: 0.75rem; text-align: right;
+    }
+
+    /* CORRIGÉ SECTION */
+    .corrige-toggle {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-top: 1rem; background: none; border: 2px dashed #2e2e2e;
+      border-radius: 10px; padding: 0.6rem 1rem; cursor: pointer;
+      font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.82rem;
+      color: #2e2e2e; width: 100%; text-align: left;
+      transition: background 0.15s;
+    }
+    .corrige-toggle:hover { background: #f5f5f5; }
+    .corrige-toggle .toggle-icon { transition: transform 0.2s; font-style: normal; }
+    .corrige-toggle.open .toggle-icon { transform: rotate(180deg); }
+
+    .corrige-content {
+      display: none; margin-top: 0.75rem;
+      background: #f8f6f2; border-radius: 12px; padding: 1.25rem;
+      font-size: 0.88rem; line-height: 1.6;
+    }
+    .corrige-content.visible { display: block; }
+
+    .corrige-section { margin-bottom: 1.1rem; }
+    .corrige-section:last-child { margin-bottom: 0; }
+    .corrige-section h4 {
+      font-family: 'Nunito', sans-serif; font-weight: 900;
+      font-size: 0.95rem; color: #2e2e2e; margin-bottom: 0.4rem;
+      border-bottom: 2px solid #e0dcd4; padding-bottom: 0.25rem;
+    }
+    .corrige-section p, .corrige-section li { color: #444; margin-bottom: 0.3rem; }
+    .corrige-section ul { padding-left: 1.2rem; }
+    .corrige-section .ref { color: #b5415a; font-weight: 700; }
+    .corrige-section .plan-step {
+      background: #fff; border-left: 3px solid #2e2e2e; border-radius: 0 8px 8px 0;
+      padding: 0.6rem 0.9rem; margin-bottom: 0.5rem;
+    }
+    .plan-step .step-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--color-muted); }
+    .plan-step .step-title { font-weight: 700; color: #2e2e2e; margin: 0.1rem 0; }
+    .plan-step .step-body { font-size: 0.84rem; color: #555; }
+
+    /* GRILLE AUTO-ÉVALUATION */
+    .eval-section {
+      max-width: 760px; margin: 0 auto 3rem; padding: 0 1rem;
+    }
+    .eval-title {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.3rem;
+      color: #2e2e2e; margin-bottom: 1rem;
+    }
+    .eval-grid {
+      background: #fff; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 2px 8px rgba(30,28,24,0.06); margin-bottom: 1.25rem;
+    }
+    .eval-grid-header {
+      background: #2e2e2e; color: white; padding: 0.75rem 1.25rem;
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem;
+    }
+    .eval-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.65rem 1.25rem; border-bottom: 1px solid #f0ede6;
+      cursor: pointer; transition: background 0.1s;
+    }
+    .eval-item:last-child { border-bottom: none; }
+    .eval-item:hover { background: #fafafa; }
+    .eval-item input[type="checkbox"] {
+      width: 18px; height: 18px; accent-color: #2e2e2e; cursor: pointer; flex-shrink: 0;
+    }
+    .eval-item .eval-text { font-size: 0.85rem; color: #2e2e2e; flex: 1; }
+    .eval-item .eval-pts {
+      font-size: 0.78rem; font-weight: 700; color: var(--color-muted); white-space: nowrap;
+    }
+    .eval-item.checked .eval-text { color: #888; text-decoration: line-through; }
+
+    .eval-score {
+      background: #f8f6f2; border-radius: 0 0 16px 16px;
+      padding: 0.75rem 1.25rem; text-align: right;
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; color: #2e2e2e;
+    }
+
+    /* SCORE TOTAL */
+    .score-total {
+      max-width: 760px; margin: 0 auto 3rem; padding: 0 1rem;
+    }
+    .score-card {
+      background: #2e2e2e; color: white; border-radius: 16px;
+      padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .score-card .big-score {
+      font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 3rem;
+      line-height: 1; color: #f5c842;
+    }
+    .score-card .score-denom { font-size: 1rem; color: rgba(255,255,255,0.6); }
+    .score-card .score-label { font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-top: 0.2rem; }
+    .score-card .score-msg { font-size: 0.9rem; color: rgba(255,255,255,0.8); }
+    .score-card .btn-reset {
+      margin-left: auto; background: rgba(255,255,255,0.12); color: white;
+      border: 2px solid rgba(255,255,255,0.3); border-radius: 8px;
+      padding: 0.5rem 1rem; font-size: 0.82rem; font-weight: 700; cursor: pointer;
+    }
+    .score-card .btn-reset:hover { background: rgba(255,255,255,0.2); }
+
+    @media print {
+      .nav-epreuve, .toolbar, .corrige-toggle, .corrige-content, .eval-section, .score-total { display: none; }
+      .sujet-block { border: 1px solid #ccc; box-shadow: none; }
+      body { background: white; }
+    }
+    @media (max-width: 500px) {
+      .exam-header { padding: 1rem; }
+      .sujet-block { padding: 1rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="nav-epreuve">
+    <a href="index.html" class="logo">Révi<span>zo</span></a>
+    <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+    <a href="epreuve-sgdn.html"     class="epreuve-link">SGDN</a>
+    <a href="epreuve-philo.html"    class="epreuve-link active">Philo</a>
+  </nav>
+
+  <div class="page-header">
+    <span class="epreuve-label">Philosophie · Filière technologique</span>
+    <h1 class="page-title">Bac Blanc</h1>
+    <p class="page-sub">3 sujets · 4h · Coeff 2 · Corrigés détaillés + grille d'auto-évaluation</p>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <button class="btn-print" onclick="window.print()">🖨 Imprimer le sujet</button>
+    <div class="timer-box">
+      <div>
+        <div class="timer-label">Chrono</div>
+        <div id="timer-display">04:00:00</div>
+      </div>
+      <div class="timer-controls">
+        <button id="btn-start" onclick="startTimer()">▶</button>
+        <button onclick="pauseTimer()">⏸</button>
+        <button onclick="resetTimer()">↺</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAM PAPER -->
+  <div class="exam-paper">
+
+    <div class="exam-header">
+      <div class="exam-title">Baccalauréat — Épreuve de Philosophie</div>
+      <div class="exam-meta">Série technologique · Durée : 4 heures · Coefficient : 2</div>
+      <div class="exam-meta">Le candidat traite <strong>un seul</strong> des trois sujets proposés ci-dessous.</div>
+      <div class="exam-instruction">
+        Les sujets 1 et 2 sont des dissertations. Le sujet 3 est une explication de texte.<br>
+        Pour la dissertation, le candidat est invité à traiter le sujet en développant sa propre réflexion argumentée.<br>
+        Pour l'explication de texte, le candidat doit dégager les idées essentielles du texte et en expliquer le sens.
+      </div>
+    </div>
+
+    <!-- SUJET 1 -->
+    <div class="sujet-block">
+      <span class="sujet-num">Sujet 1</span>
+      <div class="sujet-type">Dissertation</div>
+      <div class="sujet-question">La liberté est-elle compatible avec l'existence de lois&nbsp;?</div>
+
+      <button class="corrige-toggle" onclick="toggleCorrige(this)">
+        <span class="toggle-icon">▼</span> Voir le corrigé détaillé
+      </button>
+      <div class="corrige-content">
+
+        <div class="corrige-section">
+          <h4>Analyse du sujet</h4>
+          <p>La question oppose en apparence <span class="ref">liberté</span> (pouvoir faire ce qu'on veut) et <span class="ref">loi</span> (contrainte imposée de l'extérieur). Mais « compatible » invite à nuancer : il ne s'agit pas de nier la tension, mais d'examiner si les deux peuvent coexister — voire se renforcer.</p>
+          <p><strong>Mots-clés :</strong> Liberté (de faire, de vouloir), Loi (positive/morale/naturelle), compatible (harmonie, condition, conflit).</p>
+        </div>
+
+        <div class="corrige-section">
+          <h4>Plan en 3 parties</h4>
+          <div class="plan-step">
+            <div class="step-label">Partie I — Thèse naïve</div>
+            <div class="step-title">La loi semble menacer la liberté</div>
+            <div class="step-body">La loi interdit et punit → elle limite les actions possibles. <span class="ref">Hobbes</span> : sans loi, l'homme est libre de tout faire dans l'état de nature. <span class="ref">Rousseau</span> (1ère lecture) : l'homme naît libre, la société l'enchaîne.</div>
+          </div>
+          <div class="plan-step">
+            <div class="step-label">Partie II — Antithèse</div>
+            <div class="step-title">La loi est la condition de la liberté réelle</div>
+            <div class="step-body">Sans loi, la liberté du plus fort écrase celle des autres → ce n'est plus la liberté mais la domination. <span class="ref">Locke</span> : la loi protège mes droits naturels. <span class="ref">Rousseau</span> : en obéissant à la loi qu'on s'est donnée, on reste libre — la liberté civile > liberté naturelle.</div>
+          </div>
+          <div class="plan-step">
+            <div class="step-label">Partie III — Synthèse</div>
+            <div class="step-title">La liberté authentique est autonomie, pas absence de contrainte</div>
+            <div class="step-body"><span class="ref">Kant</span> : être libre ce n'est pas suivre ses désirs, c'est obéir à la loi morale qu'on se donne à soi-même (autonomie vs hétéronomie). La loi juste, librement consentie, réalise la liberté au lieu de la nier.</div>
+          </div>
+        </div>
+
+        <div class="corrige-section">
+          <h4>Auteurs à mobiliser</h4>
+          <ul>
+            <li><span class="ref">Hobbes</span> — <em>Léviathan</em> : état de nature = guerre de tous contre tous</li>
+            <li><span class="ref">Locke</span> — <em>Traité du gouvernement civil</em> : loi = protection des droits</li>
+            <li><span class="ref">Rousseau</span> — <em>Du Contrat Social</em> : liberté civile > liberté naturelle; volonté générale</li>
+            <li><span class="ref">Kant</span> — autonomie de la volonté; l'impératif catégorique comme loi que je me donne</li>
+          </ul>
+        </div>
+
+        <div class="corrige-section">
+          <h4>Introduction type</h4>
+          <p>Amorce : Un enfant qui grandit souhaite souvent s'affranchir des règles imposées par ses parents. Cela illustre l'intuition courante selon laquelle liberté et contrainte s'opposent. Pourtant, vivre sans aucune règle serait-il vraiment être libre ? La question « La liberté est-elle compatible avec l'existence de lois ? » invite à dépasser cette opposition apparente pour examiner les conditions véritables de la liberté. Nous verrons d'abord que la loi semble restreindre la liberté (I), puis que sans loi, il n'y a pas de liberté réelle (II), avant de montrer que la liberté authentique est autonomie — et que la bonne loi en est la condition (III).</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SUJET 2 -->
+    <div class="sujet-block">
+      <span class="sujet-num">Sujet 2</span>
+      <div class="sujet-type">Dissertation</div>
+      <div class="sujet-question">L'art peut-il nous aider à mieux comprendre la réalité&nbsp;?</div>
+
+      <button class="corrige-toggle" onclick="toggleCorrige(this)">
+        <span class="toggle-icon">▼</span> Voir le corrigé détaillé
+      </button>
+      <div class="corrige-content">
+
+        <div class="corrige-section">
+          <h4>Analyse du sujet</h4>
+          <p>« Aider à comprendre » → l'art comme outil cognitif. « Réalité » → ce qui est (physique, social, intérieur). La question suppose une tension : l'art est fiction/illusion, or on parle de comprendre le réel. Comment l'illusion aide-t-elle à voir le vrai ?</p>
+          <p><strong>Distinction clé :</strong> Art mimétique (imitation du réel) ≠ Art expressif (révélation du sens) ≠ Art symbolique (déformation créatrice).</p>
+        </div>
+
+        <div class="corrige-section">
+          <h4>Plan en 3 parties</h4>
+          <div class="plan-step">
+            <div class="step-label">Partie I — Thèse</div>
+            <div class="step-title">L'art imite la réalité et nous y donne accès</div>
+            <div class="step-body">L'art représente le monde visible et le rend intelligible. <span class="ref">Aristote</span> : la mimésis n'est pas mensonge mais apprentissage → on reconnaît le général dans le particulier. Le roman réaliste, la photo documentaire, le cinéma : ils nous montrent des aspects du réel que nous n'avions pas vus.</div>
+          </div>
+          <div class="plan-step">
+            <div class="step-label">Partie II — Antithèse</div>
+            <div class="step-title">L'art déforme la réalité et peut nous égarer</div>
+            <div class="step-body"><span class="ref">Platon</span> (<em>La République</em>) : l'art est imitation d'imitation (3ème degré du réel) → il nous éloigne de la vérité. La beauté séduit et nous fait prendre l'illusion pour le vrai. L'art peut propager des préjugés, des idéologies.</div>
+          </div>
+          <div class="plan-step">
+            <div class="step-label">Partie III — Dépassement</div>
+            <div class="step-title">L'art révèle ce que le regard ordinaire ne voit pas</div>
+            <div class="step-body"><span class="ref">Heidegger</span> : l'art (ex. les chaussures de Van Gogh) dévoile l'être des choses que la perception quotidienne masque. <span class="ref">Proust</span> : la littérature nous rend à nous-mêmes → réalité intérieure. L'art ne copie pas le réel, il l'approfondit.</div>
+          </div>
+        </div>
+
+        <div class="corrige-section">
+          <h4>Auteurs à mobiliser</h4>
+          <ul>
+            <li><span class="ref">Aristote</span> — <em>Poétique</em> : la mimésis comme connaissance du général</li>
+            <li><span class="ref">Platon</span> — <em>La République</em> : les artistes, imitateurs d'ombres</li>
+            <li><span class="ref">Kant</span> — <em>Critique de la faculté de juger</em> : le beau comme symbole du bien moral</li>
+            <li><span class="ref">Heidegger</span> — <em>L'Origine de l'œuvre d'art</em> : l'art dévoile le monde</li>
+          </ul>
+        </div>
+
+        <div class="corrige-section">
+          <h4>Pièges à éviter</h4>
+          <ul>
+            <li>Ne pas traiter uniquement des arts plastiques → penser aussi à la littérature, la musique, le cinéma</li>
+            <li>Ne pas confondre « plaisir esthétique » et « connaissance de la réalité »</li>
+            <li>Ne pas oublier de définir ce qu'on entend par « réalité » (physique ? sociale ? psychologique ?)</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SUJET 3 — TEXTE -->
+    <div class="sujet-block">
+      <span class="sujet-num">Sujet 3</span>
+      <div class="sujet-type">Explication de texte</div>
+      <div class="sujet-question">Adam Smith — Justice et bienveillance</div>
+
+      <div class="texte-philo">
+        <p>La société peut subsister entre différents hommes, comme elle subsiste entre des marchands, par le sentiment de son utilité, sans aucun lien d'amour ou d'affection mutuelle&nbsp;; et quoique nul homme en elle ne soit obligé à un autre par aucun lien de gratitude, la société peut cependant être soutenue par un échange mercenaire de bons offices d'après une estimation convenue.</p>
+        <p>La société ne peut cependant subsister parmi ceux qui sont en tout temps prêts à se blesser et à se faire du mal les uns aux autres. Au moment où commence cette sorte de méchanceté et d'hostilité, toutes les liaisons de la société se trouvent, pour ainsi dire, dissoutes.</p>
+        <p>Ainsi donc, la bienveillance est moins essentielle à l'existence de la société que la justice. La société peut subsister sans bienveillance, mais la prédominance de l'injustice doit infailliblement la détruire. Quoique ce sentiment de la bienveillance soit donc moins essentiel que celui de la justice, il est cependant plus honorable. Nous sentons que la bienveillance a quelque chose de plus aimable que la stricte justice.</p>
+        <div class="texte-source">Adam Smith, <em>Théorie des sentiments moraux</em> (1759)</div>
+      </div>
+
+      <button class="corrige-toggle" onclick="toggleCorrige(this)">
+        <span class="toggle-icon">▼</span> Voir le corrigé détaillé
+      </button>
+      <div class="corrige-content">
+
+        <div class="corrige-section">
+          <h4>Thèse du texte (à formuler d'emblée)</h4>
+          <p>Smith soutient que la <span class="ref">justice</span> est la condition minimale et indispensable à la survie de la société, tandis que la <span class="ref">bienveillance</span>, bien que moralement supérieure, est facultative. Sans justice, la société se dissout ; sans bienveillance, elle peut survivre — mais de façon appauvrie.</p>
+        </div>
+
+        <div class="corrige-section">
+          <h4>Structure du texte (3 mouvements)</h4>
+          <div class="plan-step">
+            <div class="step-label">§1 — Mouvement 1</div>
+            <div class="step-title">La société peut fonctionner sans amour mutuel</div>
+            <div class="step-body">Exemple du marché : des marchands échangent sans s'aimer. Société = coopération utilitaire possible. Argument : l'utilité suffit à faire tenir ensemble des hommes.</div>
+          </div>
+          <div class="plan-step">
+            <div class="step-label">§2 — Mouvement 2</div>
+            <div class="step-title">Mais la société ne peut survivre à l'injustice</div>
+            <div class="step-body">Si les hommes « se blessent » activement, les liens sociaux se dissolvent. L'injustice = acte positif de nuisance → détruit la base de toute coopération.</div>
+          </div>
+          <div class="plan-step">
+            <div class="step-label">§3 — Mouvement 3</div>
+            <div class="step-title">Conclusion : justice = nécessaire, bienveillance = honorable</div>
+            <div class="step-body">Smith distingue deux vertus : l'une (justice) est le plancher sans lequel rien n'est possible ; l'autre (bienveillance) est la vertu qui élève moralement mais dont l'absence ne détruit pas la société.</div>
+          </div>
+        </div>
+
+        <div class="corrige-section">
+          <h4>Explication des concepts clés</h4>
+          <ul>
+            <li><strong>« Échange mercenaire »</strong> : lien purement économique, sans dimension affective. Smith ne condamne pas ce lien — il dit qu'il suffit à faire tenir une société.</li>
+            <li><strong>Justice</strong> : chez Smith, la justice est avant tout <em>négative</em> — ne pas nuire à autrui. C'est l'absence d'injustice qui importe, plus que la promotion active du bien.</li>
+            <li><strong>Bienveillance</strong> : vertu positive — vouloir du bien à autrui, agir par amour. Supérieure moralement mais non indispensable structurellement.</li>
+          </ul>
+        </div>
+
+        <div class="corrige-section">
+          <h4>Discussion / Ouverture</h4>
+          <p>On peut se demander : une société purement fondée sur la justice (= absence d'injustice) sans bienveillance est-elle vraiment désirable ? <span class="ref">Kant</span> dirait que l'obligation morale ne dépend pas du sentiment mais du devoir. <span class="ref">Rousseau</span> objecterait que la pitié naturelle (forme de bienveillance) précède et fonde la justice sociale. La position de Smith est réaliste mais peut sembler pauvre : elle sauve le minimum (vivre ensemble) sans viser le maximum (bien vivre ensemble).</p>
+        </div>
+
+        <div class="corrige-section">
+          <h4>Pourquoi ce texte revient souvent au Bac techno</h4>
+          <p>Adam Smith articule <span class="ref">Justice</span> et une notion secondaire (bienveillance / sentiment moral) en un raisonnement clair à 3 temps — idéal pour l'épreuve. Il permet aussi de croiser la notion Justice avec Liberté (liberté négative), et de montrer une pensée non-dogmatique sur le lien social.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /exam-paper -->
+
+  <!-- GRILLE AUTO-ÉVALUATION -->
+  <div class="eval-section">
+    <h2 class="eval-title">Grille d'auto-évaluation</h2>
+
+    <!-- Dissertation -->
+    <div class="eval-grid" id="grid-dissert">
+      <div class="eval-grid-header">📝 Dissertation — critères d'évaluation</div>
+
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="2">
+        <input type="checkbox">
+        <span class="eval-text">J'ai défini les termes clés du sujet dans l'introduction</span>
+        <span class="eval-pts">2 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="2">
+        <input type="checkbox">
+        <span class="eval-text">J'ai formulé une problématique claire et non triviale</span>
+        <span class="eval-pts">2 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="2">
+        <input type="checkbox">
+        <span class="eval-text">J'ai annoncé un plan en 3 parties dans l'introduction</span>
+        <span class="eval-pts">2 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="3">
+        <input type="checkbox">
+        <span class="eval-text">Chaque partie développe un argument distinct avec exemples</span>
+        <span class="eval-pts">3 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="3">
+        <input type="checkbox">
+        <span class="eval-text">J'ai cité et expliqué au moins 2 auteurs pertinents</span>
+        <span class="eval-pts">3 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="2">
+        <input type="checkbox">
+        <span class="eval-text">Les transitions entre parties sont explicites et logiques</span>
+        <span class="eval-pts">2 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="3">
+        <input type="checkbox">
+        <span class="eval-text">La conclusion répond à la problématique et ouvre une piste</span>
+        <span class="eval-pts">3 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="3">
+        <input type="checkbox">
+        <span class="eval-text">Mon argumentation progresse (≠ liste de thèses juxtaposées)</span>
+        <span class="eval-pts">3 pts</span>
+      </div>
+
+      <div class="eval-score" id="score-dissert">Score : 0 / 20</div>
+    </div>
+
+    <!-- Texte -->
+    <div class="eval-grid" id="grid-texte">
+      <div class="eval-grid-header">📖 Explication de texte — critères d'évaluation</div>
+
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="2">
+        <input type="checkbox">
+        <span class="eval-text">J'ai formulé la thèse générale du texte en introduction</span>
+        <span class="eval-pts">2 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="3">
+        <input type="checkbox">
+        <span class="eval-text">J'ai découpé le texte en mouvements logiques (≥ 2)</span>
+        <span class="eval-pts">3 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="3">
+        <input type="checkbox">
+        <span class="eval-text">J'ai expliqué les concepts clés (justice, bienveillance…)</span>
+        <span class="eval-pts">3 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="2">
+        <input type="checkbox">
+        <span class="eval-text">J'ai cité et commenté des extraits précis du texte</span>
+        <span class="eval-pts">2 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="3">
+        <input type="checkbox">
+        <span class="eval-text">J'ai restitué le raisonnement de l'auteur sans le trahir</span>
+        <span class="eval-pts">3 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="3">
+        <input type="checkbox">
+        <span class="eval-text">J'ai mis le texte en perspective (autres auteurs / notions)</span>
+        <span class="eval-pts">3 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="2">
+        <input type="checkbox">
+        <span class="eval-text">J'ai discuté ou nuancé la position de l'auteur</span>
+        <span class="eval-pts">2 pts</span>
+      </div>
+      <div class="eval-item" onclick="toggleEval(this)" data-pts="2">
+        <input type="checkbox">
+        <span class="eval-text">Ma rédaction est claire, structurée, sans paraphrase</span>
+        <span class="eval-pts">2 pts</span>
+      </div>
+
+      <div class="eval-score" id="score-texte">Score : 0 / 20</div>
+    </div>
+
+  </div><!-- /eval-section -->
+
+  <!-- SCORE TOTAL -->
+  <div class="score-total">
+    <div class="score-card">
+      <div>
+        <div class="big-score" id="total-score">0</div>
+        <div class="score-denom">/ 20</div>
+        <div class="score-label" id="score-sub">Cochez les critères pour calculer</div>
+      </div>
+      <div class="score-msg" id="score-msg"></div>
+      <button class="btn-reset" onclick="resetAll()">↺ Recommencer</button>
+    </div>
+  </div>
+
+  <script>
+    // TIMER
+    let timerInterval = null;
+    let totalSeconds = 4 * 3600; // 4 heures
+
+    function formatTime(s) {
+      const h = Math.floor(s / 3600).toString().padStart(2, '0');
+      const m = Math.floor((s % 3600) / 60).toString().padStart(2, '0');
+      const sec = (s % 60).toString().padStart(2, '0');
+      return `${h}:${m}:${sec}`;
+    }
+
+    function startTimer() {
+      if (timerInterval) return;
+      const display = document.getElementById('timer-display');
+      timerInterval = setInterval(() => {
+        if (totalSeconds > 0) {
+          totalSeconds--;
+          display.textContent = formatTime(totalSeconds);
+          if (totalSeconds <= 900) display.classList.add('timer-running'); // 15 min restantes
+        } else {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          display.textContent = 'TERMINÉ';
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      totalSeconds = 4 * 3600;
+      const display = document.getElementById('timer-display');
+      display.textContent = formatTime(totalSeconds);
+      display.classList.remove('timer-running');
+    }
+
+    // CORRIGÉS TOGGLE
+    function toggleCorrige(btn) {
+      btn.classList.toggle('open');
+      const content = btn.nextElementSibling;
+      content.classList.toggle('visible');
+    }
+
+    // GRILLE AUTO-ÉVAL
+    function toggleEval(item) {
+      const cb = item.querySelector('input[type="checkbox"]');
+      cb.checked = !cb.checked;
+      item.classList.toggle('checked', cb.checked);
+      updateScores();
+    }
+
+    function updateScores() {
+      // Dissertation
+      const dissertItems = document.querySelectorAll('#grid-dissert .eval-item');
+      let dissertScore = 0, dissertMax = 0;
+      dissertItems.forEach(item => {
+        const pts = parseInt(item.dataset.pts || 0);
+        dissertMax += pts;
+        if (item.querySelector('input').checked) dissertScore += pts;
+      });
+      // Scale to 20
+      const dissert20 = Math.round((dissertScore / dissertMax) * 20);
+      document.getElementById('score-dissert').textContent = `Score : ${dissertScore} / ${dissertMax} → ${dissert20}/20`;
+
+      // Texte
+      const texteItems = document.querySelectorAll('#grid-texte .eval-item');
+      let texteScore = 0, texteMax = 0;
+      texteItems.forEach(item => {
+        const pts = parseInt(item.dataset.pts || 0);
+        texteMax += pts;
+        if (item.querySelector('input').checked) texteScore += pts;
+      });
+      const texte20 = Math.round((texteScore / texteMax) * 20);
+      document.getElementById('score-texte').textContent = `Score : ${texteScore} / ${texteMax} → ${texte20}/20`;
+
+      // Total (moyenne des deux grilles cochées)
+      const anyDissert = dissertScore > 0;
+      const anyTexte = texteScore > 0;
+      let total = 0;
+      if (anyDissert && anyTexte) total = Math.round((dissert20 + texte20) / 2);
+      else if (anyDissert) total = dissert20;
+      else if (anyTexte) total = texte20;
+
+      document.getElementById('total-score').textContent = total;
+      const msgs = { 0: '', 5: '💪 Continue de t\'entraîner !', 10: '📚 Tu progresses — relis les corrigés', 12: '✅ Bon niveau — consolide les auteurs', 15: '👍 Très bien ! Peaufine l\'introduction', 18: '🏆 Excellent — tu es prêt(e) pour le vrai !' };
+      let msg = '';
+      for (const [min, m] of Object.entries(msgs)) if (total >= parseInt(min)) msg = m;
+      document.getElementById('score-msg').textContent = msg;
+      document.getElementById('score-sub').textContent = total > 0 ? 'Note estimée' : 'Cochez les critères pour calculer';
+    }
+
+    function resetAll() {
+      document.querySelectorAll('.eval-item').forEach(item => {
+        item.querySelector('input').checked = false;
+        item.classList.remove('checked');
+      });
+      document.getElementById('total-score').textContent = '0';
+      document.getElementById('score-dissert').textContent = 'Score : 0 / 20';
+      document.getElementById('score-texte').textContent = 'Score : 0 / 20';
+      document.getElementById('score-msg').textContent = '';
+      document.getElementById('score-sub').textContent = 'Cochez les critères pour calculer';
+    }
+  </script>
+
+</body>
+</html>
