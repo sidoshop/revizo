@@ -15,19 +15,11 @@
 }
 body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; }
 
-/* HEADER */
-header { background: #1e1c18; padding: 14px 20px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 50; }
-header h1 { font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 800; color: white; }
-header h1 a { color: white; text-decoration: none; }
-header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
-.header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-.bac-badge { background: #444; color: white; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
-
 /* LAYOUT */
-.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: calc(100vh - 52px); }
+.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: calc(100vh - 84px); }
 
 /* SIDEBAR */
-.sidebar { background: white; border-right: 1px solid var(--bordure); position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto; }
+.sidebar { background: white; border-right: 1px solid var(--bordure); position: sticky; top: 84px; height: calc(100vh - 84px); overflow-y: auto; }
 .sidebar-intro { padding: 14px 16px 8px; font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; }
 
 /* ACCORDION GROUPE */
@@ -152,13 +144,19 @@ tr:last-child td { border-bottom: none; }
 </head>
 <body>
 
-<header>
-  <h1><a href="index.html">Revizo</a></h1>
-  <span class="sub">Philosophie — Filière technologique</span>
-  <div class="header-right">
-    <span class="bac-badge">Coeff. 2 · 4h</span>
-  </div>
-</header>
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+  <a href="epreuve-sgdn.html"     class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html"    class="epreuve-link active">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Philosophie</span>
+  <a href="revizo-philo.html" class="active">Notions &amp; Sujets</a>
+  <a href="flashcards-philo.html">Flashcards</a>
+  <a href="methode-jour-j-philo.html">Méthode Jour J</a>
+  <a href="bac-blanc-philo.html">Bac Blanc</a>
+</nav>
 
 <div class="layout">
 
