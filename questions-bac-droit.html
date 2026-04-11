@@ -224,6 +224,9 @@ tbody tr:hover { background:rgba(245,200,66,.06) }
 .example-info { flex:1; }
 .example-notion { font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:900; color:#1e1c18; }
 .example-case { font-size:0.78rem; color:#7a6a58; font-weight:500; margin-top:2px; }
+.example-chain { font-size:0.75rem; color:#a09880; font-weight:600; margin-top:4px; letter-spacing:0.3px; }
+.example-chain span { color:#1e1c18; font-weight:700; }
+.example-chain .chain-arr { color:#c8b850; margin:0 3px; }
 .example-stars { font-size:0.85rem; color:#f5c842; white-space:nowrap; letter-spacing:1px; }
 .example-chevron { font-size:1rem; color:#a09880; transition:transform .2s; flex-shrink:0; }
 .example-hd.open .example-chevron { transform:rotate(180deg); }
@@ -366,6 +369,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Contrat de travail, licenciement<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">BT Mécanique · 2021 Métropole</div>
+          <div class="example-chain"><span>CDI</span> <span class="chain-arr">→</span> <span>licenciement motif personnel</span> <span class="chain-arr">→</span> cause réelle et sérieuse ?</div>
         </div>
         <span class="example-stars">★★★★★</span>
         <span class="example-chevron">▼</span>
@@ -383,6 +387,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Droit de retrait, santé au travail<span class="verified-badge">Vérifié</span></div>
           <div class="example-case">GUERIN · 2022 Nouvelle-Calédonie</div>
+          <div class="example-chain"><span>danger grave</span> <span class="chain-arr">→</span> <span>droit de retrait</span> (L4131-1) <span class="chain-arr">→</span> <span>licenciement</span> <span class="chain-arr">→</span> abusif ?</div>
         </div>
         <span class="example-stars">★★★★★</span>
         <span class="example-chevron">▼</span>
@@ -400,6 +405,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Licenciement pour faute<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">SARL Camélia · 2024 Métropole</div>
+          <div class="example-chain"><span>CDI</span> <span class="chain-arr">→</span> <span>licenciement pour faute</span> <span class="chain-arr">→</span> retards = cause réelle et sérieuse ?</div>
         </div>
         <span class="example-stars">★★★★★</span>
         <span class="example-chevron">▼</span>
@@ -417,6 +423,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Rupture du contrat de travail<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">ArchiDij974 · 2025 Métropole</div>
+          <div class="example-chain"><span>vie privée</span> (réseaux sociaux) <span class="chain-arr">→</span> <span>trouble objectif</span> dans l'entreprise ? <span class="chain-arr">→</span> <span>licenciement</span> justifié ?</div>
         </div>
         <span class="example-stars">★★★★★</span>
         <span class="example-chevron">▼</span>
@@ -434,6 +441,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Responsabilité civile extracontractuelle<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">Répar'mobile · 2021 Centres étrangers</div>
+          <div class="example-chain"><span>contrat d'entreprise</span> <span class="chain-arr">→</span> <span>obligation de résultat</span> <span class="chain-arr">→</span> <span>inexécution</span> <span class="chain-arr">→</span> <span>dommage matériel</span></div>
         </div>
         <span class="example-stars">★★★★☆</span>
         <span class="example-chevron">▼</span>
@@ -451,6 +459,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Licenciement, types de licenciement<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">UNIPUR · 2021 Remplacement</div>
+          <div class="example-chain"><span>difficultés économiques</span> <span class="chain-arr">→</span> <span>licenciement économique</span> (L1233-3) <span class="chain-arr">→</span> obligation de <span>reclassement</span> respectée ?</div>
         </div>
         <span class="example-stars">★★★★☆</span>
         <span class="example-chevron">▼</span>
@@ -468,6 +477,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Responsabilité civile, dommage<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">Restaurant de montagne · 2022 Métropole</div>
+          <div class="example-chain"><span>dommage corporel</span> dans l'établissement <span class="chain-arr">→</span> <span>fait des choses</span> (1242 al.1) <span class="chain-arr">→</span> <span>gardien</span> responsable automatiquement</div>
         </div>
         <span class="example-stars">★★★★☆</span>
         <span class="example-chevron">▼</span>
@@ -485,6 +495,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Contrat de travail, modification<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">Bastide · 2022 Polynésie</div>
+          <div class="example-chain"><span>changement horaires</span> <span class="chain-arr">→</span> <span>modification du contrat</span> ou simple changement des conditions ? <span class="chain-arr">→</span> accord du salarié obligatoire ?</div>
         </div>
         <span class="example-stars">★★★★☆</span>
         <span class="example-chevron">▼</span>
@@ -502,6 +513,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Licenciement économique<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">SécuritéPlus · 2022 Métropole remp.</div>
+          <div class="example-chain"><span>perte de clientèle</span> <span class="chain-arr">→</span> <span>licenciement économique</span> <span class="chain-arr">→</span> motif réel et sérieux ? <span class="chain-arr">→</span> <span>reclassement</span> ?</div>
         </div>
         <span class="example-stars">★★★★☆</span>
         <span class="example-chevron">▼</span>
@@ -519,6 +531,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Responsabilité du fait des produits défectueux<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">Pompes à Chaleur · 2023 Métropole</div>
+          <div class="example-chain"><span>produit défectueux</span> <span class="chain-arr">→</span> <span>dommage corporel</span> <span class="chain-arr">→</span> <span>responsabilité du producteur</span> (1245) <span class="chain-arr">→</span> de plein droit</div>
         </div>
         <span class="example-stars">★★★★☆</span>
         <span class="example-chevron">▼</span>
@@ -536,6 +549,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Formation du contrat, conditions de validité<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">MAXI · 2021 Espagne</div>
+          <div class="example-chain"><span>défaut caché</span> par le vendeur <span class="chain-arr">→</span> <span>dol</span> (1137) <span class="chain-arr">→</span> <span>vice du consentement</span> <span class="chain-arr">→</span> <span>nullité</span> du contrat</div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
@@ -553,6 +567,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Vices du consentement, erreur<span class="verified-badge">Vérifié</span></div>
           <div class="example-case">Beebop · 2023 Liban</div>
+          <div class="example-chain"><span>graffiti faussement attribué</span> <span class="chain-arr">→</span> <span>erreur</span> sur qualité essentielle (1132) <span class="chain-arr">→</span> <span>nullité</span> du contrat</div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
@@ -570,6 +585,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Clause de non-concurrence<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">TransExpress · 2023 Remplacement</div>
+          <div class="example-chain"><span>salarié</span> chez un concurrent <span class="chain-arr">→</span> <span>clause de non-concurrence</span> <span class="chain-arr">→</span> valable ? (temps + espace + contrepartie)</div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
@@ -587,6 +603,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Discrimination au travail<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">Mme De Gouges · 2024 Centres étrangers</div>
+          <div class="example-chain"><span>refus de promotion</span> <span class="chain-arr">→</span> <span>discrimination</span> fondée sur le sexe (L1132-1) <span class="chain-arr">→</span> l'employeur doit se justifier</div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
@@ -604,6 +621,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Responsabilité contractuelle, inexécution<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">SolarTech · 2024 Remplacement</div>
+          <div class="example-chain"><span>contrat d'entreprise</span> <span class="chain-arr">→</span> <span>obligation de résultat</span> <span class="chain-arr">→</span> <span>inexécution</span> <span class="chain-arr">→</span> 5 remèdes (1217)</div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
@@ -621,6 +639,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Garantie légale de conformité<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">MerBleue · 2024 Polynésie</div>
+          <div class="example-chain"><span>bien non conforme</span> <span class="chain-arr">→</span> <span>défaut de conformité</span> <span class="chain-arr">→</span> <span>garantie légale</span> <span class="chain-arr">→</span> réparation ou remplacement</div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
@@ -638,6 +657,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Trouble anormal de voisinage<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">UrbanVert · 2024 Nouvelle-Calédonie</div>
+          <div class="example-chain"><span>nuisances</span> (bruit, poussière) <span class="chain-arr">→</span> <span>trouble anormal de voisinage</span> <span class="chain-arr">→</span> pas besoin de faute <span class="chain-arr">→</span> réparation</div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
@@ -655,6 +675,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Formation du contrat, dol<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">NovaBois · 2025 Centres étrangers</div>
+          <div class="example-chain"><span>mensonge</span> sur la qualité <span class="chain-arr">→</span> <span>dol</span> (1137) <span class="chain-arr">→</span> <span>vice du consentement</span> <span class="chain-arr">→</span> <span>nullité</span></div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
@@ -672,6 +693,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Responsabilité du commettant<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">LogiPro · 2025 Remplacement</div>
+          <div class="example-chain"><span>livreur</span> cause un accident <span class="chain-arr">→</span> <span>préposé</span> / <span>commettant</span> <span class="chain-arr">→</span> <span>fait d'autrui</span> (1242) <span class="chain-arr">→</span> responsable automatiquement</div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
@@ -688,6 +710,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Propriété intellectuelle<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">Balzana / Cat &amp; Cie · 2022 Polynésie remp.</div>
+          <div class="example-chain"><span>œuvre copiée</span> sans autorisation <span class="chain-arr">→</span> <span>contrefaçon</span> (L335-2) <span class="chain-arr">→</span> atteinte au <span>droit d'auteur</span></div>
         </div>
         <span class="example-stars">★★☆☆☆</span>
         <span class="example-chevron">▼</span>
@@ -704,6 +727,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Droit de propriété et ses limites<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">INVESTIX · 2023 La Réunion</div>
+          <div class="example-chain"><span>terrain exproprié</span> <span class="chain-arr">→</span> <span>droit de propriété</span> (544) <span class="chain-arr">→</span> limité par l'<span>intérêt général</span> <span class="chain-arr">→</span> <span>expropriation</span></div>
         </div>
         <span class="example-stars">★★☆☆☆</span>
         <span class="example-chevron">▼</span>
@@ -720,6 +744,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Bail commercial, force obligatoire<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">AgriSol · 2023 Centres étrangers</div>
+          <div class="example-chain"><span>bail commercial</span> <span class="chain-arr">→</span> droit au renouvellement <span class="chain-arr">→</span> <span>force obligatoire</span> (1103) <span class="chain-arr">→</span> le contrat s'impose</div>
         </div>
         <span class="example-stars">★★☆☆☆</span>
         <span class="example-chevron">▼</span>
@@ -788,6 +813,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Droit de retrait, santé au travail<span class="verified-badge">Vérifié</span></div>
           <div class="example-case">GUERIN · 2022 Nouvelle-Calédonie</div>
+          <div class="example-chain">droit de retrait légitime ? <span class="chain-arr">↔</span> danger pas "imminent" depuis 20 ans ?</div>
         </div>
         <span class="example-stars">★★★★★</span>
         <span class="example-chevron">▼</span>
@@ -818,6 +844,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Vices du consentement, erreur<span class="verified-badge">Vérifié</span></div>
           <div class="example-case">Beebop · 2023 Liban</div>
+          <div class="example-chain">erreur sur qualité essentielle ? <span class="chain-arr">↔</span> négligence de l'acheteur ?</div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
@@ -846,6 +873,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Licenciement pour faute<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">SARL Camélia · 2024 Métropole</div>
+          <div class="example-chain">retards = cause sérieuse ? <span class="chain-arr">↔</span> sanction disproportionnée ?</div>
         </div>
         <span class="example-stars">★★★★★</span>
         <span class="example-chevron">▼</span>
@@ -874,6 +902,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Trouble anormal de voisinage<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">UrbanVert · 2024 Nouvelle-Calédonie</div>
+          <div class="example-chain">trouble anormal caractérisé ? <span class="chain-arr">↔</span> travaux autorisés et temporaires ?</div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
@@ -900,6 +929,7 @@ Il s'agit donc d'un litige portant sur <span style="color:#f5c842">[qualificatio
         <div class="example-info">
           <div class="example-notion">Formation du contrat, dol<span class="unverified-badge">Non vérifié</span></div>
           <div class="example-case">NovaBois · 2025 Centres étrangers</div>
+          <div class="example-chain">dol intentionnel du vendeur ? <span class="chain-arr">↔</span> négligence de l'acheteur pro ?</div>
         </div>
         <span class="example-stars">★★★☆☆</span>
         <span class="example-chevron">▼</span>
