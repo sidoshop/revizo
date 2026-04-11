@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo · Philosophie · Méthode Jour J</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; line-height: 1.6; min-height: 100vh; }
+
+/* HEADER */
+.header { background: #1e1c18; padding: 32px 24px 40px; text-align: center; position: relative; }
+.header-badge { display: inline-block; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; color: #f5c842; background: rgba(245,200,66,.12); padding: 4px 16px; border-radius: 20px; margin-bottom: 12px; letter-spacing: 0.5px; }
+.header h1 { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 2.2rem; color: #fff; margin-bottom: 8px; }
+.header p { color: #a09880; font-size: 0.95rem; max-width: 600px; margin: 0 auto; }
+.print-btn { position: absolute; top: 24px; right: 24px; background: #f5c842; color: #1e1c18; border: none; padding: 10px 20px; border-radius: 10px; font-family: 'Nunito Sans', sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: transform 0.15s; }
+.print-btn:hover { transform: translateY(-1px); }
+@media print { .header, nav, .tabs-bar, .print-btn { display: none!important; } body { background: white; padding: 0; } .tab-panel { display: block!important; } .main { padding: 0; } }
+
+/* MAIN */
+.main { max-width: 960px; margin: 0 auto; padding: 32px 20px 60px; }
+
+/* TABS */
+.tabs-bar { display: flex; gap: 4px; margin-bottom: 24px; flex-wrap: wrap; }
+.tab-btn { font-family: 'Nunito Sans', sans-serif; font-size: 0.85rem; font-weight: 700; padding: 10px 18px; border-radius: 12px; border: 2px solid #ddd8cf; background: #fff; color: #5a5448; cursor: pointer; transition: all 0.15s; }
+.tab-btn:hover { border-color: #888; }
+.tab-btn.active { background: #1e1c18; color: #f5c842; border-color: #1e1c18; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* SECTION TITLE */
+.sec-title { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 900; color: #1e1c18; margin: 28px 0 14px; display: flex; align-items: center; gap: 8px; }
+.sec-title::before { content: ''; width: 4px; height: 20px; background: #f5c842; border-radius: 2px; flex-shrink: 0; }
+
+/* STEP CARDS */
+.step-card { background: #fffdf8; border-radius: 14px; padding: 20px 24px; margin-bottom: 12px; display: flex; gap: 16px; align-items: flex-start; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.step-num { background: #1e1c18; color: #f5c842; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.step-time { font-size: 0.75rem; font-weight: 700; color: #b5415a; background: #fdeef2; padding: 2px 10px; border-radius: 12px; margin-left: 8px; display: inline-block; }
+.step-do { font-weight: 700; margin-bottom: 4px; font-size: 0.95rem; }
+.step-detail { color: #5a5448; font-size: 0.88rem; line-height: 1.55; margin-top: 6px; }
+.step-detail ul { padding-left: 16px; margin-top: 4px; }
+.step-detail li { margin-bottom: 3px; }
+.step-tip { font-size: 0.82rem; color: #2d7a4f; background: #eef8f1; padding: 6px 12px; border-radius: 8px; margin-top: 8px; display: inline-block; }
+
+/* CALLOUTS */
+.callout { background: #fffdf8; border-left: 4px solid #f5c842; border-radius: 0 12px 12px 0; padding: 16px 20px; margin: 16px 0; font-size: 0.92rem; }
+.callout-rouge { border-left-color: #b5415a; background: #fdeef2; }
+.callout-vert  { border-left-color: #2d7a4f; background: #eef8f1; }
+.callout-gris  { border-left-color: #888; background: #f5f5f5; }
+.callout strong { color: #1e1c18; }
+.callout em { color: #5a5448; font-style: normal; font-size: 0.88rem; }
+
+/* CHOIX CARD */
+.choix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+.choix-card { background: #fffdf8; border-radius: 12px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.choix-card h4 { font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 900; margin-bottom: 10px; }
+.choix-card.dissert h4 { color: #2563a8; }
+.choix-card.texte h4 { color: #2d7a4f; }
+.choix-card ul { padding-left: 16px; font-size: 0.87rem; line-height: 1.6; color: #5a5448; }
+@media (max-width: 560px) { .choix-grid { grid-template-columns: 1fr; } }
+
+/* TABLES */
+.table-wrap { overflow-x: auto; margin: 16px 0; }
+table { width: 100%; border-collapse: collapse; background: #fffdf8; border-radius: 12px; overflow: hidden; font-size: 0.88rem; }
+th { background: #1e1c18; color: #f5c842; padding: 10px 14px; text-align: left; font-family: 'Nunito Sans', sans-serif; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.3px; }
+td { padding: 10px 14px; border-bottom: 1px solid #ede9e0; vertical-align: top; line-height: 1.5; }
+tr:last-child td { border-bottom: none; }
+td:first-child { font-weight: 700; white-space: nowrap; }
+tr:nth-child(even) td { background: #faf8f3; }
+
+/* PLAN BOX */
+.plan-box { background: #1e1c18; color: #fffdf8; border-radius: 14px; padding: 20px 24px; margin: 14px 0; font-family: 'Nunito Sans', sans-serif; font-size: 0.88rem; line-height: 1.7; }
+.plan-box .plan-title { color: #f5c842; font-weight: 700; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+.plan-box .plan-part { margin-bottom: 8px; }
+.plan-box .plan-part strong { color: #f5c842; }
+.plan-box .plan-indent { padding-left: 20px; color: #a09880; font-size: 0.84rem; }
+
+/* BLOC IF */
+.bloc-if { background: #fffdf8; border-radius: 12px; padding: 16px 20px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,.05); }
+.bloc-if h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; color: #1e1c18; }
+.bloc-if ol, .bloc-if ul { padding-left: 18px; font-size: 0.87rem; line-height: 1.7; color: #5a5448; }
+
+/* CHECKLIST */
+.check-section { background: #fffdf8; border-radius: 14px; padding: 20px 24px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.check-section h3 { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900; margin-bottom: 14px; color: #1e1c18; padding-bottom: 10px; border-bottom: 2px solid #f0ede6; }
+.check-item { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid #f0ede6; cursor: pointer; }
+.check-item:last-child { border-bottom: none; }
+.check-item input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; accent-color: #2d7a4f; cursor: pointer; }
+.check-item label { font-size: 0.9rem; line-height: 1.5; cursor: pointer; }
+.check-item.checked label { text-decoration: line-through; color: #a09880; }
+
+/* RECAP TABLE */
+.recap-table th { background: #2e2e2e; }
+.recap-table td:nth-child(2), .recap-table td:nth-child(3), .recap-table td:nth-child(4) { font-size: 0.82rem; color: #5a5448; }
+.recap-table td:last-child { font-size: 0.82rem; font-style: italic; color: #2563a8; }
+
+/* ASTUCES */
+.astuce-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+.astuce-card { background: #fffdf8; border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 6px rgba(0,0,0,.05); border-top: 3px solid #f5c842; }
+.astuce-card h4 { font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 900; margin-bottom: 8px; }
+.astuce-card p, .astuce-card ul { font-size: 0.85rem; color: #5a5448; line-height: 1.6; }
+.astuce-card ul { padding-left: 14px; }
+@media (max-width: 560px) { .astuce-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link active">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Philosophie</span>
+  <a href="revizo-philo.html">Notions &amp; Sujets</a>
+  <a href="flashcards-philo.html">Flashcards</a>
+  <a href="methode-jour-j-philo.html" class="active">Méthode Jour J</a>
+</nav>
+
+<div class="header">
+  <button class="print-btn" onclick="window.print()">🖨 Imprimer</button>
+  <div class="header-badge">Philosophie · Filière technologique · 4h</div>
+  <h1>📋 Méthode Jour J</h1>
+  <p>À lire la veille. Zéro cours, que de la méthode. Chaque règle est une action concrète.</p>
+</div>
+
+<div class="main">
+
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('debut')">⏱ 15 premières min</button>
+    <button class="tab-btn" onclick="showTab('dissert')">📝 Dissertation</button>
+    <button class="tab-btn" onclick="showTab('texte')">📖 Explication de texte</button>
+    <button class="tab-btn" onclick="showTab('bloque')">🆘 Si je bloque</button>
+    <button class="tab-btn" onclick="showTab('checklist')">✅ Checklist</button>
+  </div>
+
+  <!-- ─── TAB : 15 PREMIÈRES MINUTES ─────────────────────── -->
+  <div id="tab-debut" class="tab-panel active">
+
+    <div class="callout-vert callout">
+      Ces 15 minutes ne sont pas perdues. Elles conditionnent tout le reste. Ne commence à écrire que quand tu as choisi.
+    </div>
+
+    <div class="sec-title">Étape 1 — Lire les 3 sujets en entier</div>
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-do">Lire chaque sujet une fois, sans notes <span class="step-time">5 min</span></div>
+        <div class="step-detail">
+          Pour chaque sujet, noter mentalement :
+          <ul>
+            <li>Quelle notion ? (liberté · vérité · justice · art · technique · nature · religion)</li>
+            <li>Est-ce que tu "vois" quelque chose ? (un argument, un auteur, un exemple)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">Étape 2 — Choisir son exercice</div>
+
+    <div class="choix-grid">
+      <div class="choix-card dissert">
+        <h4>📝 Choisir la Dissertation si…</h4>
+        <ul>
+          <li>Tu as des idées sur le sujet (arguments, auteurs, exemples)</li>
+          <li>Tu vois au moins deux positions différentes</li>
+          <li>Tu es à l'aise pour construire un plan seul·e</li>
+        </ul>
+      </div>
+      <div class="choix-card texte">
+        <h4>📖 Choisir le Texte si…</h4>
+        <ul>
+          <li>Tu comprends globalement ce que dit l'auteur</li>
+          <li>Les questions posées semblent accessibles</li>
+          <li>Tu te sens moins à l'aise pour construire un plan</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout callout-rouge">
+      <strong>Ne jamais choisir par défaut.</strong> "Je prends le texte parce que je ne sais rien sur les dissertations" est une erreur. Les deux s'apprennent et se préparent différemment.
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-do">Confirmer et s'y tenir <span class="step-time">1 min</span></div>
+        <div class="step-detail">Une fois choisi, ne regarde plus les autres sujets. Concentre-toi entièrement sur le tien.</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-do">Relire ton sujet en profondeur <span class="step-time">7 min</span></div>
+        <div class="step-detail">
+          Cette fois, tu lis pour travailler. Souligne les mots importants. Note au brouillon :
+          <ul>
+            <li>Les définitions possibles des termes clés</li>
+            <li>Les tensions que tu vois (ce qui rend la question difficile)</li>
+            <li>Les auteurs et exemples qui te viennent à l'esprit</li>
+          </ul>
+          <span class="step-tip">✓ Ces notes au brouillon deviennent la base de ton introduction</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">Tableau des verbes et mots importants</div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Formulation du sujet</th><th>Ce qu'il faut faire</th></tr>
+        <tr><td>"Est-il… ?"</td><td>Montrer que la réponse n'est pas évidente — distinguer les conditions où oui, les conditions où non</td></tr>
+        <tr><td>"La X est-elle Y ?"</td><td>Définir X ET Y, montrer leur relation possible et ses limites</td></tr>
+        <tr><td>"Peut-on… ?"</td><td>Envisager les possibilités (logique, réalité, légitimité) — pas uniquement "est-ce possible" mais "est-ce légitime ou souhaitable"</td></tr>
+        <tr><td>"Suffit-il de… ?"</td><td>Répondre que ce n'est jamais suffisant au sens absolu — puis montrer ce qui manque</td></tr>
+        <tr><td>"Avons-nous besoin de… ?"</td><td>Distinguer besoin vital / besoin existentiel — la plupart du temps, la réponse est nuancée</td></tr>
+        <tr><td>"Tout… est-il… ?"</td><td>"Tout" suggère qu'il faudra nuancer — tout ne rentre pas dans la même case</td></tr>
+        <tr><td>"Sommes-nous… ?"</td><td>Question sur la condition humaine — pas uniquement individuelle, mais collective</td></tr>
+      </table>
+    </div>
+
+    <div class="table-wrap" style="margin-top:12px">
+      <table>
+        <tr><th>Mot dans le sujet</th><th>Ce à quoi penser</th></tr>
+        <tr><td>Toujours</td><td>Chercher les exceptions et les nuances</td></tr>
+        <tr><td>Nécessairement</td><td>Chercher si c'est une loi ou une tendance</td></tr>
+        <tr><td>Seul / suffit-il</td><td>Il y a probablement quelque chose en plus</td></tr>
+        <tr><td>Vraiment / réellement</td><td>Opposition apparence / réalité</td></tr>
+        <tr><td>Nous</td><td>Qui est ce "nous" ? Tous les humains ? Les citoyens ?</td></tr>
+        <tr><td>Libre</td><td>Toujours distinguer les sens de liberté</td></tr>
+        <tr><td>Juste</td><td>Toujours distinguer légal / légitime</td></tr>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ─── TAB : DISSERTATION ──────────────────────────────── -->
+  <div id="tab-dissert" class="tab-panel">
+
+    <div class="sec-title">Répartition du temps — 4 heures</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Phase</th><th>Durée</th><th>Ce qu'on fait</th></tr>
+        <tr><td>Lecture et choix</td><td>15 min</td><td>Lire les 3 sujets, choisir</td></tr>
+        <tr><td>Brouillon</td><td>1h15</td><td>Analyser le sujet, construire le plan, noter les arguments</td></tr>
+        <tr><td>Rédaction</td><td>2h15</td><td>Rédiger au propre introduction + 3 parties + conclusion</td></tr>
+        <tr><td>Relecture</td><td>15 min</td><td>Corriger, vérifier la cohérence, soigner la conclusion</td></tr>
+      </table>
+    </div>
+
+    <div class="callout callout-vert">
+      <strong>Règle d'or :</strong> ne pas commencer à rédiger avant d'avoir un plan solide au brouillon. 15 minutes de plan économisent 30 minutes de rédaction désorganisée.
+    </div>
+
+    <div class="sec-title">Les 5 étapes au brouillon</div>
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-do">Analyser les termes <span class="step-time">10 min</span></div>
+        <div class="step-detail">
+          Prendre chaque mot important du sujet. Le définir : sens premier, sens philosophique, sens large / sens strict. Repérer les tensions entre les termes.<br><br>
+          <em>Exemple pour "La liberté consiste-t-elle à n'obéir à personne ?"</em>
+          <ul>
+            <li>"Liberté" : absence de contrainte ? Autonomie ? Libre arbitre ?</li>
+            <li>"Consiste" : est-ce l'essence, la définition, ou seulement une forme ?</li>
+            <li>"N'obéir à personne" : ni à la loi ? Ni aux autres ? Ni à soi-même ?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-do">Identifier la tension — le problème <span class="step-time">5 min</span></div>
+        <div class="step-detail">
+          Formuler en 1 phrase ce qui rend la question difficile.<br>
+          <em>Exemple : "La liberté comme absence d'obéissance mène au chaos ; mais une liberté soumise à des règles semble contradictoire. Comment penser une liberté à la fois réelle et compatible avec la vie en société ?"</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-do">Construire le plan dialectique <span class="step-time">15 min</span></div>
+        <div class="plan-box">
+          <div class="plan-title">Plan type — 3 parties</div>
+          <div class="plan-part"><strong>Partie 1 (Thèse)</strong> : première réponse — le sens commun</div>
+          <div class="plan-indent">→ 2 arguments + auteurs + exemples<br>→ Transition : "Cependant, cette première approche se heurte à..."</div>
+          <div class="plan-part" style="margin-top:10px"><strong>Partie 2 (Antithèse)</strong> : les limites de la première réponse</div>
+          <div class="plan-indent">→ 2 arguments + auteurs + exemples<br>→ Transition : "Il faut donc dépasser cette opposition pour..."</div>
+          <div class="plan-part" style="margin-top:10px"><strong>Partie 3 (Dépassement)</strong> : réponse nuancée, plus complète</div>
+          <div class="plan-indent">→ 2 arguments + auteurs + exemples</div>
+        </div>
+        <div class="step-detail">Le plan n'a pas à être parfait. Il doit juste être cohérent et progressif.</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-do">Lister les références <span class="step-time">5 min</span></div>
+        <div class="step-detail">Pour chaque partie, noter les auteurs que tu vas mobiliser et comment ils t'aident à répondre à la question.</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-do">Rédiger l'introduction au brouillon <span class="step-time">10 min</span></div>
+        <div class="step-detail">L'introduction mérite un brouillon complet. Elle donne le ton de toute la copie.</div>
+      </div>
+    </div>
+
+    <div class="sec-title">Structure complète de la dissertation</div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:#2563a8">I</div>
+      <div>
+        <div class="step-do">Introduction <span style="color:#888;font-weight:400;font-size:0.85rem">≈ ½ page</span></div>
+        <div class="step-detail">
+          <ol style="padding-left:18px; line-height:1.8">
+            <li><strong>Accroche</strong> — situation concrète, exemple de la vie courante, citation connue</li>
+            <li><strong>Analyse des termes</strong> — définir les 2-3 mots importants du sujet</li>
+            <li><strong>Mise en tension</strong> — "On pourrait penser que… mais…"</li>
+            <li><strong>Problématique</strong> — "La question est donc de savoir si…"</li>
+            <li><strong>Annonce du plan</strong> — "Pour y répondre, nous verrons d'abord… puis… enfin…"</li>
+          </ol>
+          <div class="callout callout-rouge" style="margin-top:10px">L'introduction ne doit <strong>pas</strong> donner la réponse — elle montre que la question est difficile et intéressante.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:#2563a8">II</div>
+      <div>
+        <div class="step-do">Partie 1 — La thèse <span style="color:#888;font-weight:400;font-size:0.85rem">≈ ¾ page</span></div>
+        <div class="step-detail">
+          <ul>
+            <li>Paragraphe 1 : Argument + Auteur + Exemple + Phrase de lien</li>
+            <li>Paragraphe 2 : Argument + Auteur + Exemple + Phrase de lien</li>
+            <li><strong>Transition</strong> : "Cependant, cette première approche se heurte à…"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:#2563a8">III</div>
+      <div>
+        <div class="step-do">Partie 2 — L'antithèse <span style="color:#888;font-weight:400;font-size:0.85rem">≈ ¾ page</span></div>
+        <div class="step-detail">
+          <ul>
+            <li>Paragraphe 1 : Argument contraire + Auteur + Exemple + Phrase de lien</li>
+            <li>Paragraphe 2 : Argument contraire + Auteur + Exemple + Phrase de lien</li>
+            <li><strong>Transition</strong> : "Il faut donc dépasser cette opposition pour…"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:#2563a8">IV</div>
+      <div>
+        <div class="step-do">Partie 3 — Le dépassement <span style="color:#888;font-weight:400;font-size:0.85rem">≈ ¾ page</span></div>
+        <div class="step-detail">
+          <ul>
+            <li>Paragraphe 1 : Réponse nuancée + Auteur + Exemple</li>
+            <li>Paragraphe 2 : Approfondissement + Auteur ou exemple supplémentaire</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:#2563a8">V</div>
+      <div>
+        <div class="step-do">Conclusion <span style="color:#888;font-weight:400;font-size:0.85rem">≈ ¼ page</span></div>
+        <div class="step-detail">
+          <ol style="padding-left:18px; line-height:1.8">
+            <li><strong>Synthèse</strong> — rappeler les 3 étapes du raisonnement en 3 phrases</li>
+            <li><strong>Réponse</strong> — formuler clairement la réponse finale à la question posée</li>
+            <li><strong>Ouverture</strong> — une question voisine, un enjeu contemporain lié au sujet</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">Astuces pour gratter des points</div>
+    <div class="astuce-grid">
+      <div class="astuce-card">
+        <h4>Soigner les transitions</h4>
+        <p>Une bonne transition résume la partie en 1 phrase et annonce la suivante. Exemple : "Nous avons vu que la liberté absolue mène au chaos. Mais cela signifie-t-il qu'il faille renoncer à toute liberté ? Il faut plutôt chercher une liberté compatible avec le vivre-ensemble."</p>
+      </div>
+      <div class="astuce-card">
+        <h4>Montrer qu'on réfléchit</h4>
+        <ul>
+          <li>"Cependant, si l'on y réfléchit davantage…"</li>
+          <li>"On pourrait objecter à cette thèse que…"</li>
+          <li>"Cette position a le mérite de… mais elle omet…"</li>
+          <li>"Il faut distinguer ici…"</li>
+        </ul>
+      </div>
+      <div class="astuce-card">
+        <h4>Ne jamais laisser un argument sans exemple</h4>
+        <p>Un argument sans exemple reste abstrait. L'illustration peut être un exemple historique, littéraire, de la vie courante, ou une expérience de pensée. Les exemples contemporains (IA, réseaux sociaux, écologie) sont appréciés si pertinents.</p>
+      </div>
+      <div class="astuce-card">
+        <h4>La forme compte aussi</h4>
+        <ul>
+          <li>Écriture lisible (si illisible, pas de note)</li>
+          <li>Paragraphes distincts — sauter une ligne entre les parties</li>
+          <li>Pas de listes à puces dans la dissertation (prose uniquement)</li>
+          <li>Souligner les noms d'auteurs (optionnel mais propre)</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── TAB : EXPLICATION DE TEXTE ─────────────────────── -->
+  <div id="tab-texte" class="tab-panel">
+
+    <div class="callout callout-gris">
+      En filière technologique, l'explication de texte est <strong>guidée par des questions</strong> (3 à 4 questions + 1 question de synthèse personnelle). Ce n'est pas un commentaire libre.
+    </div>
+
+    <div class="sec-title">Répartition du temps — 4 heures</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Phase</th><th>Durée</th><th>Ce qu'on fait</th></tr>
+        <tr><td>Lecture et choix</td><td>15 min</td><td>Lire les 3 sujets, choisir</td></tr>
+        <tr><td>Lecture approfondie</td><td>20 min</td><td>Lire le texte 2-3 fois, souligner, annoter</td></tr>
+        <tr><td>Brouillon par question</td><td>45 min</td><td>Préparer les réponses à chaque question</td></tr>
+        <tr><td>Rédaction</td><td>2h00</td><td>Rédiger les réponses au propre</td></tr>
+        <tr><td>Relecture</td><td>15 min</td><td>Vérifier cohérence et orthographe</td></tr>
+      </table>
+    </div>
+
+    <div class="sec-title">Les 3 lectures du texte</div>
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-do">Lecture 1 — Thème et thèse <span class="step-time">5 min</span></div>
+        <div class="step-detail">
+          <ul>
+            <li>De quoi parle ce texte ? (une phrase)</li>
+            <li>Quelle est la position générale de l'auteur ? (une phrase)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-do">Lecture 2 — Structure et arguments <span class="step-time">8 min</span></div>
+        <div class="step-detail">
+          <ul>
+            <li>Identifier les différentes parties du texte</li>
+            <li>Pour chaque partie : quel argument est développé ?</li>
+            <li>Quels exemples ou illustrations l'auteur utilise-t-il ?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-do">Lecture 3 — Termes clés et questions <span class="step-time">7 min</span></div>
+        <div class="step-detail">
+          <ul>
+            <li>Repérer les mots importants que l'auteur utilise</li>
+            <li>Identifier ce qui semble difficile ou obscur (à expliquer dans ta réponse)</li>
+            <li>Relire les questions et chercher où dans le texte se trouvent les éléments de réponse</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">Comment répondre à chaque type de question</div>
+
+    <div class="step-card">
+      <div class="step-num" style="font-size:0.75rem">Q1</div>
+      <div>
+        <div class="step-do">Question descriptive — "Que dit l'auteur sur… ?"</div>
+        <div class="step-detail">
+          <ol style="padding-left:18px; line-height:1.8">
+            <li>Reformuler la position de l'auteur avec tes propres mots</li>
+            <li>Citer brièvement un passage du texte</li>
+            <li>Expliquer ce passage</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="font-size:0.75rem">Q2</div>
+      <div>
+        <div class="step-do">Question analytique — "Pourquoi l'auteur pense-t-il que… ?"</div>
+        <div class="step-detail">
+          <ol style="padding-left:18px; line-height:1.8">
+            <li>Identifier l'argument dans le texte</li>
+            <li>L'expliquer clairement</li>
+            <li>Illustrer si possible avec un exemple</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="font-size:0.75rem">Q3</div>
+      <div>
+        <div class="step-do">Question de distinction — "Quelle différence entre X et Y ?"</div>
+        <div class="step-detail">
+          <ol style="padding-left:18px; line-height:1.8">
+            <li>Définir X selon l'auteur</li>
+            <li>Définir Y selon l'auteur</li>
+            <li>Expliquer en quoi ils diffèrent et pourquoi cette distinction est importante pour la thèse</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num" style="font-size:0.75rem">Q4</div>
+      <div>
+        <div class="step-do">Question de synthèse — "Partagez-vous le point de vue de l'auteur ?"</div>
+        <div class="step-detail">
+          <ol style="padding-left:18px; line-height:1.8">
+            <li>Reformuler brièvement la thèse</li>
+            <li>Prendre une position (pas forcément "d'accord à 100%")</li>
+            <li>Justifier avec un argument</li>
+            <li>Donner un exemple concret</li>
+            <li>Nuancer si nécessaire</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-rouge">
+      <strong>La question de synthèse attend ton point de vue.</strong> Ne pas dire "ça dépend" sans argumenter. Prendre position, même nuancée. "Je suis d'accord avec l'auteur parce que…" est toujours plus fort.
+    </div>
+
+    <div class="callout callout-rouge" style="margin-top:10px">
+      <strong>Ne jamais recopier le texte.</strong> Le correcteur veut que tu montres que tu as compris — reformule toujours avec tes propres mots.
+    </div>
+
+    <div class="sec-title">Auteurs récurrents à connaître impérativement</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Auteur</th><th>Texte</th><th>Session</th><th>Thèse à retenir</th></tr>
+        <tr><td>Adam Smith</td><td>Théorie des sentiments moraux</td><td>2023 et 2025</td><td>La justice est indispensable (≠ bienveillance optionnelle)</td></tr>
+        <tr><td>Platon</td><td>Les Lois</td><td>2024</td><td>La loi est nécessaire pour ne pas vivre "comme des bêtes sauvages"</td></tr>
+        <tr><td>Diderot</td><td>Encyclopédie</td><td>2022</td><td>Même des témoignages concordants ne garantissent pas la vérité</td></tr>
+        <tr><td>Freud</td><td>Le poète et l'activité de fantaisie</td><td>2021</td><td>L'artiste est comme l'enfant qui joue — sublimation des désirs</td></tr>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ─── TAB : SI JE BLOQUE ──────────────────────────────── -->
+  <div id="tab-bloque" class="tab-panel">
+
+    <div class="sec-title">Si je bloque sur la problématique</div>
+    <div class="bloc-if">
+      <ol>
+        <li><strong>Reformuler</strong> le sujet différemment : "Ce sujet me demande en fait de savoir si…"</li>
+        <li><strong>Chercher l'opposition</strong> : qu'est-ce qui pourrait plaider pour un oui ? pour un non ?</li>
+        <li><strong>Utiliser la formule</strong> : "À première vue… mais en y réfléchissant…"</li>
+        <li><strong>Penser à un exemple concret</strong> d'abord, puis remonter à l'abstrait</li>
+      </ol>
+    </div>
+
+    <div class="sec-title">Si je bloque sur le plan</div>
+    <div class="bloc-if">
+      <p style="font-size:0.88rem;margin-bottom:10px;">Utiliser le plan par défaut : <strong>Apparence → Réalité → Dépassement</strong></p>
+      <ul>
+        <li><strong>Liberté :</strong> Liberté comme absence de contrainte → Limites → Vraie liberté comme autonomie</li>
+        <li><strong>Art :</strong> Art comme imitation/luxe → Art comme nécessité → Art comme vérité</li>
+        <li><strong>Justice :</strong> Légalité = justice → Légalité ≠ justice → Justice comme idéal</li>
+      </ul>
+    </div>
+
+    <div class="sec-title">Si je bloque sur un argument</div>
+    <div class="bloc-if">
+      <ul>
+        <li><strong>Chercher un exemple de la vie courante</strong> (école, travail, famille, actualité, technologie)</li>
+        <li><strong>Inverser la question</strong> : que se passerait-il si le contraire était vrai ?</li>
+        <li><strong>Pousser à l'extrême</strong> : "Si on pousse cette idée à l'extrême, on arrive à…"</li>
+      </ul>
+    </div>
+
+    <div class="sec-title">Si je manque d'auteurs</div>
+    <div class="bloc-if">
+      <p style="font-size:0.88rem;margin-bottom:10px;">Avec seulement 4 auteurs, on peut traiter la plupart des sujets :</p>
+      <ul>
+        <li><strong>Kant</strong> : liberté (autonomie), morale, art (beau désintéressé)</li>
+        <li><strong>Rousseau</strong> : liberté, nature, société (contrat social)</li>
+        <li><strong>Platon</strong> : vérité (allégorie caverne), justice, art (mimèsis)</li>
+        <li><strong>Aristote</strong> : justice (distributive/corrective), art (catharsis)</li>
+      </ul>
+      <div class="callout callout-gris" style="margin-top:10px;padding:12px 16px">
+        Si tu ne te souviens plus du nom précis : utilise "un philosophe estime que…" plutôt que de citer un nom incorrect. <strong>Un argument bien développé vaut plus qu'un nom mal utilisé.</strong>
+      </div>
+    </div>
+
+    <div class="sec-title">Si je manque de temps</div>
+    <div class="bloc-if">
+      <ul>
+        <li><strong>Ne jamais laisser sans conclusion</strong> — rédiger 3 phrases même si incomplètes</li>
+        <li><strong>Si la partie 3 est inachevée</strong> — finir le paragraphe en cours, passer directement à la conclusion</li>
+        <li><strong>La conclusion compte</strong> — le correcteur lit souvent l'introduction et la conclusion en premier</li>
+      </ul>
+    </div>
+
+    <div class="sec-title">Ce que les correcteurs valorisent vraiment</div>
+    <div class="callout callout-vert" style="font-size:0.9rem">
+      D'après les rapports de jury (APPEP 2023) :<br>
+      ✓ "Prendre un sujet au sérieux"<br>
+      ✓ "Penser et non réciter"<br>
+      ✓ "Répondre à la question sans faire diversion"<br>
+      ✓ "Montrer que les philosophes nous aident à penser"<br>
+      ✓ "Prendre le correcteur par la main — toujours rappeler où on en est de la démonstration"
+    </div>
+
+  </div>
+
+  <!-- ─── TAB : CHECKLIST ─────────────────────────────────── -->
+  <div id="tab-checklist" class="tab-panel">
+
+    <div class="check-section">
+      <h3>📝 Dissertation — avant de rendre</h3>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>J'ai défini au moins 2 termes clés du sujet</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Mon introduction contient une problématique formulée clairement</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Mon plan est annoncé à la fin de l'introduction</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Chaque partie comporte au moins 2 paragraphes</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Chaque argument est illustré par un exemple ou un auteur</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Mes transitions sont rédigées (pas de passage brutal d'une partie à l'autre)</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Ma conclusion répond explicitement à la question posée</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Ma conclusion propose une ouverture</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Je n'ai pas répondu directement "oui" ou "non" sans nuance</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Mon texte est lisible et organisé (paragraphes distincts, pas de liste à puces)</label></div>
+    </div>
+
+    <div class="check-section">
+      <h3>📖 Explication de texte — avant de rendre</h3>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>J'ai répondu à toutes les questions (aucune laissée vide)</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>J'ai utilisé des éléments du texte dans mes réponses</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>J'ai reformulé les passages du texte avec mes propres mots (pas de recopie)</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Pour la question de synthèse, j'ai pris une position et l'ai justifiée</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Mes réponses sont rédigées en phrases complètes (pas de listes)</label></div>
+    </div>
+
+    <div class="check-section">
+      <h3>✅ Pour les deux</h3>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Mon prénom, nom et numéro de candidat sont indiqués</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>J'ai numéroté les pages si j'utilise plusieurs feuilles</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>J'ai relu pour corriger les fautes les plus visibles</label></div>
+    </div>
+
+    <div class="sec-title">Récapitulatif — 7 notions &amp; auteurs clés</div>
+    <div class="table-wrap">
+      <table class="recap-table">
+        <tr><th>Notion</th><th>Auteur 1</th><th>Auteur 2</th><th>Auteur 3</th><th>Idée clé à retenir</th></tr>
+        <tr><td>Liberté ★★★★★</td><td>Sartre</td><td>Kant</td><td>Rousseau</td><td>Liberté absolue vs autonomie vs liberté civile</td></tr>
+        <tr><td>Vérité ★★★★★</td><td>Descartes</td><td>Platon</td><td>Nietzsche</td><td>Méthode vs opinion vs relativisme</td></tr>
+        <tr><td>Justice ★★★★☆</td><td>Rawls</td><td>Platon</td><td>Adam Smith</td><td>Équité vs harmonie vs fondement social</td></tr>
+        <tr><td>Art ★★★★☆</td><td>Platon</td><td>Aristote</td><td>Kant</td><td>Mimèsis vs catharsis vs désintéressement</td></tr>
+        <tr><td>Technique ★★★★☆</td><td>Heidegger</td><td>Marx</td><td>Bergson</td><td>Arraisonnement vs aliénation vs homo faber</td></tr>
+        <tr><td>Nature ★★★☆☆</td><td>Rousseau</td><td>Hobbes</td><td>Kant</td><td>Bonté naturelle vs guerre vs dépassement</td></tr>
+        <tr><td>Religion ★★★☆☆</td><td>Pascal</td><td>Marx</td><td>Durkheim</td><td>Pari vs opium du peuple vs lien social</td></tr>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    const tabs = ['debut','dissert','texte','bloque','checklist'];
+    b.classList.toggle('active', tabs[i] === id);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function toggleCheck(item) {
+  const cb = item.querySelector('input[type=checkbox]');
+  cb.checked = !cb.checked;
+  item.classList.toggle('checked', cb.checked);
+}
+</script>
+
+</body>
+</html>
