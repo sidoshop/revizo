@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Révizo — Vocabulaire Juridique · Droit STMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito Sans', sans-serif; }
+body { background: #f0ede6; color: #1e1c18; min-height: 100vh; }
+
+/* Hero */
+.hero { max-width:900px; margin:0 auto; padding:100px 24px 32px; text-align:center; }
+.hero-badge { display:inline-block; background:#1e1c18; color:#f5c842; font-size:0.6rem; font-weight:800; letter-spacing:3px; text-transform:uppercase; padding:6px 20px; border-radius:20px; margin-bottom:20px; }
+.hero h1 { font-family:'Nunito',sans-serif; font-size:2.8rem; font-weight:900; color:#1e1c18; line-height:1.1; margin-bottom:12px; }
+.hero-sub { font-size:1rem; line-height:1.7; color:#7a6a58; font-weight:500; max-width:600px; margin:0 auto; }
+
+/* Content */
+.content { max-width:900px; margin:0 auto; padding:0 24px 60px; }
+
+/* Filter bar */
+.filter-bar { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:32px; }
+.filter-btn { font-family:'Inter',sans-serif; font-size:0.78rem; font-weight:700; padding:8px 18px; border-radius:20px; border:1.5px solid rgba(30,28,24,0.15); background:transparent; color:#7a6a58; cursor:pointer; transition:all .15s; }
+.filter-btn:hover { border-color:#1e1c18; color:#1e1c18; }
+.filter-btn.active { background:#1e1c18; color:#f5c842; border-color:#1e1c18; }
+
+/* Theme section */
+.theme-section { margin-bottom:40px; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.05); }
+.theme-header { padding:20px 24px; display:flex; align-items:center; gap:14px; }
+.theme-circle { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif; font-size:16px; font-weight:900; color:#fff; flex-shrink:0; }
+.theme-title { font-family:'Nunito',sans-serif; font-size:1.3rem; font-weight:900; color:#1e1c18; }
+.theme-subtitle { font-size:0.82rem; color:#7a6a58; font-weight:500; margin-top:2px; }
+.theme-body { background:#fffdf8; padding:0 24px 24px; }
+
+/* T5 */
+.theme-section.t5 .theme-header { background:#e8f3ff; }
+.theme-section.t5 .theme-circle { background:#2a69a8; }
+.theme-section.t5 .theme-title { color:#2a69a8; }
+
+/* T6 */
+.theme-section.t6 .theme-header { background:#f3eafc; }
+.theme-section.t6 .theme-circle { background:#7030a0; }
+.theme-section.t6 .theme-title { color:#7030a0; }
+
+/* T7 */
+.theme-section.t7 .theme-header { background:#fdeef2; }
+.theme-section.t7 .theme-circle { background:#b5415a; }
+.theme-section.t7 .theme-title { color:#b5415a; }
+
+/* T8 */
+.theme-section.t8 .theme-header { background:#fef8e2; }
+.theme-section.t8 .theme-circle { background:#946e00; }
+.theme-section.t8 .theme-title { color:#946e00; }
+
+/* Category */
+.vocab-cat { margin-top:20px; }
+.vocab-cat-title { font-family:'Inter',sans-serif; font-size:0.72rem; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:#a09880; margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid rgba(30,28,24,0.08); }
+
+/* Vocab table */
+.vocab-table { width:100%; border-collapse:collapse; }
+.vocab-table tr { border-bottom:1px solid rgba(30,28,24,0.06); }
+.vocab-table tr:last-child { border-bottom:none; }
+.vocab-table td { padding:10px 12px; font-size:0.88rem; line-height:1.5; vertical-align:top; }
+.vocab-table td:first-child { color:#7a6a58; font-style:italic; width:38%; }
+.vocab-table td:nth-child(2) { color:#1e1c18; font-weight:600; }
+.vocab-table td:nth-child(3) { color:#a09880; font-size:0.8rem; font-weight:500; }
+.vocab-table strong { font-weight:800; }
+
+/* Articles table */
+.art-table { width:100%; border-collapse:collapse; }
+.art-table tr { border-bottom:1px solid rgba(30,28,24,0.06); }
+.art-table tr:last-child { border-bottom:none; }
+.art-table td { padding:8px 12px; font-size:0.85rem; line-height:1.5; vertical-align:top; }
+.art-table td:first-child { font-weight:700; color:#1e1c18; width:30%; }
+.art-table td:nth-child(2) { font-family:'Courier New',monospace; font-weight:700; color:#b5415a; font-size:0.82rem; width:22%; }
+.art-table td:nth-child(3) { color:#5a5448; }
+
+/* Note box */
+.note-box { background:rgba(245,200,66,0.1); border-left:4px solid #f5c842; border-radius:0 12px 12px 0; padding:16px 20px; margin-top:32px; }
+.note-box h4 { font-family:'Nunito',sans-serif; font-size:0.9rem; font-weight:800; color:#946e00; margin-bottom:6px; }
+.note-box p { font-size:0.85rem; line-height:1.6; color:#5a4e00; }
+
+/* Footer */
+.footer { max-width:900px; margin:0 auto; padding:32px 24px 48px; text-align:center; font-size:0.78rem; color:#a09880; line-height:1.7; }
+
+/* Mobile */
+@media(max-width:700px){
+  .hero h1 { font-size:2rem; }
+  .hero { padding-top:84px; }
+  .theme-header { padding:16px 18px; }
+  .theme-body { padding:0 16px 18px; }
+  .vocab-table td { padding:8px 6px; font-size:0.82rem; }
+  .vocab-table td:first-child { width:35%; }
+  .art-table td { padding:6px 6px; font-size:0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Droit</span>
+  <a href="memos-droit.html">Mémos</a>
+  <a href="flashcards-droit.html">Flashcards</a>
+  <a href="vocabulaire-droit.html" class="active">Vocabulaire</a>
+  <a href="questions-bac-droit.html">Questions Bac</a>
+  <a href="methode-jour-j-droit.html">Méthode Jour J</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Droit STMG</div>
+  <h1>Vocabulaire Juridique</h1>
+  <p class="hero-sub">Le traducteur pour le Bac — tu lis un mot courant dans le sujet, tu écris le terme juridique dans ta copie</p>
+</section>
+
+<div class="content">
+
+<!-- FILTRES -->
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterTheme('all')">Tous</button>
+  <button class="filter-btn" onclick="filterTheme('t5')">T5 · Le contrat</button>
+  <button class="filter-btn" onclick="filterTheme('t6')">T6 · La responsabilité</button>
+  <button class="filter-btn" onclick="filterTheme('t7')">T7 · Le travail</button>
+  <button class="filter-btn" onclick="filterTheme('t8')">T8 · Entreprendre</button>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- T5 — LE CONTRAT                       -->
+<!-- ══════════════════════════════════════ -->
+<div class="theme-section t5" data-theme="t5">
+  <div class="theme-header">
+    <div class="theme-circle">C</div>
+    <div>
+      <div class="theme-title">Thème 5 — Le contrat</div>
+      <div class="theme-subtitle">Quel est le rôle du contrat ?</div>
+    </div>
+  </div>
+  <div class="theme-body">
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Les parties — Qui est qui</div>
+      <table class="vocab-table">
+        <tr><td>celui qui vend</td><td>le <strong>vendeur</strong></td><td>partie au contrat de vente</td></tr>
+        <tr><td>celui qui achète</td><td>l'<strong>acheteur</strong> (ou <strong>consommateur</strong>)</td><td>protégé par le droit de la consommation</td></tr>
+        <tr><td>le propriétaire qui loue</td><td>le <strong>bailleur</strong></td><td>dans un bail commercial ou d'habitation</td></tr>
+        <tr><td>le locataire</td><td>le <strong>preneur</strong></td><td>dans un bail commercial</td></tr>
+        <tr><td>celui qui doit quelque chose</td><td>le <strong>débiteur</strong></td><td>doit exécuter l'obligation</td></tr>
+        <tr><td>celui à qui on doit</td><td>le <strong>créancier</strong></td><td>peut exiger l'exécution</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">La relation juridique — Ce qui les lie</div>
+      <table class="vocab-table">
+        <tr><td>ils ont signé un accord</td><td>ils ont conclu un <strong>contrat</strong> (art. 1101)</td><td></td></tr>
+        <tr><td>il a acheté un produit</td><td><strong>contrat de vente</strong></td><td>le vendeur doit livrer, l'acheteur doit payer</td></tr>
+        <tr><td>il loue un local pour son commerce</td><td><strong>bail commercial</strong></td><td>durée min. 9 ans, droit au renouvellement</td></tr>
+        <tr><td>il a fait faire des travaux</td><td><strong>contrat d'entreprise</strong></td><td>≠ contrat de travail (pas de subordination)</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Le problème — Ce qui ne va pas</div>
+      <table class="vocab-table">
+        <tr><td>il a menti / il a caché un défaut</td><td><strong>dol</strong> (art. 1137) — tromperie intentionnelle</td><td>→ nullité du contrat</td></tr>
+        <tr><td>il s'est trompé tout seul</td><td><strong>erreur</strong> sur les qualités essentielles (art. 1132)</td><td>→ nullité du contrat</td></tr>
+        <tr><td>il a été forcé / menacé</td><td><strong>violence</strong> (art. 1140)</td><td>→ nullité du contrat</td></tr>
+        <tr><td>il veut annuler le contrat</td><td>il demande la <strong>nullité</strong></td><td>le contrat n'a jamais existé</td></tr>
+        <tr><td>il n'a pas livré / pas payé</td><td><strong>inexécution</strong> du contrat</td><td>→ 5 remèdes (art. 1217)</td></tr>
+        <tr><td>le produit ne marche pas</td><td><strong>défaut de conformité</strong></td><td>→ garantie légale de conformité</td></tr>
+        <tr><td>il veut mettre fin au contrat</td><td><strong>résolution</strong> du contrat</td><td>le contrat est détruit</td></tr>
+        <tr><td>il veut de l'argent pour le préjudice</td><td><strong>dommages-intérêts</strong></td><td>réparation financière</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Les articles à citer</div>
+      <table class="art-table">
+        <tr><td>Le contrat (définition)</td><td>art. 1101</td><td>accord de volontés qui crée des obligations</td></tr>
+        <tr><td>Conditions de validité</td><td>art. 1128</td><td>consentement + capacité + contenu licite</td></tr>
+        <tr><td>Erreur</td><td>art. 1132</td><td>erreur sur les qualités essentielles</td></tr>
+        <tr><td>Dol</td><td>art. 1137</td><td>manœuvres, mensonges, dissimulation</td></tr>
+        <tr><td>Force obligatoire</td><td>art. 1103</td><td>le contrat s'impose comme une loi</td></tr>
+        <tr><td>Obligation d'information</td><td>art. 1112-1</td><td>le vendeur doit informer l'acheteur</td></tr>
+        <tr><td>Inexécution (5 remèdes)</td><td>art. 1217</td><td>exception, exéc. forcée, résolution, réduc. prix, D-I</td></tr>
+        <tr><td>Resp. contractuelle</td><td>art. 1231-1</td><td>faute + dommage + lien → réparation</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- T6 — LA RESPONSABILITÉ                -->
+<!-- ══════════════════════════════════════ -->
+<div class="theme-section t6" data-theme="t6">
+  <div class="theme-header">
+    <div class="theme-circle">R</div>
+    <div>
+      <div class="theme-title">Thème 6 — La responsabilité</div>
+      <div class="theme-subtitle">Qu'est-ce qu'être responsable ?</div>
+    </div>
+  </div>
+  <div class="theme-body">
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Les parties — Qui est qui</div>
+      <table class="vocab-table">
+        <tr><td>celui qui a été blessé / lésé</td><td>la <strong>victime</strong></td><td>doit prouver le dommage</td></tr>
+        <tr><td>celui qui a causé le dommage</td><td>l'<strong>auteur</strong> du dommage</td><td>engage sa responsabilité</td></tr>
+        <tr><td>le propriétaire d'un objet qui cause un dommage</td><td>le <strong>gardien</strong> de la chose</td><td>usage + direction + contrôle</td></tr>
+        <tr><td>l'entreprise dont le salarié cause un dommage</td><td>le <strong>commettant</strong></td><td>responsable du fait du préposé</td></tr>
+        <tr><td>le salarié qui cause un dommage en travaillant</td><td>le <strong>préposé</strong></td><td>agit dans l'exercice de ses fonctions</td></tr>
+        <tr><td>les parents dont l'enfant cause un dommage</td><td>les <strong>parents</strong> (resp. du fait d'autrui)</td><td>responsables de plein droit</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">La relation juridique — Quel régime</div>
+      <table class="vocab-table">
+        <tr><td>il a fait une bêtise exprès</td><td><strong>responsabilité du fait personnel</strong> (art. 1240)</td><td>faute intentionnelle → la victime prouve la faute</td></tr>
+        <tr><td>il n'a pas fait attention</td><td><strong>responsabilité pour négligence</strong> (art. 1241)</td><td>faute par imprudence → la victime prouve la faute</td></tr>
+        <tr><td>son enfant / son salarié a causé un dommage</td><td><strong>responsabilité du fait d'autrui</strong> (art. 1242)</td><td>pas besoin de prouver la faute du parent/employeur</td></tr>
+        <tr><td>son objet a causé un dommage</td><td><strong>responsabilité du fait des choses</strong> (art. 1242 al.1)</td><td>le gardien est responsable automatiquement</td></tr>
+        <tr><td>il doit aller en prison / payer une amende</td><td><strong>responsabilité pénale</strong></td><td>but : PUNIR (≠ civile qui RÉPARE)</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Le problème — Les types de dommage</div>
+      <table class="vocab-table">
+        <tr><td>il a été blessé</td><td><strong>dommage corporel</strong></td><td>atteinte au corps</td></tr>
+        <tr><td>sa voiture est détruite</td><td><strong>dommage matériel</strong></td><td>atteinte aux biens</td></tr>
+        <tr><td>il souffre psychologiquement</td><td><strong>dommage moral</strong></td><td>atteinte aux sentiments</td></tr>
+        <tr><td>la nature est polluée</td><td><strong>préjudice écologique</strong></td><td>réparé en priorité en nature</td></tr>
+        <tr><td>le voisin fait trop de bruit</td><td><strong>trouble anormal de voisinage</strong></td><td>pas besoin de prouver la faute</td></tr>
+        <tr><td>ce n'était pas prévisible / c'était impossible</td><td><strong>force majeure</strong></td><td>imprévisible + irrésistible → exonération</td></tr>
+        <tr><td>c'est l'autre qui a causé le problème</td><td><strong>fait d'un tiers</strong> ou <strong>faute de la victime</strong></td><td>exonération totale ou partielle</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Les articles à citer</div>
+      <table class="art-table">
+        <tr><td>Fait personnel (faute intentionnelle)</td><td>art. 1240</td><td>toute faute oblige à réparer</td></tr>
+        <tr><td>Fait personnel (négligence)</td><td>art. 1241</td><td>même par imprudence</td></tr>
+        <tr><td>Fait d'autrui / fait des choses</td><td>art. 1242</td><td>parents, employeurs, gardien</td></tr>
+        <tr><td>Produit défectueux</td><td>art. 1245</td><td>producteur responsable de plein droit</td></tr>
+        <tr><td>Réparation civile</td><td>—</td><td>en nature ou dommages-intérêts</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- T7 — LE TRAVAIL                       -->
+<!-- ══════════════════════════════════════ -->
+<div class="theme-section t7" data-theme="t7">
+  <div class="theme-header">
+    <div class="theme-circle">T</div>
+    <div>
+      <div class="theme-title">Thème 7 — Le travail subordonné</div>
+      <div class="theme-subtitle">Comment le droit encadre-t-il le travail subordonné ? · LE PLUS FRÉQUENT AU BAC (45%)</div>
+    </div>
+  </div>
+  <div class="theme-body">
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Les parties — Qui est qui</div>
+      <table class="vocab-table">
+        <tr><td>le patron / le chef</td><td>l'<strong>employeur</strong></td><td>a le pouvoir de direction</td></tr>
+        <tr><td>l'employé / le travailleur</td><td>le <strong>salarié</strong></td><td>lié par un contrat de travail</td></tr>
+        <tr><td>il obéit aux ordres</td><td>il est sous un <strong>lien de subordination</strong></td><td>LE critère du contrat de travail</td></tr>
+        <tr><td>un indépendant / un freelance</td><td>un <strong>travailleur indépendant</strong></td><td>≠ salarié (pas de subordination)</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">La relation juridique — Le contrat de travail</div>
+      <table class="vocab-table">
+        <tr><td>il a un emploi stable</td><td><strong>CDI</strong> (contrat à durée indéterminée)</td><td>= la norme, pas de date de fin</td></tr>
+        <tr><td>il est en remplacement / saisonnier</td><td><strong>CDD</strong> (contrat à durée déterminée)</td><td>= l'exception, max ~18 mois</td></tr>
+        <tr><td>il passe par une agence</td><td><strong>intérim</strong> (travail temporaire)</td><td>relation triangulaire</td></tr>
+        <tr><td>il ne peut pas aller chez un concurrent après</td><td><strong>clause de non-concurrence</strong></td><td>limitée temps + espace + contrepartie financière</td></tr>
+        <tr><td>il peut être muté</td><td><strong>clause de mobilité</strong></td><td>zone géographique définie à l'avance</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Le problème — Ce qui ne va pas</div>
+      <table class="vocab-table">
+        <tr><td>il a été viré</td><td>il a fait l'objet d'un <strong>licenciement</strong></td><td>doit avoir une cause réelle et sérieuse</td></tr>
+        <tr><td>il a été viré pour une faute</td><td><strong>licenciement pour motif personnel</strong></td><td>lié à la personne (faute, insuffisance)</td></tr>
+        <tr><td>l'entreprise supprime des postes</td><td><strong>licenciement économique</strong></td><td>lié à l'entreprise (difficultés, restructuration)</td></tr>
+        <tr><td>il est parti de lui-même</td><td><strong>démission</strong></td><td>pas de droit au chômage (sauf cas exceptionnels)</td></tr>
+        <tr><td>ils se sont mis d'accord pour se séparer</td><td><strong>rupture conventionnelle</strong></td><td>d'un commun accord, droit au chômage</td></tr>
+        <tr><td>son patron a changé son salaire / son poste</td><td><strong>modification du contrat</strong></td><td>accord du salarié OBLIGATOIRE</td></tr>
+        <tr><td>son patron a changé ses horaires</td><td><strong>changement des conditions de travail</strong></td><td>pouvoir de direction, pas d'accord nécessaire</td></tr>
+        <tr><td>il refuse de travailler car c'est dangereux</td><td><strong>droit de retrait</strong> (art. L4131-1)</td><td>danger grave et imminent</td></tr>
+        <tr><td>il fait grève</td><td><strong>droit de grève</strong></td><td>droit constitutionnel, contrat suspendu pas rompu</td></tr>
+        <tr><td>il n'a pas été promu à cause de son sexe</td><td><strong>discrimination</strong> (art. L1132-1)</td><td>critère prohibé → l'employeur doit se justifier</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Les articles à citer</div>
+      <table class="art-table">
+        <tr><td>Licenciement personnel</td><td>art. L1232-1</td><td>cause réelle et sérieuse obligatoire</td></tr>
+        <tr><td>Licenciement économique</td><td>art. L1233-3</td><td>difficultés éco, mutations techno, réorganisation</td></tr>
+        <tr><td>Droit de retrait</td><td>art. L4131-1</td><td>danger grave et imminent</td></tr>
+        <tr><td>Obligation de sécurité</td><td>art. L4121-1</td><td>l'employeur protège la santé des salariés</td></tr>
+        <tr><td>Non-discrimination</td><td>art. L1132-1</td><td>aucun traitement défavorable sur critère prohibé</td></tr>
+        <tr><td>Bonne foi</td><td>art. L1222-1</td><td>le contrat s'exécute de bonne foi</td></tr>
+        <tr><td>Juridiction compétente</td><td>—</td><td>conseil de prud'hommes</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- T8 — ENTREPRENDRE                     -->
+<!-- ══════════════════════════════════════ -->
+<div class="theme-section t8" data-theme="t8">
+  <div class="theme-header">
+    <div class="theme-circle">E</div>
+    <div>
+      <div class="theme-title">Thème 8 — Entreprendre</div>
+      <div class="theme-subtitle">Dans quel cadre et comment entreprendre ?</div>
+    </div>
+  </div>
+  <div class="theme-body">
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Les parties — Qui est qui</div>
+      <table class="vocab-table">
+        <tr><td>il travaille seul à son compte</td><td><strong>entrepreneur individuel</strong> (EI)</td><td>pas de personne morale créée</td></tr>
+        <tr><td>il a un statut simplifié</td><td><strong>micro-entrepreneur</strong></td><td>régime simplifié de l'EI</td></tr>
+        <tr><td>les propriétaires d'une SARL</td><td>les <strong>associés</strong></td><td>détiennent des parts sociales</td></tr>
+        <tr><td>les propriétaires d'une SA / SAS</td><td>les <strong>actionnaires</strong></td><td>détiennent des actions</td></tr>
+        <tr><td>celui qui a créé une marque / une œuvre</td><td>le <strong>titulaire du droit de propriété intellectuelle</strong></td><td>droit d'auteur, brevet, marque</td></tr>
+        <tr><td>celui qui copie sans autorisation</td><td>le <strong>contrefacteur</strong></td><td>commet un acte de contrefaçon</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">La relation juridique — Quelle forme</div>
+      <table class="vocab-table">
+        <tr><td>une petite entreprise avec un gérant</td><td><strong>SARL</strong> (Société à Responsabilité Limitée)</td><td>1-100 associés, capital libre</td></tr>
+        <tr><td>une grande entreprise cotée en bourse</td><td><strong>SA</strong> (Société Anonyme)</td><td>capital min 37 000€, conseil d'administration</td></tr>
+        <tr><td>une entreprise souple et moderne</td><td><strong>SAS</strong> (Société par Actions Simplifiée)</td><td>la plus utilisée, grande liberté</td></tr>
+        <tr><td>l'entreprise existe "en tant que personne"</td><td><strong>personne morale</strong></td><td>a un nom, un patrimoine, peut agir en justice</td></tr>
+        <tr><td>l'argent mis par les associés au départ</td><td><strong>capital social</strong> = <strong>apports</strong></td><td>numéraire (argent) + nature (biens) + industrie (compétences)</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Le problème — Ce qui ne va pas</div>
+      <table class="vocab-table">
+        <tr><td>il risque de perdre sa maison si l'entreprise fait faillite</td><td><strong>responsabilité illimitée</strong></td><td>tout le patrimoine personnel est engagé</td></tr>
+        <tr><td>il ne perd que ce qu'il a mis</td><td><strong>responsabilité limitée</strong> aux apports</td><td>SARL, SA, SAS → patrimoine perso protégé</td></tr>
+        <tr><td>depuis 2022, l'EI est aussi protégé</td><td>séparation automatique des <strong>patrimoines</strong></td><td>patrimoine pro ≠ patrimoine perso</td></tr>
+        <tr><td>quelqu'un a copié sa marque / son produit</td><td><strong>contrefaçon</strong></td><td>civil + pénal → dommages-intérêts + saisie</td></tr>
+        <tr><td>des entreprises se sont mises d'accord sur les prix</td><td><strong>pratiques anticoncurrentielles</strong> (entente)</td><td>sanctionnées par le droit de la concurrence</td></tr>
+        <tr><td>une entreprise imite un concurrent pour lui voler des clients</td><td><strong>concurrence déloyale</strong></td><td>dénigrement, imitation, désorganisation</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-cat">
+      <div class="vocab-cat-title">Les articles à citer</div>
+      <table class="art-table">
+        <tr><td>Droit de propriété</td><td>art. 544</td><td>usus + fructus + abusus</td></tr>
+        <tr><td>Contrefaçon</td><td>art. L335-2</td><td>reproduction sans autorisation</td></tr>
+        <tr><td>Expropriation</td><td>—</td><td>limite au droit de propriété pour intérêt général</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- NOTE Q4 -->
+<div class="note-box">
+  <h4>⚠ Attention pour la Q4 (question de réflexion)</h4>
+  <p>Dans 2 sujets sur 22, la Q4 porte sur un thème <strong>différent</strong> du cas étudié. Par exemple, un sujet sur la responsabilité (T6) avec une Q4 sur le droit de propriété (T8). Connais les grands principes de <strong>tous</strong> les thèmes, pas seulement celui du cas.</p>
+</div>
+
+</div><!-- /content -->
+
+<!-- FOOTER -->
+<div class="footer">
+  Révizo · Droit STMG · Vocabulaire Juridique · Avril 2026<br>
+  Sources : Programme officiel Droit STMG, 22 annales post-réforme (2021-2025)
+</div>
+
+<script>
+function filterTheme(theme) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.theme-section').forEach(s => {
+    s.style.display = (theme === 'all' || s.dataset.theme === theme) ? '' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>
