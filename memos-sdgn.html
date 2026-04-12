@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Révizo — Mémos SDGN · MSGN Terminale STMG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="revizo-design-system.css">
+  <link rel="stylesheet" href="revizo-nav.css">
+  <style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; min-height: 100vh; }
+
+  .page-header { max-width: 820px; margin: 0 auto; padding: 100px 20px 24px; text-align: center; }
+  .matiere-label { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: #3d1a5c; }
+  .page-title { font-family: 'Nunito', sans-serif; font-size: 2.4rem; font-weight: 900; color: #1e1c18; margin: 8px 0; }
+  .page-sub { font-size: 0.95rem; color: #7a6a58; font-weight: 500; }
+
+  .memos-grid { max-width: 820px; margin: 0 auto; padding: 0 20px 60px; display: flex; flex-direction: column; gap: 12px; }
+
+  .memo-card { display: flex; align-items: center; gap: 14px; background: #fffdf8; border-radius: 14px; padding: 18px 20px; text-decoration: none; color: #1e1c18; box-shadow: 0 1px 6px rgba(0,0,0,0.04); transition: all .15s; border-left: 4px solid #3d1a5c; }
+  .memo-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-1px); }
+  .circle-letter { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 900; color: #fff; flex-shrink: 0; }
+  .bloc-badge { font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #3d1a5c; background: #f3eafc; padding: 3px 10px; border-radius: 10px; }
+  .memo-body { flex: 1; }
+  .memo-title { font-family: 'Nunito', sans-serif; font-size: 1.05rem; font-weight: 900; color: #1e1c18; }
+  .memo-chips { font-size: 0.78rem; color: #7a6a58; margin-top: 2px; }
+  .memo-arrow { font-size: 1.2rem; color: #a09880; flex-shrink: 0; }
+
+  .bloc-separator { font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #a09880; margin: 24px 0 8px; padding-left: 4px; }
+
+  @media(max-width:700px) {
+    .page-title { font-size: 1.8rem; }
+    .page-header { padding-top: 84px; }
+    .memo-card { padding: 14px 16px; }
+  }
+  </style>
+</head>
+<body>
+
+  <nav class="nav-epreuve">
+    <a href="index.html" class="logo">Révi<span>zo</span></a>
+    <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+    <a href="revizo-msgn.html" class="epreuve-link active">SGDN</a>
+    <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+  </nav>
+
+  <nav class="nav-rubriques">
+    <span class="matiere-pill" style="background:#3d1a5c">SDGN</span>
+    <a href="memos-sdgn.html" class="active">Mémos</a>
+    <a href="revizo-msgn.html">Questions Bac</a>
+  </nav>
+
+  <div class="page-header">
+    <span class="matiere-label">SDGN · MSGN</span>
+    <h1 class="page-title">Mémos par bloc</h1>
+    <p class="page-sub">6 blocs · 14 chapitres · Logigrammes + notions détaillées + fréquences Bac</p>
+  </div>
+
+  <div class="memos-grid">
+
+    <a href="memo-sdgn-blocA.html" class="memo-card">
+      <span class="circle-letter" style="background:#3d1a5c;font-size:12px">MS</span>
+      <div class="memo-body">
+        <div class="memo-title">Management stratégique</div>
+        <div class="memo-chips">Ch1-4 · Finalités · Diagnostic · Stratégie · Business model</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+    <a href="memo-sdgn-blocB.html" class="memo-card">
+      <span class="circle-letter" style="background:#3d1a5c;font-size:12px">RH</span>
+      <div class="memo-body">
+        <div class="memo-title">Gestion des Ressources Humaines</div>
+        <div class="memo-chips">Ch5-8 · Direction · Culture · Motivation · Organisation</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+    <a href="memo-sdgn-blocC.html" class="memo-card">
+      <span class="circle-letter" style="background:#3d1a5c;font-size:12px">GF</span>
+      <div class="memo-body">
+        <div class="memo-title">Gestion financière</div>
+        <div class="memo-chips">Ch9-11 · VA · FRNG/BFR/TN · Coûts · Rentabilité</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+    <a href="memo-sdgn-blocD.html" class="memo-card">
+      <span class="circle-letter" style="background:#3d1a5c;font-size:12px">MK</span>
+      <div class="memo-body">
+        <div class="memo-title">Mercatique / Marketing</div>
+        <div class="memo-chips">Ch12 · Segmentation · Ciblage · Positionnement · Mix 4P</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+    <a href="memo-sdgn-blocE.html" class="memo-card">
+      <span class="circle-letter" style="background:#3d1a5c;font-size:12px">SI</span>
+      <div class="memo-body">
+        <div class="memo-title">Numérique et Système d'Information</div>
+        <div class="memo-chips">Ch13 · PGI · CRM · Big Data · RGPD · E-commerce</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+    <a href="memo-sdgn-blocF.html" class="memo-card">
+      <span class="circle-letter" style="background:#3d1a5c;font-size:11px">RSE</span>
+      <div class="memo-body">
+        <div class="memo-title">RSE et Performance globale</div>
+        <div class="memo-chips">Ch14 · RSE 3 piliers · Performance globale · Développement durable</div>
+      </div>
+      <span class="memo-arrow">→</span>
+    </a>
+
+  </div>
+
+  <div style="max-width:820px;margin:0 auto;padding:0 20px 48px;text-align:center;font-size:0.78rem;color:#a09880">
+    Révizo · SDGN · Mémos par bloc · Avril 2026<br>
+    Sources : Programme MSGN Terminale STMG, annales 2021-2025
+  </div>
+
+</body>
+</html>

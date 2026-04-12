@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Révizo — Mémo SDGN Bloc E · Numérique et SI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@page { size: A4; margin: 12mm; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; }
+
+.sli-nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.sli-nav a { text-decoration:none }
+.sli-nav-logo { font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18 }
+.sli-nav-logo span { color:#b5415a }
+.sli-nav-links { display:flex;gap:2px }
+.sli-nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none }
+.sli-nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.sli-nl.on { background:#1e1c18;color:#f5c842 }
+
+.memo { max-width: 900px; margin: 0 auto; padding: 80px 20px 40px; }
+
+.memo-hd { text-align: center; margin-bottom: 20px; }
+.memo-badge { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #3d1a5c; color: #fff; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+.memo-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 2px; }
+.memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+.memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #3d1a5c; margin-top: 8px; font-style: italic; }
+
+.tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
+.tree-chip[data-tip] { cursor: pointer; transition: transform .1s, box-shadow .1s; }
+.tree-chip[data-tip]:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+.tip-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; z-index:9000; background:rgba(30,28,24,.25); }
+.tip-overlay.show { display:flex; align-items:center; justify-content:center; animation: fadeIn .15s ease; }
+.tip-card { background:#fffdf8; border-radius:16px; padding:20px 24px; max-width:380px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,.18); position:relative; }
+.tip-close { position:absolute; top:10px; right:14px; font-size:18px; cursor:pointer; color:#a09880; background:none; border:none; font-weight:700; }
+.tip-close:hover { color:#1e1c18; }
+.tip-term { font-family:'Nunito',sans-serif; font-size:16px; font-weight:900; color:#1e1c18; margin-bottom:6px; }
+.tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
+.tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:rgba(61,26,92,.06); border-radius:8px; border-left:3px solid #3d1a5c; }
+.tip-bac { font-size:10px; font-weight:700; color:#b5415a; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+
+.chip-bleu   { background: #e8f3ff; color: #2a69a8; }
+.chip-rose   { background: #fdeef2; color: #b5415a; }
+.chip-jaune  { background: #fef8e2; color: #946e00; }
+.chip-vert   { background: #e6f5ec; color: #1a7a3c; }
+.chip-violet { background: #f3eafc; color: #7030a0; }
+.chip-gris   { background: rgba(30,28,24,.07); color: #5a5448; }
+
+.recup { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.recup-full { grid-column: 1 / -1; }
+
+.confuse-box { background: #fdeef2; border-radius: 12px; padding: 14px 16px; }
+.confuse-box .tree-label { color: #b5415a; }
+.confuse-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 11px; line-height: 1.5; }
+.confuse-row:last-child { margin-bottom: 0; }
+.confuse-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.confuse-text strong { font-weight: 800; }
+
+.mnemo-box { background: #e8f3ff; border-radius: 12px; padding: 14px 16px; }
+.mnemo-box .tree-label { color: #2a69a8; }
+.mnemo-item { font-size: 11px; line-height: 1.6; margin-bottom: 4px; }
+.mnemo-item:last-child { margin-bottom: 0; }
+
+.freq-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; }
+.freq-row:last-child { margin-bottom: 0; }
+.freq-bar-track { flex: 1; height: 6px; background: #e8e4dc; border-radius: 3px; overflow: hidden; }
+.freq-bar-fill { height: 100%; border-radius: 3px; }
+.freq-bar-fill.f5 { width: 100%; background: #b5415a; }
+.freq-bar-fill.f4 { width: 80%; background: #d46a1a; }
+.freq-bar-fill.f3 { width: 60%; background: #946e00; }
+.freq-bar-fill.f2 { width: 40%; background: #2a69a8; }
+.freq-bar-fill.f1 { width: 20%; background: #a09880; }
+.freq-notion { font-weight: 700; min-width: 160px; }
+.freq-stars { color: #f5c842; font-size: 10px; min-width: 50px; text-align: right; letter-spacing: 1px; }
+
+.chain { background: #fef8e2; border-radius: 12px; padding: 14px 16px; }
+.chain .tree-label { color: #946e00; }
+.chain-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
+.chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
+
+@media print {
+  .sli-nav { display: none !important; }
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .memo { padding: 0; max-width: 100%; }
+  .confuse-box, .mnemo-box, .freq-box, .chain, .inode, .ichain { break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .recup { grid-template-columns: 1fr; }
+  .recup-full { grid-column: 1; }
+  .memo { padding: 74px 12px 30px; }
+}
+</style>
+</head>
+<body data-subject="sdgn">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link active">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill" style="background:#f3eafc;color:#3d1a5c">SDGN</span>
+  <a href="memo-sdgn-blocD.html">Bloc D</a>
+  <a href="memo-sdgn-blocE.html" class="active">Bloc E</a>
+  <a href="memo-sdgn-blocF.html">Bloc F</a>
+</nav>
+
+<div class="memo">
+
+<!-- HEADER -->
+<div class="memo-hd">
+  <div class="memo-badge">Mémo · SDGN · Bloc E</div>
+  <div class="memo-title">Bloc E — Numérique et SI</div>
+  <div class="memo-sub">Terminale STMG · Chapitre 13 · Encoder · Comprendre · Récupérer</div>
+  <div class="memo-question">"Comment le numérique transforme-t-il l'organisation et sa relation avec ses parties prenantes ?"</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCHÉMA DE SYNTHÈSE SVG -->
+<!-- ═══════════════════════════════════════ -->
+<div style="text-align:center;margin:24px 0 32px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">Logigramme — Système d'information et outils numériques</div>
+  <svg viewBox="0 0 800 460" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+
+    <!-- ══ NIVEAU 1 : SYSTÈME D'INFORMATION ══ -->
+    <rect x="200" y="8" width="400" height="50" rx="10" fill="#f3eafc" stroke="#3d1a5c" stroke-width="2"/>
+    <text x="400" y="26" text-anchor="middle" font-size="10" font-weight="800" fill="#3d1a5c" letter-spacing="1">SYSTÈME D'INFORMATION (SI)</text>
+    <text x="400" y="42" text-anchor="middle" font-size="9" font-weight="700" fill="#1e1c18">Collecte, stocke, traite et diffuse l'information</text>
+
+    <!-- Flèche vers 3 outils -->
+    <line x1="400" y1="58" x2="400" y2="78" stroke="#a09880" stroke-width="2"/>
+    <line x1="150" y1="78" x2="650" y2="78" stroke="#a09880" stroke-width="2"/>
+    <line x1="150" y1="78" x2="150" y2="94" stroke="#a09880" stroke-width="2"/>
+    <line x1="400" y1="78" x2="400" y2="94" stroke="#a09880" stroke-width="2"/>
+    <line x1="650" y1="78" x2="650" y2="94" stroke="#a09880" stroke-width="2"/>
+
+    <!-- ══ PGI (interne) ══ -->
+    <rect x="60" y="94" width="180" height="60" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+    <text x="150" y="112" text-anchor="middle" font-size="10" font-weight="800" fill="#2a69a8">PGI / ERP</text>
+    <text x="150" y="126" text-anchor="middle" font-size="9" font-weight="700" fill="#1e1c18">Gestion interne</text>
+    <text x="150" y="142" text-anchor="middle" font-size="8" fill="#5a5448">Base de données unique</text>
+
+    <!-- ══ CRM (client) ══ -->
+    <rect x="310" y="94" width="180" height="60" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="400" y="112" text-anchor="middle" font-size="10" font-weight="800" fill="#1a7a3c">CRM</text>
+    <text x="400" y="126" text-anchor="middle" font-size="9" font-weight="700" fill="#1e1c18">Relation client</text>
+    <text x="400" y="142" text-anchor="middle" font-size="8" fill="#5a5448">Personnalisation, fidélisation</text>
+
+    <!-- ══ E-commerce (vente) ══ -->
+    <rect x="560" y="94" width="180" height="60" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
+    <text x="650" y="112" text-anchor="middle" font-size="10" font-weight="800" fill="#946e00">E-COMMERCE</text>
+    <text x="650" y="126" text-anchor="middle" font-size="9" font-weight="700" fill="#1e1c18">Vente en ligne</text>
+    <text x="650" y="142" text-anchor="middle" font-size="8" fill="#5a5448">24h/24, données clients</text>
+
+    <!-- Convergence vers Big Data -->
+    <line x1="150" y1="154" x2="150" y2="186" stroke="#a09880" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <line x1="400" y1="154" x2="400" y2="186" stroke="#a09880" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <line x1="650" y1="154" x2="650" y2="186" stroke="#a09880" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <line x1="150" y1="186" x2="650" y2="186" stroke="#a09880" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <line x1="400" y1="186" x2="400" y2="200" stroke="#a09880" stroke-width="2" marker-end="url(#arrowBE)"/>
+
+    <!-- ══ BIG DATA ══ -->
+    <rect x="220" y="200" width="360" height="56" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="400" y="218" text-anchor="middle" font-size="10" font-weight="800" fill="#7030a0" letter-spacing="1">BIG DATA</text>
+    <text x="400" y="234" text-anchor="middle" font-size="9" font-weight="700" fill="#1e1c18">Données massives : Volume, Variété, Vélocité</text>
+    <text x="400" y="248" text-anchor="middle" font-size="8" fill="#5a5448">Aide à la décision, personnalisation, prévision</text>
+
+    <!-- Flèche vers contraintes -->
+    <line x1="400" y1="256" x2="400" y2="278" stroke="#a09880" stroke-width="2"/>
+    <line x1="250" y1="278" x2="550" y2="278" stroke="#a09880" stroke-width="2"/>
+    <line x1="250" y1="278" x2="250" y2="294" stroke="#a09880" stroke-width="2"/>
+    <line x1="550" y1="278" x2="550" y2="294" stroke="#a09880" stroke-width="2"/>
+
+    <!-- ══ RGPD (contrainte) ══ -->
+    <rect x="140" y="294" width="220" height="64" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+    <text x="250" y="312" text-anchor="middle" font-size="10" font-weight="800" fill="#b5415a">RGPD</text>
+    <text x="250" y="326" text-anchor="middle" font-size="9" font-weight="700" fill="#1e1c18">Contrainte juridique</text>
+    <text x="250" y="340" text-anchor="middle" font-size="8" fill="#5a5448">Consentement, droit d'accès,</text>
+    <text x="250" y="352" text-anchor="middle" font-size="8" fill="#5a5448">droit de suppression</text>
+
+    <!-- ══ Identité numérique (risque) ══ -->
+    <rect x="440" y="294" width="220" height="64" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+    <text x="550" y="312" text-anchor="middle" font-size="10" font-weight="800" fill="#b5415a">IDENTITÉ NUMÉRIQUE</text>
+    <text x="550" y="326" text-anchor="middle" font-size="9" font-weight="700" fill="#1e1c18">Risque réputationnel</text>
+    <text x="550" y="340" text-anchor="middle" font-size="8" fill="#5a5448">Traces maîtrisées (site, RS)</text>
+    <text x="550" y="352" text-anchor="middle" font-size="8" fill="#5a5448">ou subies (avis, bad buzz)</text>
+
+    <!-- Encadré résumé -->
+    <rect x="120" y="380" width="560" height="42" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/>
+    <text x="400" y="398" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00">LE NUMÉRIQUE = OPPORTUNITÉS + RISQUES</text>
+    <text x="400" y="412" text-anchor="middle" font-size="8" font-weight="700" fill="#5a4e00">Outils (PGI, CRM, e-commerce) + Données (Big Data) + Cadre légal (RGPD) + Réputation (identité numérique)</text>
+
+    <!-- Markers -->
+    <defs>
+      <marker id="arrowBE" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker>
+    </defs>
+
+    <!-- Pastille -->
+    <g transform="translate(28, 28)">
+      <circle cx="0" cy="0" r="20" fill="#1a7a3c"/>
+      <text x="0" y="6" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="900" fill="#ffffff">E</text>
+    </g>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ARBRE INTERACTIF UNIFIÉ -->
+<!-- ═══════════════════════════════════════ -->
+
+<style>
+.itree { max-width: 100%; }
+.itree-level { display: flex; justify-content: center; position: relative; }
+.itree-connector { display: flex; justify-content: center; padding: 6px 0; }
+.itree-connector .vline { width: 2px; height: 16px; background: #c8c0b4; }
+.itree-branches { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding-top: 18px; position: relative; }
+.itree-branches > div { position: relative; }
+.itree-branches > div::before { content:''; position: absolute; top: -18px; left: 50%; width: 2px; height: 18px; background: #c8c0b4; }
+.itree-branches.two-col { grid-template-columns: 1fr 1fr; }
+
+.inode { border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,.05); position: relative; }
+.inode-root { background: #fffdf8; border: 2px solid #3d1a5c; text-align: center; max-width: 500px; margin: 0 auto; }
+.inode-root .inode-circle { position: absolute; top: -14px; left: -14px; width: 36px; height: 36px; border-radius: 50%; background: #1a7a3c; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 900; color: #fff; }
+.inode-branch { background: #fffdf8; border-left: 4px solid #ccc; }
+.inode-branch.c-bleu { border-left-color: #2a69a8; }
+.inode-branch.c-rose { border-left-color: #b5415a; }
+.inode-branch.c-vert { border-left-color: #1a7a3c; }
+.inode-branch.c-violet { border-left-color: #7030a0; }
+.inode-branch.c-jaune { border-left-color: #946e00; }
+
+.inode-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; }
+.inode-label .freq { color: #f5c842; letter-spacing: 0; text-transform: none; }
+.inode-h { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: #1e1c18; margin-bottom: 6px; }
+.inode-def { font-size: 12px; line-height: 1.55; color: #3a3630; margin-bottom: 6px; }
+.inode-ex { font-size: 11px; color: #7a6a58; font-style: italic; }
+
+.inode-child { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(0,0,0,.08); }
+.inode-child .inode-label { font-size: 8px; }
+.inode-child .inode-h { font-size: 13px; }
+
+.ichain { background: #fef8e2; border-radius: 12px; padding: 12px 16px; margin-top: 14px; }
+.ichain .tree-label { color: #946e00; }
+
+.cascade-tag { display:inline-block;font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:800;letter-spacing:0.5px;padding:3px 10px;border-radius:20px;white-space:nowrap;margin-bottom:4px }
+.cascade-tag.tag-bleu { background:#eef3fa;color:#2a69a8;border:1px solid #c5d5ea }
+.cascade-tag.tag-rose { background:#fdf0f2;color:#b5415a;border:1px solid #eac5cb }
+.cascade-tag.tag-vert { background:#e6f5ec;color:#1a7a3c;border:1px solid #b5dcc5 }
+.cascade-tag.tag-jaune { background:#fef8e2;color:#946e00;border:1px solid #e0d8a8 }
+.cascade-tag.tag-violet { background:#f3eafc;color:#7030a0;border:1px solid #d4bfe8 }
+
+@media (max-width: 700px) {
+  .itree-branches, .itree-branches.two-col { grid-template-columns: 1fr; }
+  .itree-hbar::before { display: none; }
+  .itree-branches > div::before { display: none; }
+  .cascade-tag { font-size: 0.6rem !important; }
+}
+</style>
+
+<div class="itree">
+
+  <!-- ─── NIVEAU 1 : SYSTÈME D'INFORMATION ─── -->
+  <div class="itree-level">
+    <div class="inode inode-root">
+      <div class="inode-circle">E</div>
+      <div class="inode-label" style="color:#3d1a5c">Le socle numérique</div>
+      <div class="inode-h">Système d'information et outils numériques</div>
+      <div class="inode-def">Le <strong>SI</strong> collecte, stocke, traite et diffuse l'information. Il s'appuie sur des outils comme le <strong>PGI</strong> (gestion interne), le <strong>CRM</strong> (relation client) et le <strong>e-commerce</strong> (vente en ligne). Les données massives (<strong>Big Data</strong>) créent des opportunités mais aussi des risques encadrés par le <strong>RGPD</strong>.</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-bleu" data-tip="pgi">PGI</span>
+        <span class="tree-chip chip-vert" data-tip="crm">CRM</span>
+        <span class="tree-chip chip-jaune" data-tip="ecommerce">E-commerce</span>
+        <span class="tree-chip chip-violet" data-tip="bigdata">Big Data</span>
+        <span class="tree-chip chip-rose" data-tip="rgpd">RGPD</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- CHAÎNE LOGIQUE -->
+  <div class="ichain">
+    <div class="tree-label">Chaîne logique</div>
+    <div class="chain-flow">
+      <span class="chain-node">SI</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">PGI + CRM + E-commerce</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Big Data</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">RGPD + Identité numérique</span>
+    </div>
+  </div>
+
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- ─── NIVEAU 2 : OUTILS + RISQUES ─── -->
+  <div class="itree-branches two-col">
+
+    <!-- BRANCHE 1 : Outils internes -->
+    <div>
+      <span class="cascade-tag tag-bleu">Outils → gestion et relation client</span>
+      <div class="inode inode-branch c-bleu" style="margin-top:8px">
+        <div class="inode-label">Outil interne <span class="freq">★★★★★</span></div>
+        <div class="inode-h">PGI / ERP</div>
+        <div class="inode-def">Logiciel intégrant <strong>tous les processus de gestion</strong> (comptabilité, RH, production, ventes, achats) dans une <strong>base de données unique et partagée</strong>. Avantages : cohérence de l'information, gain de temps, vision globale en temps réel.</div>
+        <div class="inode-ex">Fromagerie Réo (2021) utilise un PGI pour centraliser les données de production et logistique.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-bleu" data-tip="pgi">PGI</span>
+        </div>
+
+        <!-- Enfant : CRM -->
+        <div class="inode-child">
+          <div class="inode-label">Relation client <span class="freq">★★★★☆</span></div>
+          <div class="inode-h">CRM</div>
+          <div class="inode-def">Outil de <strong>gestion de la relation client</strong> centralisant toutes les interactions (achats, contacts, réclamations) pour <strong>personnaliser</strong> la relation et <strong>fidéliser</strong>.</div>
+          <div class="inode-ex">Topschuss (2024) utilise un CRM pour personnaliser ses offres selon l'historique d'achat.</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-vert" data-tip="crm">CRM</span>
+          </div>
+        </div>
+
+        <!-- Enfant : E-commerce -->
+        <div class="inode-child">
+          <div class="inode-label">Vente en ligne <span class="freq">★★★★☆</span></div>
+          <div class="inode-h">E-commerce</div>
+          <div class="inode-def">Vente en ligne : site marchand, marketplace, click-and-collect. Avantages : accessibilité 24h/24, coût réduit, données clients. Inconvénients : concurrence directe, logistique complexe, retours.</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-jaune" data-tip="ecommerce">E-commerce</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRANCHE 2 : Données et risques -->
+    <div>
+      <span class="cascade-tag tag-rose">Données → opportunités et risques</span>
+      <div class="inode inode-branch c-violet" style="margin-top:8px">
+        <div class="inode-label">Données massives <span class="freq">★★★☆☆</span></div>
+        <div class="inode-h">Big Data</div>
+        <div class="inode-def">Données massives caractérisées par les <strong>3V</strong> : <strong>V</strong>olume (quantité), <strong>V</strong>ariété (formats), <strong>V</strong>élocité (traitement en temps réel). Utilisées pour l'aide à la décision, la personnalisation, la prévision.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-violet" data-tip="bigdata">Big Data</span>
+        </div>
+
+        <!-- Enfant : RGPD -->
+        <div class="inode-child">
+          <div class="inode-label">Contrainte juridique <span class="freq">★★★★☆</span></div>
+          <div class="inode-h">RGPD</div>
+          <div class="inode-def">Règlement européen (mai 2018) encadrant la collecte, le traitement et le stockage des <strong>données personnelles</strong>. Obligations : consentement explicite, droit d'accès et de suppression, sécurité des données, notification des violations.</div>
+          <div class="inode-ex">Myfood (2023) doit respecter le RGPD pour les données de ses utilisateurs de serre connectée.</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-rose" data-tip="rgpd">RGPD</span>
+          </div>
+        </div>
+
+        <!-- Enfant : Identité numérique -->
+        <div class="inode-child">
+          <div class="inode-label">Risque réputationnel <span class="freq">★★★☆☆</span></div>
+          <div class="inode-h">Identité numérique</div>
+          <div class="inode-def">Ensemble des traces et représentations d'une organisation sur internet (site web, réseaux sociaux, avis clients, presse). Peut être <strong>maîtrisée</strong> (communication officielle) ou <strong>subie</strong> (avis négatifs, bad buzz).</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-rose" data-tip="identite">Identité numérique</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 3 : RÉCUPÉRER -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <!-- Confusions à éviter -->
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques au Bac</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>PGI</strong> (gestion interne globale) ≠ <strong>CRM</strong> (relation client uniquement) — le PGI peut inclure un module CRM</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Big Data</strong> (données massives brutes) ≠ <strong>Informatique décisionnelle</strong> (analyse et tableaux de bord)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>E-réputation</strong> (ce qu'on dit de vous) ≠ <strong>Communication digitale</strong> (ce que vous publiez)</span>
+    </div>
+  </div>
+
+  <!-- Moyens mnémotechniques -->
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>PGI = tout le monde partage</strong> (une seule base de données pour tous les services)</div>
+    <div class="mnemo-item"><strong>CRM = chouchouter le client</strong> (personnaliser, fidéliser, historiser)</div>
+    <div class="mnemo-item"><strong>3V du Big Data</strong> : <strong>V</strong>olume + <strong>V</strong>ariété + <strong>V</strong>élocité</div>
+    <div class="mnemo-item"><strong>RGPD = le client a le pouvoir</strong> (consentement, accès, suppression, portabilité)</div>
+  </div>
+
+</div>
+
+<!-- Fréquences BAC -->
+<div class="recup">
+  <div class="freq-box recup-full">
+    <div class="tree-label" style="margin-bottom:8px">Fréquence au Bac (sujets analysés)</div>
+
+    <div class="freq-row">
+      <span class="freq-notion">PGI / ERP</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">★★★★★</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">CRM</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">★★★★☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">E-commerce</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">★★★★☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">RGPD</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">★★★★☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Big Data</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Identité numérique</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
+  Révizo · Mémo Bloc E · SDGN STMG · Avril 2026 · Sources : annales post-réforme, BO 2019, consignes de correction
+</div>
+
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tip-overlay" id="tipOverlay" onclick="closeTip()">
+  <div class="tip-card" onclick="event.stopPropagation()">
+    <button class="tip-close" onclick="closeTip()">&times;</button>
+    <div class="tip-term" id="tipTerm"></div>
+    <div class="tip-def" id="tipDef"></div>
+    <div class="tip-example" id="tipEx"></div>
+    <div class="tip-bac" id="tipBac"></div>
+  </div>
+</div>
+
+<script>
+const TIPS = {
+  pgi: {
+    term: "PGI / ERP (Progiciel de Gestion Intégré)",
+    def: "Logiciel intégrant tous les processus de gestion (comptabilité, RH, production, ventes, achats) dans une base de données unique et partagée. Quand un service saisit une info, tous les autres la voient en temps réel. Avantages : cohérence, gain de temps, vision globale.",
+    ex: "Fromagerie Réo (2021) utilise un PGI pour centraliser les données de production et logistique. Quand un lot est fabriqué, le stock, la compta et la logistique sont mis à jour automatiquement.",
+    bac: "★★★★★ — 'Montrer l'intérêt du PGI pour l'organisation' — question très fréquente"
+  },
+  crm: {
+    term: "CRM (Customer Relationship Management)",
+    def: "Outil de gestion de la relation client centralisant toutes les interactions (achats, contacts, réclamations) pour personnaliser la relation et fidéliser. Le CRM permet de connaître chaque client individuellement et d'adapter les offres.",
+    ex: "Topschuss (2024) utilise un CRM pour personnaliser ses offres clients selon leur historique d'achat : un client qui achète des skis reçoit des offres sur les fixations compatibles.",
+    bac: "★★★★☆ — 'Identifier l'intérêt du CRM', 'montrer comment le numérique améliore la relation client'"
+  },
+  bigdata: {
+    term: "Big Data",
+    def: "Données massives caractérisées par les 3V : Volume (quantité gigantesque), Variété (texte, image, vidéo, capteurs...), Vélocité (traitement en temps réel). Utilisées pour l'aide à la décision, la personnalisation des offres et la prévision des tendances.",
+    ex: "Amazon analyse les données de navigation et d'achat de millions de clients (Big Data) pour recommander des produits personnalisés en temps réel.",
+    bac: "★★★☆☆ — 'Identifier l'usage du Big Data', 'montrer les opportunités et risques'"
+  },
+  rgpd: {
+    term: "RGPD (Règlement Général sur la Protection des Données)",
+    def: "Règlement européen applicable depuis mai 2018 encadrant la collecte, le traitement et le stockage des données personnelles. Obligations principales : consentement explicite avant collecte, droit d'accès et de rectification, droit à la suppression ('droit à l'oubli'), notification des violations dans les 72h, désignation d'un DPO si nécessaire.",
+    ex: "Myfood (2023) doit respecter le RGPD pour les données de ses utilisateurs de serre connectée : consentement pour la collecte des données de culture, possibilité de supprimer son compte.",
+    bac: "★★★★☆ — 'Identifier les risques liés au numérique', 'montrer les obligations liées au RGPD'"
+  },
+  identite: {
+    term: "Identité numérique",
+    def: "Ensemble des traces et représentations d'une organisation sur internet : site web, réseaux sociaux, avis clients, articles de presse en ligne. Peut être maîtrisée (ce que l'entreprise publie elle-même) ou subie (avis négatifs, bad buzz, fausses informations).",
+    ex: "Un restaurant avec une note de 2/5 sur Google subit son identité numérique. Il peut tenter de la maîtriser en répondant aux avis et en améliorant sa communication en ligne.",
+    bac: "★★★☆☆ — 'Identifier les risques liés à l'identité numérique'"
+  },
+  ecommerce: {
+    term: "E-commerce",
+    def: "Vente en ligne sous différentes formes : site marchand propre, place de marché (marketplace comme Amazon), click-and-collect (commande en ligne, retrait en magasin). Avantages : accessibilité 24h/24, coût de distribution réduit, collecte de données clients. Inconvénients : concurrence directe avec tous les acteurs en ligne, logistique complexe (livraison, retours).",
+    ex: "Topschuss vend ses skis sur son propre site e-commerce et en click-and-collect dans ses magasins partenaires, combinant présence digitale et physique.",
+    bac: "★★★★☆ — 'Montrer comment le numérique soutient la croissance'"
+  }
+};
+
+document.querySelectorAll('[data-tip]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.getAttribute('data-tip');
+    const tip = TIPS[key];
+    if (!tip) return;
+    document.getElementById('tipTerm').textContent = tip.term;
+    document.getElementById('tipDef').textContent = tip.def;
+    document.getElementById('tipEx').textContent = tip.ex;
+    document.getElementById('tipBac').textContent = tip.bac;
+    document.getElementById('tipOverlay').classList.add('show');
+  });
+});
+
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Revizo — Memo SDGN Bloc C · Gestion financiere</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* PRINT-FIRST DESIGN */
+@page { size: A4; margin: 12mm; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; }
+
+/* MEMO LAYOUT */
+.memo { max-width: 900px; margin: 0 auto; padding: 100px 20px 40px; }
+
+/* Header */
+.memo-hd { text-align: center; margin-bottom: 20px; }
+.memo-badge { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #3d1a5c; color: #f5c842; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+.memo-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 2px; }
+.memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+.memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #3d1a5c; margin-top: 8px; font-style: italic; }
+
+/* TREE CARDS */
+.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.tree-full { grid-column: 1 / -1; }
+
+.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
+.tree-card.c-violet { border-left-color: #7030a0; }
+.tree-card.c-rose  { border-left-color: #b5415a; }
+.tree-card.c-bleu  { border-left-color: #2a69a8; }
+.tree-card.c-vert  { border-left-color: #1a7a3c; }
+.tree-card.c-jaune { border-left-color: #946e00; }
+
+.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
+.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
+.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
+.tree-def strong { color: #1e1c18; }
+.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
+.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(61,26,92,.08); color: #3d1a5c; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+
+/* Sub-items */
+.tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
+.tree-chip[data-tip] { cursor: pointer; transition: transform .1s, box-shadow .1s; }
+.tree-chip[data-tip]:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+/* Tooltip popup */
+.tip-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; z-index:9000; background:rgba(30,28,24,.25); }
+.tip-overlay.show { display:flex; align-items:center; justify-content:center; animation: fadeIn .15s ease; }
+@keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+.tip-card { background:#fffdf8; border-radius:16px; padding:20px 24px; max-width:420px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,.18); position:relative; }
+.tip-close { position:absolute; top:10px; right:14px; font-size:18px; cursor:pointer; color:#a09880; background:none; border:none; font-weight:700; }
+.tip-close:hover { color:#1e1c18; }
+.tip-term { font-family:'Nunito',sans-serif; font-size:16px; font-weight:900; color:#1e1c18; margin-bottom:6px; }
+.tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
+.tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:#f3eafc; border-radius:8px; border-left:3px solid #3d1a5c; }
+.tip-bac { font-size:10px; font-weight:700; color:#3d1a5c; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+
+/* Schema section */
+.schema-section { margin-bottom: 16px; }
+.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
+.schema-box svg { display: block; margin: 0 auto; }
+
+.chip-bleu   { background: #e8f3ff; color: #2a69a8; }
+.chip-rose   { background: #fdeef2; color: #b5415a; }
+.chip-jaune  { background: #fef8e2; color: #946e00; }
+.chip-vert   { background: #e6f5ec; color: #1a7a3c; }
+.chip-violet { background: #f3eafc; color: #7030a0; }
+.chip-gris   { background: rgba(30,28,24,.07); color: #5a5448; }
+
+/* SECTION BOTTOM: RECUPERER */
+.recup { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.recup-full { grid-column: 1 / -1; }
+
+/* Confusion box */
+.confuse-box { background: #fdeef2; border-radius: 12px; padding: 14px 16px; }
+.confuse-box .tree-label { color: #b5415a; }
+.confuse-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 11px; line-height: 1.5; }
+.confuse-row:last-child { margin-bottom: 0; }
+.confuse-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.confuse-text strong { font-weight: 800; }
+
+/* Mnemo box */
+.mnemo-box { background: #e8f3ff; border-radius: 12px; padding: 14px 16px; }
+.mnemo-box .tree-label { color: #2a69a8; }
+.mnemo-item { font-size: 11px; line-height: 1.6; margin-bottom: 4px; }
+.mnemo-item:last-child { margin-bottom: 0; }
+
+/* Bac frequency bar */
+.freq-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; }
+.freq-row:last-child { margin-bottom: 0; }
+.freq-bar-track { flex: 1; height: 6px; background: #e8e4dc; border-radius: 3px; overflow: hidden; }
+.freq-bar-fill { height: 100%; border-radius: 3px; }
+.freq-bar-fill.f5 { width: 100%; background: #b5415a; }
+.freq-bar-fill.f4 { width: 80%; background: #d46a1a; }
+.freq-bar-fill.f3 { width: 60%; background: #946e00; }
+.freq-bar-fill.f2 { width: 40%; background: #2a69a8; }
+.freq-bar-fill.f1 { width: 20%; background: #a09880; }
+.freq-notion { font-weight: 700; min-width: 160px; }
+.freq-stars { color: #f5c842; font-size: 10px; min-width: 50px; text-align: right; letter-spacing: 1px; }
+
+/* Link chain */
+.chain { background: #fef8e2; border-radius: 12px; padding: 14px 16px; }
+.chain .tree-label { color: #946e00; }
+.chain-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
+.chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
+
+/* Chapter sections */
+.chapter-section { margin-bottom: 32px; }
+.chapter-title { font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 900; color: #3d1a5c; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.chapter-num { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; background: #3d1a5c; color: #f5c842; padding: 3px 10px; border-radius: 12px; }
+
+/* Structure de reponse type */
+.reponse-type { background: #f3eafc; border-radius: 12px; padding: 14px 16px; margin-top: 12px; border-left: 4px solid #3d1a5c; }
+.reponse-type .tree-label { color: #3d1a5c; }
+.reponse-step { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 5px; font-size: 11px; line-height: 1.5; }
+.reponse-step:last-child { margin-bottom: 0; }
+.reponse-num { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 900; color: #3d1a5c; background: rgba(61,26,92,.12); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* Interpretation box */
+.interp-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); margin-top: 10px; }
+.interp-row { display: flex; gap: 8px; align-items: center; margin-bottom: 5px; font-size: 11px; }
+.interp-row:last-child { margin-bottom: 0; }
+.interp-icon { font-size: 14px; flex-shrink: 0; }
+.interp-text { line-height: 1.5; }
+.interp-text strong { font-weight: 800; }
+
+/* Bilan table */
+.bilan-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 11px; }
+.bilan-table th { background: #3d1a5c; color: #f5c842; font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 6px 10px; text-align: left; }
+.bilan-table td { padding: 6px 10px; border-bottom: 1px solid #e8e4dc; color: #3a3630; }
+.bilan-table tr:nth-child(even) td { background: rgba(61,26,92,.03); }
+
+/* PRINT */
+@media print {
+  .nav-epreuve, .nav-rubriques { display: none !important; }
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .memo { padding: 0; max-width: 100%; }
+  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain, .reponse-type { break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .tree, .recup { grid-template-columns: 1fr; }
+  .tree-full, .recup-full { grid-column: 1; }
+  .memo { padding: 100px 12px 30px; }
+}
+</style>
+</head>
+<body data-subject="sgdn">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Revi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Eco-Droit</a>
+  <a href="revizo-msgn.html" class="epreuve-link active">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">SDGN</span>
+  <a href="revizo-msgn.html">Accueil SGDN</a>
+  <a href="memo-sdgn-blocC.html" class="active">Memos</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<div class="memo">
+
+<!-- HEADER -->
+<div class="memo-hd">
+  <div class="memo-badge">Memo SDGN  ·  Bloc C</div>
+  <div class="memo-title">Gestion financiere</div>
+  <div class="memo-sub">Terminale STMG · Chapitres 9-10-11 · Encoder · Comprendre · Recuperer</div>
+  <div class="memo-question">"Comment analyser la creation de valeur, la structure financiere et la rentabilite d'une organisation ?"</div>
+</div>
+
+<!-- ================================================= -->
+<!-- SCHEMA 1 : CHAPITRE 9 — CREATION DE VALEUR        -->
+<!-- ================================================= -->
+<div class="chapter-section">
+<div class="chapter-title"><span class="chapter-num">Chapitre 9</span> Creation de valeur</div>
+
+<div style="text-align:center;margin:12px 0 20px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">Du chiffre d'affaires au resultat net</div>
+  <svg viewBox="0 0 800 200" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+    <defs>
+      <marker id="arC" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7030a0"/></marker>
+    </defs>
+
+    <!-- CA -->
+    <rect x="10" y="30" width="160" height="50" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="90" y="50" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0" letter-spacing="1">DEPART</text>
+    <text x="90" y="66" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Chiffre d'affaires (CA)</text>
+
+    <!-- Fleche CA -> VA -->
+    <line x1="170" y1="55" x2="210" y2="55" stroke="#7030a0" stroke-width="2" marker-end="url(#arC)"/>
+
+    <!-- VA -->
+    <rect x="210" y="20" width="190" height="70" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="305" y="40" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c" letter-spacing="1">RICHESSE CREEE</text>
+    <text x="305" y="56" text-anchor="middle" font-size="12" font-weight="900" fill="#1e1c18">Valeur ajoutee (VA)</text>
+    <text x="305" y="72" text-anchor="middle" font-size="8" font-weight="700" fill="#1a7a3c">= CA - Conso. intermediaires</text>
+    <text x="305" y="84" text-anchor="middle" font-size="7" fill="#7a6a58">(achats matieres + services ext.)</text>
+
+    <!-- Fleche VA -> RE -->
+    <line x1="400" y1="55" x2="440" y2="55" stroke="#7030a0" stroke-width="2" marker-end="url(#arC)"/>
+
+    <!-- Resultat exploitation -->
+    <rect x="440" y="15" width="170" height="80" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
+    <text x="525" y="34" text-anchor="middle" font-size="7" font-weight="800" fill="#946e00" letter-spacing="1">PERFORMANCE OPERATIONNELLE</text>
+    <text x="525" y="50" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Resultat</text>
+    <text x="525" y="62" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">d'exploitation</text>
+    <text x="525" y="76" text-anchor="middle" font-size="7" font-weight="700" fill="#946e00">= VA - Charges personnel</text>
+    <text x="525" y="86" text-anchor="middle" font-size="7" font-weight="700" fill="#946e00">- Dotations amort.</text>
+
+    <!-- Fleche RE -> RN -->
+    <line x1="610" y1="55" x2="650" y2="55" stroke="#7030a0" stroke-width="2" marker-end="url(#arC)"/>
+
+    <!-- Resultat net -->
+    <rect x="650" y="15" width="140" height="80" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+    <text x="720" y="34" text-anchor="middle" font-size="7" font-weight="800" fill="#b5415a" letter-spacing="1">RESULTAT FINAL</text>
+    <text x="720" y="50" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">Resultat net</text>
+    <text x="720" y="64" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">= R. exploitation</text>
+    <text x="720" y="74" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">+/- R. financier</text>
+    <text x="720" y="84" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">+/- R. exceptionnel</text>
+
+    <!-- Legende repartition VA -->
+    <rect x="210" y="110" width="190" height="60" rx="8" fill="rgba(26,122,60,.06)" stroke="#1a7a3c" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="305" y="126" text-anchor="middle" font-size="7" font-weight="800" fill="#1a7a3c" letter-spacing="0.5">LA VA SE REPARTIT ENTRE :</text>
+    <text x="305" y="140" text-anchor="middle" font-size="7" fill="#3a3630">Salaries (charges personnel) · Etat (impots)</text>
+    <text x="305" y="152" text-anchor="middle" font-size="7" fill="#3a3630">Preteurs (interets) · Entreprise (autofinancement)</text>
+    <line x1="305" y1="90" x2="305" y2="110" stroke="#1a7a3c" stroke-width="1" stroke-dasharray="3,2"/>
+
+    <!-- Pastille -->
+    <g transform="translate(28, 170)">
+      <circle cx="0" cy="0" r="16" fill="#3d1a5c"/>
+      <text x="0" y="1" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" font-weight="800" fill="#f5c842">Ch.9</text>
+    </g>
+  </svg>
+</div>
+
+<!-- Detail chapitre 9 -->
+<div class="tree">
+  <div class="tree-card c-vert tree-full">
+    <div class="tree-label">Notion cle <span class="freq">★★★★★</span></div>
+    <div class="tree-h">Valeur ajoutee (VA)</div>
+    <div class="tree-def"><strong>VA = Chiffre d'affaires - Consommations intermediaires</strong>. Mesure la richesse creee par l'entreprise, au-dela des achats de matieres et services exterieurs. Elle est ensuite repartie entre les salaries, l'Etat, les preteurs et l'entreprise elle-meme.</div>
+    <div class="tree-formula">VA = CA - Consommations intermediaires</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="va">VA</span>
+      <span class="tree-chip chip-vert" data-tip="conso_inter">Conso. intermediaires</span>
+    </div>
+    <div class="tree-ex">Commentaire type : "Une VA de X EUR signifie que l'entreprise cree X EUR de richesse propre."</div>
+  </div>
+
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Notion cle <span class="freq">★★★★★</span></div>
+    <div class="tree-h">Resultat d'exploitation</div>
+    <div class="tree-def">Mesure la performance de l'activite operationnelle, <strong>independamment du financement et de la fiscalite</strong>. Positif = l'activite est rentable. Negatif = l'activite est deficitaire.</div>
+    <div class="tree-formula">R. exploitation = VA - Charges personnel - Dotations amort.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="re">R. exploitation</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-rose">
+    <div class="tree-label">Notion <span class="freq">★★★★☆</span></div>
+    <div class="tree-h">Resultat net</div>
+    <div class="tree-def">Resultat final apres toutes les charges et produits. Peut etre distribue en <strong>dividendes</strong> ou mis en <strong>reserve</strong> (autofinancement).</div>
+    <div class="tree-formula">R. net = R. exploitation +/- R. financier +/- R. exceptionnel - IS</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="rn">R. net</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ================================================= -->
+<!-- SCHEMA 2 : CHAPITRE 10 — BILAN FONCTIONNEL        -->
+<!-- ================================================= -->
+<div class="chapter-section">
+<div class="chapter-title"><span class="chapter-num">Chapitre 10</span> Analyse du bilan fonctionnel</div>
+
+<div style="text-align:center;margin:12px 0 20px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">Du bilan fonctionnel a la tresorerie nette</div>
+  <svg viewBox="0 0 800 380" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+    <defs>
+      <marker id="arB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#3d1a5c"/></marker>
+      <marker id="arOk" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1a7a3c"/></marker>
+    </defs>
+
+    <!-- BILAN FONCTIONNEL TABLE -->
+    <rect x="120" y="10" width="560" height="130" rx="12" fill="#fffdf8" stroke="#3d1a5c" stroke-width="2"/>
+    <text x="400" y="30" text-anchor="middle" font-size="10" font-weight="900" fill="#3d1a5c" letter-spacing="1">BILAN FONCTIONNEL</text>
+
+    <!-- Ligne separation -->
+    <line x1="400" y1="38" x2="400" y2="135" stroke="#3d1a5c" stroke-width="1.5"/>
+    <line x1="130" y1="38" x2="670" y2="38" stroke="#3d1a5c" stroke-width="1"/>
+
+    <!-- Headers -->
+    <text x="260" y="52" text-anchor="middle" font-size="9" font-weight="800" fill="#3d1a5c" letter-spacing="0.5">EMPLOIS (actif)</text>
+    <text x="540" y="52" text-anchor="middle" font-size="9" font-weight="800" fill="#3d1a5c" letter-spacing="0.5">RESSOURCES (passif)</text>
+
+    <!-- Emplois stables -->
+    <rect x="140" y="60" width="240" height="24" rx="6" fill="#f3eafc"/>
+    <text x="260" y="76" text-anchor="middle" font-size="8" font-weight="700" fill="#7030a0">Emplois stables (actif immobilise)</text>
+
+    <!-- Ressources stables -->
+    <rect x="420" y="60" width="240" height="24" rx="6" fill="#f3eafc"/>
+    <text x="540" y="76" text-anchor="middle" font-size="8" font-weight="700" fill="#7030a0">Ressources stables (CP + dettes fi. LT)</text>
+
+    <!-- ACE -->
+    <rect x="140" y="88" width="240" height="24" rx="6" fill="#e6f5ec"/>
+    <text x="260" y="104" text-anchor="middle" font-size="8" font-weight="700" fill="#1a7a3c">ACE (stocks, creances clients)</text>
+
+    <!-- PCE -->
+    <rect x="420" y="88" width="240" height="24" rx="6" fill="#e6f5ec"/>
+    <text x="540" y="104" text-anchor="middle" font-size="8" font-weight="700" fill="#1a7a3c">PCE (dettes fournisseurs, fisc., soc.)</text>
+
+    <!-- Tresorerie actif -->
+    <rect x="140" y="116" width="240" height="18" rx="5" fill="#e8f3ff"/>
+    <text x="260" y="129" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">Tresorerie active (disponibilites)</text>
+
+    <!-- Tresorerie passif -->
+    <rect x="420" y="116" width="240" height="18" rx="5" fill="#e8f3ff"/>
+    <text x="540" y="129" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">Tresorerie passive (concours bancaires)</text>
+
+    <!-- FLECHE vers FRNG -->
+    <line x1="400" y1="140" x2="400" y2="165" stroke="#3d1a5c" stroke-width="2" marker-end="url(#arB)"/>
+
+    <!-- FRNG -->
+    <rect x="200" y="168" width="400" height="50" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="400" y="184" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0" letter-spacing="1">FONDS DE ROULEMENT NET GLOBAL</text>
+    <text x="400" y="200" text-anchor="middle" font-size="13" font-weight="900" fill="#1e1c18">FRNG = Ressources stables - Emplois stables</text>
+    <text x="400" y="212" text-anchor="middle" font-size="7" fill="#7a6a58">Marge de securite financiere</text>
+
+    <!-- FLECHE vers BFR -->
+    <line x1="400" y1="218" x2="400" y2="240" stroke="#3d1a5c" stroke-width="2" marker-end="url(#arB)"/>
+
+    <!-- BFR -->
+    <rect x="200" y="243" width="400" height="50" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="400" y="259" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c" letter-spacing="1">BESOIN EN FONDS DE ROULEMENT</text>
+    <text x="400" y="275" text-anchor="middle" font-size="13" font-weight="900" fill="#1e1c18">BFR = ACE - PCE</text>
+    <text x="400" y="287" text-anchor="middle" font-size="7" fill="#7a6a58">Decalage de tresorerie lie au cycle d'exploitation</text>
+
+    <!-- FLECHE vers TN -->
+    <line x1="400" y1="293" x2="400" y2="315" stroke="#3d1a5c" stroke-width="2" marker-end="url(#arB)"/>
+
+    <!-- TN -->
+    <rect x="200" y="318" width="400" height="50" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+    <text x="400" y="334" text-anchor="middle" font-size="8" font-weight="800" fill="#2a69a8" letter-spacing="1">TRESORERIE NETTE</text>
+    <text x="400" y="350" text-anchor="middle" font-size="13" font-weight="900" fill="#1e1c18">TN = FRNG - BFR</text>
+    <text x="400" y="362" text-anchor="middle" font-size="7" fill="#7a6a58">ou TN = Tresorerie active - Tresorerie passive</text>
+
+    <!-- Pastille -->
+    <g transform="translate(50, 28)">
+      <circle cx="0" cy="0" r="20" fill="#3d1a5c"/>
+      <text x="0" y="2" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="800" fill="#f5c842">Ch.10</text>
+    </g>
+
+    <!-- Interpretation rapide cote droit -->
+    <rect x="630" y="170" width="155" height="44" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="707" y="185" text-anchor="middle" font-size="7" font-weight="800" fill="#1a7a3c">FRNG > 0 = marge OK</text>
+    <text x="707" y="197" text-anchor="middle" font-size="6" fill="#7a6a58">FRNG &lt; 0 = a surveiller</text>
+    <text x="707" y="208" text-anchor="middle" font-size="6" fill="#946e00">(sauf grande distribution)</text>
+
+    <rect x="630" y="248" width="155" height="36" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1"/>
+    <text x="707" y="264" text-anchor="middle" font-size="7" font-weight="800" fill="#946e00">BFR > 0 = normal</text>
+    <text x="707" y="276" text-anchor="middle" font-size="6" fill="#7a6a58">BFR &lt; 0 = favorable</text>
+
+    <rect x="630" y="323" width="155" height="36" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1"/>
+    <text x="707" y="339" text-anchor="middle" font-size="7" font-weight="800" fill="#2a69a8">TN > 0 = solvable</text>
+    <text x="707" y="351" text-anchor="middle" font-size="6" fill="#b5415a">TN &lt; 0 = risque bancaire</text>
+  </svg>
+</div>
+
+<!-- Detail chapitre 10 -->
+<div class="tree">
+  <div class="tree-card c-violet tree-full">
+    <div class="tree-label">Notion cle <span class="freq">★★★★★</span></div>
+    <div class="tree-h">Bilan fonctionnel</div>
+    <div class="tree-def">Retraitement du bilan comptable qui regroupe les emplois et ressources selon leur <strong>fonction</strong> (investissement, exploitation, tresorerie). Il permet de calculer FRNG, BFR et TN.</div>
+    <table class="bilan-table">
+      <tr><th>Emplois</th><th>Ressources</th></tr>
+      <tr><td><strong>Emplois stables</strong> (actif immobilise)</td><td><strong>Ressources stables</strong> (capitaux propres + dettes financieres LT)</td></tr>
+      <tr><td><strong>ACE</strong> (stocks, creances clients)</td><td><strong>PCE</strong> (dettes fournisseurs, fiscales, sociales)</td></tr>
+      <tr><td><strong>Tresorerie active</strong> (disponibilites)</td><td><strong>Tresorerie passive</strong> (concours bancaires)</td></tr>
+    </table>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="bilan_fonctionnel">Bilan fonctionnel</span>
+      <span class="tree-chip chip-violet" data-tip="emplois_stables">Emplois stables</span>
+      <span class="tree-chip chip-violet" data-tip="ressources_stables">Ressources stables</span>
+      <span class="tree-chip chip-vert" data-tip="ace">ACE</span>
+      <span class="tree-chip chip-vert" data-tip="pce">PCE</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-violet">
+    <div class="tree-label">Notion cle <span class="freq">★★★★★</span></div>
+    <div class="tree-h">FRNG</div>
+    <div class="tree-def"><strong>Fonds de Roulement Net Global</strong>. Represente la marge de securite financiere : la part des ressources durables qui finance le cycle d'exploitation.</div>
+    <div class="tree-formula">FRNG = Ressources stables - Emplois stables</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="frng">FRNG</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-vert">
+    <div class="tree-label">Notion cle <span class="freq">★★★★★</span></div>
+    <div class="tree-h">BFR</div>
+    <div class="tree-def"><strong>Besoin en Fonds de Roulement</strong>. Represente le decalage de tresorerie entre les decaissements et les encaissements du cycle d'exploitation.</div>
+    <div class="tree-formula">BFR = ACE - PCE</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="bfr">BFR</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-bleu tree-full">
+    <div class="tree-label">Notion cle <span class="freq">★★★★★</span></div>
+    <div class="tree-h">Tresorerie Nette (TN)</div>
+    <div class="tree-def">Solde final de l'analyse du bilan fonctionnel. TN > 0 = l'entreprise est solvable a court terme. TN < 0 = elle depend des concours bancaires, risque si les banques retirent leur soutien.</div>
+    <div class="tree-formula">TN = FRNG - BFR &nbsp;&nbsp;ou&nbsp;&nbsp; TN = Tresorerie active - Tresorerie passive</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="tn">Tresorerie nette</span>
+    </div>
+  </div>
+</div>
+
+<!-- Interpretation FRNG / BFR / TN -->
+<div class="interp-box">
+  <div class="tree-label" style="margin-bottom:8px">Interpretation des indicateurs</div>
+  <div class="interp-row">
+    <span class="interp-icon">&#10003;</span>
+    <span class="interp-text"><strong>FRNG > 0</strong> : l'entreprise dispose d'une marge de securite financiere</span>
+  </div>
+  <div class="interp-row">
+    <span class="interp-icon">&#9888;</span>
+    <span class="interp-text"><strong>FRNG &lt; 0</strong> : les emplois stables ne sont pas couverts par les ressources stables (acceptable dans certains secteurs : grande distribution)</span>
+  </div>
+  <div class="interp-row">
+    <span class="interp-icon">&#9888;</span>
+    <span class="interp-text"><strong>BFR > 0</strong> : l'entreprise a besoin de financement pour son cycle d'exploitation (cas general, normal)</span>
+  </div>
+  <div class="interp-row">
+    <span class="interp-icon">&#10003;</span>
+    <span class="interp-text"><strong>BFR &lt; 0</strong> : les dettes fournisseurs couvrent les stocks et creances (situation favorable)</span>
+  </div>
+  <div class="interp-row">
+    <span class="interp-icon">&#10003;</span>
+    <span class="interp-text"><strong>TN > 0</strong> : l'entreprise est solvable a court terme</span>
+  </div>
+  <div class="interp-row">
+    <span class="interp-icon">&#9888;</span>
+    <span class="interp-text"><strong>TN &lt; 0</strong> : elle depend des concours bancaires (risque si les banques retirent leur soutien)</span>
+  </div>
+</div>
+
+<!-- Structure de reponse type FRNG/BFR/TN -->
+<div class="reponse-type">
+  <div class="tree-label" style="margin-bottom:8px">Structure de reponse type (FRNG / BFR / TN)</div>
+  <div class="reponse-step">
+    <span class="reponse-num">1</span>
+    <span><strong>Poser la formule</strong> — ex. : "FRNG = Ressources stables - Emplois stables"</span>
+  </div>
+  <div class="reponse-step">
+    <span class="reponse-num">2</span>
+    <span><strong>Faire le calcul</strong> avec les chiffres du document — ex. : "FRNG = 450 000 - 320 000 = 130 000 EUR"</span>
+  </div>
+  <div class="reponse-step">
+    <span class="reponse-num">3</span>
+    <span><strong>Interpreter le signe</strong> (positif / negatif) — ex. : "Le FRNG est positif"</span>
+  </div>
+  <div class="reponse-step">
+    <span class="reponse-num">4</span>
+    <span><strong>Contextualiser</strong> — ex. : "Pour Topschuss, un FRNG positif de 130 000 EUR signifie que l'entreprise dispose d'une marge de securite financiere suffisante pour couvrir ses besoins d'exploitation."</span>
+  </div>
+</div>
+
+</div>
+
+<!-- ================================================= -->
+<!-- SCHEMA 3 : CHAPITRE 11 — COUTS ET RENTABILITE     -->
+<!-- ================================================= -->
+<div class="chapter-section">
+<div class="chapter-title"><span class="chapter-num">Chapitre 11</span> Couts et rentabilite</div>
+
+<div style="text-align:center;margin:12px 0 20px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">De la production au seuil de rentabilite</div>
+  <svg viewBox="0 0 800 180" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+    <defs>
+      <marker id="arD" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#946e00"/></marker>
+    </defs>
+
+    <!-- Cout de revient -->
+    <rect x="10" y="30" width="150" height="55" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
+    <text x="85" y="48" text-anchor="middle" font-size="7" font-weight="800" fill="#946e00" letter-spacing="1">BASE</text>
+    <text x="85" y="62" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Cout de revient</text>
+    <text x="85" y="76" text-anchor="middle" font-size="7" font-weight="700" fill="#946e00">= Total charges / Qte</text>
+
+    <line x1="160" y1="57" x2="195" y2="57" stroke="#946e00" stroke-width="2" marker-end="url(#arD)"/>
+
+    <!-- Taux de marge -->
+    <rect x="195" y="20" width="150" height="40" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1.5"/>
+    <text x="270" y="38" text-anchor="middle" font-size="9" font-weight="900" fill="#1e1c18">Taux de marge</text>
+    <text x="270" y="52" text-anchor="middle" font-size="7" font-weight="700" fill="#1a7a3c">= Marge / Cout de revient x100</text>
+
+    <!-- Taux de marque -->
+    <rect x="195" y="68" width="150" height="40" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1.5"/>
+    <text x="270" y="86" text-anchor="middle" font-size="9" font-weight="900" fill="#1e1c18">Taux de marque</text>
+    <text x="270" y="100" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">= Marge / PV HT x100</text>
+
+    <line x1="345" y1="57" x2="390" y2="57" stroke="#946e00" stroke-width="2" marker-end="url(#arD)"/>
+
+    <!-- Seuil de rentabilite -->
+    <rect x="390" y="20" width="190" height="75" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="485" y="38" text-anchor="middle" font-size="7" font-weight="800" fill="#7030a0" letter-spacing="1">EQUILIBRE</text>
+    <text x="485" y="54" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Seuil de rentabilite</text>
+    <text x="485" y="68" text-anchor="middle" font-size="7" font-weight="700" fill="#7030a0">= Charges fixes / TMCV</text>
+    <text x="485" y="80" text-anchor="middle" font-size="6" fill="#7a6a58">TMCV = MCV / CA x100</text>
+    <text x="485" y="90" text-anchor="middle" font-size="6" fill="#7a6a58">En dessous = perte · Au-dessus = benefice</text>
+
+    <line x1="580" y1="57" x2="620" y2="57" stroke="#946e00" stroke-width="2" marker-end="url(#arD)"/>
+
+    <!-- CAF -->
+    <rect x="620" y="20" width="165" height="75" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+    <text x="702" y="38" text-anchor="middle" font-size="7" font-weight="800" fill="#2a69a8" letter-spacing="1">AUTOFINANCEMENT</text>
+    <text x="702" y="54" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">CAF</text>
+    <text x="702" y="68" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">= R. net + Dotations amort.</text>
+    <text x="702" y="80" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">- Reprises amort.</text>
+    <text x="702" y="90" text-anchor="middle" font-size="6" fill="#7a6a58">CAF elevee = bonne capacite</text>
+
+    <!-- Attention marge/marque -->
+    <rect x="195" y="120" width="150" height="40" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="270" y="135" text-anchor="middle" font-size="7" font-weight="800" fill="#b5415a">ATTENTION CONFUSION !</text>
+    <text x="270" y="148" text-anchor="middle" font-size="7" fill="#b5415a">Marge / cout ≠ Marque / PV</text>
+    <text x="270" y="158" text-anchor="middle" font-size="6" fill="#7a6a58">Marque &lt; Marge (toujours)</text>
+
+    <!-- Pastille -->
+    <g transform="translate(28, 150)">
+      <circle cx="0" cy="0" r="16" fill="#3d1a5c"/>
+      <text x="0" y="1" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" font-weight="800" fill="#f5c842">Ch.11</text>
+    </g>
+  </svg>
+</div>
+
+<!-- Detail chapitre 11 -->
+<div class="tree">
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Notion <span class="freq">★★★★☆</span></div>
+    <div class="tree-h">Cout de revient unitaire</div>
+    <div class="tree-def">Comprend les couts de production ET les couts de distribution. Permet de determiner la marge par unite vendue.</div>
+    <div class="tree-formula">Cout de revient = Total charges (prod. + distrib.) / Quantite produite</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="cout_revient">Cout de revient</span>
+    </div>
+    <div class="tree-ex">Commentaire type : "Un cout de revient de X EUR pour un PV de Y EUR laisse une marge de Z EUR par unite."</div>
+  </div>
+
+  <div class="tree-card c-vert">
+    <div class="tree-label">Notion <span class="freq">★★★★☆</span></div>
+    <div class="tree-h">Taux de marge</div>
+    <div class="tree-def">Se calcule sur le <strong>cout de revient</strong> (la base, ce que ca nous a coute). Mesure la rentabilite par rapport au cout.</div>
+    <div class="tree-formula">Taux de marge = (Marge brute / Cout de revient) x 100</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="taux_marge">Taux de marge</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-rose">
+    <div class="tree-label">Notion <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">Taux de marque</div>
+    <div class="tree-def">Se calcule sur le <strong>prix de vente HT</strong>. Le taux de marque est toujours <strong>inferieur</strong> au taux de marge pour une meme marge.</div>
+    <div class="tree-formula">Taux de marque = (Marge brute / Prix de vente HT) x 100</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="taux_marque">Taux de marque</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-violet">
+    <div class="tree-label">Notion <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">Seuil de rentabilite</div>
+    <div class="tree-def">Le chiffre d'affaires minimum pour couvrir toutes les charges. En dessous du seuil, l'entreprise perd de l'argent. Au-dessus, elle genere des benefices.</div>
+    <div class="tree-formula">CA au seuil = Charges fixes / TMCV</div>
+    <div class="tree-formula">TMCV = (Marge sur cout variable / CA) x 100</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="seuil_rentabilite">Seuil de rentabilite</span>
+      <span class="tree-chip chip-violet" data-tip="tmcv">TMCV</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-bleu tree-full">
+    <div class="tree-label">Notion <span class="freq">★★★☆☆</span></div>
+    <div class="tree-h">CAF (Capacite d'Autofinancement)</div>
+    <div class="tree-def">Ressources internes que l'entreprise genere pour financer ses investissements, rembourser ses dettes ou distribuer des dividendes. Une CAF elevee = bonne capacite a se financer seule.</div>
+    <div class="tree-formula">CAF = Resultat net + Dotations amort. - Reprises amort.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="caf">CAF</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ================================================= -->
+<!-- CHAINE LOGIQUE GLOBALE                             -->
+<!-- ================================================= -->
+<div class="chain" style="margin-bottom:16px">
+  <div class="tree-label">Chaine logique du Bloc C</div>
+  <div class="chain-flow">
+    <span class="chain-node">CA</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">VA</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">R. exploitation</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">R. net</span>
+    <span class="chain-arrow">|</span>
+    <span class="chain-node">Bilan fonctionnel</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">FRNG</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">BFR</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">TN</span>
+    <span class="chain-arrow">|</span>
+    <span class="chain-node">Cout revient</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">Marge</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">Seuil rentabilite</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">CAF</span>
+  </div>
+</div>
+
+<!-- ================================================= -->
+<!-- PARTIE RECUPERER                                    -->
+<!-- ================================================= -->
+<div class="recup">
+
+  <!-- Confusions -->
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques au Bac</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Taux de marge</strong> (se calcule sur le <strong>cout de revient</strong>) &#8800; <strong>Taux de marque</strong> (se calcule sur le <strong>prix de vente</strong>). Le taux de marque est toujours inferieur.</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>FRNG negatif</strong> &#8800; forcement problematique. En <strong>grande distribution</strong>, c'est normal : les clients paient comptant mais l'entreprise paie ses fournisseurs a 60 jours.</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Resultat d'exploitation</strong> (performance operationnelle, avant financement) &#8800; <strong>Resultat net</strong> (resultat final apres tout).</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Cout de production</strong> (fabrication seule) &#8800; <strong>Cout de revient</strong> (production + distribution).</span>
+    </div>
+  </div>
+
+  <!-- Mnemos -->
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>"FRNG = la marge de securite"</strong> : c'est ce qui reste des ressources stables une fois les emplois stables finances</div>
+    <div class="mnemo-item"><strong>"BFR = le decalage"</strong> : entre ce qu'on doit encaisser (creances) et ce qu'on doit decaisser (dettes fournisseurs)</div>
+    <div class="mnemo-item"><strong>"TN = FRNG - BFR"</strong> : la tresorerie nette, c'est la marge de securite moins le besoin de financement</div>
+    <div class="mnemo-item"><strong>"Marge sur le cout, Marque sur le prix"</strong> : marge rime avec charge (cout), marque rime avec marche (prix de vente)</div>
+    <div class="mnemo-item"><strong>"La VA se repartit en 4"</strong> : Salaries, Etat, Preteurs, Entreprise</div>
+    <div class="mnemo-item"><strong>"4 etapes pour repondre"</strong> : Formule &#8594; Calcul &#8594; Signe &#8594; Contexte</div>
+  </div>
+
+</div>
+
+<!-- Frequences BAC -->
+<div class="recup">
+  <div class="freq-box recup-full">
+    <div class="tree-label" style="margin-bottom:8px">Frequence au Bac (sujets analyses)</div>
+
+    <div class="freq-row">
+      <span class="freq-notion">Valeur ajoutee (VA)</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Resultat d'exploitation</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Bilan fonctionnel</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">FRNG</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">BFR</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Tresorerie Nette (TN)</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Resultat net</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Cout de revient</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Taux de marge</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Taux de marque</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Seuil de rentabilite</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">CAF</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
+  Revizo  ·  Memo Bloc C  ·  SDGN STMG  ·  Avril 2026  ·  Sources : programme STMG, annales post-reforme
+</div>
+
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tip-overlay" id="tipOverlay" onclick="closeTip()">
+  <div class="tip-card" onclick="event.stopPropagation()">
+    <button class="tip-close" onclick="closeTip()">&times;</button>
+    <div class="tip-term" id="tipTerm"></div>
+    <div class="tip-def" id="tipDef"></div>
+    <div class="tip-example" id="tipEx"></div>
+    <div class="tip-bac" id="tipBac"></div>
+  </div>
+</div>
+
+<script>
+const TIPS = {
+  va: {
+    term: "Valeur ajoutee (VA)",
+    def: "VA = CA - Consommations intermediaires. Mesure la richesse creee par l'entreprise, au-dela des achats de matieres et services exterieurs. Elle est ensuite repartie entre les salaries (charges de personnel), l'Etat (impots), les preteurs (interets) et l'entreprise (autofinancement).",
+    ex: "Si le CA est de 500 000 EUR et les consommations intermediaires de 200 000 EUR, la VA est de 300 000 EUR : l'entreprise a cree 300 000 EUR de richesse propre.",
+    bac: "★★★★★ — Quasi-systematique au bac SDGN"
+  },
+  conso_inter: {
+    term: "Consommations intermediaires",
+    def: "Ensemble des biens et services achetes a l'exterieur et consommes dans le processus de production : matieres premieres, energie, sous-traitance, services exterieurs. Elles sont soustraites du CA pour obtenir la VA.",
+    ex: "Un boulanger achete de la farine, du beurre, de l'electricite : ce sont ses consommations intermediaires.",
+    bac: "★★★☆☆ — Rarement demandee seule, mais necessaire pour calculer la VA"
+  },
+  re: {
+    term: "Resultat d'exploitation",
+    def: "Resultat d'exploitation = VA - Charges de personnel - Dotations aux amortissements. Mesure la performance de l'activite operationnelle, independamment du financement et de la fiscalite. Positif = l'activite principale est rentable.",
+    ex: "Un resultat d'exploitation positif de 80 000 EUR signifie que l'activite principale genere un benefice de 80 000 EUR, avant prise en compte du financement et des impots.",
+    bac: "★★★★★ — Toujours a commenter dans le contexte de l'entreprise"
+  },
+  rn: {
+    term: "Resultat net",
+    def: "Resultat net = Resultat d'exploitation +/- Resultat financier +/- Resultat exceptionnel - Impot sur les societes. C'est le resultat final de l'exercice. Il peut etre distribue en dividendes aux associes ou mis en reserve pour renforcer les capitaux propres.",
+    ex: "Un resultat net de 45 000 EUR signifie que l'entreprise a gagne 45 000 EUR apres toutes les charges. Ce montant peut etre distribue ou reinvesti.",
+    bac: "★★★★☆"
+  },
+  bilan_fonctionnel: {
+    term: "Bilan fonctionnel",
+    def: "Retraitement du bilan comptable qui regroupe les emplois et ressources selon leur fonction : investissement (emplois/ressources stables), exploitation (ACE/PCE), tresorerie (active/passive). Il sert de base au calcul du FRNG, du BFR et de la TN.",
+    ex: "On prend le bilan comptable et on le reorganise : les immobilisations deviennent 'emplois stables', les capitaux propres + dettes LT deviennent 'ressources stables', etc.",
+    bac: "★★★★★ — Le bilan fonctionnel est le point de depart de toute l'analyse financiere"
+  },
+  emplois_stables: {
+    term: "Emplois stables",
+    def: "Les investissements durables de l'entreprise : immobilisations incorporelles, corporelles et financieres. Ils correspondent a l'actif immobilise du bilan comptable, pris en valeur brute dans le bilan fonctionnel.",
+    ex: "Un batiment, une machine, un brevet : ce sont des emplois stables car ils restent dans l'entreprise pendant plusieurs annees.",
+    bac: "★★★★☆ — Necessaire pour le calcul du FRNG"
+  },
+  ressources_stables: {
+    term: "Ressources stables",
+    def: "Les financements durables de l'entreprise : capitaux propres (capital, reserves, resultat) + amortissements et provisions + dettes financieres a long terme. Ce sont les ressources qui restent durablement dans l'entreprise.",
+    ex: "Le capital social de 100 000 EUR, les reserves de 50 000 EUR, un emprunt bancaire sur 7 ans de 200 000 EUR : ce sont des ressources stables.",
+    bac: "★★★★☆ — Necessaire pour le calcul du FRNG"
+  },
+  ace: {
+    term: "Actif circulant d'exploitation (ACE)",
+    def: "Les elements d'actif lies au cycle d'exploitation : stocks de marchandises, de matieres premieres, de produits finis, et les creances clients (ce que les clients doivent encore). Ils se renouvellent en permanence.",
+    ex: "Les 30 000 EUR de stocks + les 45 000 EUR de creances clients = 75 000 EUR d'ACE.",
+    bac: "★★★★★ — Necessaire pour le calcul du BFR"
+  },
+  pce: {
+    term: "Passif circulant d'exploitation (PCE)",
+    def: "Les dettes liees au cycle d'exploitation : dettes fournisseurs, dettes fiscales et sociales (TVA, charges sociales, impots). Ce sont des dettes a court terme qui se renouvellent regulierement.",
+    ex: "Les 25 000 EUR dus aux fournisseurs + les 10 000 EUR de charges sociales a payer = 35 000 EUR de PCE.",
+    bac: "★★★★★ — Necessaire pour le calcul du BFR"
+  },
+  frng: {
+    term: "FRNG (Fonds de Roulement Net Global)",
+    def: "FRNG = Ressources stables - Emplois stables. C'est la marge de securite financiere : la part des ressources durables qui finance le cycle d'exploitation. FRNG > 0 = marge de securite. FRNG < 0 = a surveiller (mais normal en grande distribution).",
+    ex: "Ressources stables = 500 000, Emplois stables = 350 000. FRNG = 150 000 EUR. L'entreprise dispose de 150 000 EUR de ressources durables pour couvrir son exploitation.",
+    bac: "★★★★★ — Toujours demande avec le BFR et la TN"
+  },
+  bfr: {
+    term: "BFR (Besoin en Fonds de Roulement)",
+    def: "BFR = ACE - PCE. Represente le decalage de tresorerie entre les decaissements (paiement des fournisseurs, constitution de stocks) et les encaissements (paiement des clients). BFR > 0 = l'entreprise a un besoin de financement (cas general). BFR < 0 = situation favorable.",
+    ex: "ACE = 75 000, PCE = 35 000. BFR = 40 000 EUR. L'entreprise a besoin de 40 000 EUR pour financer le decalage entre ce qu'elle doit encaisser et ce qu'elle doit payer.",
+    bac: "★★★★★ — Quasi-systematique"
+  },
+  tn: {
+    term: "Tresorerie Nette (TN)",
+    def: "TN = FRNG - BFR (ou Tresorerie active - Tresorerie passive). TN > 0 = l'entreprise est solvable a court terme. TN < 0 = elle depend des concours bancaires, ce qui presente un risque si les banques retirent leur soutien.",
+    ex: "FRNG = 150 000, BFR = 40 000. TN = 110 000 EUR. L'entreprise dispose de 110 000 EUR de tresorerie, elle est solvable.",
+    bac: "★★★★★ — Toujours interpreter dans le contexte"
+  },
+  cout_revient: {
+    term: "Cout de revient unitaire",
+    def: "Cout de revient = Total des charges (production + distribution) / Quantite produite. Comprend les couts de production ET les couts de distribution (a ne pas confondre avec le cout de production seul).",
+    ex: "Total des charges = 80 000 EUR pour 10 000 unites. Cout de revient unitaire = 8 EUR. Si le prix de vente est de 12 EUR, la marge est de 4 EUR par unite.",
+    bac: "★★★★☆"
+  },
+  taux_marge: {
+    term: "Taux de marge",
+    def: "Taux de marge = (Marge brute / Cout de revient) x 100. Se calcule sur le COUT DE REVIENT. A ne pas confondre avec le taux de marque qui se calcule sur le prix de vente.",
+    ex: "Marge = 4 EUR, Cout de revient = 8 EUR. Taux de marge = (4/8) x 100 = 50%. Pour 1 EUR de cout, l'entreprise gagne 0,50 EUR.",
+    bac: "★★★★☆ — Astuce : marge = sur le cout (base interne)"
+  },
+  taux_marque: {
+    term: "Taux de marque",
+    def: "Taux de marque = (Marge brute / Prix de vente HT) x 100. Se calcule sur le PRIX DE VENTE. Le taux de marque est toujours inferieur au taux de marge pour une meme marge, car le prix de vente est superieur au cout de revient.",
+    ex: "Marge = 4 EUR, PV HT = 12 EUR. Taux de marque = (4/12) x 100 = 33,3%. Pour 1 EUR de vente, 0,33 EUR est de la marge.",
+    bac: "★★★☆☆ — Astuce : marque = sur le prix (ce que le marche voit)"
+  },
+  seuil_rentabilite: {
+    term: "Seuil de rentabilite",
+    def: "CA au seuil = Charges fixes / TMCV. C'est le chiffre d'affaires minimum pour couvrir toutes les charges (fixes + variables). En dessous du seuil, l'entreprise perd de l'argent. Au-dessus, elle genere des benefices.",
+    ex: "Charges fixes = 100 000, TMCV = 40%. Seuil = 100 000 / 0,40 = 250 000 EUR de CA. En dessous de 250 000 EUR de CA, l'entreprise est en perte.",
+    bac: "★★★☆☆"
+  },
+  tmcv: {
+    term: "TMCV (Taux de Marge sur Cout Variable)",
+    def: "TMCV = (Marge sur cout variable / CA) x 100. La marge sur cout variable = CA - Charges variables. Le TMCV indique la part du CA qui reste apres avoir couvert les charges variables, et qui sert donc a couvrir les charges fixes.",
+    ex: "CA = 400 000, Charges variables = 240 000. MCV = 160 000. TMCV = (160 000/400 000) x 100 = 40%.",
+    bac: "★★★☆☆ — Intermediaire pour le calcul du seuil de rentabilite"
+  },
+  caf: {
+    term: "CAF (Capacite d'Autofinancement)",
+    def: "CAF = Resultat net + Dotations aux amortissements - Reprises sur amortissements. Represente les ressources internes que l'entreprise genere pour financer ses investissements, rembourser ses dettes ou distribuer des dividendes. Une CAF elevee = bonne capacite a se financer seule.",
+    ex: "Resultat net = 45 000, Dotations = 30 000, Reprises = 5 000. CAF = 45 000 + 30 000 - 5 000 = 70 000 EUR. L'entreprise peut autofinancer jusqu'a 70 000 EUR d'investissements.",
+    bac: "★★★☆☆"
+  }
+};
+
+// Open tip
+document.querySelectorAll('[data-tip]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.getAttribute('data-tip');
+    const tip = TIPS[key];
+    if (!tip) return;
+    document.getElementById('tipTerm').textContent = tip.term;
+    document.getElementById('tipDef').textContent = tip.def;
+    document.getElementById('tipEx').textContent = tip.ex;
+    document.getElementById('tipBac').textContent = tip.bac;
+    document.getElementById('tipOverlay').classList.add('show');
+  });
+});
+
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTip(); });
+</script>
+
+</body>
+</html>

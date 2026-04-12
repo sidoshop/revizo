@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Révizo — Mémo SDGN Bloc F · RSE et Performance globale</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@page { size: A4; margin: 12mm; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; }
+
+.sli-nav { position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid rgba(30,28,24,.1);box-shadow:0 2px 16px rgba(0,0,0,.06) }
+.sli-nav a { text-decoration:none }
+.sli-nav-logo { font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:900;color:#1e1c18 }
+.sli-nav-logo span { color:#b5415a }
+.sli-nav-links { display:flex;gap:2px }
+.sli-nl { font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#7a6a58;padding:6px 14px;border-radius:20px;white-space:nowrap;text-decoration:none }
+.sli-nl:hover { background:rgba(30,28,24,.08);color:#1e1c18 }
+.sli-nl.on { background:#1e1c18;color:#f5c842 }
+
+.memo { max-width: 900px; margin: 0 auto; padding: 80px 20px 40px; }
+
+.memo-hd { text-align: center; margin-bottom: 20px; }
+.memo-badge { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #3d1a5c; color: #fff; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+.memo-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 2px; }
+.memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+.memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #3d1a5c; margin-top: 8px; font-style: italic; }
+
+.tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
+.tree-chip[data-tip] { cursor: pointer; transition: transform .1s, box-shadow .1s; }
+.tree-chip[data-tip]:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+.tip-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; z-index:9000; background:rgba(30,28,24,.25); }
+.tip-overlay.show { display:flex; align-items:center; justify-content:center; animation: fadeIn .15s ease; }
+.tip-card { background:#fffdf8; border-radius:16px; padding:20px 24px; max-width:380px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,.18); position:relative; }
+.tip-close { position:absolute; top:10px; right:14px; font-size:18px; cursor:pointer; color:#a09880; background:none; border:none; font-weight:700; }
+.tip-close:hover { color:#1e1c18; }
+.tip-term { font-family:'Nunito',sans-serif; font-size:16px; font-weight:900; color:#1e1c18; margin-bottom:6px; }
+.tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
+.tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:rgba(61,26,92,.06); border-radius:8px; border-left:3px solid #3d1a5c; }
+.tip-bac { font-size:10px; font-weight:700; color:#b5415a; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+
+.chip-bleu   { background: #e8f3ff; color: #2a69a8; }
+.chip-rose   { background: #fdeef2; color: #b5415a; }
+.chip-jaune  { background: #fef8e2; color: #946e00; }
+.chip-vert   { background: #e6f5ec; color: #1a7a3c; }
+.chip-violet { background: #f3eafc; color: #7030a0; }
+.chip-gris   { background: rgba(30,28,24,.07); color: #5a5448; }
+
+.recup { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.recup-full { grid-column: 1 / -1; }
+
+.confuse-box { background: #fdeef2; border-radius: 12px; padding: 14px 16px; }
+.confuse-box .tree-label { color: #b5415a; }
+.confuse-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 11px; line-height: 1.5; }
+.confuse-row:last-child { margin-bottom: 0; }
+.confuse-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.confuse-text strong { font-weight: 800; }
+
+.mnemo-box { background: #e8f3ff; border-radius: 12px; padding: 14px 16px; }
+.mnemo-box .tree-label { color: #2a69a8; }
+.mnemo-item { font-size: 11px; line-height: 1.6; margin-bottom: 4px; }
+.mnemo-item:last-child { margin-bottom: 0; }
+
+.freq-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; }
+.freq-row:last-child { margin-bottom: 0; }
+.freq-bar-track { flex: 1; height: 6px; background: #e8e4dc; border-radius: 3px; overflow: hidden; }
+.freq-bar-fill { height: 100%; border-radius: 3px; }
+.freq-bar-fill.f5 { width: 100%; background: #b5415a; }
+.freq-bar-fill.f4 { width: 80%; background: #d46a1a; }
+.freq-bar-fill.f3 { width: 60%; background: #946e00; }
+.freq-bar-fill.f2 { width: 40%; background: #2a69a8; }
+.freq-bar-fill.f1 { width: 20%; background: #a09880; }
+.freq-notion { font-weight: 700; min-width: 160px; }
+.freq-stars { color: #f5c842; font-size: 10px; min-width: 50px; text-align: right; letter-spacing: 1px; }
+
+.chain { background: #fef8e2; border-radius: 12px; padding: 14px 16px; }
+.chain .tree-label { color: #946e00; }
+.chain-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
+.chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
+
+@media print {
+  .sli-nav { display: none !important; }
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .memo { padding: 0; max-width: 100%; }
+  .confuse-box, .mnemo-box, .freq-box, .chain, .inode, .ichain { break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .recup { grid-template-columns: 1fr; }
+  .recup-full { grid-column: 1; }
+  .memo { padding: 74px 12px 30px; }
+}
+</style>
+</head>
+<body data-subject="sdgn">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+  <a href="epreuve-sgdn.html" class="epreuve-link active">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill" style="background:#f3eafc;color:#3d1a5c">SDGN</span>
+  <a href="memo-sdgn-blocD.html">Bloc D</a>
+  <a href="memo-sdgn-blocE.html">Bloc E</a>
+  <a href="memo-sdgn-blocF.html" class="active">Bloc F</a>
+</nav>
+
+<div class="memo">
+
+<!-- HEADER -->
+<div class="memo-hd">
+  <div class="memo-badge">Mémo · SDGN · Bloc F</div>
+  <div class="memo-title">Bloc F — RSE et Performance globale</div>
+  <div class="memo-sub">Terminale STMG · Chapitre 14 · Encoder · Comprendre · Récupérer</div>
+  <div class="memo-question">"Comment concilier performance économique et responsabilité sociétale ?"</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCHÉMA DE SYNTHÈSE SVG -->
+<!-- ═══════════════════════════════════════ -->
+<div style="text-align:center;margin:24px 0 32px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">Logigramme — RSE et Performance globale</div>
+  <svg viewBox="0 0 800 480" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+
+    <!-- ══ NIVEAU 1 : RSE ══ -->
+    <rect x="200" y="8" width="400" height="50" rx="10" fill="#f3eafc" stroke="#3d1a5c" stroke-width="2"/>
+    <text x="400" y="26" text-anchor="middle" font-size="11" font-weight="800" fill="#3d1a5c" letter-spacing="1">RSE</text>
+    <text x="400" y="42" text-anchor="middle" font-size="9" font-weight="700" fill="#1e1c18">Responsabilité Sociétale des Entreprises</text>
+
+    <!-- Flèche vers 3 piliers -->
+    <line x1="400" y1="58" x2="400" y2="78" stroke="#a09880" stroke-width="2"/>
+    <text x="400" y="74" text-anchor="middle" font-size="8" font-weight="800" fill="#a09880">3 PILIERS</text>
+    <line x1="150" y1="84" x2="650" y2="84" stroke="#a09880" stroke-width="2"/>
+    <line x1="150" y1="84" x2="150" y2="100" stroke="#a09880" stroke-width="2"/>
+    <line x1="400" y1="84" x2="400" y2="100" stroke="#a09880" stroke-width="2"/>
+    <line x1="650" y1="84" x2="650" y2="100" stroke="#a09880" stroke-width="2"/>
+
+    <!-- ══ PILIER ÉCONOMIQUE ══ -->
+    <rect x="60" y="100" width="180" height="64" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
+    <text x="150" y="118" text-anchor="middle" font-size="10" font-weight="800" fill="#946e00">ÉCONOMIQUE</text>
+    <text x="150" y="134" text-anchor="middle" font-size="8" font-weight="700" fill="#1e1c18">Performance financière</text>
+    <text x="150" y="148" text-anchor="middle" font-size="7" fill="#5a5448">Rentabilité, croissance,</text>
+    <text x="150" y="158" text-anchor="middle" font-size="7" fill="#5a5448">pérennité</text>
+
+    <!-- ══ PILIER SOCIAL ══ -->
+    <rect x="310" y="100" width="180" height="64" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+    <text x="400" y="118" text-anchor="middle" font-size="10" font-weight="800" fill="#2a69a8">SOCIAL</text>
+    <text x="400" y="134" text-anchor="middle" font-size="8" font-weight="700" fill="#1e1c18">Conditions de travail</text>
+    <text x="400" y="148" text-anchor="middle" font-size="7" fill="#5a5448">Emploi, diversité,</text>
+    <text x="400" y="158" text-anchor="middle" font-size="7" fill="#5a5448">bien-être, dialogue social</text>
+
+    <!-- ══ PILIER ENVIRONNEMENTAL ══ -->
+    <rect x="560" y="100" width="180" height="64" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="650" y="118" text-anchor="middle" font-size="10" font-weight="800" fill="#1a7a3c">ENVIRONNEMENTAL</text>
+    <text x="650" y="134" text-anchor="middle" font-size="8" font-weight="700" fill="#1e1c18">Réduction des impacts</text>
+    <text x="650" y="148" text-anchor="middle" font-size="7" fill="#5a5448">Éco-conception, bilan</text>
+    <text x="650" y="158" text-anchor="middle" font-size="7" fill="#5a5448">carbone, recyclage</text>
+
+    <!-- Convergence vers Performance globale -->
+    <line x1="150" y1="164" x2="150" y2="196" stroke="#a09880" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <line x1="400" y1="164" x2="400" y2="196" stroke="#a09880" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <line x1="650" y1="164" x2="650" y2="196" stroke="#a09880" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <line x1="150" y1="196" x2="650" y2="196" stroke="#a09880" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <line x1="400" y1="196" x2="400" y2="214" stroke="#a09880" stroke-width="2" marker-end="url(#arrowBF)"/>
+
+    <!-- ══ PERFORMANCE GLOBALE ══ -->
+    <rect x="170" y="214" width="460" height="60" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+    <text x="400" y="234" text-anchor="middle" font-size="11" font-weight="800" fill="#b5415a" letter-spacing="1">PERFORMANCE GLOBALE</text>
+    <text x="400" y="250" text-anchor="middle" font-size="9" font-weight="700" fill="#1e1c18">Pas que financière : intègre les dimensions</text>
+    <text x="400" y="264" text-anchor="middle" font-size="9" font-weight="700" fill="#1e1c18">sociales et environnementales</text>
+
+    <!-- Flèche vers 2 résultantes -->
+    <line x1="400" y1="274" x2="400" y2="296" stroke="#a09880" stroke-width="2"/>
+    <line x1="250" y1="296" x2="550" y2="296" stroke="#a09880" stroke-width="2"/>
+    <line x1="250" y1="296" x2="250" y2="312" stroke="#a09880" stroke-width="2"/>
+    <line x1="550" y1="296" x2="550" y2="312" stroke="#a09880" stroke-width="2"/>
+
+    <!-- ══ DÉVELOPPEMENT DURABLE ══ -->
+    <rect x="130" y="312" width="240" height="56" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="250" y="332" text-anchor="middle" font-size="10" font-weight="800" fill="#1a7a3c">DÉVELOPPEMENT DURABLE</text>
+    <text x="250" y="346" text-anchor="middle" font-size="8" font-weight="700" fill="#1e1c18">Besoins du présent sans</text>
+    <text x="250" y="358" text-anchor="middle" font-size="8" font-weight="700" fill="#1e1c18">compromettre les générations futures</text>
+
+    <!-- ══ ÉTHIQUE ══ -->
+    <rect x="430" y="312" width="240" height="56" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="550" y="332" text-anchor="middle" font-size="10" font-weight="800" fill="#7030a0">ÉTHIQUE DES AFFAIRES</text>
+    <text x="550" y="346" text-anchor="middle" font-size="8" font-weight="700" fill="#1e1c18">Principes moraux dans</text>
+    <text x="550" y="358" text-anchor="middle" font-size="8" font-weight="700" fill="#1e1c18">les décisions de l'entreprise</text>
+
+    <!-- Encadré résumé -->
+    <rect x="100" y="394" width="600" height="52" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/>
+    <text x="400" y="412" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00">AU BAC : LA RSE EST TRANSVERSALE</text>
+    <text x="400" y="428" text-anchor="middle" font-size="8" font-weight="700" fill="#5a4e00">Question classique : "Montrer que X intègre la RSE dans sa stratégie"</text>
+    <text x="400" y="440" text-anchor="middle" font-size="8" font-weight="700" fill="#5a4e00">+ Rédaction 15 lignes fréquente sur RSE / performance globale</text>
+
+    <!-- Markers -->
+    <defs>
+      <marker id="arrowBF" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker>
+    </defs>
+
+    <!-- Pastille -->
+    <g transform="translate(28, 28)">
+      <circle cx="0" cy="0" r="20" fill="#1a7a3c"/>
+      <text x="0" y="6" text-anchor="middle" font-family="Inter, sans-serif" font-size="15" font-weight="900" fill="#ffffff">F</text>
+    </g>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ARBRE INTERACTIF UNIFIÉ -->
+<!-- ═══════════════════════════════════════ -->
+
+<style>
+.itree { max-width: 100%; }
+.itree-level { display: flex; justify-content: center; position: relative; }
+.itree-connector { display: flex; justify-content: center; padding: 6px 0; }
+.itree-connector .vline { width: 2px; height: 16px; background: #c8c0b4; }
+.itree-branches { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding-top: 18px; position: relative; }
+.itree-branches > div { position: relative; }
+.itree-branches > div::before { content:''; position: absolute; top: -18px; left: 50%; width: 2px; height: 18px; background: #c8c0b4; }
+.itree-branches.two-col { grid-template-columns: 1fr 1fr; }
+
+.inode { border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,.05); position: relative; }
+.inode-root { background: #fffdf8; border: 2px solid #3d1a5c; text-align: center; max-width: 500px; margin: 0 auto; }
+.inode-root .inode-circle { position: absolute; top: -14px; left: -14px; width: 36px; height: 36px; border-radius: 50%; background: #1a7a3c; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 900; color: #fff; }
+.inode-branch { background: #fffdf8; border-left: 4px solid #ccc; }
+.inode-branch.c-bleu { border-left-color: #2a69a8; }
+.inode-branch.c-rose { border-left-color: #b5415a; }
+.inode-branch.c-vert { border-left-color: #1a7a3c; }
+.inode-branch.c-violet { border-left-color: #7030a0; }
+.inode-branch.c-jaune { border-left-color: #946e00; }
+
+.inode-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; }
+.inode-label .freq { color: #f5c842; letter-spacing: 0; text-transform: none; }
+.inode-h { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: #1e1c18; margin-bottom: 6px; }
+.inode-def { font-size: 12px; line-height: 1.55; color: #3a3630; margin-bottom: 6px; }
+.inode-ex { font-size: 11px; color: #7a6a58; font-style: italic; }
+
+.inode-child { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(0,0,0,.08); }
+.inode-child .inode-label { font-size: 8px; }
+.inode-child .inode-h { font-size: 13px; }
+
+.ichain { background: #fef8e2; border-radius: 12px; padding: 12px 16px; margin-top: 14px; }
+.ichain .tree-label { color: #946e00; }
+
+.cascade-tag { display:inline-block;font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:800;letter-spacing:0.5px;padding:3px 10px;border-radius:20px;white-space:nowrap;margin-bottom:4px }
+.cascade-tag.tag-bleu { background:#eef3fa;color:#2a69a8;border:1px solid #c5d5ea }
+.cascade-tag.tag-rose { background:#fdf0f2;color:#b5415a;border:1px solid #eac5cb }
+.cascade-tag.tag-vert { background:#e6f5ec;color:#1a7a3c;border:1px solid #b5dcc5 }
+.cascade-tag.tag-jaune { background:#fef8e2;color:#946e00;border:1px solid #e0d8a8 }
+.cascade-tag.tag-violet { background:#f3eafc;color:#7030a0;border:1px solid #d4bfe8 }
+
+@media (max-width: 700px) {
+  .itree-branches, .itree-branches.two-col { grid-template-columns: 1fr; }
+  .itree-hbar::before { display: none; }
+  .itree-branches > div::before { display: none; }
+  .cascade-tag { font-size: 0.6rem !important; }
+}
+</style>
+
+<div class="itree">
+
+  <!-- ─── NIVEAU 1 : RSE ─── -->
+  <div class="itree-level">
+    <div class="inode inode-root">
+      <div class="inode-circle">F</div>
+      <div class="inode-label" style="color:#3d1a5c">Notion centrale <span class="freq">★★★★★</span></div>
+      <div class="inode-h">RSE — Responsabilité Sociétale des Entreprises</div>
+      <div class="inode-def">Engagement d'une organisation à intégrer dans ses activités des préoccupations <strong>sociales</strong>, <strong>environnementales</strong> et <strong>économiques</strong>, <strong>au-delà de ses obligations légales</strong>. Repose sur 3 piliers (triple bottom line) : économique, social, environnemental.</div>
+      <div class="inode-ex">Transports YBRA (2024) intègre la RSE : véhicules propres (environnemental), insertion professionnelle (social), rentabilité (économique).</div>
+      <div class="tree-sub" style="justify-content:center">
+        <span class="tree-chip chip-violet" data-tip="rse">RSE</span>
+        <span class="tree-chip chip-jaune" data-tip="pilier_eco">Pilier économique</span>
+        <span class="tree-chip chip-bleu" data-tip="pilier_social">Pilier social</span>
+        <span class="tree-chip chip-vert" data-tip="pilier_enviro">Pilier environnemental</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- CHAÎNE LOGIQUE -->
+  <div class="ichain">
+    <div class="tree-label">Chaîne logique</div>
+    <div class="chain-flow">
+      <span class="chain-node">RSE = 3 piliers</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Performance globale</span>
+      <span class="chain-arrow">→</span>
+      <span class="chain-node">Développement durable + Éthique</span>
+    </div>
+  </div>
+
+  <div class="itree-connector"><div class="vline"></div></div>
+
+  <!-- ─── NIVEAU 2 : PERFORMANCE GLOBALE + ÉTHIQUE ─── -->
+  <div class="itree-branches two-col">
+
+    <!-- BRANCHE 1 : Performance globale -->
+    <div>
+      <span class="cascade-tag tag-rose">Mesurer → au-delà du financier</span>
+      <div class="inode inode-branch c-rose" style="margin-top:8px">
+        <div class="inode-label">Notion clé <span class="freq">★★★★★</span></div>
+        <div class="inode-h">Performance globale</div>
+        <div class="inode-def">Performance qui <strong>ne se limite pas au seul résultat financier</strong> mais intègre les dimensions <strong>sociales</strong> (bien-être des salariés, emploi, diversité) et <strong>environnementales</strong> (bilan carbone, déchets, empreinte écologique). Se mesure à l'aide de <strong>tableaux de bord</strong> avec des indicateurs multidimensionnels.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-rose" data-tip="perf_globale">Performance globale</span>
+        </div>
+
+        <!-- Enfant : Développement durable -->
+        <div class="inode-child">
+          <div class="inode-label">Cadre de référence <span class="freq">★★★★☆</span></div>
+          <div class="inode-h">Développement durable</div>
+          <div class="inode-def">Modèle de développement répondant aux <strong>besoins du présent sans compromettre les générations futures</strong> (rapport Brundtland, 1987). Mêmes 3 piliers que la RSE : économie, social, environnement. La RSE est la <strong>mise en pratique du développement durable</strong> par les entreprises.</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-vert" data-tip="dev_durable">Développement durable</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRANCHE 2 : Éthique -->
+    <div>
+      <span class="cascade-tag tag-violet">Agir → selon des principes moraux</span>
+      <div class="inode inode-branch c-violet" style="margin-top:8px">
+        <div class="inode-label">Dimension morale <span class="freq">★★★☆☆</span></div>
+        <div class="inode-h">Éthique des affaires</div>
+        <div class="inode-def">Application de <strong>principes moraux</strong> dans les décisions et pratiques de l'entreprise. Exemples : refus de la corruption, transparence, conditions de travail équitables, chaîne d'approvisionnement responsable. L'éthique va <strong>au-delà de la loi</strong> : ce n'est pas parce que c'est légal que c'est éthique.</div>
+        <div class="tree-sub">
+          <span class="tree-chip chip-violet" data-tip="ethique">Éthique</span>
+        </div>
+
+        <!-- Enfant : Lien RSE-Éthique -->
+        <div class="inode-child">
+          <div class="inode-label">Le lien au bac</div>
+          <div class="inode-h">RSE et éthique au Bac</div>
+          <div class="inode-def">La RSE est la notion la plus <strong>transversale</strong> du programme. Elle apparaît dans les rédactions de 15 lignes, dans les questions de stratégie, et dans l'analyse de la performance. Savoir relier RSE, performance globale et développement durable est la clé pour les sujets de synthèse.</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-rose" data-tip="rse">RSE</span>
+            <span class="tree-chip chip-rose" data-tip="perf_globale">Performance globale</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PARTIE 3 : RÉCUPÉRER -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="recup">
+
+  <!-- Confusions à éviter -->
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques au Bac</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>RSE</strong> (engagement volontaire au-delà de la loi) ≠ <strong>Obligation légale</strong> (ce que la loi impose) — la RSE commence là où la loi s'arrête</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Performance globale</strong> (éco + social + environnemental) ≠ <strong>Performance financière</strong> (résultat, CA, marge uniquement)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Développement durable</strong> (concept global, rapport Brundtland) ≠ <strong>RSE</strong> (mise en pratique par les entreprises)</span>
+    </div>
+  </div>
+
+  <!-- Moyens mnémotechniques -->
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>RSE = ESE à l'envers</strong> : <strong>E</strong>conomique + <strong>S</strong>ocial + <strong>E</strong>nvironnemental</div>
+    <div class="mnemo-item"><strong>Performance globale = pas que l'argent</strong> : salariés heureux + planète préservée + rentabilité</div>
+    <div class="mnemo-item"><strong>Au-delà de la loi</strong> : la RSE c'est faire PLUS que le minimum légal</div>
+    <div class="mnemo-item"><strong>Brundtland 1987</strong> : "Répondre aux besoins du présent sans compromettre ceux des générations futures"</div>
+  </div>
+
+</div>
+
+<!-- Fréquences BAC -->
+<div class="recup">
+  <div class="freq-box recup-full">
+    <div class="tree-label" style="margin-bottom:8px">Fréquence au Bac (sujets analysés)</div>
+
+    <div class="freq-row">
+      <span class="freq-notion">RSE</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">★★★★★</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Performance globale</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">★★★★★</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Développement durable</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">★★★★☆</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Éthique des affaires</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">★★★☆☆</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
+  Révizo · Mémo Bloc F · SDGN STMG · Avril 2026 · Sources : annales post-réforme, BO 2019, consignes de correction
+</div>
+
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tip-overlay" id="tipOverlay" onclick="closeTip()">
+  <div class="tip-card" onclick="event.stopPropagation()">
+    <button class="tip-close" onclick="closeTip()">&times;</button>
+    <div class="tip-term" id="tipTerm"></div>
+    <div class="tip-def" id="tipDef"></div>
+    <div class="tip-example" id="tipEx"></div>
+    <div class="tip-bac" id="tipBac"></div>
+  </div>
+</div>
+
+<script>
+const TIPS = {
+  rse: {
+    term: "RSE (Responsabilité Sociétale des Entreprises)",
+    def: "Engagement d'une organisation à intégrer dans ses activités des préoccupations sociales, environnementales et économiques, AU-DELÀ de ses obligations légales. Repose sur 3 piliers (triple bottom line) : économique (rentabilité), social (conditions de travail, emploi, diversité), environnemental (réduction des impacts, éco-conception).",
+    ex: "Transports YBRA (2024) intègre la RSE dans sa politique de transport : véhicules propres (environnemental), insertion professionnelle (social), tout en maintenant la rentabilité (économique).",
+    bac: "★★★★★ — 'Montrer que X intègre la RSE dans sa stratégie', 'identifier les dimensions de la RSE' — question quasi systématique"
+  },
+  pilier_eco: {
+    term: "Pilier économique de la RSE",
+    def: "La dimension économique de la RSE : l'entreprise doit rester rentable et pérenne pour pouvoir mener ses actions sociales et environnementales. La RSE ne s'oppose pas à la performance financière, elle la complète.",
+    ex: "Bébé Serein (2025) investit dans des matériaux bio et équitables (RSE) tout en maintenant sa marge grâce à un positionnement premium.",
+    bac: "★★★★★ — Toujours cité dans les 3 piliers"
+  },
+  pilier_social: {
+    term: "Pilier social de la RSE",
+    def: "La dimension sociale : conditions de travail, emploi, diversité, dialogue social, formation, santé et sécurité. L'entreprise veille au bien-être de ses salariés et à l'impact positif sur la société.",
+    ex: "YBRA (2024) favorise l'insertion professionnelle de personnes éloignées de l'emploi : c'est un engagement social qui va au-delà de l'obligation légale.",
+    bac: "★★★★★ — Exemples concrets attendus"
+  },
+  pilier_enviro: {
+    term: "Pilier environnemental de la RSE",
+    def: "La dimension environnementale : réduction de l'empreinte écologique, éco-conception des produits, gestion des déchets, bilan carbone, utilisation d'énergies renouvelables, économie circulaire.",
+    ex: "YBRA (2024) investit dans des véhicules propres (électriques, GNV) pour réduire son bilan carbone : engagement environnemental concret.",
+    bac: "★★★★★ — L'exemple le plus facile à identifier dans les sujets"
+  },
+  perf_globale: {
+    term: "Performance globale",
+    def: "Performance qui ne se limite pas au seul résultat financier mais intègre les dimensions sociales (bien-être des salariés, emploi) et environnementales (bilan carbone, déchets). Se mesure avec des indicateurs variés dans un tableau de bord : taux de satisfaction salariés, émissions CO2, taux de recyclage, en plus du CA et du résultat.",
+    ex: "Bébé Serein (2025) mesure sa performance globale : résultat financier positif (économique), faible turnover (social), 80% d'emballages recyclés (environnemental).",
+    bac: "★★★★★ — 'Analyser la performance globale de X', 'construire un tableau de bord de performance' — très fréquent"
+  },
+  dev_durable: {
+    term: "Développement durable",
+    def: "Modèle de développement répondant aux besoins du présent sans compromettre la capacité des générations futures à répondre aux leurs (rapport Brundtland, 1987). 3 piliers identiques à la RSE : économie, social, environnement. Le développement durable est le concept global ; la RSE en est l'application concrète par les entreprises.",
+    ex: "Une entreprise qui utilise des matières premières recyclées et forme ses salariés à l'éco-conception applique le développement durable au quotidien.",
+    bac: "★★★★☆ — Souvent en lien avec la RSE dans les rédactions de synthèse"
+  },
+  ethique: {
+    term: "Éthique des affaires",
+    def: "Application de principes moraux dans les décisions et pratiques de l'entreprise. Va au-delà de la simple conformité légale. Exemples : refus de la corruption, transparence des comptes, conditions de travail équitables chez les fournisseurs, chaîne d'approvisionnement responsable, refus du travail des enfants.",
+    ex: "Une entreprise qui refuse de travailler avec un fournisseur utilisant le travail des enfants, même si c'est légal dans le pays du fournisseur, fait preuve d'éthique des affaires.",
+    bac: "★★★☆☆ — 'Identifier les enjeux éthiques', 'montrer que la RSE dépasse les obligations légales'"
+  }
+};
+
+document.querySelectorAll('[data-tip]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.getAttribute('data-tip');
+    const tip = TIPS[key];
+    if (!tip) return;
+    document.getElementById('tipTerm').textContent = tip.term;
+    document.getElementById('tipDef').textContent = tip.def;
+    document.getElementById('tipEx').textContent = tip.ex;
+    document.getElementById('tipBac').textContent = tip.bac;
+    document.getElementById('tipOverlay').classList.add('show');
+  });
+});
+
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>TEST — Mémo SDGN Ch2 · Deux formats</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito Sans', sans-serif; }
+body { background: #f0ede6; color: #1e1c18; min-height: 100vh; padding: 40px 24px; }
+.container { max-width: 900px; margin: 0 auto; }
+h1 { font-family: 'Nunito', sans-serif; font-size: 2rem; font-weight: 900; margin-bottom: 8px; }
+h2 { font-family: 'Nunito', sans-serif; font-size: 1.4rem; font-weight: 900; margin: 40px 0 16px; color: #b5415a; }
+.sep { height: 4px; background: #f5c842; border-radius: 2px; margin: 48px 0; }
+
+/* FORMAT A — comme Droit (logigramme + itree) */
+.format-a { background: #fffdf8; border-radius: 16px; padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 32px; }
+.format-a .badge { display: inline-block; background: #3d1a5c; color: #f5c842; font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; padding: 4px 14px; border-radius: 12px; margin-bottom: 12px; }
+
+/* FORMAT B — simplifié (cartes notion) */
+.format-b { margin-bottom: 32px; }
+.notion-card { background: #fffdf8; border-radius: 14px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.04); border-left: 4px solid #3d1a5c; }
+.notion-card .notion-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.notion-card .notion-name { font-family: 'Nunito', sans-serif; font-size: 1.05rem; font-weight: 900; color: #1e1c18; }
+.notion-card .notion-stars { color: #f5c842; font-size: 0.85rem; letter-spacing: 1px; }
+.notion-card .notion-def { font-size: 0.88rem; line-height: 1.6; color: #3a3630; margin-bottom: 8px; }
+.notion-card .notion-ex { font-size: 0.82rem; color: #7a6a58; font-style: italic; margin-bottom: 6px; }
+.notion-card .notion-bac { font-size: 0.78rem; color: #5a5448; background: rgba(245,200,66,0.1); padding: 6px 10px; border-radius: 8px; display: inline-block; }
+.notion-card .notion-bac strong { color: #946e00; }
+.confusion-box { background: #fdeef2; border-left: 4px solid #b5415a; border-radius: 0 12px 12px 0; padding: 14px 18px; margin-top: 16px; font-size: 0.85rem; color: #7a2038; line-height: 1.6; }
+.confusion-box strong { color: #b5415a; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Chapitre 2 — Diagnostic stratégique</h1>
+<p style="color:#7a6a58;margin-bottom:8px;font-size:0.9rem">Quelles sont les forces, faiblesses, opportunités et menaces de l'organisation ?</p>
+<p style="color:#b5415a;font-weight:700;font-size:0.85rem;margin-bottom:32px">Voici le même chapitre dans 2 formats différents. Lequel préfères-tu ?</p>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>FORMAT A — Comme les mémos Droit (logigramme + détail)</h2>
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="format-a">
+  <div class="badge">BLOC A · MANAGEMENT STRATÉGIQUE</div>
+
+  <!-- SVG logigramme -->
+  <div style="text-align:center;margin:16px 0 24px">
+    <svg viewBox="0 0 800 320" width="100%" style="max-width:750px;font-family:'Nunito Sans',sans-serif">
+      <!-- Racine -->
+      <rect x="220" y="10" width="360" height="52" rx="12" fill="#f3eafc" stroke="#3d1a5c" stroke-width="2"/>
+      <text x="400" y="30" text-anchor="middle" font-size="10" font-weight="800" fill="#3d1a5c" letter-spacing="1">DIAGNOSTIC STRATÉGIQUE</text>
+      <text x="400" y="48" text-anchor="middle" font-size="9" font-weight="600" fill="#5a5448">Forces / Faiblesses / Opportunités / Menaces</text>
+
+      <!-- 2 branches -->
+      <line x1="400" y1="62" x2="400" y2="80" stroke="#a09880" stroke-width="2"/>
+      <line x1="200" y1="80" x2="600" y2="80" stroke="#a09880" stroke-width="2"/>
+      <line x1="200" y1="80" x2="200" y2="96" stroke="#a09880" stroke-width="2"/>
+      <line x1="600" y1="80" x2="600" y2="96" stroke="#a09880" stroke-width="2"/>
+
+      <!-- Interne -->
+      <rect x="60" y="96" width="280" height="46" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+      <text x="200" y="116" text-anchor="middle" font-size="10" font-weight="800" fill="#2a69a8">DIAGNOSTIC INTERNE ★★★★★</text>
+      <text x="200" y="132" text-anchor="middle" font-size="9" font-weight="600" fill="#1e1c18">Forces et faiblesses de l'organisation</text>
+
+      <line x1="200" y1="142" x2="200" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="120" y1="158" x2="280" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="120" y1="158" x2="120" y2="168" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="200" y1="158" x2="200" y2="168" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="280" y1="158" x2="280" y2="168" stroke="#a09880" stroke-width="1.5"/>
+
+      <rect x="65" y="168" width="110" height="40" rx="8" fill="#e8f3ff"/>
+      <text x="120" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#2a69a8">Compétences</text>
+      <text x="120" y="198" text-anchor="middle" font-size="8" font-weight="700" fill="#2a69a8">distinctives</text>
+
+      <rect x="145" y="168" width="110" height="40" rx="8" fill="#e8f3ff"/>
+      <text x="200" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#2a69a8">Avantage</text>
+      <text x="200" y="198" text-anchor="middle" font-size="8" font-weight="700" fill="#2a69a8">concurrentiel</text>
+
+      <rect x="225" y="168" width="110" height="40" rx="8" fill="#e8f3ff"/>
+      <text x="280" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#2a69a8">Ressources</text>
+      <text x="280" y="198" text-anchor="middle" font-size="7" fill="#5a5448">humaines · financières</text>
+
+      <!-- Externe -->
+      <rect x="460" y="96" width="280" height="46" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
+      <text x="600" y="116" text-anchor="middle" font-size="10" font-weight="800" fill="#946e00">DIAGNOSTIC EXTERNE ★★★★☆</text>
+      <text x="600" y="132" text-anchor="middle" font-size="9" font-weight="600" fill="#1e1c18">Opportunités et menaces</text>
+
+      <line x1="600" y1="142" x2="600" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="520" y1="158" x2="680" y2="158" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="520" y1="158" x2="520" y2="168" stroke="#a09880" stroke-width="1.5"/>
+      <line x1="680" y1="158" x2="680" y2="168" stroke="#a09880" stroke-width="1.5"/>
+
+      <rect x="460" y="168" width="120" height="40" rx="8" fill="#fef8e2"/>
+      <text x="520" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#946e00">PESTEL</text>
+      <text x="520" y="198" text-anchor="middle" font-size="7" fill="#5a5448">environnement général</text>
+
+      <rect x="620" y="168" width="120" height="40" rx="8" fill="#fef8e2"/>
+      <text x="680" y="185" text-anchor="middle" font-size="8" font-weight="700" fill="#946e00">5 forces Porter</text>
+      <text x="680" y="198" text-anchor="middle" font-size="7" fill="#5a5448">concurrence</text>
+
+      <!-- Convergence SWOT -->
+      <line x1="200" y1="208" x2="200" y2="240" stroke="#a09880" stroke-width="1" stroke-dasharray="4,2"/>
+      <line x1="600" y1="208" x2="600" y2="240" stroke="#a09880" stroke-width="1" stroke-dasharray="4,2"/>
+      <line x1="200" y1="240" x2="600" y2="240" stroke="#a09880" stroke-width="1" stroke-dasharray="4,2"/>
+      <line x1="400" y1="240" x2="400" y2="252" stroke="#a09880" stroke-width="2"/>
+
+      <rect x="220" y="252" width="360" height="44" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+      <text x="400" y="272" text-anchor="middle" font-size="10" font-weight="800" fill="#1a7a3c">SWOT = SYNTHÈSE</text>
+      <text x="400" y="288" text-anchor="middle" font-size="9" font-weight="600" fill="#1e1c18">Forces · Faiblesses · Opportunités · Menaces → choix stratégique</text>
+
+      <!-- Pastille -->
+      <g transform="translate(30, 30)">
+        <circle cx="0" cy="0" r="20" fill="#3d1a5c"/>
+        <text x="0" y="6" text-anchor="middle" font-family="Inter" font-size="13" font-weight="900" fill="#fff">D</text>
+      </g>
+    </svg>
+  </div>
+
+  <p style="font-size:0.82rem;color:#7a6a58;text-align:center;font-style:italic">+ en dessous : le détail de chaque notion avec définitions, exemples, fréquences Bac (comme pour le Droit)</p>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>FORMAT B — Simplifié (cartes par notion)</h2>
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="format-b">
+
+  <div class="notion-card">
+    <div class="notion-head">
+      <span class="notion-name">Diagnostic interne</span>
+      <span class="notion-stars">★★★★★</span>
+    </div>
+    <div class="notion-def">Analyse des <strong>forces et faiblesses</strong> de l'organisation : ressources humaines, financières, technologiques, immatérielles (marque, réputation). Permet d'identifier les <strong>compétences distinctives</strong>.</div>
+    <div class="notion-ex">Ex. : Ankama (2023) possède une compétence distinctive dans la création de personnages originaux.</div>
+    <div class="notion-bac"><strong>Au Bac :</strong> "Identifier les forces de l'organisation", "repérer les ressources clés"</div>
+  </div>
+
+  <div class="notion-card">
+    <div class="notion-head">
+      <span class="notion-name">Compétences distinctives</span>
+      <span class="notion-stars">★★★★★</span>
+    </div>
+    <div class="notion-def">Ressources et savoir-faire <strong>rares, difficiles à imiter</strong> et créateurs de valeur, qui fondent l'<strong>avantage concurrentiel</strong>.</div>
+    <div class="notion-ex">Ex. : Ankama (2023) — création de personnages utilisés sur tous ses supports (jeux, BD, animation).</div>
+    <div class="notion-bac"><strong>Au Bac :</strong> "Montrer que X possède une compétence distinctive"</div>
+  </div>
+
+  <div class="notion-card">
+    <div class="notion-head">
+      <span class="notion-name">Avantage concurrentiel</span>
+      <span class="notion-stars">★★★★★</span>
+    </div>
+    <div class="notion-def">Position supérieure <strong>durable</strong> d'une entreprise face à ses concurrents. Peut être un coût plus faible, une offre perçue comme unique, ou une relation client supérieure.</div>
+    <div class="notion-bac"><strong>Au Bac :</strong> "Montrer que X dispose d'un avantage concurrentiel", "justifier la stratégie choisie"</div>
+  </div>
+
+  <div class="notion-card">
+    <div class="notion-head">
+      <span class="notion-name">Diagnostic externe — PESTEL</span>
+      <span class="notion-stars">★★★★☆</span>
+    </div>
+    <div class="notion-def">Analyse de l'environnement en <strong>6 dimensions</strong> : Politique, Économique, Socioculturel, Technologique, Environnemental, Légal.</div>
+    <div class="notion-ex">Ex. : OPC (2024) — l'essor des préoccupations écologiques (facteur E) est une opportunité pour les vêtements éco-responsables.</div>
+    <div class="notion-bac"><strong>Au Bac :</strong> "Identifier les opportunités et menaces", "réaliser un diagnostic externe"</div>
+  </div>
+
+  <div class="notion-card">
+    <div class="notion-head">
+      <span class="notion-name">Forces de Porter (5 forces)</span>
+      <span class="notion-stars">★★★☆☆</span>
+    </div>
+    <div class="notion-def">Modèle d'analyse de la <strong>concurrence</strong> : concurrents directs, entrants potentiels, produits de substitution, pouvoir des fournisseurs, pouvoir des clients.</div>
+    <div class="notion-bac"><strong>Au Bac :</strong> "Analyser la pression concurrentielle"</div>
+  </div>
+
+  <div class="confusion-box">
+    <strong>Confusion à éviter :</strong> Le PESTEL analyse l'environnement <strong>général</strong> (macro). Les 5 forces analysent l'environnement <strong>concurrentiel</strong> (méso). Ne pas les mélanger.
+  </div>
+
+</div>
+
+<p style="text-align:center;color:#7a6a58;font-size:0.9rem;margin-top:32px">Lequel tu préfères ? Le format A (logigramme + détail comme Droit) ou le format B (cartes simples par notion) ?</p>
+
+</div>
+</body>
+</html>
