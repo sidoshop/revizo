@@ -3,18 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Révizo — Notions & Sujets Philosophie</title>
+<title>Révizo — Notions Philosophie</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="revizo-design-system.css">
 <link rel="stylesheet" href="revizo-nav.css">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --fond: #f0ede6; --blanc: #fffdf8; --texte: #1e1c18;
-  --accent: #2e2e2e; --accent-light: #555555; --jaune: #f5c842; --vert: #2d7a4f;
-  --bleu: #2563a8; --gris: #8a8478; --bordure: #ddd8cc;
-  --sidebar-w: 280px;
+  --jaune: #f5c842; --vert: #2d7a4f; --bleu: #2563a8;
+  --gris: #8a8478; --bordure: #ddd8cc; --sidebar-w: 260px;
 }
 body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; }
 
@@ -23,125 +22,65 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 
 /* SIDEBAR */
 .sidebar { background: white; border-right: 1px solid var(--bordure); position: sticky; top: 84px; height: calc(100vh - 84px); overflow-y: auto; }
-.sidebar-intro { padding: 14px 16px 8px; font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; }
+.sidebar-label { padding: 14px 16px 8px; font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; }
 
-/* ACCORDION GROUPE */
-.group { border-bottom: 1px solid var(--bordure); }
-.group-header { padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; user-select: none; }
-.group-header:hover { background: var(--fond); }
-.group-stars { font-size: 12px; font-weight: 800; }
-.stars-5 { color: #2e2e2e; }
-.stars-4 { color: #c97a30; }
-.stars-3 { color: #8a8478; }
-.group-label { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; flex: 1; }
-.group-arrow { font-size: 10px; color: var(--gris); transition: transform .2s; }
-.group-arrow.open { transform: rotate(90deg); }
-.group-body { display: none; }
-.group-body.open { display: block; }
+/* NOTION ITEMS */
+.notion-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; cursor: pointer; border-left: 3px solid transparent; font-size: 14px; font-weight: 500; color: var(--texte); transition: background .1s; }
+.notion-item:hover { background: var(--fond); }
+.notion-item.active { background: #f5f5f5; border-left-color: #2e2e2e; font-weight: 700; }
+.notion-item .n-stars { font-size: 11px; color: var(--gris); }
 
-/* NOTION ITEM */
-.q-item { padding: 10px 16px 10px 20px; cursor: pointer; border-left: 3px solid transparent; display: flex; flex-direction: column; gap: 3px; transition: all .15s; }
-.q-item:hover { background: var(--fond); }
-.q-item.active { background: #f5f5f5; border-left-color: #2e2e2e; }
-.q-item .q-name { font-size: 13px; font-weight: 600; line-height: 1.3; }
-.q-item .q-meta { display: flex; gap: 8px; align-items: center; }
-.q-freq { font-size: 11px; color: var(--gris); }
+/* SEPARATOR */
+.sidebar-sep { height: 1px; background: var(--bordure); margin: 8px 16px; }
+.sidebar-section { padding: 10px 16px 4px; font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; }
 
-/* METHODE SECTION */
-.methode-section { padding: 10px 16px 6px; }
-.methode-title { font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 6px; }
-.m-item { padding: 9px 16px 9px 20px; cursor: pointer; border-left: 3px solid transparent; display: flex; gap: 6px; align-items: center; transition: all .15s; }
-.m-item:hover { background: var(--fond); }
-.m-item.active { background: #f5f5f5; border-left-color: #2e2e2e; }
-.m-item .m-name { font-size: 13px; font-weight: 600; }
-.m-icon { font-size: 14px; }
+/* MAIN PANEL */
+.panel { padding: 28px 32px 60px; }
 
-/* MAIN */
-.main { padding: 24px 28px; max-width: 780px; }
-.q-header { margin-bottom: 20px; }
-.q-header .type-tag { font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 5px; }
-.q-header h2 { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 6px; }
-.q-header .freq { font-size: 13px; color: var(--gris); }
-.q-header .annales-list { margin-top: 6px; font-size: 12px; color: var(--gris); font-style: italic; }
+/* NOTION HEADER */
+.n-header { margin-bottom: 24px; }
+.n-tag { font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 6px; }
+.n-title { font-family: 'Nunito', sans-serif; font-size: 1.8rem; font-weight: 900; margin-bottom: 4px; }
+.n-question { font-size: 0.9rem; color: var(--gris); font-style: italic; }
 
-/* FREQ BAND */
-.freq-band { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-.freq-item { display: flex; align-items: center; gap: 6px; background: white; border: 1px solid var(--bordure); border-radius: 8px; padding: 8px 14px; font-size: 13px; }
-.freq-val { font-weight: 700; }
-.freq-lab { color: var(--gris); font-size: 12px; }
+/* SECTION BLOCK */
+.bloc { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 12px; padding: 18px 22px; margin-bottom: 14px; }
+.bloc-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.95rem; margin-bottom: 10px; color: var(--texte); display: flex; align-items: center; gap: 8px; }
+.bloc p, .bloc li { font-size: 0.88rem; line-height: 1.6; color: #2e2e2e; }
+.bloc ul { padding-left: 1.2rem; }
+.bloc li { margin-bottom: 4px; }
 
-/* SECTION */
-.section { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; }
-.sec-title { font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 7px; }
-.sec-title.rouge { color: #b5415a; }
-.sec-title.bleu  { color: var(--bleu); }
-.sec-title.vert  { color: var(--vert); }
-.sec-title.or    { color: #9a7f20; }
-.sec-title.gris  { color: var(--gris); }
-.sec-title.noir  { color: #2e2e2e; }
+/* THÈSE */
+.these { background: #1e1c18; color: #fffdf8; border-radius: 10px; padding: 14px 18px; margin-bottom: 14px; font-size: 0.88rem; line-height: 1.55; }
+.these strong { color: var(--jaune); }
 
-/* AUTEURS */
-.auteurs { display: flex; flex-direction: column; gap: 10px; }
-.auteur { display: flex; gap: 10px; align-items: flex-start; }
-.auteur-name { font-weight: 700; font-size: 13px; min-width: 100px; color: #2e2e2e; }
-.auteur-text { font-size: 13px; line-height: 1.5; color: var(--texte); }
-.auteur-oeuvre { font-style: italic; color: var(--gris); font-size: 12px; }
+/* AUTEUR */
+.auteur-bloc { background: var(--blanc); border-left: 4px solid #2e2e2e; border-radius: 0 12px 12px 0; padding: 14px 18px; margin-bottom: 14px; }
+.auteur-name { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; margin-bottom: 6px; }
+.auteur-text { font-size: 0.87rem; line-height: 1.55; color: #444; }
 
-/* NOTIONS LIÉES PILLS */
-.pills { display: flex; flex-wrap: wrap; gap: 8px; }
-.pill { background: #f0f0f0; border: 1.5px solid #ccc; color: #2e2e2e; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all .15s; }
-.pill:hover { background: #2e2e2e; color: white; border-color: #2e2e2e; }
+/* EXEMPLE */
+.exemple { background: #fdf7e3; border-left: 4px solid var(--jaune); border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 14px; font-size: 0.86rem; line-height: 1.55; }
 
-/* STEPS */
-.steps { display: flex; flex-direction: column; gap: 12px; }
-.step { display: flex; gap: 12px; align-items: flex-start; }
-.step-n { width: 24px; height: 24px; min-width: 24px; background: #2e2e2e; color: white; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
-.step-body { font-size: 14px; line-height: 1.55; flex: 1; }
-.step-body strong { font-weight: 700; }
-.step-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gris); display: block; margin-bottom: 3px; }
-.mots { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-.mot { background: #e8f4ee; color: var(--vert); font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; border: 1px solid #b8dfc9; }
+/* REPÈRES */
+.reperes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.repere { background: #f0ede6; border: 1.5px solid #ccc; color: var(--texte); font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
 
-/* ANNALE */
-.annale-box { background: #f7f4ee; border-left: 4px solid var(--jaune); padding: 13px 16px; border-radius: 0 8px 8px 0; font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
-.annale-source { font-size: 11px; font-weight: 700; color: var(--gris); display: block; margin-bottom: 5px; }
-.btn-corr { background: var(--texte); color: white; border: none; padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity .15s; margin-top: 10px; display: inline-block; }
-.btn-corr:hover { opacity: .82; }
+/* PIÈGES */
+.pieges { background: #fdeef2; border-left: 4px solid #b5415a; border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 14px; font-size: 0.86rem; line-height: 1.6; }
+.pieges strong { color: #b5415a; }
 
-/* CORRIGÉ HIDDEN */
-.corrige { display: none; margin-top: 12px; background: #f0ede6; border-radius: 8px; padding: 14px 16px; font-size: 13px; line-height: 1.6; }
-.corrige.open { display: block; }
-
-/* ALERTE */
-.alerte { background: #fff8e1; border-left: 4px solid var(--jaune); border-radius: 0 8px 8px 0; padding: 11px 14px; font-size: 13px; line-height: 1.5; margin-bottom: 10px; }
-.alerte strong { font-weight: 700; }
-.astuce { background: #eaf4f0; border-left: 4px solid var(--vert); border-radius: 0 8px 8px 0; padding: 11px 14px; font-size: 13px; line-height: 1.5; }
-
-/* WELCOME */
-.welcome { padding: 40px 20px; text-align: center; color: var(--gris); }
-.welcome h2 { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; color: var(--texte); margin-bottom: 10px; }
-.welcome p { font-size: 14px; line-height: 1.6; max-width: 420px; margin: 0 auto; }
-
-/* MODAL NOTION */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 100; align-items: flex-end; justify-content: center; }
-.modal-overlay.open { display: flex; }
-.modal-sheet { background: white; border-radius: 18px 18px 0 0; padding: 24px 22px 32px; max-width: 620px; width: 100%; max-height: 80vh; overflow-y: auto; }
-.modal-handle { width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 18px; }
-.modal-notion-name { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 6px; }
-.modal-def { font-size: 14px; line-height: 1.6; color: var(--texte); margin-bottom: 14px; }
-.modal-close { position: absolute; top: 14px; right: 16px; font-size: 20px; cursor: pointer; color: var(--gris); background: none; border: none; }
-.modal-sheet { position: relative; }
-
-/* TABLE */
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th { background: #f0ede6; padding: 8px 10px; text-align: left; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--gris); }
-td { padding: 8px 10px; border-bottom: 1px solid #eee; vertical-align: top; line-height: 1.4; }
+/* TABLE AUTEURS */
+table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+th { background: #1e1c18; color: var(--jaune); padding: 9px 12px; text-align: left; font-weight: 700; font-size: 0.76rem; text-transform: uppercase; letter-spacing: .04em; }
+td { padding: 9px 12px; border-bottom: 1px solid var(--bordure); }
 tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: rgba(30,28,24,.025); }
 
-/* RESPONSIVE */
-@media (max-width: 660px) {
+@media (max-width: 700px) {
   .layout { grid-template-columns: 1fr; }
   .sidebar { position: static; height: auto; }
+  .panel { padding: 20px 16px 40px; }
 }
 </style>
 </head>
@@ -155,7 +94,7 @@ tr:last-child td { border-bottom: none; }
 </nav>
 <nav class="nav-rubriques">
   <span class="matiere-pill">Philosophie</span>
-  <a href="revizo-philo.html" class="active">Notions &amp; Sujets</a>
+  <a href="revizo-philo.html" class="active">Notions</a>
   <a href="flashcards-philo.html">Flashcards</a>
   <a href="methode-jour-j-philo.html">Méthode Jour J</a>
   <a href="bac-blanc-philo.html">Bac Blanc</a>
@@ -165,767 +104,299 @@ tr:last-child td { border-bottom: none; }
 
   <!-- SIDEBAR -->
   <nav class="sidebar">
-    <div class="sidebar-intro">7 notions du programme</div>
+    <div class="sidebar-label">7 notions</div>
 
-    <!-- GROUPE ★★★★★ -->
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-stars stars-5">★★★★★</span>
-        <span class="group-label">Incontournables</span>
-        <span class="group-arrow open">▶</span>
-      </div>
-      <div class="group-body open">
-        <div class="q-item active" onclick="showNotion('liberte', this)">
-          <div class="q-name">La Liberté</div>
-          <div class="q-meta"><span class="q-freq">2021 · 2022 · 2023 · 2025</span></div>
-        </div>
-        <div class="q-item" onclick="showNotion('verite', this)">
-          <div class="q-name">La Vérité</div>
-          <div class="q-meta"><span class="q-freq">2021 · 2021R · 2022</span></div>
-        </div>
-      </div>
+    <div class="notion-item active" onclick="showNotion('liberte', this)">
+      <span>Liberté</span><span class="n-stars">★★★★★</span>
+    </div>
+    <div class="notion-item" onclick="showNotion('verite', this)">
+      <span>Vérité</span><span class="n-stars">★★★★★</span>
+    </div>
+    <div class="notion-item" onclick="showNotion('justice', this)">
+      <span>Justice</span><span class="n-stars">★★★★☆</span>
+    </div>
+    <div class="notion-item" onclick="showNotion('technique', this)">
+      <span>Technique</span><span class="n-stars">★★★★☆</span>
+    </div>
+    <div class="notion-item" onclick="showNotion('art', this)">
+      <span>Art</span><span class="n-stars">★★★★☆</span>
+    </div>
+    <div class="notion-item" onclick="showNotion('nature', this)">
+      <span>Nature</span><span class="n-stars">★★★☆☆</span>
+    </div>
+    <div class="notion-item" onclick="showNotion('religion', this)">
+      <span>Religion</span><span class="n-stars">★★★☆☆</span>
     </div>
 
-    <!-- GROUPE ★★★★☆ -->
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-stars stars-4">★★★★☆</span>
-        <span class="group-label">Récurrentes</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="showNotion('justice', this)">
-          <div class="q-name">La Justice</div>
-          <div class="q-meta"><span class="q-freq">2021 · 2022 · 2023 · 2024 · 2025</span></div>
-        </div>
-        <div class="q-item" onclick="showNotion('art', this)">
-          <div class="q-name">L'Art</div>
-          <div class="q-meta"><span class="q-freq">2021 · 2023 · 2024 · 2025</span></div>
-        </div>
-        <div class="q-item" onclick="showNotion('technique', this)">
-          <div class="q-name">La Technique</div>
-          <div class="q-meta"><span class="q-freq">2021 · 2021R · 2024</span></div>
-        </div>
-      </div>
+    <div class="sidebar-sep"></div>
+    <div class="sidebar-section">Outils</div>
+    <div class="notion-item" onclick="showNotion('reperes', this)">
+      <span>Repères philosophiques</span>
     </div>
-
-    <!-- GROUPE ★★★☆☆ -->
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-stars stars-3">★★★☆☆</span>
-        <span class="group-label">Complémentaires</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="showNotion('nature', this)">
-          <div class="q-name">La Nature</div>
-          <div class="q-meta"><span class="q-freq">2021R · 2023 · 2024</span></div>
-        </div>
-        <div class="q-item" onclick="showNotion('religion', this)">
-          <div class="q-name">La Religion</div>
-          <div class="q-meta"><span class="q-freq">Peu présente en sujet principal</span></div>
-        </div>
-      </div>
+    <div class="notion-item" onclick="showNotion('auteurs', this)">
+      <span>Table des auteurs</span>
     </div>
-
-    <!-- MÉTHODE -->
-    <div class="methode-section">
-      <div class="methode-title">Méthode</div>
-      <div class="m-item" onclick="showNotion('methode-dissert', this)">
-        <span class="m-icon">📝</span>
-        <span class="m-name">Dissertation</span>
-      </div>
-      <div class="m-item" onclick="showNotion('methode-texte', this)">
-        <span class="m-icon">📖</span>
-        <span class="m-name">Explication de texte</span>
-      </div>
-    </div>
-
   </nav>
 
-  <!-- MAIN CONTENT -->
-  <main class="main" id="main-content">
-    <!-- Contenu chargé dynamiquement -->
+  <!-- PANEL -->
+  <main class="panel" id="panel">
+
+    <div id="content-liberte">
+      <div class="n-header">
+        <div class="n-tag">Notion · ★★★★★ Incontournable</div>
+        <div class="n-title">Liberté</div>
+        <div class="n-question">Peut-on être libre tout en obéissant à des règles ?</div>
+      </div>
+      <div class="these"><strong>La thèse à retenir :</strong> Oui. La vraie liberté n'est pas de faire n'importe quoi. C'est d'agir selon la raison.</div>
+      <div class="auteur-bloc">
+        <div class="auteur-name">Spinoza</div>
+        <div class="auteur-text">Il compare trois figures. L'esclave obéit dans l'intérêt de son maître seul : il n'est pas libre. L'enfant obéit à ses parents dans son intérêt mais sans le comprendre. Le citoyen obéit à des lois fondées sur la raison : il agit dans l'intérêt général ET dans son intérêt personnel. C'est la liberté véritable.</div>
+      </div>
+      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> Respecter le code de la route, c'est une règle. Mais cette règle me protège et protège les autres. En l'appliquant, je suis à la fois contraint ET libre au sens de Spinoza.</div>
+      <div class="bloc">
+        <div class="bloc-title">Repères utiles</div>
+        <div class="reperes"><span class="repere">Obligation / Contrainte</span><span class="repere">Légal / Légitime</span></div>
+      </div>
+      <div class="pieges"><strong>Pièges à éviter :</strong> Liberté ≠ faire ce qu'on veut · Liberté ≠ absence de toute règle · Liberté ≠ spontanéité ou caprice.</div>
+    </div>
+
+    <div id="content-verite" style="display:none">
+      <div class="n-header">
+        <div class="n-tag">Notion · ★★★★★ Incontournable</div>
+        <div class="n-title">Vérité</div>
+        <div class="n-question">Peut-on toujours faire confiance à nos sens pour accéder à la vérité ?</div>
+      </div>
+      <div class="these"><strong>La thèse à retenir :</strong> Non. La vérité exige souvent de dépasser les apparences et l'opinion commune.</div>
+      <div class="bloc">
+        <div class="bloc-title">Définition</div>
+        <p>La vérité, c'est l'adéquation entre ce qu'on affirme et la réalité telle qu'elle est vraiment.</p>
+      </div>
+      <div class="auteur-bloc">
+        <div class="auteur-name">Platon</div>
+        <div class="auteur-text">Nos sens nous trompent — ils ne nous donnent accès qu'aux apparences. La raison seule permet d'atteindre la vérité. (Allégorie de la caverne : les prisonniers croient que les ombres sont la réalité.)</div>
+      </div>
+      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> Sur une route chaude, on voit de l'eau à l'horizon : c'est un mirage. Nos sens nous trompent. Pendant des siècles, on croyait que le Soleil tournait autour de la Terre — car c'est ce que les yeux semblaient montrer.</div>
+      <div class="bloc">
+        <div class="bloc-title">Repères utiles</div>
+        <div class="reperes"><span class="repere">Croire / Savoir</span><span class="repere">Objectif / Subjectif</span></div>
+      </div>
+    </div>
+
+    <div id="content-justice" style="display:none">
+      <div class="n-header">
+        <div class="n-tag">Notion · ★★★★☆ Récurrente</div>
+        <div class="n-title">Justice</div>
+        <div class="n-question">Est-ce que "juste" signifie "égal" ?</div>
+      </div>
+      <div class="these"><strong>La thèse à retenir :</strong> Non. La vraie justice, c'est l'équité, pas l'égalité mathématique.</div>
+      <div class="bloc">
+        <div class="bloc-title">La distinction clé</div>
+        <ul>
+          <li><strong>Égalité</strong> = donner exactement la même chose à tout le monde</li>
+          <li><strong>Équité</strong> = adapter le traitement selon les différences pertinentes (besoins, mérites, situation)</li>
+        </ul>
+      </div>
+      <div class="auteur-bloc">
+        <div class="auteur-name">Aristote</div>
+        <div class="auteur-text">La vraie justice est l'équité : donner à chacun selon ses mérites et ses besoins. Traiter de façon identique des personnes dans des situations différentes, ce n'est pas juste.</div>
+      </div>
+      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> Donner la même quantité de nourriture à un adulte de 80 kg et à un enfant de 20 kg, c'est une égalité — mais ce n'est pas juste. Donner à chacun selon ses besoins, c'est de l'équité.</div>
+      <div class="bloc">
+        <div class="bloc-title">Repères utiles</div>
+        <div class="reperes"><span class="repere">Légal / Légitime</span><span class="repere">En fait / En droit</span></div>
+      </div>
+    </div>
+
+    <div id="content-technique" style="display:none">
+      <div class="n-header">
+        <div class="n-tag">Notion · ★★★★☆ Récurrente</div>
+        <div class="n-title">Technique</div>
+        <div class="n-question">La technique nous libère-t-elle de la nature ou nous en éloigne-t-elle ?</div>
+      </div>
+      <div class="these"><strong>La thèse à retenir :</strong> La technique est d'abord un moyen pour l'homme de maîtriser une nature parfois hostile.</div>
+      <div class="auteur-bloc">
+        <div class="auteur-name">Mill</div>
+        <div class="auteur-text">La nature est indifférente à l'homme, parfois dangereuse (tempêtes, maladies, catastrophes). La technique permet de la corriger : digues contre les inondations, vaccins contre les maladies, paratonnerres contre la foudre.</div>
+      </div>
+      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> L'agriculture est une technique : on ne mange pas des plantes sauvages au hasard, on cultive, on sélectionne, on améliore. C'est de la nature transformée par l'homme.</div>
+      <div class="bloc">
+        <div class="bloc-title">La nuance</div>
+        <p>Un outil artificiel (un marteau) est toujours fait à partir d'éléments naturels (bois, métal). La technique ne s'oppose pas totalement à la nature — elle la transforme.</p>
+      </div>
+    </div>
+
+    <div id="content-art" style="display:none">
+      <div class="n-header">
+        <div class="n-tag">Notion · ★★★★☆ Récurrente</div>
+        <div class="n-title">Art</div>
+        <div class="n-question">L'artiste fait-il la même chose qu'un artisan ? A-t-on besoin de l'art ?</div>
+      </div>
+      <div class="these"><strong>Thèse 1 :</strong> Non. L'artisan produit un objet utile et reproductible. L'artiste crée une œuvre unique irréductible à une technique.</div>
+      <div class="bloc">
+        <div class="bloc-title">La distinction clé</div>
+        <ul>
+          <li><strong>Artisan</strong> : technique précise, objet utile, reproductible à l'identique</li>
+          <li><strong>Artiste</strong> : création originale, vise l'émotion ou la beauté, irréductible à une recette</li>
+        </ul>
+      </div>
+      <div class="exemple">🔑 <strong>Exemple :</strong> Un menuisier qui fabrique une chaise applique des règles précises — n'importe quel bon menuisier peut refaire la même chaise. Un tableau de Van Gogh ne peut pas être "refait" : c'est une création unique.</div>
+      <div class="these"><strong>Thèse 2 (tombé 2025) :</strong> L'art répond à un besoin spécifiquement humain — pas biologique, mais existentiel.</div>
+      <div class="exemple">🔑 <strong>Exemple :</strong> La musique, les films, la peinture nous touchent là où les mots ne suffisent plus. Une personne en deuil peut trouver dans une chanson ce qu'elle ne sait pas formuler.</div>
+      <div class="bloc">
+        <div class="bloc-title">Repère utile</div>
+        <div class="reperes"><span class="repere">Objectif / Subjectif</span></div>
+      </div>
+    </div>
+
+    <div id="content-nature" style="display:none">
+      <div class="n-header">
+        <div class="n-tag">Notion · ★★★☆☆</div>
+        <div class="n-title">Nature</div>
+        <div class="n-question">Peut-on dire qu'une chose est bonne parce qu'elle est "naturelle" ?</div>
+      </div>
+      <div class="these"><strong>La thèse à retenir :</strong> Non. Le naturel ne garantit pas le bien.</div>
+      <div class="bloc">
+        <div class="bloc-title">La distinction clé</div>
+        <ul>
+          <li><strong>Le naturel</strong> = ce qui existe par lui-même, sans intervention humaine (inné)</li>
+          <li><strong>Le culturel</strong> = ce qui est acquis, appris, construit par l'homme</li>
+        </ul>
+      </div>
+      <div class="auteur-bloc">
+        <div class="auteur-name">Rousseau</div>
+        <div class="auteur-text">L'homme naturel est bon — c'est la société qui produit les inégalités et la violence. Mais attention : cela ne signifie pas que tout ce qui est naturel est bien.</div>
+      </div>
+      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> Un champignon vénéneux est tout à fait naturel. Un médicament est artificiel. Pourtant le médicament nous soigne et le champignon peut nous tuer. Le "naturel" n'est donc pas forcément bon.</div>
+      <div class="pieges"><strong>Piège :</strong> quand quelqu'un dit "c'est naturel donc c'est bien", c'est un argument à questionner systématiquement.</div>
+    </div>
+
+    <div id="content-religion" style="display:none">
+      <div class="n-header">
+        <div class="n-tag">Notion · ★★★☆☆</div>
+        <div class="n-title">Religion</div>
+        <div class="n-question">D'où vient le besoin de religion chez l'être humain ?</div>
+      </div>
+      <div class="these"><strong>La thèse à retenir :</strong> La religion répond à une angoisse profonde face à la mort et à la fragilité de la condition humaine.</div>
+      <div class="auteur-bloc">
+        <div class="auteur-name">Freud</div>
+        <div class="auteur-text">La religion est une "illusion consolatrice". Face aux épreuves de la vie (mort, souffrance, impuissance), l'homme réactive inconsciemment le besoin de protection qu'il avait enfant. Il s'invente une figure divine toute-puissante pour se rassurer. La religion console, mais ce n'est pas une connaissance du monde.</div>
+      </div>
+      <div class="bloc">
+        <div class="bloc-title">La distinction clé</div>
+        <ul>
+          <li><strong>Le sacré</strong> = ce qui est séparé du quotidien, vénéré (rites, lieux saints, textes sacrés)</li>
+          <li><strong>Le profane</strong> = la vie ordinaire, le monde commun</li>
+        </ul>
+      </div>
+      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> Dans toutes les cultures connues, il existe des rites funèbres. C'est universel. Cela montre que l'homme ne peut pas accepter simplement la mort sans lui donner un sens : c'est le terreau de la religion.</div>
+      <div class="bloc">
+        <div class="bloc-title">Repère utile</div>
+        <div class="reperes"><span class="repere">Croire / Savoir</span></div>
+      </div>
+    </div>
+
+    <div id="content-reperes" style="display:none">
+      <div class="n-header">
+        <div class="n-tag">Boîte à outils</div>
+        <div class="n-title">Repères philosophiques</div>
+        <div class="n-question">6 paires de mots à utiliser dans tes réponses pour montrer que tu penses avec précision.</div>
+      </div>
+
+      <div class="bloc">
+        <div class="bloc-title">EN FAIT / EN DROIT</div>
+        <ul>
+          <li><strong>En fait</strong> = ce qui existe réellement dans le monde (constat empirique)</li>
+          <li><strong>En droit</strong> = ce qui devrait être selon la justice ou la loi (norme, idéal)</li>
+        </ul>
+        <div class="exemple" style="margin-top:10px;margin-bottom:0">En fait, des inégalités immenses existent. En droit, la Déclaration des droits de l'homme affirme que tous les hommes naissent libres et égaux.</div>
+      </div>
+
+      <div class="bloc">
+        <div class="bloc-title">LÉGAL / LÉGITIME</div>
+        <ul>
+          <li><strong>Légal</strong> = conforme aux lois écrites de l'État (peut être injuste)</li>
+          <li><strong>Légitime</strong> = conforme à la justice morale (peut être illégal)</li>
+        </ul>
+        <div class="exemple" style="margin-top:10px;margin-bottom:0">Les lois de l'apartheid étaient légales (votées par le parlement). Elles étaient pourtant illégitimes car fondamentalement injustes.</div>
+      </div>
+
+      <div class="bloc">
+        <div class="bloc-title">OBJECTIF / SUBJECTIF</div>
+        <ul>
+          <li><strong>Objectif</strong> = indépendant de l'opinion individuelle, vérifiable par tous</li>
+          <li><strong>Subjectif</strong> = dépend du point de vue de chacun</li>
+        </ul>
+        <div class="exemple" style="margin-top:10px;margin-bottom:0">"Cette table mesure 1m20" est objectif. "Cette table est belle" est subjectif — ça dépend des goûts.</div>
+      </div>
+
+      <div class="bloc">
+        <div class="bloc-title">CROIRE / SAVOIR</div>
+        <ul>
+          <li><strong>Croire</strong> = tenir pour vrai sans preuve suffisante (opinion, foi, conviction)</li>
+          <li><strong>Savoir</strong> = tenir pour vrai avec démonstration ou preuve (connaissance rationnelle)</li>
+        </ul>
+        <div class="exemple" style="margin-top:10px;margin-bottom:0">Je crois que mon équipe va gagner (espoir). Je sais que la Terre tourne autour du Soleil (démontré scientifiquement).</div>
+      </div>
+
+      <div class="bloc">
+        <div class="bloc-title">PERSUADER / CONVAINCRE</div>
+        <ul>
+          <li><strong>Persuader</strong> = agir sur les émotions et les sentiments</li>
+          <li><strong>Convaincre</strong> = s'adresser à la raison par des arguments</li>
+        </ul>
+        <div class="exemple" style="margin-top:10px;margin-bottom:0">Une publicité avec une musique émouvante persuade. Un médecin qui montre des statistiques convainc.</div>
+      </div>
+
+      <div class="bloc">
+        <div class="bloc-title">OBLIGATION / CONTRAINTE</div>
+        <ul>
+          <li><strong>Obligation</strong> = devoir moral ou juridique (on peut refuser, avec des conséquences)</li>
+          <li><strong>Contrainte</strong> = force physique à laquelle on ne peut pas échapper</li>
+        </ul>
+        <div class="exemple" style="margin-top:10px;margin-bottom:0">S'arrêter à un feu rouge est une obligation : j'ai le pouvoir physique de griller le feu, mais je m'en empêche. Être ligoté est une contrainte : je ne peux pas bouger même si je le veux.</div>
+      </div>
+    </div>
+
+    <div id="content-auteurs" style="display:none">
+      <div class="n-header">
+        <div class="n-tag">Aide-mémoire</div>
+        <div class="n-title">Table des auteurs</div>
+        <div class="n-question">Au bac techno, un auteur cité sans explication vaut zéro. Un bon exemple de la vie courante vaut souvent mieux qu'un nom mal utilisé.</div>
+      </div>
+      <table>
+        <tr><th>Notion</th><th>Auteur</th><th>Ce qu'il dit</th><th>Signal dans le texte</th></tr>
+        <tr><td><strong>Liberté</strong></td><td>Spinoza</td><td>Obéir à des lois raisonnées = être libre</td><td>Règles, obéissance, contrainte</td></tr>
+        <tr><td><strong>Vérité</strong></td><td>Platon</td><td>Nos sens trompent, la raison seule atteint la vérité</td><td>Apparences, opinion, savoir</td></tr>
+        <tr><td><strong>Justice</strong></td><td>Aristote</td><td>La vraie justice = équité, pas égalité stricte</td><td>Traitement égal, mérite, droits</td></tr>
+        <tr><td><strong>Technique</strong></td><td>Mill</td><td>La nature est hostile, la technique la corrige</td><td>Rapport homme/nature, progrès</td></tr>
+        <tr><td><strong>Art</strong></td><td>(exemples suffisent)</td><td>L'art répond à un besoin humain profond</td><td>Beauté, création, utilité de l'art</td></tr>
+        <tr><td><strong>Nature</strong></td><td>Rousseau</td><td>L'homme naturel est bon, la société le corrompt</td><td>Inné/acquis, violence, état naturel</td></tr>
+        <tr><td><strong>Religion</strong></td><td>Freud</td><td>La religion est une consolation face à l'angoisse de mort</td><td>Foi, croyance, rapport à la mort</td></tr>
+      </table>
+
+      <div class="bloc" style="margin-top:20px">
+        <div class="bloc-title">Phrases-types à adapter</div>
+        <ul>
+          <li style="margin-bottom:8px">"Cette idée rejoint la pensée de Spinoza : obéir à une loi que l'on comprend, c'est encore une forme de liberté."</li>
+          <li style="margin-bottom:8px">"Comme le montre Platon avec l'allégorie de la caverne, nos sens ne nous donnent accès qu'aux apparences."</li>
+          <li style="margin-bottom:8px">"Aristote distinguait déjà l'égalité stricte de l'équité : donner la même chose à tout le monde n'est pas toujours juste."</li>
+          <li style="margin-bottom:8px">"Mill rappelle que la nature n'est pas bienveillante : la technique est une réponse à sa dangerosité."</li>
+          <li style="margin-bottom:8px">"Rousseau soutient que l'homme naturel est bon : c'est la société qui produit les inégalités et la violence."</li>
+          <li>"Freud voit dans la religion une réponse à l'angoisse de mort : elle console l'homme face à sa propre fragilité."</li>
+        </ul>
+      </div>
+    </div>
+
   </main>
-
-</div>
-
-<!-- MODAL NOTION LIÉE -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal-sheet" id="modal-sheet">
-    <div class="modal-handle"></div>
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div id="modal-body"></div>
-  </div>
 </div>
 
 <script>
-
-// ─── DONNÉES DES NOTIONS ───────────────────────────────────────────
-
-const notions = {
-
-  liberte: {
-    tag: "Notion · ★★★★★ Incontournable",
-    titre: "La Liberté",
-    freq: "Présente dans 4 sessions sur 5 — la notion la plus fréquente",
-    annales: "2021 · 2022 · 2023 · 2025 (métropole)",
-    liees: ["verite","justice","technique","nature"],
-    contenu: `
-      <div class="freq-band">
-        <div class="freq-item"><span style="font-size:18px">★★★★★</span><span class="freq-lab">Incontournable</span></div>
-        <div class="freq-item"><span class="freq-val">4 sessions</span><span class="freq-lab">sur 5 analysées</span></div>
-        <div class="freq-item"><span class="freq-val">Dissert.</span><span class="freq-lab">Type dominant</span></div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title noir">📌 Définition</div>
-        <p style="font-size:14px;line-height:1.6;margin-bottom:10px">La liberté, c'est la capacité d'agir selon sa propre volonté, sans contrainte extérieure. Mais les philosophes distinguent plusieurs formes :</p>
-        <ul style="font-size:14px;line-height:1.8;padding-left:18px">
-          <li><strong>Liberté négative</strong> : absence de contrainte (je ne suis pas forcé)</li>
-          <li><strong>Liberté positive</strong> : capacité réelle d'agir, de se gouverner soi-même</li>
-          <li><strong>Libre arbitre</strong> : capacité de choisir indépendamment de toute cause extérieure</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <div class="sec-title bleu">👤 Auteurs clés</div>
-        <div class="auteurs">
-          <div class="auteur"><span class="auteur-name">Rousseau</span><span class="auteur-text">"L'homme est né libre, et partout il est dans les fers." La loi peut restaurer la liberté si elle émane de la volonté générale.</span></div>
-          <div class="auteur"><span class="auteur-name">Sartre</span><span class="auteur-text">"L'existence précède l'essence." L'homme est condamné à être libre — il n'a pas de nature fixe, il se définit par ses choix.</span></div>
-          <div class="auteur"><span class="auteur-name">Kant</span><span class="auteur-text">La liberté morale = autonomie : obéir à la loi morale que je me donne moi-même.</span></div>
-          <div class="auteur"><span class="auteur-name">Spinoza</span><span class="auteur-text">La liberté n'est pas l'absence de déterminisme, c'est la compréhension des nécessités qui nous gouvernent.</span></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title vert">🗂 Structure d'argumentation (plan dialectique)</div>
-        <div class="steps">
-          <div class="step">
-            <div class="step-n">1</div>
-            <div class="step-body">
-              <span class="step-label">Thèse — premier sens</span>
-              <strong>La liberté semble être l'absence de toute contrainte</strong><br>
-              Si quelqu'un m'impose sa volonté, je ne suis pas libre. Le prisonnier, l'esclave sont des contre-exemples parfaits.<br>
-              <em>→ Liberté négative (Hobbes, sens commun)</em>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-n">2</div>
-            <div class="step-body">
-              <span class="step-label">Antithèse — limites</span>
-              <strong>Mais une liberté absolue mène au chaos</strong><br>
-              Sans règles, c'est la loi du plus fort (Hobbes). La "liberté sauvage" détruit la société.<br>
-              <em>→ La vraie liberté exige des règles communes (Rousseau : contrat social)</em>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-n">3</div>
-            <div class="step-body">
-              <span class="step-label">Dépassement — réponse nuancée</span>
-              <strong>La vraie liberté, c'est l'autonomie : obéir à une loi que je me suis donnée</strong><br>
-              Kant : autonomie = se donner sa propre loi morale. Rousseau : liberté civile par le contrat social. La liberté ne s'oppose pas à la règle, mais à l'arbitraire.<br>
-              <div class="mots"><span class="mot">Autonomie</span><span class="mot">Volonté générale</span><span class="mot">Libre arbitre</span><span class="mot">Déterminisme</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title rouge">📚 Annales — exemples de sujets</div>
-        <div class="annale-box">
-          <span class="annale-source">2022 — Bac Technologique Métropole</span>
-          "La liberté consiste-t-elle à n'obéir à personne ?"
-          <br><button class="btn-corr" onclick="toggleCorrige(this)">Voir problématique + plan</button>
-          <div class="corrige">
-            <strong>Problématique :</strong> Si la liberté était simplement l'absence d'obéissance, alors toute société constituerait une aliénation. Mais peut-on vivre sans règles ? Et appelle-t-on "libre" l'homme qui agit sous l'emprise de ses passions ? La question est de savoir si la liberté est dans le refus de toute obéissance ou dans la maîtrise de soi et le consentement à des règles justes.<br><br>
-            <strong>Plan :</strong> (1) La liberté comme absence de contrainte → (2) Limites : sans règles, loi du plus fort (Hobbes) → (3) La vraie liberté : autonomie (Kant) et loi voulue collectivement (Rousseau)
-          </div>
-        </div>
-        <div class="annale-box">
-          <span class="annale-source">2025 — Bac Technologique Métropole</span>
-          "Sommes-nous libres en toutes circonstances ?"
-        </div>
-        <div class="annale-box">
-          <span class="annale-source">2023 — Bac Technologique Métropole</span>
-          "Transformer la nature, est-ce gagner en liberté ?"
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title or">⚠ Confusions à éviter</div>
-        <div class="alerte"><strong>Liberté ≠ licence</strong> (faire n'importe quoi). La liberté ne signifie pas l'absence de toute règle.</div>
-        <div class="alerte"><strong>Contrainte physique ≠ déterminisme.</strong> Être soumis aux lois de la nature n'empêche pas la liberté morale (Kant).</div>
-        <div class="astuce">💡 Retenir le trio Sartre / Kant / Rousseau couvre les 3 parties d'un plan dialectique classique sur la liberté.</div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title gris">🔗 Notions souvent liées</div>
-        <div class="pills">
-          <span class="pill" onclick="showModal('justice')">Justice →</span>
-          <span class="pill" onclick="showModal('technique')">Technique →</span>
-          <span class="pill" onclick="showModal('nature')">Nature →</span>
-          <span class="pill" onclick="showModal('verite')">Vérité →</span>
-        </div>
-      </div>
-    `
-  },
-
-  verite: {
-    tag: "Notion · ★★★★★ Incontournable",
-    titre: "La Vérité",
-    freq: "Présente en dissertation et en explication de texte (Diderot 2022)",
-    annales: "2021 · 2021 session remplacement · 2022",
-    liees: ["liberte","religion"],
-    contenu: `
-      <div class="freq-band">
-        <div class="freq-item"><span style="font-size:18px">★★★★★</span><span class="freq-lab">Incontournable</span></div>
-        <div class="freq-item"><span class="freq-val">Dissert. + Texte</span><span class="freq-lab">Diderot 2022</span></div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title noir">📌 Définition</div>
-        <p style="font-size:14px;line-height:1.6;margin-bottom:10px">La vérité, c'est la correspondance entre un énoncé et la réalité. Mais plusieurs conceptions s'affrontent :</p>
-        <ul style="font-size:14px;line-height:1.8;padding-left:18px">
-          <li><strong>Vérité comme adéquation</strong> : mon jugement est vrai s'il correspond au réel</li>
-          <li><strong>Vérité comme cohérence</strong> : un système est vrai s'il est logiquement cohérent</li>
-          <li><strong>Vérité comme utilité</strong> (pragmatisme) : est vrai ce qui est utile, ce qui marche</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <div class="sec-title bleu">👤 Auteurs clés</div>
-        <div class="auteurs">
-          <div class="auteur"><span class="auteur-name">Descartes</span><span class="auteur-text">Le doute méthodique pour atteindre des vérités certaines. "Je pense donc je suis" — première vérité indubitable.</span></div>
-          <div class="auteur"><span class="auteur-name">Platon</span><span class="auteur-text">La vérité est dans le monde des Idées, pas dans les apparences. <span class="auteur-oeuvre">Allégorie de la caverne.</span></span></div>
-          <div class="auteur"><span class="auteur-name">Nietzsche</span><span class="auteur-text">"Il n'y a pas de faits, seulement des interprétations." Pas de vérité absolue.</span></div>
-          <div class="auteur"><span class="auteur-name">Diderot</span><span class="auteur-text">La vérité s'établit par la confrontation des témoignages et la critique de l'erreur. <span class="auteur-oeuvre">Encyclopédie (texte de 2022).</span></span></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title vert">🗂 Structure d'argumentation</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">1</div><div class="step-body"><span class="step-label">Thèse</span><strong>La vérité semble s'imposer d'elle-même</strong> — une vérité mathématique s'impose à tous les esprits rationnels. Les faits établis ne peuvent être niés.</div></div>
-          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="step-label">Antithèse</span><strong>Pourtant, les hommes persistent dans l'erreur</strong>. Les préjugés, les illusions résistent. Platon : les prisonniers préfèrent l'ombre à la lumière. Nietzsche : pas de vérité absolue.</div></div>
-          <div class="step"><div class="step-n">3</div><div class="step-body"><span class="step-label">Dépassement</span><strong>La vérité exige un effort actif et une méthode</strong>. Descartes : le doute méthodique. La vérité ne s'impose pas passivement — elle se conquiert par la raison.<div class="mots"><span class="mot">Doute méthodique</span><span class="mot">Certitude</span><span class="mot">Opinion (doxa)</span><span class="mot">Savoir (épistémè)</span></div></div></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title rouge">📚 Annales</div>
-        <div class="annale-box">
-          <span class="annale-source">2022 — Explication de texte · Diderot, Encyclopédie</span>
-          Texte sur la vérité, l'erreur et les témoignages. Questions sur : les formes d'erreur, la fiabilité des témoins, si des témoignages concordants suffisent à établir la vérité.
-          <br><button class="btn-corr" onclick="toggleCorrige(this)">Voir l'essentiel du corrigé</button>
-          <div class="corrige">Diderot montre que même plusieurs témoins concordants ne garantissent pas la vérité — ils peuvent tous partager le même préjugé. La vérité exige plus que l'accumulation de témoignages : une méthode critique. <strong>Ne jamais recopier le texte — reformuler avec ses propres mots.</strong></div>
-        </div>
-        <div class="annale-box">
-          <span class="annale-source">2021 — Dissertation</span>
-          "Savoir, est-ce ne rien croire ?"
-        </div>
-        <div class="annale-box">
-          <span class="annale-source">2021 Session remplacement</span>
-          "La vérité s'impose-t-elle d'elle-même ?"
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title or">⚠ Confusions à éviter</div>
-        <div class="alerte"><strong>Vérité ≠ certitude subjective</strong> : je peux être certain d'une chose fausse.</div>
-        <div class="alerte"><strong>Vérité ≠ consensus</strong> : ce que tout le monde croit n'est pas forcément vrai.</div>
-        <div class="astuce">💡 La distinction savoir / croire est le cœur de tous les sujets sur la vérité.</div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title gris">🔗 Notions souvent liées</div>
-        <div class="pills">
-          <span class="pill" onclick="showModal('religion')">Religion →</span>
-          <span class="pill" onclick="showModal('liberte')">Liberté →</span>
-        </div>
-      </div>
-    `
-  },
-
-  justice: {
-    tag: "Notion · ★★★★☆ Récurrente",
-    titre: "La Justice",
-    freq: "Présente dans 5 sessions — souvent en explication de texte (Smith 2023/2025, Platon 2024)",
-    annales: "2021 · 2022 · 2023 · 2024 · 2025",
-    liees: ["liberte","verite"],
-    contenu: `
-      <div class="freq-band">
-        <div class="freq-item"><span style="font-size:18px">★★★★☆</span><span class="freq-lab">Récurrente</span></div>
-        <div class="freq-item"><span class="freq-val">5 sessions</span><span class="freq-lab">la plus couverte</span></div>
-        <div class="freq-item"><span class="freq-val">Texte dominant</span><span class="freq-lab">Smith x2, Platon</span></div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title noir">📌 Définition</div>
-        <p style="font-size:14px;line-height:1.6;margin-bottom:10px">La justice désigne à la fois un <strong>principe moral</strong> (rendre à chacun ce qui lui est dû) et une <strong>institution</strong> (le système juridique). Deux grandes conceptions :</p>
-        <ul style="font-size:14px;line-height:1.8;padding-left:18px">
-          <li><strong>Justice égalitaire</strong> : donner la même chose à chacun</li>
-          <li><strong>Justice équitable</strong> (Rawls) : tenir compte des inégalités de départ</li>
-        </ul>
-      </div>
-
-      <div class="section">
-        <div class="sec-title bleu">👤 Auteurs clés</div>
-        <div class="auteurs">
-          <div class="auteur"><span class="auteur-name">Platon</span><span class="auteur-text">La justice est l'harmonie de l'âme et de la cité — chacun à sa place selon ses capacités. <span class="auteur-oeuvre">Les Lois (texte 2024).</span></span></div>
-          <div class="auteur"><span class="auteur-name">Aristote</span><span class="auteur-text">Justice distributive (selon le mérite) et justice corrective (réparer les torts).</span></div>
-          <div class="auteur"><span class="auteur-name">Rawls</span><span class="auteur-text">"Le voile d'ignorance" — une société juste est celle qu'on choisirait sans savoir quelle place on y occuperait.</span></div>
-          <div class="auteur"><span class="auteur-name">Adam Smith</span><span class="auteur-text">La justice est le fondement indispensable de la société. La bienveillance est un plus — la justice est le minimum. <span class="auteur-oeuvre">Texte de 2023 et 2025.</span></span></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title vert">🗂 Structure d'argumentation</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">1</div><div class="step-body"><span class="step-label">Thèse</span><strong>La loi semble être la garantie de la justice</strong> — sans loi, c'est l'arbitraire. La loi incarne une volonté collective censée être juste.</div></div>
-          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="step-label">Antithèse</span><strong>Mais la loi peut être injuste</strong>. Les lois raciales, l'apartheid : légaux mais injustes. Thoreau, Gandhi, King : désobéissance civile non-violente. Il faut un principe moral supérieur à la loi positive.</div></div>
-          <div class="step"><div class="step-n">3</div><div class="step-body"><span class="step-label">Dépassement</span><strong>La justice comme horizon critique du droit</strong>. Rawls : société juste = celle qui se fonde sur l'équité, pas seulement l'égalité formelle. La justice est un idéal vers lequel le droit doit tendre.<div class="mots"><span class="mot">Légal</span><span class="mot">Légitime</span><span class="mot">Équité</span><span class="mot">Désobéissance civile</span></div></div></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title rouge">📚 Annales</div>
-        <div class="annale-box">
-          <span class="annale-source">2023 et 2025 — Explication de texte · Adam Smith, Théorie des sentiments moraux</span>
-          Smith oppose la bienfaisance (aider librement, vertueux mais non obligatoire) à la justice (ne pas nuire, obligation indispensable).
-          <br><button class="btn-corr" onclick="toggleCorrige(this)">Voir l'essentiel</button>
-          <div class="corrige"><strong>À retenir :</strong> On peut vivre dans une société sans charité mais pas sans règles qui interdisent le meurtre et le vol. La bienfaisance enrichit la société — la justice la rend possible. <strong>Erreur classique :</strong> recopier le texte sans l'expliquer. Le correcteur veut que tu reformules avec tes propres mots.</div>
-        </div>
-        <div class="annale-box"><span class="annale-source">2021</span>"Est-il toujours injuste de désobéir aux lois ?"</div>
-        <div class="annale-box"><span class="annale-source">2022</span>"Est-il juste de défendre ses droits par tous les moyens ?"</div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title or">⚠ Confusions à éviter</div>
-        <div class="alerte"><strong>Justice ≠ légalité</strong> : ce qui est légal n'est pas toujours juste.</div>
-        <div class="alerte"><strong>Justice ≠ vengeance</strong> : la justice implique l'impartialité, pas le désir de punir.</div>
-        <div class="astuce">💡 La distinction légal / légitime est le cœur de tous les sujets sur la justice. À apprendre par cœur.</div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title gris">🔗 Notions souvent liées</div>
-        <div class="pills">
-          <span class="pill" onclick="showModal('liberte')">Liberté →</span>
-          <span class="pill" onclick="showModal('verite')">Vérité →</span>
-        </div>
-      </div>
-    `
-  },
-
-  art: {
-    tag: "Notion · ★★★★☆ Récurrente",
-    titre: "L'Art",
-    freq: "Très présent : 4 sessions sur 5, souvent en dissertation. Texte Freud (2021).",
-    annales: "2021 · 2021R · 2023 · 2024 · 2025",
-    liees: ["technique","verite","liberte"],
-    contenu: `
-      <div class="freq-band">
-        <div class="freq-item"><span style="font-size:18px">★★★★☆</span><span class="freq-lab">Récurrente</span></div>
-        <div class="freq-item"><span class="freq-val">4 sessions</span><span class="freq-lab">très fréquente</span></div>
-        <div class="freq-item"><span class="freq-val">Dissert. + Texte</span><span class="freq-lab">Freud 2021</span></div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title noir">📌 Définition</div>
-        <p style="font-size:14px;line-height:1.6">L'art désigne la production humaine d'œuvres visant la beauté, l'émotion ou l'expression d'une vision du monde. Trois questions fondamentales :<br>
-        • L'art est-il une imitation du réel ou une création originale ?<br>
-        • L'art nous apprend-il quelque chose (valeur cognitive) ?<br>
-        • L'artiste est-il guidé par la technique ou l'inspiration ?</p>
-      </div>
-
-      <div class="section">
-        <div class="sec-title bleu">👤 Auteurs clés</div>
-        <div class="auteurs">
-          <div class="auteur"><span class="auteur-name">Platon</span><span class="auteur-text">L'art (mimèsis) est une imitation d'imitation — il nous éloigne de la vérité. Méfiance vis-à-vis des artistes dans la Cité.</span></div>
-          <div class="auteur"><span class="auteur-name">Aristote</span><span class="auteur-text">La tragédie opère une catharsis — purification des passions. L'art a une valeur thérapeutique.</span></div>
-          <div class="auteur"><span class="auteur-name">Kant</span><span class="auteur-text">Le beau provoque un plaisir désintéressé, universel sans concept. Le génie crée des règles nouvelles.</span></div>
-          <div class="auteur"><span class="auteur-name">Freud</span><span class="auteur-text">L'artiste sublime ses pulsions dans l'œuvre d'art. Le poète est comme l'enfant qui joue. <span class="auteur-oeuvre">Le poète et l'activité de fantaisie (texte 2021).</span></span></div>
-          <div class="auteur"><span class="auteur-name">Hegel</span><span class="auteur-text">L'art est une forme d'expression de l'Esprit — il a une valeur de vérité sur le réel.</span></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title vert">🗂 Structure d'argumentation</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">1</div><div class="step-body"><span class="step-label">Thèse</span><strong>L'art semble accessoire, luxe ou tromperie</strong>. Platon : imitation d'imitation, éloigne de la vérité. Dans la vie pratique, l'art ne nourrit pas.</div></div>
-          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="step-label">Antithèse</span><strong>L'art répond à des besoins essentiels</strong>. Aristote : catharsis. Hegel : dit une vérité sur l'humain. Freud : sublimation des désirs.</div></div>
-          <div class="step"><div class="step-n">3</div><div class="step-body"><span class="step-label">Dépassement</span><strong>L'art répond à un besoin proprement humain de sens</strong>. Même les premières civilisations ont produit de l'art. L'art n'est pas un luxe — il est constitutif de l'humanité.<div class="mots"><span class="mot">Catharsis</span><span class="mot">Mimèsis</span><span class="mot">Sublimation</span><span class="mot">Génie</span></div></div></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title rouge">📚 Annales</div>
-        <div class="annale-box"><span class="annale-source">2025</span>"Avons-nous besoin d'art ?"</div>
-        <div class="annale-box"><span class="annale-source">2024</span>"L'artiste est-il maître de son travail ?" (Art + Technique)</div>
-        <div class="annale-box"><span class="annale-source">2023</span>"L'art nous apprend-il quelque chose ?"</div>
-        <div class="annale-box"><span class="annale-source">2021 — Explication de texte · Freud</span>Le poète comparé à l'enfant qui joue : création comme jeu sérieux, sublimation des désirs inassouvis.</div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title or">⚠ Confusions à éviter</div>
-        <div class="alerte"><strong>Art ≠ technique artisanale</strong> : tous les savoir-faire ne sont pas de l'art.</div>
-        <div class="alerte"><strong>Beau ≠ agréable</strong> : ce qui est beau au sens esthétique n'est pas simplement ce qui plaît.</div>
-        <div class="astuce">💡 L'art est souvent croisé avec d'autres notions : art + technique (2024), art + vérité (2023), art + liberté (2021R). Penser aux croisements.</div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title gris">🔗 Notions souvent liées</div>
-        <div class="pills">
-          <span class="pill" onclick="showModal('technique')">Technique →</span>
-          <span class="pill" onclick="showModal('verite')">Vérité →</span>
-          <span class="pill" onclick="showModal('liberte')">Liberté →</span>
-        </div>
-      </div>
-    `
-  },
-
-  technique: {
-    tag: "Notion · ★★★★☆ Récurrente",
-    titre: "La Technique",
-    freq: "Présente dans 3 sessions, souvent croisée avec liberté ou art",
-    annales: "2021 · 2021 session remplacement · 2024",
-    liees: ["liberte","art","nature"],
-    contenu: `
-      <div class="freq-band">
-        <div class="freq-item"><span style="font-size:18px">★★★★☆</span><span class="freq-lab">Récurrente</span></div>
-        <div class="freq-item"><span class="freq-val">Croisée</span><span class="freq-lab">Liberté, Art, Nature</span></div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title noir">📌 Définition</div>
-        <p style="font-size:14px;line-height:1.6">La technique désigne l'ensemble des procédés, outils et savoir-faire que l'homme utilise pour transformer la nature selon ses besoins. Elle se distingue :<br>
-        • Du <strong>travail</strong> (activité) — la technique est le moyen<br>
-        • De la <strong>science</strong> — la technique applique, la science cherche à comprendre<br>
-        • De l'<strong>art</strong> — la technique suit des règles reproductibles, l'art vise l'unique</p>
-      </div>
-
-      <div class="section">
-        <div class="sec-title bleu">👤 Auteurs clés</div>
-        <div class="auteurs">
-          <div class="auteur"><span class="auteur-name">Heidegger</span><span class="auteur-text">La technique moderne "arraisonne" la nature — la traite comme stock de ressources. Risque de perte du sens.</span></div>
-          <div class="auteur"><span class="auteur-name">Marx</span><span class="auteur-text">La technique peut libérer du travail pénible — mais sous le capitalisme elle aliène l'ouvrier.</span></div>
-          <div class="auteur"><span class="auteur-name">Bergson</span><span class="auteur-text">L'homo faber — l'homme est fondamentalement un être technique. La technique est constitutive de l'humanité.</span></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title vert">🗂 Structure d'argumentation</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">1</div><div class="step-body"><span class="step-label">Thèse</span><strong>La technique libère l'homme</strong> — libère des contraintes naturelles, allège la peine, augmente les capacités.</div></div>
-          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="step-label">Antithèse</span><strong>Mais la technique crée de nouvelles dépendances</strong>. Heidegger : arraisonnement de la nature. Marx : aliénation. L'homme dépend de ses techniques.</div></div>
-          <div class="step"><div class="step-n">3</div><div class="step-body"><span class="step-label">Dépassement</span><strong>La technique est un moyen, pas une fin</strong> — tout dépend des fins qu'on lui assigne et de la maîtrise qu'on en garde.<div class="mots"><span class="mot">Aliénation</span><span class="mot">Homo faber</span><span class="mot">Progrès</span><span class="mot">Arraisonnement</span></div></div></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title rouge">📚 Annales</div>
-        <div class="annale-box"><span class="annale-source">2021</span>"La technique nous libère-t-elle de la nature ?"</div>
-        <div class="annale-box"><span class="annale-source">2024</span>"L'artiste est-il maître de son travail ?" (Art + Technique)</div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title or">⚠ Confusions à éviter</div>
-        <div class="alerte"><strong>Technique ≠ technologie</strong> : la technologie est l'étude scientifique des techniques.</div>
-        <div class="alerte"><strong>Progrès technique ≠ progrès moral</strong> : l'amélioration technique ne garantit pas l'amélioration des conditions humaines.</div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title gris">🔗 Notions souvent liées</div>
-        <div class="pills">
-          <span class="pill" onclick="showModal('liberte')">Liberté →</span>
-          <span class="pill" onclick="showModal('art')">Art →</span>
-          <span class="pill" onclick="showModal('nature')">Nature →</span>
-        </div>
-      </div>
-    `
-  },
-
-  nature: {
-    tag: "Notion · ★★★☆☆ Complémentaire",
-    titre: "La Nature",
-    freq: "Présente dans 3 sessions — souvent en lien avec liberté ou technique",
-    annales: "2021 remplacement · 2023 · 2024",
-    liees: ["liberte","technique"],
-    contenu: `
-      <div class="freq-band">
-        <div class="freq-item"><span style="font-size:18px">★★★☆☆</span><span class="freq-lab">Complémentaire</span></div>
-        <div class="freq-item"><span class="freq-val">Croisée</span><span class="freq-lab">Liberté, Technique</span></div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title noir">📌 Définition</div>
-        <p style="font-size:14px;line-height:1.6">La nature désigne l'ensemble du monde physique (ce qui existe sans l'homme) mais aussi la nature de l'homme (ce qui est inné). L'opposition fondamentale : <strong>nature / culture</strong>.</p>
-      </div>
-
-      <div class="section">
-        <div class="sec-title bleu">👤 Auteurs clés</div>
-        <div class="auteurs">
-          <div class="auteur"><span class="auteur-name">Rousseau</span><span class="auteur-text">L'homme naturel est bon ; c'est la société qui le corrompt.</span></div>
-          <div class="auteur"><span class="auteur-name">Hobbes</span><span class="auteur-text">L'état de nature est une guerre de tous contre tous.</span></div>
-          <div class="auteur"><span class="auteur-name">Kant</span><span class="auteur-text">L'homme doit s'arracher à sa nature animale pour accéder à la morale et à la liberté.</span></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title vert">🗂 Structure d'argumentation</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">1</div><div class="step-body"><span class="step-label">Thèse</span><strong>La nature semble hostile</strong> — tempêtes, maladies : l'homme doit lutter contre elle (Hobbes).</div></div>
-          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="step-label">Antithèse</span><strong>Mais la nature fournit les conditions de la vie</strong> — elle est aussi nourricière (Rousseau : l'état de nature est un état de bonheur originel).</div></div>
-          <div class="step"><div class="step-n">3</div><div class="step-body"><span class="step-label">Dépassement</span><strong>L'hostilité n'est pas dans la nature mais dans notre regard</strong> — c'est en cherchant à la dominer que l'homme la perçoit comme adversaire.<div class="mots"><span class="mot">État de nature</span><span class="mot">Culture</span><span class="mot">Inné / acquis</span></div></div></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title rouge">📚 Annales</div>
-        <div class="annale-box"><span class="annale-source">2024</span>"La nature est-elle hostile à l'homme ?"</div>
-        <div class="annale-box"><span class="annale-source">2023</span>"Transformer la nature, est-ce gagner en liberté ?"</div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title or">⚠ Confusions à éviter</div>
-        <div class="alerte"><strong>Naturel ≠ bien</strong> : le "naturel" n'est pas automatiquement souhaitable (venin naturel, maladies naturelles).</div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title gris">🔗 Notions souvent liées</div>
-        <div class="pills">
-          <span class="pill" onclick="showModal('liberte')">Liberté →</span>
-          <span class="pill" onclick="showModal('technique')">Technique →</span>
-        </div>
-      </div>
-    `
-  },
-
-  religion: {
-    tag: "Notion · ★★★☆☆ Complémentaire",
-    titre: "La Religion",
-    freq: "Peu présente en sujet principal post-2021 — à connaître pour l'explication de texte",
-    annales: "Rarement sujet principal · À traiter pour l'explication de texte",
-    liees: ["verite","liberte"],
-    contenu: `
-      <div class="freq-band">
-        <div class="freq-item"><span style="font-size:18px">★★★☆☆</span><span class="freq-lab">Complémentaire</span></div>
-        <div class="freq-item"><span class="freq-val">Rare</span><span class="freq-lab">en sujet principal</span></div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title noir">📌 Définition</div>
-        <p style="font-size:14px;line-height:1.6">La religion désigne un système de croyances et de pratiques reliant l'homme à une puissance supérieure. Elle comprend des dogmes (vérités de foi), des rites (pratiques collectives) et une communauté. Trois grandes questions philosophiques :<br>
-        • La religion est-elle compatible avec la raison ?<br>
-        • Est-elle nécessaire à la morale ?<br>
-        • Est-elle une forme d'aliénation ou de libération ?</p>
-      </div>
-
-      <div class="section">
-        <div class="sec-title bleu">👤 Auteurs clés</div>
-        <div class="auteurs">
-          <div class="auteur"><span class="auteur-name">Pascal</span><span class="auteur-text">Le pari de Pascal — il est rationnel de croire en Dieu.</span></div>
-          <div class="auteur"><span class="auteur-name">Marx</span><span class="auteur-text">La religion est "l'opium du peuple" — elle console sans libérer.</span></div>
-          <div class="auteur"><span class="auteur-name">Freud</span><span class="auteur-text">La religion est une illusion collective — projection de désirs sur une figure paternelle divine.</span></div>
-          <div class="auteur"><span class="auteur-name">Durkheim</span><span class="auteur-text">La religion a une fonction sociale fondamentale — elle crée du lien collectif.</span></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title vert">🗂 Structure d'argumentation</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">1</div><div class="step-body"><span class="step-label">Thèse</span><strong>La religion est nécessaire</strong> — répond à des questions que la science ne peut pas résoudre, crée du lien social (Durkheim).</div></div>
-          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="step-label">Antithèse</span><strong>La religion peut être aliénante ou contraire à la raison</strong> (Marx, Freud).</div></div>
-          <div class="step"><div class="step-n">3</div><div class="step-body"><span class="step-label">Dépassement</span><strong>La religion remplit des fonctions existentielles que la raison seule ne peut pas assumer</strong> — elle n'est pas réductible à l'irrationalité.<div class="mots"><span class="mot">Foi</span><span class="mot">Dogme</span><span class="mot">Transcendance</span><span class="mot">Aliénation</span></div></div></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title or">⚠ Confusions à éviter</div>
-        <div class="alerte"><strong>Croyance religieuse ≠ superstition</strong> : la croyance peut être réfléchie.</div>
-        <div class="alerte"><strong>Athéisme ≠ absence de spiritualité</strong>.</div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title gris">🔗 Notions souvent liées</div>
-        <div class="pills">
-          <span class="pill" onclick="showModal('verite')">Vérité →</span>
-          <span class="pill" onclick="showModal('liberte')">Liberté →</span>
-        </div>
-      </div>
-    `
-  },
-
-  'methode-dissert': {
-    tag: "Méthode",
-    titre: "Dissertation en philosophie",
-    freq: "2 sujets dissertation proposés sur 3 à l'épreuve — maîtriser cette méthode est prioritaire",
-    annales: "Format : 4h · 1 sujet à traiter",
-    liees: [],
-    contenu: `
-      <div class="section">
-        <div class="sec-title noir">⏱ Les 15 premières minutes</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">1</div><div class="step-body"><strong>Lire les 3 sujets en entier</strong> — ne pas choisir tout de suite. Entourer les mots-clés.</div></div>
-          <div class="step"><div class="step-n">2</div><div class="step-body"><strong>Pour chaque sujet dissertation</strong> : identifier les notions du programme mobilisées, noter 2-3 auteurs qui viennent en tête.</div></div>
-          <div class="step"><div class="step-n">3</div><div class="step-body"><strong>Choisir le sujet</strong> sur lequel tu peux construire 3 parties avec des auteurs — pas le sujet "le plus facile" mais celui pour lequel tu as le plus de matière.</div></div>
-          <div class="step"><div class="step-n">4</div><div class="step-body"><strong>Faire un brouillon de plan</strong> avant d'écrire. 15 min de plan = une heure gagnée sur la rédaction.</div></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title vert">🗂 Structure de la dissertation (plan dialectique)</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">I</div><div class="step-body"><strong>Introduction</strong><br>• Accroche (situation concrète ou citation)<br>• Analyse des termes du sujet (définir les mots importants)<br>• Tension : montrer pourquoi la question est difficile ("on pourrait penser X... mais...")<br>• Problématique en 1-2 phrases<br>• Annonce du plan ("Nous verrons d'abord... puis... enfin...")</div></div>
-          <div class="step"><div class="step-n">II</div><div class="step-body"><strong>Partie 1 — Thèse</strong> (premier sens, réponse apparente)<br>• 2 paragraphes : Argument + Auteur + Exemple<br>• Transition : "Cependant, cette réponse est insuffisante car..."</div></div>
-          <div class="step"><div class="step-n">III</div><div class="step-body"><strong>Partie 2 — Antithèse</strong> (limite de la thèse, contre-argument)<br>• 2 paragraphes : Argument + Auteur + Exemple<br>• Transition : "Il faut donc dépasser cette opposition..."</div></div>
-          <div class="step"><div class="step-n">IV</div><div class="step-body"><strong>Partie 3 — Dépassement</strong> (réponse plus complète)<br>• 2 paragraphes : Argument + Auteur + Exemple</div></div>
-          <div class="step"><div class="step-n">V</div><div class="step-body"><strong>Conclusion</strong><br>• Synthèse du parcours (pas de répétition)<br>• Réponse claire à la question<br>• Ouverture vers une autre question</div></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title rouge">🎯 Ce que le jury attend vraiment</div>
-        <table>
-          <tr><th>Verbe du sujet</th><th>Ce qu'on attend</th><th>Piège à éviter</th></tr>
-          <tr><td>Suffit-il de</td><td>Montrer que c'est insuffisant, puis trouver ce qui manque</td><td>Répondre oui/non directement</td></tr>
-          <tr><td>Est-ce que / Sommes-nous</td><td>Problématiser : ni oui ni non — nuancer</td><td>Affirmer sans nuance</td></tr>
-          <tr><td>Peut-on / Faut-il</td><td>Questionner la possibilité ou la nécessité</td><td>Confondre possible et souhaitable</td></tr>
-        </table>
-      </div>
-
-      <div class="section">
-        <div class="sec-title or">⚠ Erreurs classiques (rapport de jury)</div>
-        <div class="alerte"><strong>Répondre directement par oui/non</strong> sans problématiser. "La liberté consiste-t-elle à n'obéir à personne ? Non." → 0 points.</div>
-        <div class="alerte"><strong>Plan par auteurs</strong> au lieu d'un plan par idées. Un auteur peut apparaître dans plusieurs parties.</div>
-        <div class="alerte"><strong>Paraphrase du cours</strong> sans lien avec le sujet. Chaque argument doit répondre à la question posée.</div>
-        <div class="astuce">💡 Une bonne introduction vaut souvent plus que le reste. Soigne-la : 20-25 lignes minimum.</div>
-      </div>
-    `
-  },
-
-  'methode-texte': {
-    tag: "Méthode",
-    titre: "Explication de texte",
-    freq: "1 sujet texte proposé sur 3 à l'épreuve — avec questions guidées en filière technologique",
-    annales: "Format techno : texte + 3-4 questions guidées (pas de commentaire libre)",
-    liees: [],
-    contenu: `
-      <div class="section">
-        <div class="sec-title noir">📖 Format spécifique filière technologique</div>
-        <p style="font-size:14px;line-height:1.6;margin-bottom:10px">Contrairement à la filière générale, l'explication de texte en filière techno est <strong>guidée par des questions</strong> (3 à 4 questions sur le texte + 1 question de réflexion personnelle).<br><br>
-        Les questions portent sur : la thèse de l'auteur, une distinction ou une opposition dans le texte, l'explication d'un argument, et ta propre position.</p>
-      </div>
-
-      <div class="section">
-        <div class="sec-title vert">🗂 Méthode de lecture du texte</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">1</div><div class="step-body"><strong>Première lecture globale</strong> — identifier le thème général : de quelle notion du programme ce texte traite-t-il ?</div></div>
-          <div class="step"><div class="step-n">2</div><div class="step-body"><strong>Deuxième lecture : identifier la thèse</strong> — quelle est la position de l'auteur ? Reformule en 1 phrase : "L'auteur affirme que..."</div></div>
-          <div class="step"><div class="step-n">3</div><div class="step-body"><strong>Identifier les arguments</strong> — comment l'auteur soutient-il sa thèse ? Repérer les mots-clés, les distinctions, les exemples.</div></div>
-          <div class="step"><div class="step-n">4</div><div class="step-body"><strong>Lire les questions</strong> — chaque question te guide vers une partie du texte. Chercher les réponses dans le texte, pas dans tes cours.</div></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title bleu">✍️ Comment répondre aux questions</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">Q1</div><div class="step-body"><strong>"Quelle est la thèse de l'auteur ?"</strong><br>→ Reformule en 2-3 phrases avec tes propres mots. Ne jamais recopier. Montrer que tu as compris.</div></div>
-          <div class="step"><div class="step-n">Q2</div><div class="step-body"><strong>"Quelle distinction l'auteur établit-il ?"</strong><br>→ Identifier les deux termes opposés. Définir chacun. Expliquer ce qui les distingue. Illustrer avec une phrase du texte.</div></div>
-          <div class="step"><div class="step-n">Q3</div><div class="step-body"><strong>"Pourquoi l'auteur pense-t-il que... ?"</strong><br>→ Identifier l'argument dans le texte + l'expliquer + montrer son lien avec la thèse.</div></div>
-          <div class="step"><div class="step-n">Q4</div><div class="step-body"><strong>"Que pensez-vous ? Justifiez."</strong><br>→ Prendre clairement position + donner 1 argument + illustrer par un exemple concret. Éviter "ça dépend".</div></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title rouge">🎯 Auteurs récurrents à connaître impérativement</div>
-        <div class="auteurs">
-          <div class="auteur"><span class="auteur-name">Adam Smith</span><span class="auteur-text">Justice vs bienfaisance. Texte de 2023 et 2025 — à maîtriser absolument. <span class="auteur-oeuvre">Théorie des sentiments moraux.</span></span></div>
-          <div class="auteur"><span class="auteur-name">Platon</span><span class="auteur-text">Texte de 2024. Justice dans la cité, rôle des lois. <span class="auteur-oeuvre">Les Lois.</span></span></div>
-          <div class="auteur"><span class="auteur-name">Diderot</span><span class="auteur-text">Texte de 2022. Vérité, erreur, fiabilité des témoignages. <span class="auteur-oeuvre">Encyclopédie.</span></span></div>
-          <div class="auteur"><span class="auteur-name">Freud</span><span class="auteur-text">Texte de 2021. L'art comme sublimation, le poète comparé à l'enfant qui joue. <span class="auteur-oeuvre">Le poète et l'activité de fantaisie.</span></span></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="sec-title or">⚠ Erreurs classiques</div>
-        <div class="alerte"><strong>Recopier des passages du texte sans les expliquer</strong>. Le correcteur veut que tu montres que tu as compris — reformule.</div>
-        <div class="alerte"><strong>Faire un cours sur la notion</strong> au lieu de répondre à la question. Reste ancré dans le texte.</div>
-        <div class="astuce">💡 Sur la question de synthèse personnelle : "Je suis d'accord avec l'auteur parce que..." est toujours plus fort que "ça dépend des situations".</div>
-      </div>
-    `
-  }
-};
-
-// ─── DONNÉES POUR LA MODAL (résumé court) ─────────────────────────
-
-const modalData = {
-  liberte: { nom: "La Liberté", def: "Capacité d'agir selon sa propre volonté. Distinctions : liberté négative (absence de contrainte) / liberté positive (autonomie réelle) / libre arbitre. Auteurs : Rousseau, Sartre, Kant, Spinoza." },
-  verite:  { nom: "La Vérité",  def: "Correspondance entre un énoncé et la réalité. Vérité ≠ certitude subjective ≠ consensus. Auteurs : Descartes (doute méthodique), Platon (allégorie de la caverne), Nietzsche, Diderot." },
-  justice: { nom: "La Justice", def: "Rendre à chacun ce qui lui est dû. Justice ≠ légalité. Légal / légitime : distinction fondamentale. Auteurs : Platon, Aristote, Rawls, Adam Smith." },
-  art:     { nom: "L'Art",      def: "Production humaine visant le beau ou l'expression. Art ≠ technique artisanale. Catharsis (Aristote), mimèsis (Platon), sublimation (Freud). Beau ≠ agréable." },
-  technique: { nom: "La Technique", def: "Ensemble des procédés pour transformer la nature. Technique ≠ technologie ≠ art. Libération (Bergson) vs aliénation (Heidegger, Marx). Progrès technique ≠ progrès moral." },
-  nature:  { nom: "La Nature",  def: "Ce qui existe sans intervention humaine. Opposition nature / culture. État de nature (Hobbes : guerre / Rousseau : bonheur). Naturel ≠ bien." },
-  religion: { nom: "La Religion", def: "Système de croyances reliant l'homme à une puissance supérieure. Fonction sociale (Durkheim). Critique : Marx (opium), Freud (illusion). Foi ≠ superstition." }
-};
-
-// ─── FONCTIONS ────────────────────────────────────────────────────
-
-function toggleGroup(header) {
-  const arrow = header.querySelector('.group-arrow');
-  const body = header.nextElementSibling;
-  const isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  arrow.classList.toggle('open', !isOpen);
-}
-
 function showNotion(id, el) {
-  // Désactiver tous les items actifs
-  document.querySelectorAll('.q-item.active, .m-item.active').forEach(i => i.classList.remove('active'));
-  if (el) el.classList.add('active');
-
-  const n = notions[id];
-  if (!n) return;
-
-  document.getElementById('main-content').innerHTML = `
-    <div class="q-header">
-      <div class="type-tag">${n.tag}</div>
-      <h2>${n.titre}</h2>
-      <div class="freq">${n.freq}</div>
-      <div class="annales-list">Sujets : ${n.annales}</div>
-    </div>
-    ${n.contenu}
-  `;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.querySelectorAll('[id^="content-"]').forEach(d => d.style.display = 'none');
+  document.querySelectorAll('.notion-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('content-' + id).style.display = 'block';
+  el.classList.add('active');
 }
-
-function showModal(id) {
-  const d = modalData[id];
-  if (!d) return;
-  document.getElementById('modal-body').innerHTML = `
-    <div class="modal-notion-name">${d.nom}</div>
-    <div class="modal-def">${d.def}</div>
-    <button class="btn-corr" onclick="showNotion('${id}', null); closeModal()">Voir la fiche complète →</button>
-  `;
-  document.getElementById('modal-overlay').classList.add('open');
-}
-
-function closeModal(e) {
-  if (!e || e.target === document.getElementById('modal-overlay')) {
-    document.getElementById('modal-overlay').classList.remove('open');
-  }
-}
-
-function toggleCorrige(btn) {
-  const corrige = btn.nextElementSibling;
-  const isOpen = corrige.classList.contains('open');
-  corrige.classList.toggle('open', !isOpen);
-  btn.textContent = isOpen ? 'Voir problématique + plan' : 'Masquer le corrigé';
-}
-
-// Affichage initial
-showNotion('liberte', document.querySelector('.q-item'));
 </script>
-
 </body>
 </html>
