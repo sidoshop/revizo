@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Quiz Philosophie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #f0ede6; color: #1e1c18; min-height: 100vh; }
+
+.page { max-width: 660px; margin: 0 auto; padding: 28px 20px 60px; }
+
+/* HEADER */
+.q-header { text-align: center; margin-bottom: 24px; }
+.q-badge { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #1e1c18; color: #f5c842; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+.q-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 4px; }
+.q-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+
+/* FILTRES */
+.filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; justify-content: center; }
+.f-btn { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; padding: 7px 15px; border-radius: 20px; border: 2px solid transparent; cursor: pointer; transition: all 0.13s; }
+.f-all    { background: #e0dbd2; color: #5a5448; border-color: #e0dbd2; }
+.f-all.on { background: #1e1c18; color: #fffdf8; border-color: #1e1c18; }
+.f-notion    { background: #e8f0fb; color: #2563a8; border-color: #e8f0fb; }
+.f-notion.on { background: #2563a8; color: #fff; border-color: #2563a8; }
+.f-repere    { background: #e8f5ee; color: #2d7a4f; border-color: #e8f5ee; }
+.f-repere.on { background: #2d7a4f; color: #fff; border-color: #2d7a4f; }
+.f-appli    { background: #fdf7e3; color: #946e00; border-color: #fdf7e3; }
+.f-appli.on { background: #946e00; color: #fff; border-color: #946e00; }
+
+/* PROGRESS */
+.progress-wrap { margin-bottom: 20px; }
+.progress-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 12px; font-weight: 700; color: #8a8478; }
+.progress-track { height: 6px; background: #ddd8cf; border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #2563a8, #4f8ef5); border-radius: 4px; transition: width 0.35s; }
+
+/* QUESTION CARD */
+.qcard { background: #fff; border-radius: 20px; padding: 28px 28px 24px; box-shadow: 0 4px 20px rgba(0,0,0,.08); margin-bottom: 16px; }
+.qcard-cat { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 3px 10px; border-radius: 12px; display: inline-block; margin-bottom: 14px; }
+.cat-notion  { background: #e8f0fb; color: #2563a8; }
+.cat-repere  { background: #e8f5ee; color: #2d7a4f; }
+.cat-appli   { background: #fdf7e3; color: #946e00; }
+.qcard-text { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.15rem; line-height: 1.45; color: #1e1c18; margin-bottom: 22px; }
+
+/* CHOICES */
+.choices { display: flex; flex-direction: column; gap: 10px; }
+.choice-btn {
+  text-align: left; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 500;
+  padding: 13px 16px; border-radius: 12px; border: 2px solid #e0dbd2;
+  background: #fafaf8; color: #1e1c18; cursor: pointer; transition: all 0.15s; line-height: 1.4;
+}
+.choice-btn:hover:not(:disabled) { border-color: #2563a8; background: #f0f4ff; }
+.choice-btn.correct { background: #eaf5ee; border-color: #1a7a3c; color: #1a7a3c; font-weight: 700; }
+.choice-btn.wrong   { background: #fdeef2; border-color: #b5415a; color: #b5415a; }
+.choice-btn:disabled { cursor: default; }
+
+/* FEEDBACK */
+.feedback { display: none; background: #fffdf8; border: 1px solid #ddd8cc; border-radius: 14px; padding: 18px 20px; margin-top: 16px; }
+.feedback.show { display: block; }
+.fb-result { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; margin-bottom: 8px; }
+.fb-result.ok   { color: #1a7a3c; }
+.fb-result.nope { color: #b5415a; }
+.fb-explain { font-size: 0.87rem; line-height: 1.6; color: #3a3530; }
+
+/* NEXT BTN */
+.next-btn {
+  display: block; width: 100%; margin-top: 18px;
+  font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem;
+  padding: 14px; border-radius: 12px; border: none;
+  background: #1e1c18; color: #f5c842; cursor: pointer; transition: opacity 0.15s;
+}
+.next-btn:hover { opacity: 0.88; }
+
+/* SCORE SCREEN */
+.score-screen { display: none; background: #1e1c18; border-radius: 20px; padding: 40px 32px; text-align: center; color: #fffdf8; }
+.score-screen.show { display: block; }
+.score-emoji { font-size: 52px; margin-bottom: 16px; }
+.score-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.6rem; margin-bottom: 6px; }
+.score-sub { font-size: 0.9rem; color: #a09880; margin-bottom: 24px; }
+.score-big { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 3.5rem; color: #f5c842; margin-bottom: 4px; }
+.score-label { font-size: 0.85rem; color: #a09880; margin-bottom: 24px; }
+.score-detail { background: rgba(255,255,255,.07); border-radius: 12px; padding: 14px 20px; margin-bottom: 24px; font-size: 0.87rem; line-height: 1.7; }
+.score-detail span { color: #f5c842; font-weight: 700; }
+.restart-btn { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; padding: 14px 32px; border-radius: 12px; border: none; background: #f5c842; color: #1e1c18; cursor: pointer; }
+.restart-btn:hover { opacity: 0.88; }
+
+.empty-state { text-align: center; padding: 60px 20px; color: #8a8478; }
+</style>
+</head>
+<body>
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+  <a href="epreuve-sgdn.html"     class="epreuve-link">SGDN</a>
+  <a href="epreuve-philo.html"    class="epreuve-link active">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Philosophie</span>
+  <a href="revizo-philo.html">Notions</a>
+  <a href="quiz-philo.html" class="active">Quiz</a>
+  <a href="flashcards-philo.html">Flashcards</a>
+  <a href="methode-jour-j-philo.html">Méthode Jour J</a>
+  <a href="bac-blanc-philo.html">Bac Blanc</a>
+</nav>
+
+<div class="page">
+
+  <div class="q-header">
+    <div class="q-badge">Philosophie · Quiz</div>
+    <div class="q-title">Quiz de compréhension</div>
+    <div class="q-sub" id="sub-count">20 questions · Notions + Repères + Cas concrets</div>
+  </div>
+
+  <!-- FILTRES -->
+  <div class="filters">
+    <button class="f-btn f-all on" onclick="setFilter('all', this)">Tout (20)</button>
+    <button class="f-btn f-notion"  onclick="setFilter('notion', this)">Notions (8)</button>
+    <button class="f-btn f-repere"  onclick="setFilter('repere', this)">Repères (8)</button>
+    <button class="f-btn f-appli"   onclick="setFilter('appli', this)">Cas concrets (4)</button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-info">
+      <span id="prog-label">Question 1 / 20</span>
+      <span id="score-live">Score : 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="qcard" id="qcard">
+    <div class="qcard-cat" id="qcat"></div>
+    <div class="qcard-text" id="qtext">Chargement…</div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-result" id="fb-result"></div>
+      <div class="fb-explain" id="fb-explain"></div>
+      <button class="next-btn" onclick="nextQuestion()">Question suivante →</button>
+    </div>
+  </div>
+
+  <!-- SCORE SCREEN -->
+  <div class="score-screen" id="score-screen">
+    <div class="score-emoji" id="sc-emoji">🎉</div>
+    <div class="score-title" id="sc-title">Quiz terminé !</div>
+    <div class="score-sub" id="sc-sub"></div>
+    <div class="score-big" id="sc-big"></div>
+    <div class="score-label">bonnes réponses</div>
+    <div class="score-detail" id="sc-detail"></div>
+    <button class="restart-btn" onclick="restartQuiz()">↺ Recommencer</button>
+  </div>
+
+</div>
+
+<script>
+const ALL_QUESTIONS = [
+
+  // ===== NOTIONS (8) =====
+  {
+    cat: 'notion',
+    q: 'Pour Spinoza, le citoyen qui obéit aux lois est-il libre ?',
+    choices: [
+      'Non — obéir, c\'est toujours être contraint',
+      'Oui, s\'il a lui-même voté ces lois',
+      'Oui, si les lois sont fondées sur la raison',
+      'Non — la vraie liberté c\'est faire ce qu\'on veut'
+    ],
+    correct: 2,
+    explain: 'Spinoza distingue la contrainte brute (esclave) de l\'obéissance raisonnée (citoyen). Agir selon une loi juste qu\'on comprend et approuve, c\'est exercer sa raison — c\'est donc être libre. La liberté n\'est pas l\'absence de règles, c\'est l\'adhésion à des règles raisonnables.'
+  },
+  {
+    cat: 'notion',
+    q: 'Selon Platon, pourquoi nos sens ne nous donnent-ils pas accès à la vérité ?',
+    choices: [
+      'Parce qu\'ils varient d\'une personne à l\'autre',
+      'Parce qu\'ils donnent accès aux apparences, pas à la réalité profonde',
+      'Parce qu\'ils sont trop lents pour percevoir tout ce qui se passe',
+      'Parce que la vérité est trop complexe pour être perçue'
+    ],
+    correct: 1,
+    explain: 'L\'allégorie de la caverne illustre cela : les prisonniers croient que les ombres sont la réalité — c\'est tout ce que leurs sens leur montrent. Il faut sortir de la caverne, c\'est-à-dire utiliser la raison, pour accéder à la réalité véritable. Voir ≠ savoir.'
+  },
+  {
+    cat: 'notion',
+    q: 'Aristote dit que la vraie justice c\'est l\'équité. Qu\'est-ce que ça signifie concrètement ?',
+    choices: [
+      'Donner exactement la même chose à tout le monde',
+      'Laisser les gens décider eux-mêmes ce qui est juste',
+      'Favoriser les plus pauvres pour compenser les inégalités',
+      'Adapter le traitement selon les besoins et la situation de chacun'
+    ],
+    correct: 3,
+    explain: 'L\'équité selon Aristote, c\'est tenir compte des différences réelles entre les personnes pour produire une justice réelle. Traiter de façon identique des personnes dans des situations très différentes, c\'est une inégalité déguisée en égalité — et donc une injustice.'
+  },
+  {
+    cat: 'notion',
+    q: 'Selon Mill, pourquoi la technique est-elle nécessaire à l\'être humain ?',
+    choices: [
+      'Par désir de confort et de progrès',
+      'Pour dominer la nature et en faire une ressource illimitée',
+      'Parce que la nature est indifférente voire hostile à l\'homme',
+      'Parce que l\'homme est naturellement paresseux'
+    ],
+    correct: 2,
+    explain: 'Mill montre que la nature n\'est pas bienveillante : tempêtes, maladies, prédateurs, catastrophes. Elle est indifférente à l\'être humain. La technique est une réponse à cette hostilité : digues, vaccins, paratonnerres. Ce n\'est pas une trahison de la nature, c\'est une correction de ses dangers.'
+  },
+  {
+    cat: 'notion',
+    q: 'Qu\'est-ce qui distingue fondamentalement une œuvre d\'art d\'un objet artisanal ?',
+    choices: [
+      'Le prix de vente sur le marché',
+      'Le temps mis à le créer',
+      'L\'œuvre d\'art est unique et irréductible à une technique',
+      'La matière utilisée pour le fabriquer'
+    ],
+    correct: 2,
+    explain: 'N\'importe quel bon artisan peut reproduire une chaise identique — la technique suffit. Une œuvre d\'art porte la marque singulière de son créateur : son regard, sa vision, son intention. Elle ne se "refait" pas. C\'est ce que montrent les deux photographes avec le même appareil qui font des photos radicalement différentes.'
+  },
+  {
+    cat: 'notion',
+    q: '"C\'est naturel donc c\'est bon." Que faut-il penser de cet argument ?',
+    choices: [
+      'C\'est vrai — la nature est toujours bienveillante',
+      'C\'est vrai seulement pour les aliments et les plantes',
+      'C\'est un argument à questionner — le naturel ne garantit pas le bien',
+      'C\'est vrai si c\'est confirmé par la science moderne'
+    ],
+    correct: 2,
+    explain: 'La douleur est naturelle — elle est parfois insupportable. Un champignon vénéneux est naturel — il peut tuer. La morphine est artificielle — elle soulage. Le "sophisme naturaliste" consiste à confondre ce qui est naturel avec ce qui est bien. Ce sont deux choses distinctes.'
+  },
+  {
+    cat: 'notion',
+    q: 'Selon Freud, à quoi répond le besoin de religion chez l\'être humain ?',
+    choices: [
+      'Au besoin d\'expliquer rationnellement les phénomènes naturels',
+      'À une tradition culturelle transmise par l\'éducation',
+      'À l\'angoisse face à la mort et à la fragilité de la condition humaine',
+      'Au besoin de règles morales pour organiser la société'
+    ],
+    correct: 2,
+    explain: 'Pour Freud, la religion est une "illusion consolatrice". Face à la mort, à la souffrance et à l\'impuissance, l\'homme réactive le besoin de protection qu\'il avait enfant. Il s\'invente une figure divine toute-puissante. La religion console — mais ce n\'est pas une connaissance du monde, c\'est un mécanisme psychologique de défense.'
+  },
+  {
+    cat: 'notion',
+    q: 'Rousseau pense que l\'homme naturel est bon. Cela signifie-t-il que tout ce qui est naturel est bien ?',
+    choices: [
+      'Oui — si l\'homme naturel est bon, la nature entière l\'est aussi',
+      'Non — dire que l\'homme naturel est bon ne signifie pas que la nature est toujours bienveillante',
+      'Oui — Rousseau le dit explicitement dans ses œuvres',
+      'Non — Rousseau pense au contraire que la nature est dangereuse'
+    ],
+    correct: 1,
+    explain: 'Rousseau affirme que l\'état de nature de l\'homme était bon — avant que la société ne le corrompe. Mais cela ne veut pas dire que tout ce qui est naturel est bien. Les maladies, les prédateurs, les catastrophes sont naturels — ils ne sont pas bons pour autant. "Naturel" et "bon" sont deux choses différentes.'
+  },
+
+  // ===== REPÈRES (8) =====
+  {
+    cat: 'repere',
+    q: '"La Déclaration des droits de l\'homme affirme que tous les êtres humains naissent libres et égaux en dignité." C\'est un jugement…',
+    choices: [
+      'En fait — c\'est un constat de la réalité observable',
+      'En droit — c\'est ce qui devrait être selon un idéal',
+      'Objectif — c\'est vérifiable scientifiquement',
+      'Légal — c\'est inscrit dans la loi française'
+    ],
+    correct: 1,
+    explain: '"En droit" désigne ce qui devrait être selon la justice ou un idéal moral — une norme, un principe. "En fait", des inégalités énormes existent dans le monde. La DDHC énonce un idéal (en droit), pas un constat (en fait).'
+  },
+  {
+    cat: 'repere',
+    q: 'En France jusqu\'en 1965, une femme mariée devait obtenir l\'accord de son mari pour ouvrir un compte bancaire. C\'était…',
+    choices: [
+      'Légal et légitime',
+      'Illégal mais légitime',
+      'Légal mais illégitime',
+      'Ni légal ni légitime — c\'était déjà interdit'
+    ],
+    correct: 2,
+    explain: 'Cette règle était inscrite dans le Code civil — donc légale. Mais elle était illégitime : contraire à l\'égalité entre hommes et femmes, contraire à la justice morale. Légal et légitime sont deux choses distinctes. Une loi peut être injuste, et une action juste peut être illégale.'
+  },
+  {
+    cat: 'repere',
+    q: 'Semmelweis prouve avec des données précises que le lavage des mains divise la mortalité par 10. Ses collègues refusent de le croire. Ils ont…',
+    choices: [
+      'Un savoir — ils connaissent la médecine mieux que lui',
+      'Une croyance — ils rejettent des preuves sans contre-preuves',
+      'Une opinion légitime — les données pouvaient être fausses',
+      'Un savoir différent — il peut y avoir plusieurs vérités'
+    ],
+    correct: 1,
+    explain: 'Ses collègues "croient" que le lavage des mains ne change rien — sans preuve. C\'est une conviction sans démonstration. Semmelweis, lui, "sait" — il a des chiffres vérifiables, répétables. Croire ≠ Savoir. On peut croire fermement une chose fausse.'
+  },
+  {
+    cat: 'repere',
+    q: '"Cette symphonie de Beethoven est la plus belle jamais composée." C\'est un jugement…',
+    choices: [
+      'Objectif — la beauté musicale est mesurable',
+      'En droit — c\'est ce que la musique devrait être',
+      'Subjectif — ça dépend de la sensibilité de chacun',
+      'Légal — c\'est reconnu par les institutions culturelles'
+    ],
+    correct: 2,
+    explain: 'La beauté d\'une œuvre dépend de la perception, des goûts, de la sensibilité de chacun — c\'est donc subjectif. "Cette symphonie dure 42 minutes" serait objectif (vérifiable par tous). "Cette symphonie est magnifique" varie selon les personnes.'
+  },
+  {
+    cat: 'repere',
+    q: 'L\'association L214 diffuse des vidéos choquantes filmées dans des abattoirs pour amener les gens à ne plus manger de viande. C\'est surtout…',
+    choices: [
+      'Convaincre — ils utilisent des arguments rationnels et des données',
+      'Obliger — ils forcent le public à regarder',
+      'Contraindre — l\'impact émotionnel est irrésistible',
+      'Persuader — ils jouent sur l\'émotion et la compassion'
+    ],
+    correct: 3,
+    explain: 'Persuader = agir sur les émotions pour faire changer d\'avis. Les images d\'abattoirs provoquent de la compassion, du dégoût, de l\'empathie — c\'est une technique émotionnelle. Convaincre, c\'est s\'adresser à la raison par des arguments et des preuves (comme un chercheur qui publie des données nutritionnelles).'
+  },
+  {
+    cat: 'repere',
+    q: 'Quelqu\'un te ligote les mains dans le dos. Tu ne peux plus bouger. C\'est…',
+    choices: [
+      'Une obligation — tu dois rester immobile',
+      'Une contrainte — une force physique que tu ne peux pas surmonter',
+      'Une persuasion — on cherche à t\'influencer',
+      'Un devoir — tu dois accepter cette situation'
+    ],
+    correct: 1,
+    explain: 'La contrainte est une force physique extérieure impossible à éviter — tu ne peux physiquement pas bouger, même si tu le voulais. L\'obligation, elle, est morale ou juridique : tu pourrais théoriquement la refuser, mais avec des conséquences. Ligoté = contrainte. Arrêter au feu rouge = obligation.'
+  },
+  {
+    cat: 'repere',
+    q: 'La Terre plate est une conviction répandue dans certains groupes. La Terre sphérique est prouvée par des mesures depuis l\'Antiquité. Lequel est un "savoir" ?',
+    choices: [
+      'Les deux — chaque groupe a ses propres preuves',
+      'Ni l\'un ni l\'autre — c\'est une question de point de vue',
+      'La Terre sphérique — c\'est vérifiable, reproductible et démontré',
+      'La Terre plate — car beaucoup le croient sincèrement'
+    ],
+    correct: 2,
+    explain: 'Le savoir exige une preuve vérifiable et reproductible par tous. La sphéricité de la Terre est démontrée par des mesures géodésiques, des photos satellites, des navigations. La croyance en la Terre plate est une conviction sans preuves solides. La sincérité ne suffit pas à transformer une croyance en savoir.'
+  },
+  {
+    cat: 'repere',
+    q: 'En France, ne pas secourir une personne en danger est un délit. Tu es une excellente nageuse — une personne se noie devant toi. Tu dois plonger. C\'est…',
+    choices: [
+      'Une contrainte — tu n\'as pas le choix',
+      'Une obligation — tu pourrais ne pas plonger, mais la loi et la morale te l\'imposent',
+      'Une persuasion — tu es influencée par les cris',
+      'Un fait en droit — tu devrais le faire idéalement'
+    ],
+    correct: 1,
+    explain: 'C\'est une obligation : tu as physiquement la capacité de ne pas plonger, mais la loi (non-assistance à personne en danger) et la morale t\'imposent de le faire. Si tu ne savais pas nager, ce serait une contrainte physique — tu serais dans l\'impossibilité réelle d\'agir sans risquer ta vie.'
+  },
+
+  // ===== CAS CONCRETS / APPLICATION (4) =====
+  {
+    cat: 'appli',
+    q: 'Un bébé né prématurément à 6 mois est placé en couveuse. Sans cela, il ne survivrait pas. Quelle notion philosophique cela illustre le mieux ?',
+    choices: [
+      'La religion — c\'est un miracle de la médecine',
+      'La justice — chaque bébé a droit à la vie',
+      'La nature — c\'est naturel de survivre',
+      'La technique — elle supplée à ce que la nature ne peut faire'
+    ],
+    correct: 3,
+    explain: 'C\'est l\'illustration parfaite de Mill sur la Technique : la nature (naissance prématurée) est hostile à la vie de cet enfant. La technique (couveuse, monitoring, alimentation artificielle) corrige cette hostilité. La technique ne s\'oppose pas à la nature — elle la prolonge là où elle échoue.'
+  },
+  {
+    cat: 'appli',
+    q: 'Des astronautes scientifiques, souvent athées, décrivent en orbite un sentiment d\'émerveillement profond et mystique face à la Terre. Quelle notion cela illustre ?',
+    choices: [
+      'La vérité — ils voient la Terre telle qu\'elle est vraiment',
+      'La technique — la conquête spatiale comme exploit humain',
+      'La religion — le besoin humain de transcendance, même chez des scientifiques',
+      'La liberté — être libre de ses convictions personnelles'
+    ],
+    correct: 2,
+    explain: 'Même des scientifiques rationalistes ressentent en orbite quelque chose qui dépasse la raison pure. Ça illustre la thèse de Freud sur la Religion : le besoin de transcendance — d\'être face à quelque chose qui nous dépasse — est profondément humain. Ce n\'est pas de la religion institutionnelle, mais c\'en est le terreau.'
+  },
+  {
+    cat: 'appli',
+    q: 'Aux Jeux paralympiques, les athlètes sont classés par catégories selon leur type de handicap. Les règles sont différentes pour chaque catégorie. Quelle thèse philosophique cela illustre ?',
+    choices: [
+      'La liberté — chacun peut participer selon ses capacités',
+      'La justice — l\'équité n\'est pas l\'égalité stricte',
+      'La nature — les différences entre individus sont naturelles',
+      'La technique — utilisation de prothèses et d\'équipements adaptés'
+    ],
+    correct: 1,
+    explain: 'C\'est l\'illustration d\'Aristote sur la Justice. Imposer les mêmes règles à tous (valides et handicapés) serait une égalité formelle — mais injuste en réalité. Adapter les catégories selon les situations, c\'est de l\'équité. C\'est la vraie justice selon Aristote : traiter différemment ce qui est différent.'
+  },
+  {
+    cat: 'appli',
+    q: 'Après les attentats du 13 novembre 2015, des inconnus se retrouvent spontanément place de la République pour chanter, apporter des fleurs, jouer de la guitare. Quel besoin philosophique cela illustre ?',
+    choices: [
+      'La technique — le besoin d\'agir concrètement face au chaos',
+      'La liberté — le droit de se rassembler librement',
+      'L\'art — un besoin humain profond, pas biologique mais existentiel',
+      'La justice — rendre symboliquement hommage aux victimes'
+    ],
+    correct: 2,
+    explain: 'C\'est l\'illustration de la deuxième thèse sur l\'Art. Personne ne les y a obligés — aucun besoin biologique. Mais ce besoin de créer, de chanter, de partager de la beauté face à la douleur et au chaos est profondément humain. L\'art répond à un besoin existentiel, pas à une nécessité de survie.'
+  }
+];
+
+let currentFilter = 'all';
+let questions = [];
+let idx = 0;
+let score = 0;
+let answered = false;
+
+function getFiltered() {
+  if (currentFilter === 'all') return [...ALL_QUESTIONS];
+  return ALL_QUESTIONS.filter(q => q.cat === currentFilter);
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  restartQuiz();
+}
+
+function restartQuiz() {
+  questions = getFiltered().sort(() => Math.random() - 0.5);
+  idx = 0;
+  score = 0;
+  document.getElementById('score-screen').classList.remove('show');
+  document.getElementById('qcard').style.display = 'block';
+  document.getElementById('progress-wrap').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (idx >= questions.length) {
+    showScore();
+    return;
+  }
+  answered = false;
+  const q = questions[idx];
+  const total = questions.length;
+
+  // Progress
+  document.getElementById('prog-label').textContent = 'Question ' + (idx + 1) + ' / ' + total;
+  document.getElementById('score-live').textContent = 'Score : ' + score;
+  document.getElementById('prog-fill').style.width = (idx / total * 100) + '%';
+
+  // Category badge
+  const catLabels = { notion: 'Notion', repere: 'Repère', appli: 'Cas concret' };
+  const catEl = document.getElementById('qcat');
+  catEl.textContent = catLabels[q.cat];
+  catEl.className = 'qcard-cat cat-' + q.cat;
+
+  // Question
+  document.getElementById('qtext').textContent = q.q;
+
+  // Choices
+  const choicesEl = document.getElementById('choices');
+  choicesEl.innerHTML = '';
+  q.choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = c;
+    btn.onclick = () => answer(i);
+    choicesEl.appendChild(btn);
+  });
+
+  // Hide feedback
+  const fb = document.getElementById('feedback');
+  fb.classList.remove('show');
+}
+
+function answer(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = questions[idx];
+  const btns = document.querySelectorAll('.choice-btn');
+
+  btns.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === chosen) btn.classList.add('wrong');
+  });
+
+  const isCorrect = chosen === q.correct;
+  if (isCorrect) score++;
+
+  const fb = document.getElementById('feedback');
+  const fbResult = document.getElementById('fb-result');
+  const fbExplain = document.getElementById('fb-explain');
+
+  fbResult.className = 'fb-result ' + (isCorrect ? 'ok' : 'nope');
+  fbResult.textContent = isCorrect ? '✓ Bonne réponse !' : '✗ Pas tout à fait…';
+  fbExplain.textContent = q.explain;
+  fb.classList.add('show');
+
+  // Last question: change button text
+  if (idx === questions.length - 1) {
+    fb.querySelector('.next-btn').textContent = 'Voir mon score →';
+  } else {
+    fb.querySelector('.next-btn').textContent = 'Question suivante →';
+  }
+}
+
+function nextQuestion() {
+  idx++;
+  renderQuestion();
+}
+
+function showScore() {
+  document.getElementById('qcard').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'none';
+  const total = questions.length;
+  const pct = Math.round(score / total * 100);
+
+  let emoji, title, sub;
+  if (pct === 100)      { emoji = '🏆'; title = 'Parfait !'; sub = 'Tu maîtrises tout. Tu es prêt(e) pour le bac.'; }
+  else if (pct >= 80)   { emoji = '🎉'; title = 'Excellent !'; sub = 'Très bonne maîtrise. Quelques points à revoir.'; }
+  else if (pct >= 60)   { emoji = '👍'; title = 'Bien !'; sub = 'Tu as les bases. Relis les notions que tu as ratées.'; }
+  else if (pct >= 40)   { emoji = '📚'; title = 'À retravailler'; sub = 'Reviens sur les notions et les repères dans le cours.'; }
+  else                  { emoji = '💪'; title = 'Continue !'; sub = 'Commence par lire les fiches Notions avant de refaire le quiz.'; }
+
+  document.getElementById('sc-emoji').textContent = emoji;
+  document.getElementById('sc-title').textContent = title;
+  document.getElementById('sc-sub').textContent = sub;
+  document.getElementById('sc-big').textContent = score + ' / ' + total;
+  document.getElementById('sc-detail').innerHTML =
+    '<span>' + score + '</span> bonne' + (score > 1 ? 's' : '') + ' réponse' + (score > 1 ? 's' : '') +
+    ' sur <span>' + total + '</span> — ' + pct + '%';
+
+  document.getElementById('score-screen').classList.add('show');
+}
+
+// Init
+restartQuiz();
+</script>
+</body>
+</html>

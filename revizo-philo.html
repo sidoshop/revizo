@@ -35,20 +35,24 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 .sidebar-section { padding: 10px 16px 4px; font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; }
 
 /* MAIN PANEL */
-.panel { padding: 28px 32px 60px; }
+.panel { padding: 28px 32px 60px; max-width: 720px; }
 
 /* NOTION HEADER */
-.n-header { margin-bottom: 24px; }
+.n-header { margin-bottom: 20px; }
 .n-tag { font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 6px; }
 .n-title { font-family: 'Nunito', sans-serif; font-size: 1.8rem; font-weight: 900; margin-bottom: 4px; }
 .n-question { font-size: 0.9rem; color: var(--gris); font-style: italic; }
+
+/* COMPRENDRE bloc */
+.comprendre { background: #f0f4ff; border-left: 4px solid var(--bleu); border-radius: 0 10px 10px 0; padding: 14px 18px; margin-bottom: 14px; font-size: 0.86rem; line-height: 1.65; color: #1e2a4a; }
+.comprendre strong { color: var(--bleu); }
 
 /* SECTION BLOCK */
 .bloc { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 12px; padding: 18px 22px; margin-bottom: 14px; }
 .bloc-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.95rem; margin-bottom: 10px; color: var(--texte); display: flex; align-items: center; gap: 8px; }
 .bloc p, .bloc li { font-size: 0.88rem; line-height: 1.6; color: #2e2e2e; }
 .bloc ul { padding-left: 1.2rem; }
-.bloc li { margin-bottom: 4px; }
+.bloc li { margin-bottom: 6px; }
 
 /* THÈSE */
 .these { background: #1e1c18; color: #fffdf8; border-radius: 10px; padding: 14px 18px; margin-bottom: 14px; font-size: 0.88rem; line-height: 1.55; }
@@ -57,10 +61,15 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 /* AUTEUR */
 .auteur-bloc { background: var(--blanc); border-left: 4px solid #2e2e2e; border-radius: 0 12px 12px 0; padding: 14px 18px; margin-bottom: 14px; }
 .auteur-name { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; margin-bottom: 6px; }
-.auteur-text { font-size: 0.87rem; line-height: 1.55; color: #444; }
+.auteur-text { font-size: 0.87rem; line-height: 1.6; color: #444; }
+.auteur-text ul { padding-left: 1.2rem; margin-top: 6px; }
+.auteur-text li { margin-bottom: 4px; }
 
-/* EXEMPLE */
-.exemple { background: #fdf7e3; border-left: 4px solid var(--jaune); border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 14px; font-size: 0.86rem; line-height: 1.55; }
+/* EXEMPLES */
+.exemple { background: #fdf7e3; border-left: 4px solid var(--jaune); border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 10px; font-size: 0.86rem; line-height: 1.6; }
+.exemple-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #8a7400; margin-bottom: 4px; }
+.exemple-fort { background: #fff8f0; border-left: 4px solid #d97706; border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 14px; font-size: 0.86rem; line-height: 1.6; }
+.exemple-fort .exemple-label { color: #92400e; }
 
 /* REPÈRES */
 .reperes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
@@ -105,6 +114,7 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
 <nav class="nav-rubriques">
   <span class="matiere-pill">Philosophie</span>
   <a href="revizo-philo.html" class="active">Notions</a>
+  <a href="quiz-philo.html">Quiz</a>
   <a href="flashcards-philo.html">Flashcards</a>
   <a href="methode-jour-j-philo.html">Méthode Jour J</a>
   <a href="bac-blanc-philo.html">Bac Blanc</a>
@@ -151,18 +161,42 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
   <!-- PANEL -->
   <main class="panel" id="panel">
 
+    <!-- ===================== LIBERTÉ ===================== -->
     <div id="content-liberte">
       <div class="n-header">
         <div class="n-tag">Notion · ★★★★★ Incontournable</div>
         <div class="n-title">Liberté</div>
         <div class="n-question">Peut-on être libre tout en obéissant à des règles ?</div>
       </div>
+
+      <div class="comprendre">
+        <strong>Pour bien comprendre la question :</strong> Intuitivement, être libre c'est faire ce qu'on veut, sans contrainte. Mais si "liberté" = "faire n'importe quoi", alors un enfant en colère qui tape son camarade est libre ? Un cambrioleur aussi ? Le vrai problème philosophique est là : la liberté sans limite, c'est souvent la liberté du plus fort contre le plus faible. Est-ce vraiment ce qu'on cherche ?
+      </div>
+
       <div class="these"><strong>La thèse à retenir :</strong> Oui. La vraie liberté n'est pas de faire n'importe quoi. C'est d'agir selon la raison.</div>
+
       <div class="auteur-bloc">
         <div class="auteur-name">Spinoza</div>
-        <div class="auteur-text">Il compare trois figures. L'esclave obéit dans l'intérêt de son maître seul : il n'est pas libre. L'enfant obéit à ses parents dans son intérêt mais sans le comprendre. Le citoyen obéit à des lois fondées sur la raison : il agit dans l'intérêt général ET dans son intérêt personnel. C'est la liberté véritable.</div>
+        <div class="auteur-text">
+          Spinoza compare trois figures pour expliquer ce qu'est la vraie liberté :
+          <ul>
+            <li><strong>L'esclave</strong> obéit dans l'intérêt exclusif de son maître — il n'est pas libre.</li>
+            <li><strong>L'enfant</strong> obéit à ses parents pour son propre bien, mais sans vraiment comprendre pourquoi — il n'est pas encore vraiment libre.</li>
+            <li><strong>Le citoyen</strong> obéit à des lois fondées sur la raison, qu'il comprend et reconnaît comme justes — il agit dans l'intérêt général ET dans son intérêt personnel. C'est la liberté véritable.</li>
+          </ul>
+          Conclusion : la vraie liberté, ce n'est pas l'absence de règles. C'est choisir d'obéir à des règles qu'on comprend et approuve.
+        </div>
       </div>
-      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> Un détenu en liberté conditionnelle est libre de circuler, travailler, voir sa famille — mais sous conditions strictes. C'est précisément en acceptant ces règles qu'il obtient sa liberté. C'est exactement la liberté au sens de Spinoza.</div>
+
+      <div class="exemple">
+        <div class="exemple-label">Exemple accessible</div>
+        Traverser au feu rouge "parce que je suis libre de le faire" — c'est risquer sa vie et celle des autres. La règle du feu rouge me protège. En l'acceptant, je suis plus libre qu'un piéton qui traverse n'importe comment et finit à l'hôpital.
+      </div>
+      <div class="exemple-fort">
+        <div class="exemple-label">Exemple fort à réutiliser à l'examen</div>
+        Un détenu en liberté conditionnelle est libre de circuler, travailler, voir sa famille — mais sous conditions strictes. C'est précisément en acceptant ces règles qu'il obtient sa liberté. Refuser les conditions, c'est retourner en prison. C'est exactement la liberté au sens de Spinoza : la règle rend la liberté possible.
+      </div>
+
       <div class="bloc">
         <div class="bloc-title">Repères utiles</div>
         <div class="reperes"><span class="repere">Obligation / Contrainte</span><span class="repere">Légal / Légitime</span></div>
@@ -170,141 +204,271 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
       <div class="pieges"><strong>Pièges à éviter :</strong> Liberté ≠ faire ce qu'on veut · Liberté ≠ absence de toute règle · Liberté ≠ spontanéité ou caprice.</div>
     </div>
 
+    <!-- ===================== VÉRITÉ ===================== -->
     <div id="content-verite" style="display:none">
       <div class="n-header">
         <div class="n-tag">Notion · ★★★★★ Incontournable</div>
         <div class="n-title">Vérité</div>
         <div class="n-question">Peut-on toujours faire confiance à nos sens pour accéder à la vérité ?</div>
       </div>
+
+      <div class="comprendre">
+        <strong>Pour bien comprendre la question :</strong> "Je l'ai vu de mes propres yeux" est un des arguments les plus courants. Mais nos sens peuvent nous mentir : un bâton plongé dans l'eau paraît cassé (réfraction), une route chaude semble mouillée au loin (mirage), la fièvre déforme les perceptions. Si nos yeux nous trompent, comment peut-on savoir ce qui est vraiment vrai ?
+      </div>
+
       <div class="these"><strong>La thèse à retenir :</strong> Non. La vérité exige souvent de dépasser les apparences et l'opinion commune.</div>
+
       <div class="bloc">
         <div class="bloc-title">Définition</div>
-        <p>La vérité, c'est l'adéquation entre ce qu'on affirme et la réalité telle qu'elle est vraiment.</p>
+        <p>La vérité, c'est l'adéquation entre ce qu'on affirme et la réalité telle qu'elle est vraiment — pas telle qu'elle nous apparaît.</p>
       </div>
+
       <div class="auteur-bloc">
-        <div class="auteur-name">Platon</div>
-        <div class="auteur-text">Nos sens nous trompent — ils ne nous donnent accès qu'aux apparences. La raison seule permet d'atteindre la vérité. (Allégorie de la caverne : les prisonniers croient que les ombres sont la réalité.)</div>
+        <div class="auteur-name">Platon — L'allégorie de la caverne</div>
+        <div class="auteur-text">
+          Imagine des prisonniers enchaînés dans une caverne depuis la naissance. Derrière eux, un feu projette des ombres sur le mur. Ces ombres, c'est tout ce qu'ils ont jamais vu — ils les prennent pour la réalité.<br><br>
+          Si l'un d'eux est libéré et sort de la caverne, il est d'abord aveuglé par la lumière du soleil. Mais progressivement, il découvre le monde réel — bien plus riche et vrai que les ombres.<br><br>
+          <strong>Le message :</strong> nos sens nous donnent accès à des "ombres" — des apparences. La raison seule peut nous conduire à la réalité.
+        </div>
       </div>
-      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> Pendant des siècles, les médecins croyaient que les maladies venaient de "mauvais airs". C'est ce que leurs sens et leur intuition leur disaient. Ce n'est qu'avec le microscope qu'on a découvert les bactéries — un outil rationnel, pas un sens.</div>
+
+      <div class="exemple">
+        <div class="exemple-label">Exemple accessible</div>
+        Un bâton plongé dans un verre d'eau semble cassé — nos yeux nous mentent (c'est la réfraction de la lumière). Sur une route par temps très chaud, on voit un "lac" à l'horizon qui n'existe pas (mirage). Voir ne suffit pas pour savoir.
+      </div>
+      <div class="exemple-fort">
+        <div class="exemple-label">Exemple fort à réutiliser à l'examen</div>
+        Pendant des siècles, les médecins croyaient que les maladies venaient de "mauvais airs". C'est ce que leurs sens et leur intuition leur disaient. Ce n'est qu'avec le microscope — un outil rationnel, pas un sens — qu'on a découvert les bactéries. La vérité ne s'est pas révélée par l'observation directe, mais par un raisonnement outillé.
+      </div>
+
       <div class="bloc">
         <div class="bloc-title">Repères utiles</div>
         <div class="reperes"><span class="repere">Croire / Savoir</span><span class="repere">Objectif / Subjectif</span></div>
       </div>
     </div>
 
+    <!-- ===================== JUSTICE ===================== -->
     <div id="content-justice" style="display:none">
       <div class="n-header">
         <div class="n-tag">Notion · ★★★★☆ Récurrente</div>
         <div class="n-title">Justice</div>
         <div class="n-question">Est-ce que "juste" signifie "égal" ?</div>
       </div>
+
+      <div class="comprendre">
+        <strong>Pour bien comprendre la question :</strong> L'égalité semble la définition évidente de la justice — "la même chose pour tout le monde". Mais est-ce vraiment juste de donner la même récompense à quelqu'un qui a travaillé dur et à quelqu'un qui n'a rien fait ? Est-ce juste de faire courir un athlète valide et un athlète en fauteuil sur la même distance ? Aristote va montrer que l'égalité stricte peut être profondément injuste.
+      </div>
+
       <div class="these"><strong>La thèse à retenir :</strong> Non. La vraie justice, c'est l'équité, pas l'égalité mathématique.</div>
+
       <div class="bloc">
         <div class="bloc-title">La distinction clé</div>
         <ul>
-          <li><strong>Égalité</strong> = donner exactement la même chose à tout le monde</li>
+          <li><strong>Égalité</strong> = donner exactement la même chose à tout le monde, quelles que soient leurs différences</li>
           <li><strong>Équité</strong> = adapter le traitement selon les différences pertinentes (besoins, mérites, situation)</li>
         </ul>
+        <p style="margin-top:8px;font-size:0.84rem;color:var(--gris)">L'équité, c'est tenir compte des inégalités réelles pour produire une justice réelle.</p>
       </div>
+
       <div class="auteur-bloc">
         <div class="auteur-name">Aristote</div>
-        <div class="auteur-text">La vraie justice est l'équité : donner à chacun selon ses mérites et ses besoins. Traiter de façon identique des personnes dans des situations différentes, ce n'est pas juste.</div>
+        <div class="auteur-text">
+          La vraie justice est l'équité : donner à chacun selon ses mérites et ses besoins, pas la même chose à tout le monde.<br><br>
+          Traiter de façon identique des personnes dans des situations différentes, c'est une inégalité déguisée en égalité — et donc une injustice.
+        </div>
       </div>
-      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> Aux Jeux paralympiques, on n'impose pas les mêmes conditions à tous les athlètes — on adapte les catégories selon les handicaps. Ce n'est pas de l'inégalité : c'est de l'équité. Imposer les mêmes règles à tout le monde aurait été injuste.</div>
+
+      <div class="exemple">
+        <div class="exemple-label">Exemple accessible</div>
+        Donner exactement la même quantité de nourriture à un adulte de 80 kg et à un enfant de 20 kg — c'est une égalité parfaite. Mais l'adulte sera encore affamé et l'enfant malade. Ce n'est pas juste. Donner à chacun selon ses besoins réels, c'est de l'équité.
+      </div>
+      <div class="exemple-fort">
+        <div class="exemple-label">Exemple fort à réutiliser à l'examen</div>
+        Aux Jeux paralympiques, on n'impose pas les mêmes conditions à tous les athlètes — on adapte les catégories selon les handicaps. Ce n'est pas de l'inégalité, c'est de l'équité. Imposer les mêmes règles qu'aux valides serait formellement "égal" — mais profondément injuste.
+      </div>
+
       <div class="bloc">
         <div class="bloc-title">Repères utiles</div>
         <div class="reperes"><span class="repere">Légal / Légitime</span><span class="repere">En fait / En droit</span></div>
       </div>
     </div>
 
+    <!-- ===================== TECHNIQUE ===================== -->
     <div id="content-technique" style="display:none">
       <div class="n-header">
         <div class="n-tag">Notion · ★★★★☆ Récurrente</div>
         <div class="n-title">Technique</div>
         <div class="n-question">La technique nous libère-t-elle de la nature ou nous en éloigne-t-elle ?</div>
       </div>
+
+      <div class="comprendre">
+        <strong>Pour bien comprendre la question :</strong> "Artificiel" a souvent une mauvaise réputation. On lui préfère "naturel". Mais qu'est-ce que ça veut dire exactement ? L'être humain est lui-même un être naturel — et pourtant il utilise des outils depuis la préhistoire. La question est : la technique fait-elle partie de la nature humaine, ou s'y oppose-t-elle ?
+      </div>
+
       <div class="these"><strong>La thèse à retenir :</strong> La technique est d'abord un moyen pour l'homme de maîtriser une nature parfois hostile.</div>
+
       <div class="auteur-bloc">
         <div class="auteur-name">Mill</div>
-        <div class="auteur-text">La nature est indifférente à l'homme, parfois dangereuse (tempêtes, maladies, catastrophes). La technique permet de la corriger : digues contre les inondations, vaccins contre les maladies, paratonnerres contre la foudre.</div>
+        <div class="auteur-text">
+          La nature est indifférente à l'homme — elle n'est ni bonne ni mauvaise, juste neutre. Et parfois dangereuse : tempêtes, maladies, prédateurs, catastrophes naturelles.<br><br>
+          La technique permet de la corriger : les digues contre les inondations, les vaccins contre les maladies, les paratonnerres contre la foudre, le chauffage contre le froid.<br><br>
+          La technique n'est pas une trahison de la nature — c'est une réponse à sa dangerosité.
+        </div>
       </div>
-      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> Un bébé né prématurément à 6 mois ne survit pas dans la nature — il n'est pas "fini". Placé en couveuse, maintenu en vie par des machines, il survit et grandit normalement. La technique a suppléé à ce que la nature ne pouvait pas faire.</div>
+
       <div class="bloc">
-        <div class="bloc-title">La nuance</div>
-        <p>Un outil artificiel (un marteau) est toujours fait à partir d'éléments naturels (bois, métal). La technique ne s'oppose pas totalement à la nature — elle la transforme.</p>
+        <div class="bloc-title">La nuance importante</div>
+        <p>Un outil artificiel (un marteau) est toujours fabriqué à partir d'éléments naturels (bois, métal). La technique ne s'oppose pas totalement à la nature — elle la transforme et la prolonge.</p>
+      </div>
+
+      <div class="exemple">
+        <div class="exemple-label">Exemple accessible</div>
+        L'agriculture est une technique : on ne mange pas des plantes sauvages au hasard, on cultive, on sélectionne, on améliore les espèces. Un marteau, une digue, un vaccin — tout ça, c'est de la nature transformée par l'intelligence humaine.
+      </div>
+      <div class="exemple-fort">
+        <div class="exemple-label">Exemple fort à réutiliser à l'examen</div>
+        Un bébé né prématurément à 6 mois ne survit pas dans la nature — il n'est pas "fini". Placé en couveuse, maintenu en vie par des machines, il survit et grandit normalement. La technique a suppléé à ce que la nature ne pouvait pas faire. C'est l'illustration parfaite de Mill : la nature était hostile, la technique l'a corrigée.
       </div>
     </div>
 
+    <!-- ===================== ART ===================== -->
     <div id="content-art" style="display:none">
       <div class="n-header">
         <div class="n-tag">Notion · ★★★★☆ Récurrente</div>
         <div class="n-title">Art</div>
         <div class="n-question">L'artiste fait-il la même chose qu'un artisan ? A-t-on besoin de l'art ?</div>
       </div>
+
+      <div class="comprendre">
+        <strong>Pour bien comprendre la question :</strong> Peut-on apprendre à être un artiste ? Est-ce qu'il suffit de maîtriser les techniques de dessin pour devenir un grand peintre ? Et à quoi sert l'art — est-ce un luxe superflu, ou une nécessité profondément humaine ?
+      </div>
+
       <div class="these"><strong>Thèse 1 :</strong> Non. L'artisan produit un objet utile et reproductible. L'artiste crée une œuvre unique irréductible à une technique.</div>
+
       <div class="bloc">
-        <div class="bloc-title">La distinction clé</div>
+        <div class="bloc-title">La distinction clé : artisan vs artiste</div>
         <ul>
-          <li><strong>Artisan</strong> : technique précise, objet utile, reproductible à l'identique</li>
-          <li><strong>Artiste</strong> : création originale, vise l'émotion ou la beauté, irréductible à une recette</li>
+          <li><strong>Artisan</strong> : maîtrise une technique précise, produit un objet utile, reproductible à l'identique par n'importe quel artisan compétent</li>
+          <li><strong>Artiste</strong> : crée une œuvre originale et unique, vise l'émotion ou la beauté, son œuvre porte sa marque singulière — impossible à "refaire" à l'identique</li>
         </ul>
       </div>
-      <div class="exemple">🔑 <strong>Exemple :</strong> Deux photographes avec le même appareil, les mêmes réglages, dans la même rue au même moment. L'un fait une photo banale. L'autre fait une photo qui finit dans une exposition. La technique est identique — c'est le regard de l'artiste qui fait la différence.</div>
+
+      <div class="exemple">
+        <div class="exemple-label">Exemple accessible</div>
+        Un menuisier qui fabrique une chaise applique des règles précises — n'importe quel bon menuisier peut refaire exactement la même chaise. Une sculpture de Rodin ne peut pas être "refaite" par un autre : c'est une création unique qui porte sa vision propre.
+      </div>
+      <div class="exemple-fort">
+        <div class="exemple-label">Exemple fort à réutiliser à l'examen</div>
+        Deux photographes avec le même appareil, les mêmes réglages, dans la même rue au même moment. L'un fait une photo banale. L'autre fait une photo qui finit dans une exposition. La technique est identique — c'est le regard singulier de l'artiste qui fait la différence. On ne peut pas l'enseigner.
+      </div>
+
       <div class="these"><strong>Thèse 2 (tombé 2025) :</strong> L'art répond à un besoin spécifiquement humain — pas biologique, mais existentiel.</div>
-      <div class="exemple">🔑 <strong>Exemple :</strong> Après les attentats du 13 novembre 2015 à Paris, des gens ont spontanément apporté des guitares, des bougies, chanté dans la rue. Personne ne leur a demandé. Il n'y avait pas de besoin biologique — mais un besoin humain profond : l'art comme réponse collective à la douleur.</div>
+
+      <div class="exemple">
+        <div class="exemple-label">Exemple accessible</div>
+        La musique, les films, la peinture nous touchent là où les mots ne suffisent plus. Une personne en deuil peut trouver dans une chanson ce qu'elle ne saurait pas formuler elle-même.
+      </div>
+      <div class="exemple-fort">
+        <div class="exemple-label">Exemple fort à réutiliser à l'examen</div>
+        Après les attentats du 13 novembre 2015 à Paris, des gens ont spontanément apporté des guitares, des bougies, chanté dans la rue. Personne ne les y avait obligés. Il n'y avait aucun besoin biologique — mais un besoin humain profond : l'art comme réponse collective à la douleur et au chaos.
+      </div>
+
       <div class="bloc">
         <div class="bloc-title">Repère utile</div>
         <div class="reperes"><span class="repere">Objectif / Subjectif</span></div>
       </div>
     </div>
 
+    <!-- ===================== NATURE ===================== -->
     <div id="content-nature" style="display:none">
       <div class="n-header">
         <div class="n-tag">Notion · ★★★☆☆</div>
         <div class="n-title">Nature</div>
         <div class="n-question">Peut-on dire qu'une chose est bonne parce qu'elle est "naturelle" ?</div>
       </div>
+
+      <div class="comprendre">
+        <strong>Pour bien comprendre la question :</strong> "C'est naturel" est devenu un argument marketing omniprésent : produits bio, cosmétiques "sans additifs", médecines dites naturelles. Mais philosophiquement, qu'est-ce que "naturel" signifie vraiment ? Et le fait qu'une chose soit naturelle la rend-elle automatiquement bonne, saine, ou souhaitable ?
+      </div>
+
       <div class="these"><strong>La thèse à retenir :</strong> Non. Le naturel ne garantit pas le bien.</div>
+
       <div class="bloc">
         <div class="bloc-title">La distinction clé</div>
         <ul>
-          <li><strong>Le naturel</strong> = ce qui existe par lui-même, sans intervention humaine (inné)</li>
-          <li><strong>Le culturel</strong> = ce qui est acquis, appris, construit par l'homme</li>
+          <li><strong>Le naturel</strong> = ce qui existe par lui-même, sans intervention humaine (inné, spontané)</li>
+          <li><strong>Le culturel / artificiel</strong> = ce qui est acquis, appris, construit par l'homme</li>
         </ul>
+        <p style="margin-top:8px;font-size:0.84rem;color:var(--gris)">Cette opposition est plus complexe qu'elle n'y paraît : l'être humain est naturel, mais sa culture aussi fait partie de sa nature.</p>
       </div>
+
       <div class="auteur-bloc">
         <div class="auteur-name">Rousseau</div>
-        <div class="auteur-text">L'homme naturel est bon — c'est la société qui produit les inégalités et la violence. Mais attention : cela ne signifie pas que tout ce qui est naturel est bien.</div>
+        <div class="auteur-text">
+          L'homme naturel (à l'état de nature, avant la société) est bon, libre et égal. C'est la société qui produit les inégalités, la rivalité, la violence.<br><br>
+          <strong>Attention :</strong> Rousseau dit que l'état naturel était bon — il ne dit pas que tout ce qui est naturel est bien. La maladie, la douleur, les catastrophes naturelles sont "naturelles" — elles ne sont pas bonnes pour autant.
+        </div>
       </div>
-      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> La douleur est un phénomène 100 % naturel — c'est le corps qui signale un problème. La morphine est artificielle, fabriquée en laboratoire. Pourtant personne ne dirait qu'il faut refuser un antidouleur "parce que c'est pas naturel". Le naturel ne garantit pas le bien.</div>
-      <div class="pieges"><strong>Piège :</strong> quand quelqu'un dit "c'est naturel donc c'est bien", c'est un argument à questionner systématiquement.</div>
+
+      <div class="exemple">
+        <div class="exemple-label">Exemple accessible</div>
+        Un champignon vénéneux est parfaitement naturel — et peut vous tuer. Un médicament contre la douleur est artificiel, fabriqué en laboratoire — et il vous soigne. Le "naturel" n'est donc pas forcément bon.
+      </div>
+      <div class="exemple-fort">
+        <div class="exemple-label">Exemple fort à réutiliser à l'examen</div>
+        La douleur est un phénomène 100 % naturel — c'est le corps qui signale un problème. La morphine est artificielle, fabriquée en laboratoire. Pourtant personne ne dirait "je refuse un antidouleur parce que ce n'est pas naturel". Le naturel ne garantit pas le bien — ni l'artificiel le mal.
+      </div>
+
+      <div class="pieges"><strong>Piège :</strong> Quand quelqu'un dit "c'est naturel donc c'est bien" dans un texte, c'est un argument à questionner systématiquement. C'est ce qu'on appelle un "sophisme naturaliste".</div>
     </div>
 
+    <!-- ===================== RELIGION ===================== -->
     <div id="content-religion" style="display:none">
       <div class="n-header">
         <div class="n-tag">Notion · ★★★☆☆</div>
         <div class="n-title">Religion</div>
         <div class="n-question">D'où vient le besoin de religion chez l'être humain ?</div>
       </div>
+
+      <div class="comprendre">
+        <strong>Pour bien comprendre la question :</strong> Toutes les cultures humaines connues — de la préhistoire à aujourd'hui — ont développé une forme de religion ou de croyance transcendante. C'est un fait anthropologique universel. La question philosophique est : pourquoi ? D'où vient ce besoin de croire en quelque chose qui dépasse le monde visible et la mort ?
+      </div>
+
       <div class="these"><strong>La thèse à retenir :</strong> La religion répond à une angoisse profonde face à la mort et à la fragilité de la condition humaine.</div>
+
       <div class="auteur-bloc">
         <div class="auteur-name">Freud</div>
-        <div class="auteur-text">La religion est une "illusion consolatrice". Face aux épreuves de la vie (mort, souffrance, impuissance), l'homme réactive inconsciemment le besoin de protection qu'il avait enfant. Il s'invente une figure divine toute-puissante pour se rassurer. La religion console, mais ce n'est pas une connaissance du monde.</div>
+        <div class="auteur-text">
+          La religion est une "illusion consolatrice". Face aux épreuves de la vie — mort, souffrance, impuissance — l'homme réactive inconsciemment le besoin de protection qu'il avait enfant face à ses parents.<br><br>
+          Il s'invente une figure divine toute-puissante pour se rassurer. La religion console, elle donne du sens à la souffrance — mais ce n'est pas une connaissance du monde, c'est un mécanisme psychologique de défense.
+        </div>
       </div>
+
       <div class="bloc">
-        <div class="bloc-title">La distinction clé</div>
+        <div class="bloc-title">La distinction clé : sacré / profane</div>
         <ul>
-          <li><strong>Le sacré</strong> = ce qui est séparé du quotidien, vénéré (rites, lieux saints, textes sacrés)</li>
-          <li><strong>Le profane</strong> = la vie ordinaire, le monde commun</li>
+          <li><strong>Le sacré</strong> = ce qui est séparé du quotidien, vénéré, intouchable (rites, lieux saints, textes sacrés)</li>
+          <li><strong>Le profane</strong> = la vie ordinaire, le monde commun, ce qu'on touche tous les jours</li>
         </ul>
+        <p style="margin-top:8px;font-size:0.84rem;color:var(--gris)">Toute religion trace une frontière entre ce qui est sacré et ce qui ne l'est pas.</p>
       </div>
-      <div class="exemple">🔑 <strong>Exemple à réutiliser :</strong> Des astronautes — scientifiques de formation, souvent athées — décrivent en orbite un sentiment d'émerveillement mystique face à la Terre vue de l'espace. Ce n'est pas de la religion au sens institutionnel, mais ça montre que le besoin de quelque chose qui dépasse la raison pure existe même chez des scientifiques.</div>
+
+      <div class="exemple">
+        <div class="exemple-label">Exemple accessible</div>
+        Dans toutes les cultures connues — de la préhistoire à aujourd'hui — il existe des rites funèbres pour accompagner les morts. C'est universel. Cela montre que l'être humain ne peut pas accepter simplement la mort sans lui donner un sens : c'est le terreau de la religion.
+      </div>
+      <div class="exemple-fort">
+        <div class="exemple-label">Exemple fort à réutiliser à l'examen</div>
+        Des astronautes — scientifiques de formation, souvent athées — décrivent en orbite un sentiment d'émerveillement mystique face à la Terre vue de l'espace. Ce n'est pas de la religion institutionnelle, mais ça montre que le besoin de transcendance — quelque chose qui dépasse la raison pure — existe même chez des scientifiques.
+      </div>
+
       <div class="bloc">
         <div class="bloc-title">Repère utile</div>
         <div class="reperes"><span class="repere">Croire / Savoir</span></div>
       </div>
     </div>
 
+    <!-- ===================== REPÈRES ===================== -->
     <div id="content-reperes" style="display:none">
       <div class="n-header">
         <div class="n-tag">Boîte à outils</div>
@@ -315,10 +479,14 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
       <div class="bloc">
         <div class="bloc-title">EN FAIT / EN DROIT</div>
         <ul>
-          <li><strong>En fait</strong> = ce qui existe réellement dans le monde (constat empirique)</li>
-          <li><strong>En droit</strong> = ce qui devrait être selon la justice ou la loi (norme, idéal)</li>
+          <li><strong>En fait</strong> = ce qui existe réellement dans le monde (constat empirique, observable)</li>
+          <li><strong>En droit</strong> = ce qui devrait être selon la justice ou la loi (norme, idéal, principe)</li>
         </ul>
-        <div class="exemple" style="margin-top:10px;margin-bottom:0">En fait, des inégalités immenses existent. En droit, la Déclaration des droits de l'homme affirme que tous les hommes naissent libres et égaux.</div>
+        <div class="exemple" style="margin-top:10px;margin-bottom:6px">
+          <div class="exemple-label">Exemple</div>
+          <em>En fait</em>, des inégalités immenses existent entre les pays riches et les pays pauvres. <em>En droit</em>, la Déclaration des droits de l'homme affirme que tous les hommes naissent libres et égaux.
+        </div>
+        <p style="font-size:0.82rem;color:var(--gris);margin-bottom:0">🔑 Ce repère sert à distinguer la réalité (parfois injuste) de l'idéal (ce vers quoi on devrait tendre).</p>
       </div>
 
       <div class="bloc">
@@ -327,46 +495,78 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
           <li><strong>Légal</strong> = conforme aux lois écrites de l'État (peut être injuste)</li>
           <li><strong>Légitime</strong> = conforme à la justice morale (peut être illégal)</li>
         </ul>
-        <div class="exemple" style="margin-top:10px;margin-bottom:0">En France jusqu'en 1965, une femme mariée ne pouvait pas ouvrir un compte bancaire sans l'autorisation de son mari. C'était légal — conforme au Code civil. Mais c'était illégitime : contraire à l'égalité entre hommes et femmes.</div>
+        <div class="exemple" style="margin-top:10px;margin-bottom:6px">
+          <div class="exemple-label">Exemple accessible</div>
+          L'apartheid en Afrique du Sud était légal — voté par le parlement. Il était pourtant illégitime : fondamentalement injuste et contraire à la dignité humaine.
+        </div>
+        <div class="exemple-fort" style="margin-top:6px;margin-bottom:0">
+          <div class="exemple-label">Exemple fort</div>
+          En France jusqu'en 1965, une femme mariée ne pouvait pas ouvrir un compte bancaire sans l'autorisation de son mari — c'était inscrit dans le Code civil. <em>Légal</em>, oui. Mais <em>illégitime</em> : contraire à l'égalité entre hommes et femmes.
+        </div>
       </div>
 
       <div class="bloc">
         <div class="bloc-title">OBJECTIF / SUBJECTIF</div>
         <ul>
-          <li><strong>Objectif</strong> = indépendant de l'opinion individuelle, vérifiable par tous</li>
-          <li><strong>Subjectif</strong> = dépend du point de vue de chacun</li>
+          <li><strong>Objectif</strong> = indépendant de l'opinion individuelle, vérifiable par tous de la même façon</li>
+          <li><strong>Subjectif</strong> = dépend du point de vue, de la sensibilité, des goûts de chacun</li>
         </ul>
-        <div class="exemple" style="margin-top:10px;margin-bottom:0">"Cette table mesure 1m20" est objectif. "Cette table est belle" est subjectif — ça dépend des goûts.</div>
+        <div class="exemple" style="margin-top:10px;margin-bottom:0">
+          <div class="exemple-label">Exemple</div>
+          "Cette table mesure 1m20" est <em>objectif</em> — tout le monde le vérifiera avec le même résultat. "Cette table est belle" est <em>subjectif</em> — ça dépend des goûts.
+        </div>
       </div>
 
       <div class="bloc">
         <div class="bloc-title">CROIRE / SAVOIR</div>
         <ul>
-          <li><strong>Croire</strong> = tenir pour vrai sans preuve suffisante (opinion, foi, conviction)</li>
-          <li><strong>Savoir</strong> = tenir pour vrai avec démonstration ou preuve (connaissance rationnelle)</li>
+          <li><strong>Croire</strong> = tenir pour vrai sans preuve suffisante (opinion, foi, conviction, intuition)</li>
+          <li><strong>Savoir</strong> = tenir pour vrai avec démonstration ou preuve vérifiable (connaissance rationnelle)</li>
         </ul>
-        <div class="exemple" style="margin-top:10px;margin-bottom:0">Le médecin Semmelweis a prouvé par des chiffres précis que le lavage des mains divisait la mortalité par 10. Ses collègues ont refusé de le croire malgré les preuves — ils croyaient sans savoir.</div>
+        <div class="exemple" style="margin-top:10px;margin-bottom:6px">
+          <div class="exemple-label">Exemple accessible</div>
+          Je <em>crois</em> que mon équipe va gagner le match (c'est un espoir). Je <em>sais</em> que la Terre tourne autour du Soleil (c'est démontré scientifiquement et vérifiable).
+        </div>
+        <div class="exemple-fort" style="margin-top:6px;margin-bottom:0">
+          <div class="exemple-label">Exemple fort</div>
+          Le médecin Semmelweis a prouvé par des chiffres précis que le lavage des mains divisait la mortalité par 10. Ses collègues ont refusé de le croire malgré les preuves. Ils avaient une <em>croyance</em> (les mains propres ne changent rien). Semmelweis avait un <em>savoir</em> (des données vérifiables).
+        </div>
       </div>
 
       <div class="bloc">
         <div class="bloc-title">PERSUADER / CONVAINCRE</div>
         <ul>
-          <li><strong>Persuader</strong> = agir sur les émotions et les sentiments</li>
-          <li><strong>Convaincre</strong> = s'adresser à la raison par des arguments</li>
+          <li><strong>Persuader</strong> = agir sur les émotions et les sentiments pour faire changer d'avis</li>
+          <li><strong>Convaincre</strong> = s'adresser à la raison par des arguments logiques et des preuves</li>
         </ul>
-        <div class="exemple" style="margin-top:10px;margin-bottom:0">Les associations comme L214 qui diffusent des vidéos filmées à l'intérieur des abattoirs cherchent à persuader — elles jouent sur l'émotion. Un chercheur en nutrition qui publie une étude avec des données cherche à convaincre — il s'adresse à la raison.</div>
+        <div class="exemple" style="margin-top:10px;margin-bottom:6px">
+          <div class="exemple-label">Exemple accessible</div>
+          Une publicité avec une musique émouvante et des images touchantes <em>persuade</em>. Un médecin qui vous montre des statistiques et des études <em>convainc</em>.
+        </div>
+        <div class="exemple-fort" style="margin-top:6px;margin-bottom:0">
+          <div class="exemple-label">Exemple fort</div>
+          L'association L214 qui diffuse des vidéos choquantes filmées dans des abattoirs cherche à <em>persuader</em> — elle joue sur l'émotion et la compassion. Un chercheur en nutrition qui publie une étude avec des données chiffrées cherche à <em>convaincre</em> — il s'adresse à la raison.
+        </div>
       </div>
 
       <div class="bloc">
         <div class="bloc-title">OBLIGATION / CONTRAINTE</div>
         <ul>
-          <li><strong>Obligation</strong> = devoir moral ou juridique (on peut refuser, avec des conséquences)</li>
-          <li><strong>Contrainte</strong> = force physique à laquelle on ne peut pas échapper</li>
+          <li><strong>Obligation</strong> = devoir moral ou juridique — on pourrait théoriquement le refuser, mais avec des conséquences</li>
+          <li><strong>Contrainte</strong> = force physique ou matérielle à laquelle on ne peut pas échapper</li>
         </ul>
-        <div class="exemple" style="margin-top:10px;margin-bottom:0">En France, ne pas porter secours à quelqu'un en danger est un délit — c'est une obligation légale et morale (on pourrait ne pas le faire). Mais si tu ne sais pas nager et que quelqu'un se noie devant toi, tu es physiquement contraint de ne pas plonger — ta vie est en jeu.</div>
+        <div class="exemple" style="margin-top:10px;margin-bottom:6px">
+          <div class="exemple-label">Exemple accessible</div>
+          S'arrêter à un feu rouge est une <em>obligation</em> : j'ai physiquement la capacité de griller le feu, mais la loi m'en empêche. Être ligoté est une <em>contrainte</em> : je ne peux pas bouger même si je le veux.
+        </div>
+        <div class="exemple-fort" style="margin-top:6px;margin-bottom:0">
+          <div class="exemple-label">Exemple fort</div>
+          En France, ne pas porter secours à quelqu'un en danger est un délit — c'est une <em>obligation</em> légale et morale (on pourrait physiquement ne pas le faire). Mais si tu ne sais pas nager et que quelqu'un se noie devant toi, tu es physiquement <em>contraint</em> de ne pas plonger — ta propre vie serait en danger.
+        </div>
       </div>
     </div>
 
+    <!-- ===================== AUTEURS ===================== -->
     <div id="content-auteurs" style="display:none">
       <div class="n-header">
         <div class="n-tag">Aide-mémoire</div>
