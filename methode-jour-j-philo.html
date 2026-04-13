@@ -71,6 +71,21 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 .phrase-group h4 { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.95rem; color: #1e1c18; margin-bottom: 8px; border-bottom: 2px solid #e0dcd4; padding-bottom: 5px; }
 .phrase-item { background: #fff; border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; font-size: 0.85rem; font-style: italic; color: #2e2e2e; border-left: 3px solid #ddd; }
 
+/* RÉFLEXES */
+.signal-grid { display: grid; gap: 8px; margin-top: 10px; }
+.signal-row { background: #fff; border-radius: 10px; padding: 11px 16px; display: flex; align-items: flex-start; gap: 12px; font-size: 0.86rem; }
+.signal-arrow { color: #2563a8; font-weight: 900; flex-shrink: 0; font-size: 1rem; }
+.signal-text strong { color: #1e1c18; }
+.signal-text em { color: #7a6a58; font-size: 0.82rem; }
+.enjeux-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
+.enjeux-table th { background: #1e1c18; color: #f5c842; padding: 9px 14px; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.enjeux-table td { padding: 10px 14px; border-bottom: 1px solid #e8e4dc; line-height: 1.45; }
+.enjeux-table tr:last-child td { border-bottom: none; }
+.enjeux-table td:first-child { font-weight: 700; white-space: nowrap; }
+.enjeux-table tr:nth-child(even) td { background: rgba(30,28,24,.025); }
+.verbe-grid { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.verbe-item { background: #fff; border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; font-style: italic; color: #2e2e2e; border-left: 3px solid #f5c842; }
+
 @media print { nav, .tabs-bar, .print-btn { display: none !important; } body { background: white; } .tab-panel { display: block !important; } .main { padding: 0; } }
 </style>
 </head>
@@ -106,6 +121,7 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
     <button class="tab-btn" onclick="showTab('q1')">Q1 — Thèse</button>
     <button class="tab-btn" onclick="showTab('q2')">Q2 — Passages</button>
     <button class="tab-btn" onclick="showTab('q3')">Q3 — Réflexion</button>
+    <button class="tab-btn" onclick="showTab('reflexes')">⚡ Réflexes</button>
     <button class="tab-btn" onclick="showTab('phrases')">Phrases-types</button>
     <button class="tab-btn" onclick="showTab('checklist')">✅ Checklist</button>
   </div>
@@ -227,6 +243,52 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
     </div>
 
     <div class="conseil"><strong>Conseil :</strong> tu peux t'appuyer sur le texte ("comme le montre l'auteur…") ET sur tes propres exemples. Tu n'as pas besoin de citer un philosophe si tu n'en as pas un sous la main — un bon exemple vaut souvent mieux qu'un nom mal utilisé.</div>
+
+  </div>
+
+  <!-- RÉFLEXES -->
+  <div id="tab-reflexes" class="tab-panel">
+
+    <div class="card">
+      <div class="card-title">Réflexe 1 — Définir par opposition</div>
+      <p style="font-size:.86rem;margin-bottom:4px">Dès la première lecture, demande-toi : <strong>entre quels deux pôles l'auteur se situe-t-il ?</strong> C'est le réflexe le plus rapide pour identifier la thèse.</p>
+      <div class="signal-grid">
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>loi ou d'obéissance</strong> <em>→ légal ou légitime ?</em></div></div>
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>connaissance ou d'opinion</strong> <em>→ croire ou savoir ?</em></div></div>
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>ce qu'on doit faire</strong> <em>→ obligation ou contrainte ?</em></div></div>
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>faits et d'idéaux</strong> <em>→ en fait ou en droit ?</em></div></div>
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>jugements, goûts ou perceptions</strong> <em>→ objectif ou subjectif ?</em></div></div>
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>discours, arguments ou rhétorique</strong> <em>→ persuader ou convaincre ?</em></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Réflexe 2 — Identifier l'enjeu pour la Q3</div>
+      <p style="font-size:.86rem;margin-bottom:10px">Pose-toi cette question : <strong>"Quel est le risque si l'auteur a tort ?"</strong> Elle te donne immédiatement un argument à développer en Q3 — sans avoir à inventer.</p>
+      <table class="enjeux-table">
+        <tr><th>Notion dans le texte</th><th>Si l'auteur a tort, le risque est…</th></tr>
+        <tr><td>Liberté</td><td>Plus de responsabilité → plus de justice possible</td></tr>
+        <tr><td>Vérité</td><td>Toutes les opinions se valent → la science s'effondre</td></tr>
+        <tr><td>Justice</td><td>L'arbitraire remplace le droit → la vie ensemble devient impossible</td></tr>
+        <tr><td>Technique</td><td>On ne peut plus distinguer progrès libérateur et technique aliénante</td></tr>
+        <tr><td>Art</td><td>La beauté n'existe pas, rien ne se vaut → indifférence totale</td></tr>
+        <tr><td>Nature</td><td>On ne peut plus distinguer le normal du pathologique</td></tr>
+        <tr><td>Religion</td><td>L'homme n'a plus rien pour faire face à la mort et au sens de la vie</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Réflexe 3 — Analyser les termes, pas juste "raconter"</div>
+      <p style="font-size:.86rem;margin-bottom:4px">Ne dis jamais "l'auteur dit que". Utilise un verbe qui montre ce que l'auteur <em>fait</em> intellectuellement avec son argument.</p>
+      <div class="verbe-grid">
+        <div class="verbe-item">"L'auteur <strong>établit une distinction</strong> entre ce qui est en fait et ce qui est en droit"</div>
+        <div class="verbe-item">"L'auteur <strong>oppose</strong> la liberté à la contrainte"</div>
+        <div class="verbe-item">"L'auteur <strong>montre</strong> que… / <strong>démontre</strong> que…"</div>
+        <div class="verbe-item">"L'auteur <strong>remet en question</strong> l'idée selon laquelle…"</div>
+        <div class="verbe-item">"L'auteur <strong>défend la thèse</strong> que…"</div>
+        <div class="verbe-item">"L'auteur <strong>soutient</strong> que… / <strong>affirme</strong> que…"</div>
+      </div>
+    </div>
 
   </div>
 
