@@ -64,7 +64,17 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 
 /* REPÈRES */
 .reperes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
-.repere { background: #f0ede6; border: 1.5px solid #ccc; color: var(--texte); font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+.repere { background: #f0ede6; border: 1.5px solid #ccc; color: var(--texte); font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; cursor: pointer; transition: all .15s; }
+.repere:hover { background: #1e1c18; color: #f5c842; border-color: #1e1c18; }
+
+/* Popup repère */
+.repere-popup { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; background: rgba(30,28,24,0.5); justify-content: center; align-items: center; }
+.repere-popup.show { display: flex; }
+.repere-card { background: #fffdf8; border-radius: 16px; padding: 28px 32px; max-width: 520px; width: 90%; box-shadow: 0 8px 32px rgba(0,0,0,0.2); position: relative; }
+.repere-card .repere-close { position: absolute; top: 12px; right: 16px; font-size: 1.4rem; color: #a09880; cursor: pointer; background: none; border: none; }
+.repere-card .repere-title { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 900; color: #1e1c18; margin-bottom: 12px; }
+.repere-card .repere-def { font-size: 0.9rem; line-height: 1.7; color: #3a3630; margin-bottom: 12px; }
+.repere-card .repere-ex { font-size: 0.85rem; line-height: 1.6; color: #7a6a58; font-style: italic; background: #fef8e2; border-radius: 8px; padding: 10px 14px; }
 
 /* PIÈGES */
 .pieges { background: #fdeef2; border-left: 4px solid #b5415a; border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 14px; font-size: 0.86rem; line-height: 1.6; }
@@ -390,6 +400,16 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
   </main>
 </div>
 
+<!-- POPUP REPÈRE -->
+<div class="repere-popup" id="reperePopup" onclick="closeRepere()">
+  <div class="repere-card" onclick="event.stopPropagation()">
+    <button class="repere-close" onclick="closeRepere()">&times;</button>
+    <div class="repere-title" id="repereTitre"></div>
+    <div class="repere-def" id="repereDef"></div>
+    <div class="repere-ex" id="repereEx"></div>
+  </div>
+</div>
+
 <script>
 function showNotion(id, el) {
   document.querySelectorAll('[id^="content-"]').forEach(d => d.style.display = 'none');
@@ -397,6 +417,53 @@ function showNotion(id, el) {
   document.getElementById('content-' + id).style.display = 'block';
   el.classList.add('active');
 }
+
+/* Repères : données */
+const REPERES = {
+  "Obligation / Contrainte": {
+    def: "<strong>Obligation</strong> = devoir moral ou juridique (on peut refuser, avec des conséquences).<br><strong>Contrainte</strong> = force physique à laquelle on ne peut pas échapper.",
+    ex: "Ne pas porter secours à quelqu'un en danger est un délit — c'est une obligation (on pourrait ne pas le faire). Mais si tu ne sais pas nager et que quelqu'un se noie, tu es physiquement contraint de ne pas plonger."
+  },
+  "Légal / Légitime": {
+    def: "<strong>Légal</strong> = conforme aux lois écrites de l'État (peut être injuste).<br><strong>Légitime</strong> = conforme à la justice morale (peut être illégal).",
+    ex: "Jusqu'en 1965, une femme mariée ne pouvait pas ouvrir un compte bancaire sans l'autorisation de son mari. C'était légal — conforme au Code civil. Mais c'était illégitime : contraire à l'égalité."
+  },
+  "Croire / Savoir": {
+    def: "<strong>Croire</strong> = tenir pour vrai sans preuve suffisante (opinion, foi, conviction).<br><strong>Savoir</strong> = tenir pour vrai avec démonstration ou preuve (connaissance rationnelle).",
+    ex: "Le médecin Semmelweis a prouvé par des chiffres que le lavage des mains divisait la mortalité par 10. Ses collègues ont refusé de le croire malgré les preuves — ils croyaient sans savoir."
+  },
+  "Objectif / Subjectif": {
+    def: "<strong>Objectif</strong> = indépendant de l'opinion individuelle, vérifiable par tous.<br><strong>Subjectif</strong> = dépend du point de vue de chacun.",
+    ex: "« Cette table mesure 1m20 » est objectif. « Cette table est belle » est subjectif — ça dépend des goûts."
+  },
+  "En fait / En droit": {
+    def: "<strong>En fait</strong> = ce qui se passe dans la réalité (les faits observables).<br><strong>En droit</strong> = ce qui devrait être selon la loi ou les principes.",
+    ex: "En fait, des inégalités immenses existent. En droit, la Déclaration des droits de l'homme affirme que tous les hommes naissent libres et égaux."
+  },
+  "Persuader / Convaincre": {
+    def: "<strong>Persuader</strong> = agir sur les émotions et les sentiments.<br><strong>Convaincre</strong> = s'adresser à la raison par des arguments.",
+    ex: "L214 diffuse des vidéos d'abattoirs pour persuader (émotion). Un chercheur en nutrition publie des données pour convaincre (raison)."
+  }
+};
+
+/* Ouvrir le popup */
+function openRepere(name) {
+  const data = REPERES[name];
+  if (!data) return;
+  document.getElementById('repereTitre').textContent = name;
+  document.getElementById('repereDef').innerHTML = data.def;
+  document.getElementById('repereEx').innerHTML = data.ex;
+  document.getElementById('reperePopup').classList.add('show');
+}
+
+function closeRepere() {
+  document.getElementById('reperePopup').classList.remove('show');
+}
+
+/* Rendre tous les .repere cliquables */
+document.querySelectorAll('.repere').forEach(el => {
+  el.addEventListener('click', () => openRepere(el.textContent.trim()));
+});
 </script>
 </body>
 </html>
