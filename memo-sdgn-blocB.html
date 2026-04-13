@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Revizo — Memo SDGN Bloc B · Gestion des Ressources Humaines</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* PRINT-FIRST DESIGN */
+@page { size: A4; margin: 12mm; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; }
+
+/* MEMO LAYOUT */
+.memo { max-width: 900px; margin: 0 auto; padding: 100px 20px 40px; }
+
+/* Header */
+.memo-hd { text-align: center; margin-bottom: 20px; }
+.memo-badge { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #3d1a5c; color: #f5c842; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+.memo-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 2px; }
+.memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+.memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #3d1a5c; margin-top: 8px; font-style: italic; }
+
+/* TREE CARDS */
+.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.tree-full { grid-column: 1 / -1; }
+
+.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
+.tree-card.c-violet { border-left-color: #7030a0; }
+.tree-card.c-rose  { border-left-color: #b5415a; }
+.tree-card.c-bleu  { border-left-color: #2a69a8; }
+.tree-card.c-vert  { border-left-color: #1a7a3c; }
+.tree-card.c-jaune { border-left-color: #946e00; }
+
+.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
+.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
+.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
+.tree-def strong { color: #1e1c18; }
+.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
+.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(61,26,92,.08); color: #3d1a5c; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+
+/* Sub-items */
+.tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
+.tree-chip[data-tip] { cursor: pointer; transition: transform .1s, box-shadow .1s; }
+.tree-chip[data-tip]:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+/* Tooltip popup */
+.tip-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; z-index:9000; background:rgba(30,28,24,.25); }
+.tip-overlay.show { display:flex; align-items:center; justify-content:center; animation: fadeIn .15s ease; }
+@keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+.tip-card { background:#fffdf8; border-radius:16px; padding:20px 24px; max-width:420px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,.18); position:relative; }
+.tip-close { position:absolute; top:10px; right:14px; font-size:18px; cursor:pointer; color:#a09880; background:none; border:none; font-weight:700; }
+.tip-close:hover { color:#1e1c18; }
+.tip-term { font-family:'Nunito',sans-serif; font-size:16px; font-weight:900; color:#1e1c18; margin-bottom:6px; }
+.tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
+.tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:#f3eafc; border-radius:8px; border-left:3px solid #3d1a5c; }
+.tip-bac { font-size:10px; font-weight:700; color:#3d1a5c; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+
+/* Schema section */
+.schema-section { margin-bottom: 16px; }
+.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
+.schema-box svg { display: block; margin: 0 auto; }
+
+.chip-bleu   { background: #e8f3ff; color: #2a69a8; }
+.chip-rose   { background: #fdeef2; color: #b5415a; }
+.chip-jaune  { background: #fef8e2; color: #946e00; }
+.chip-vert   { background: #e6f5ec; color: #1a7a3c; }
+.chip-violet { background: #f3eafc; color: #7030a0; }
+.chip-gris   { background: rgba(30,28,24,.07); color: #5a5448; }
+
+/* SECTION BOTTOM: RECUPERER */
+.recup { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.recup-full { grid-column: 1 / -1; }
+
+/* Confusion box */
+.confuse-box { background: #fdeef2; border-radius: 12px; padding: 14px 16px; }
+.confuse-box .tree-label { color: #b5415a; }
+.confuse-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 11px; line-height: 1.5; }
+.confuse-row:last-child { margin-bottom: 0; }
+.confuse-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.confuse-text strong { font-weight: 800; }
+
+/* Mnemo box */
+.mnemo-box { background: #e8f3ff; border-radius: 12px; padding: 14px 16px; }
+.mnemo-box .tree-label { color: #2a69a8; }
+.mnemo-item { font-size: 11px; line-height: 1.6; margin-bottom: 4px; }
+.mnemo-item:last-child { margin-bottom: 0; }
+
+/* Bac frequency bar */
+.freq-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; }
+.freq-row:last-child { margin-bottom: 0; }
+.freq-bar-track { flex: 1; height: 6px; background: #e8e4dc; border-radius: 3px; overflow: hidden; }
+.freq-bar-fill { height: 100%; border-radius: 3px; }
+.freq-bar-fill.f5 { width: 100%; background: #b5415a; }
+.freq-bar-fill.f4 { width: 80%; background: #d46a1a; }
+.freq-bar-fill.f3 { width: 60%; background: #946e00; }
+.freq-bar-fill.f2 { width: 40%; background: #2a69a8; }
+.freq-bar-fill.f1 { width: 20%; background: #a09880; }
+.freq-notion { font-weight: 700; min-width: 160px; }
+.freq-stars { color: #f5c842; font-size: 10px; min-width: 50px; text-align: right; letter-spacing: 1px; }
+
+/* Link chain */
+.chain { background: #fef8e2; border-radius: 12px; padding: 14px 16px; }
+.chain .tree-label { color: #946e00; }
+.chain-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
+.chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
+
+/* Chapter sections */
+.chapter-section { margin-bottom: 32px; }
+.chapter-title { font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 900; color: #3d1a5c; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.chapter-num { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; background: #3d1a5c; color: #f5c842; padding: 3px 10px; border-radius: 12px; }
+
+/* Structure de reponse type */
+.reponse-type { background: #f3eafc; border-radius: 12px; padding: 14px 16px; margin-top: 12px; border-left: 4px solid #3d1a5c; }
+.reponse-type .tree-label { color: #3d1a5c; }
+.reponse-step { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 5px; font-size: 11px; line-height: 1.5; }
+.reponse-step:last-child { margin-bottom: 0; }
+.reponse-num { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 900; color: #3d1a5c; background: rgba(61,26,92,.12); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* Interpretation box */
+.interp-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); margin-top: 10px; }
+.interp-row { display: flex; gap: 8px; align-items: center; margin-bottom: 5px; font-size: 11px; }
+.interp-row:last-child { margin-bottom: 0; }
+.interp-icon { font-size: 14px; flex-shrink: 0; }
+.interp-text { line-height: 1.5; }
+.interp-text strong { font-weight: 800; }
+
+/* Bilan table */
+.bilan-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 11px; }
+.bilan-table th { background: #3d1a5c; color: #f5c842; font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 6px 10px; text-align: left; }
+.bilan-table td { padding: 6px 10px; border-bottom: 1px solid #e8e4dc; color: #3a3630; }
+.bilan-table tr:nth-child(even) td { background: rgba(61,26,92,.03); }
+
+/* PRINT */
+@media print {
+  .nav-epreuve, .nav-rubriques { display: none !important; }
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .memo { padding: 0; max-width: 100%; }
+  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain, .reponse-type { break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .tree, .recup { grid-template-columns: 1fr; }
+  .tree-full, .recup-full { grid-column: 1; }
+  .memo { padding: 100px 12px 30px; }
+}
+</style>
+</head>
+<body data-subject="sgdn">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Revi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Eco-Droit</a>
+  <a href="revizo-msgn.html" class="epreuve-link active">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">SDGN</span>
+  <a href="revizo-msgn.html">Accueil SGDN</a>
+  <a href="memo-sdgn-blocB.html" class="active">Memos</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<div class="memo">
+
+<!-- HEADER -->
+<div class="memo-hd">
+  <div class="memo-badge">MEMO · SDGN · BLOC B</div>
+  <div class="memo-title">Bloc B · Gestion des Ressources Humaines</div>
+  <div class="memo-sub">Terminale STMG · Chapitres 5-6-7-8 · Encoder · Comprendre · Recuperer</div>
+  <div class="memo-question">"Comment manager les hommes et organiser le travail ?"</div>
+</div>
+
+<!-- ================================================= -->
+<!-- SCHEMA 1 : CHAPITRE 5 — STYLES DE DIRECTION       -->
+<!-- ================================================= -->
+<div class="chapter-section">
+<div class="chapter-title"><span class="chapter-num">Chapitre 5</span> Styles de direction</div>
+
+<div style="text-align:center;margin:12px 0 20px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">Le spectre des styles de direction (Likert)</div>
+  <svg viewBox="0 0 800 180" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+    <defs>
+      <marker id="ar5" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7030a0"/></marker>
+    </defs>
+
+    <!-- Axe horizontal -->
+    <line x1="40" y1="80" x2="760" y2="80" stroke="#7030a0" stroke-width="3" marker-end="url(#ar5)"/>
+    <text x="400" y="20" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0" letter-spacing="1.5">CENTRALISATION</text>
+    <text x="100" y="20" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">Forte</text>
+    <text x="700" y="20" text-anchor="middle" font-size="7" font-weight="700" fill="#1a7a3c">Faible</text>
+    <line x1="100" y1="24" x2="100" y2="34" stroke="#b5415a" stroke-width="1.5"/>
+    <line x1="700" y1="24" x2="700" y2="34" stroke="#1a7a3c" stroke-width="1.5"/>
+
+    <!-- Fleche sous l'axe -->
+    <text x="400" y="170" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c" letter-spacing="1.5">DELEGATION / PARTICIPATION</text>
+
+    <!-- Autoritaire -->
+    <rect x="40" y="40" width="160" height="32" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+    <text x="120" y="60" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Autoritaire</text>
+    <text x="120" y="95" text-anchor="middle" font-size="7" fill="#7a6a58">Decide seul</text>
+    <text x="120" y="106" text-anchor="middle" font-size="7" fill="#7a6a58">Controle strict</text>
+
+    <!-- Paternaliste -->
+    <rect x="220" y="40" width="160" height="32" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
+    <text x="300" y="60" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Paternaliste</text>
+    <text x="300" y="95" text-anchor="middle" font-size="7" fill="#7a6a58">Bienveillant mais</text>
+    <text x="300" y="106" text-anchor="middle" font-size="7" fill="#7a6a58">garde la decision</text>
+
+    <!-- Consultatif -->
+    <rect x="420" y="40" width="160" height="32" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+    <text x="500" y="60" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Consultatif</text>
+    <text x="500" y="95" text-anchor="middle" font-size="7" fill="#7a6a58">Consulte les equipes</text>
+    <text x="500" y="106" text-anchor="middle" font-size="7" fill="#7a6a58">mais decide seul</text>
+
+    <!-- Participatif -->
+    <rect x="610" y="40" width="160" height="32" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="690" y="60" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Participatif</text>
+    <text x="690" y="95" text-anchor="middle" font-size="7" fill="#7a6a58">Co-decision</text>
+    <text x="690" y="106" text-anchor="middle" font-size="7" fill="#7a6a58">Delegation, confiance</text>
+
+    <!-- Fleches entre styles -->
+    <line x1="200" y1="56" x2="220" y2="56" stroke="#7030a0" stroke-width="1.5" marker-end="url(#ar5)"/>
+    <line x1="380" y1="56" x2="420" y2="56" stroke="#7030a0" stroke-width="1.5" marker-end="url(#ar5)"/>
+    <line x1="580" y1="56" x2="610" y2="56" stroke="#7030a0" stroke-width="1.5" marker-end="url(#ar5)"/>
+
+    <!-- Confusion box -->
+    <rect x="240" y="125" width="320" height="30" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="400" y="138" text-anchor="middle" font-size="7" font-weight="800" fill="#b5415a">ATTENTION CONFUSION !</text>
+    <text x="400" y="149" text-anchor="middle" font-size="7" fill="#b5415a">Style de direction &#8800; Personnalite du dirigeant</text>
+
+    <!-- Pastille -->
+    <g transform="translate(28, 150)">
+      <circle cx="0" cy="0" r="16" fill="#3d1a5c"/>
+      <text x="0" y="1" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#f5c842">RH</text>
+    </g>
+  </svg>
+</div>
+
+<!-- Detail chapitre 5 -->
+<div class="tree">
+  <div class="tree-card c-violet tree-full">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+    <div class="tree-h">Styles de direction (grille de Likert)</div>
+    <div class="tree-def">Likert identifie 4 styles de direction selon le degre de centralisation du pouvoir et le mode de relation avec les collaborateurs.</div>
+    <table class="bilan-table">
+      <tr><th>Style</th><th>Caracteristiques</th><th>Signal dans le doc</th></tr>
+      <tr><td><strong>Autoritaire</strong></td><td>Decisions centralisees, controle strict, sanctions, communication descendante uniquement</td><td>"Le dirigeant decide seul", "aucune consultation"</td></tr>
+      <tr><td><strong>Paternaliste</strong></td><td>Autorite teintee de bienveillance, peu de delegation, recompenses</td><td>"Le dirigeant fait confiance mais garde la decision finale"</td></tr>
+      <tr><td><strong>Consultatif</strong></td><td>Les avis sont recueillis mais les decisions restent au manager</td><td>"Les salaries sont consultes avant chaque decision"</td></tr>
+      <tr><td><strong>Participatif</strong></td><td>Co-decision, delegation, confiance mutuelle, communication bidirectionnelle</td><td>"Les equipes ont le pouvoir de decider", "management horizontal"</td></tr>
+    </table>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="autoritaire">Autoritaire</span>
+      <span class="tree-chip chip-rose" data-tip="paternaliste">Paternaliste</span>
+      <span class="tree-chip chip-bleu" data-tip="consultatif">Consultatif</span>
+      <span class="tree-chip chip-vert" data-tip="participatif">Participatif</span>
+    </div>
+    <div class="tree-ex">Au Bac : "Identifier le style de direction", "justifier avec des elements du document"</div>
+  </div>
+</div>
+
+<!-- Confusion Ch5 -->
+<div class="confuse-box" style="margin-bottom:16px">
+  <div class="tree-label">Confusion classique au Bac</div>
+  <div class="confuse-row">
+    <span class="confuse-icon">&#9888;</span>
+    <span class="confuse-text">Le <strong>style de direction</strong> &#8800; la <strong>personnalite du dirigeant</strong>. Le style decrit le mode de relation avec les collaborateurs (centralisation, delegation), pas le caractere personnel du manager.</span>
+  </div>
+</div>
+</div>
+
+<!-- ================================================= -->
+<!-- SCHEMA 2 : CHAPITRE 6 — CULTURE ORGANISATIONNELLE -->
+<!-- ================================================= -->
+<div class="chapter-section">
+<div class="chapter-title"><span class="chapter-num">Chapitre 6</span> Culture organisationnelle</div>
+
+<div style="text-align:center;margin:12px 0 20px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">De la culture a la marque employeur</div>
+  <svg viewBox="0 0 800 200" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+    <defs>
+      <marker id="ar6" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7030a0"/></marker>
+    </defs>
+
+    <!-- Composantes -->
+    <rect x="10" y="30" width="100" height="50" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="60" y="50" text-anchor="middle" font-size="9" font-weight="900" fill="#1e1c18">Valeurs</text>
+    <text x="60" y="64" text-anchor="middle" font-size="7" fill="#7a6a58">Innovation, respect...</text>
+
+    <text x="125" y="58" text-anchor="middle" font-size="16" font-weight="900" fill="#7030a0">+</text>
+
+    <rect x="140" y="30" width="100" height="50" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="190" y="50" text-anchor="middle" font-size="9" font-weight="900" fill="#1e1c18">Rites</text>
+    <text x="190" y="64" text-anchor="middle" font-size="7" fill="#7a6a58">Reunions, rituels...</text>
+
+    <text x="255" y="58" text-anchor="middle" font-size="16" font-weight="900" fill="#7030a0">+</text>
+
+    <rect x="270" y="30" width="100" height="50" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="320" y="50" text-anchor="middle" font-size="9" font-weight="900" fill="#1e1c18">Symboles</text>
+    <text x="320" y="64" text-anchor="middle" font-size="7" fill="#7a6a58">Logo, tenue, locaux</text>
+
+    <!-- Fleche vers Culture -->
+    <line x1="370" y1="55" x2="410" y2="55" stroke="#7030a0" stroke-width="2" marker-end="url(#ar6)"/>
+
+    <!-- Culture -->
+    <rect x="410" y="20" width="140" height="70" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="480" y="38" text-anchor="middle" font-size="7" font-weight="800" fill="#1a7a3c" letter-spacing="1">RESULTAT</text>
+    <text x="480" y="54" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Cohesion</text>
+    <text x="480" y="66" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">+ Identite</text>
+    <text x="480" y="80" text-anchor="middle" font-size="7" fill="#7a6a58">collective</text>
+
+    <!-- Fleche vers Marque employeur -->
+    <line x1="550" y1="55" x2="590" y2="45" stroke="#7030a0" stroke-width="2" marker-end="url(#ar6)"/>
+    <line x1="550" y1="55" x2="590" y2="70" stroke="#7030a0" stroke-width="2" marker-end="url(#ar6)"/>
+
+    <!-- Marque employeur -->
+    <rect x="590" y="15" width="190" height="40" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
+    <text x="685" y="33" text-anchor="middle" font-size="9" font-weight="900" fill="#1e1c18">Marque employeur</text>
+    <text x="685" y="46" text-anchor="middle" font-size="7" fill="#946e00">Attirer + fideliser les talents</text>
+
+    <!-- QVT -->
+    <rect x="590" y="65" width="190" height="40" rx="10" fill="#e8f3ff" stroke="#2a69a8" stroke-width="2"/>
+    <text x="685" y="83" text-anchor="middle" font-size="9" font-weight="900" fill="#1e1c18">QVT / QVCT</text>
+    <text x="685" y="96" text-anchor="middle" font-size="7" fill="#2a69a8">Conditions de travail, bien-etre</text>
+
+    <!-- Label Culture org -->
+    <rect x="100" y="120" width="280" height="50" rx="10" fill="rgba(112,48,160,.06)" stroke="#7030a0" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="240" y="138" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0" letter-spacing="0.5">= CULTURE ORGANISATIONNELLE</text>
+    <text x="240" y="152" text-anchor="middle" font-size="7" fill="#7a6a58">Ensemble de valeurs, croyances, rites, symboles et normes</text>
+    <text x="240" y="164" text-anchor="middle" font-size="7" fill="#7a6a58">qui creent l'identite collective d'une organisation</text>
+
+    <!-- Pastille -->
+    <g transform="translate(28, 180)">
+      <circle cx="0" cy="0" r="16" fill="#3d1a5c"/>
+      <text x="0" y="1" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#f5c842">RH</text>
+    </g>
+  </svg>
+</div>
+
+<!-- Detail chapitre 6 -->
+<div class="tree">
+  <div class="tree-card c-violet tree-full">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+    <div class="tree-h">Culture organisationnelle</div>
+    <div class="tree-def">Ensemble de <strong>valeurs partagees</strong>, croyances, <strong>rites</strong>, <strong>symboles</strong> et normes qui creent la cohesion et l'identite collective d'une organisation.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="culture_org">Culture org.</span>
+      <span class="tree-chip chip-violet" data-tip="valeurs">Valeurs</span>
+      <span class="tree-chip chip-violet" data-tip="rites">Rites</span>
+      <span class="tree-chip chip-violet" data-tip="symboles">Symboles</span>
+    </div>
+    <div class="tree-ex">Ex. : Ankama (2023) a une culture forte fondee sur la passion creative, avec des rituels de creation collective.</div>
+  </div>
+
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Notion <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">Marque employeur</div>
+    <div class="tree-def">Image d'une organisation en tant qu'employeur, construite a travers ses pratiques RH, sa culture et sa reputation. Objectif : <strong>attirer et fideliser les talents</strong>.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="marque_employeur">Marque employeur</span>
+    </div>
+    <div class="tree-ex">Ex. : TPS (2023) developpe sa marque employeur en proposant des formations et une progression interne.</div>
+  </div>
+
+  <div class="tree-card c-bleu">
+    <div class="tree-label">Notion <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">QVT / QVCT</div>
+    <div class="tree-def"><strong>Qualite de Vie et des Conditions de Travail.</strong> Ensemble des conditions (physiques, psychologiques, organisationnelles) dans lesquelles les salaries exercent leur activite. Influe sur l'engagement, la sante et la performance.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="qvt">QVT / QVCT</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ================================================= -->
+<!-- SCHEMA 3 : CHAPITRE 7 — MOTIVATION ET ENGAGEMENT  -->
+<!-- ================================================= -->
+<div class="chapter-section">
+<div class="chapter-title"><span class="chapter-num">Chapitre 7</span> Motivation et engagement</div>
+
+<div style="text-align:center;margin:12px 0 20px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">Trois theories de la motivation + GPEC</div>
+  <svg viewBox="0 0 800 260" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+    <defs>
+      <marker id="ar7" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7030a0"/></marker>
+    </defs>
+
+    <!-- MASLOW - Pyramide -->
+    <rect x="10" y="10" width="220" height="180" rx="12" fill="#fffdf8" stroke="#7030a0" stroke-width="2"/>
+    <text x="120" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0" letter-spacing="1">MASLOW</text>
+
+    <!-- Pyramide levels (bottom to top) -->
+    <rect x="30" y="155" width="180" height="22" rx="4" fill="#fdeef2"/>
+    <text x="120" y="170" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">Physiologiques</text>
+
+    <rect x="42" y="130" width="156" height="22" rx="4" fill="#fef8e2"/>
+    <text x="120" y="145" text-anchor="middle" font-size="7" font-weight="700" fill="#946e00">Securite</text>
+
+    <rect x="54" y="105" width="132" height="22" rx="4" fill="#e8f3ff"/>
+    <text x="120" y="120" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">Appartenance</text>
+
+    <rect x="66" y="80" width="108" height="22" rx="4" fill="#e6f5ec"/>
+    <text x="120" y="95" text-anchor="middle" font-size="7" font-weight="700" fill="#1a7a3c">Estime</text>
+
+    <rect x="78" y="55" width="84" height="22" rx="4" fill="#f3eafc"/>
+    <text x="120" y="70" text-anchor="middle" font-size="7" font-weight="700" fill="#7030a0">Realisation de soi</text>
+
+    <text x="120" y="42" text-anchor="middle" font-size="6" fill="#7a6a58">Un besoin sup. ne motive que</text>
+    <text x="120" y="50" text-anchor="middle" font-size="6" fill="#7a6a58">si les inf. sont satisfaits</text>
+
+    <!-- HERZBERG -->
+    <rect x="250" y="10" width="240" height="180" rx="12" fill="#fffdf8" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="370" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c" letter-spacing="1">HERZBERG</text>
+    <text x="370" y="42" text-anchor="middle" font-size="7" fill="#7a6a58">Theorie des deux facteurs</text>
+
+    <!-- Facteurs hygiene -->
+    <rect x="265" y="52" width="210" height="58" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1"/>
+    <text x="370" y="66" text-anchor="middle" font-size="7" font-weight="800" fill="#946e00">FACTEURS D'HYGIENE</text>
+    <text x="370" y="78" text-anchor="middle" font-size="7" fill="#3a3630">Evitent l'insatisfaction</text>
+    <text x="370" y="90" text-anchor="middle" font-size="6" fill="#7a6a58">Salaire, conditions de travail, securite</text>
+    <text x="370" y="100" text-anchor="middle" font-size="6" fill="#7a6a58">Ne motivent PAS a eux seuls</text>
+
+    <!-- Facteurs motivation -->
+    <rect x="265" y="118" width="210" height="58" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="370" y="132" text-anchor="middle" font-size="7" font-weight="800" fill="#1a7a3c">FACTEURS DE MOTIVATION</text>
+    <text x="370" y="144" text-anchor="middle" font-size="7" fill="#3a3630">Creent la satisfaction</text>
+    <text x="370" y="156" text-anchor="middle" font-size="6" fill="#7a6a58">Responsabilites, reconnaissance,</text>
+    <text x="370" y="166" text-anchor="middle" font-size="6" fill="#7a6a58">accomplissement, autonomie</text>
+
+    <!-- McGREGOR -->
+    <rect x="510" y="10" width="280" height="180" rx="12" fill="#fffdf8" stroke="#2a69a8" stroke-width="2"/>
+    <text x="650" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#2a69a8" letter-spacing="1">McGREGOR</text>
+    <text x="650" y="42" text-anchor="middle" font-size="7" fill="#7a6a58">Theorie X et Y</text>
+
+    <!-- Theorie X -->
+    <rect x="525" y="52" width="120" height="72" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1"/>
+    <text x="585" y="66" text-anchor="middle" font-size="8" font-weight="800" fill="#b5415a">THEORIE X</text>
+    <text x="585" y="80" text-anchor="middle" font-size="6" fill="#3a3630">Le travailleur est</text>
+    <text x="585" y="90" text-anchor="middle" font-size="6" fill="#3a3630">paresseux, il faut</text>
+    <text x="585" y="100" text-anchor="middle" font-size="6" fill="#3a3630">le controler</text>
+    <text x="585" y="115" text-anchor="middle" font-size="6" font-weight="700" fill="#b5415a">&#8594; Style autoritaire</text>
+
+    <!-- Theorie Y -->
+    <rect x="655" y="52" width="120" height="72" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="715" y="66" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c">THEORIE Y</text>
+    <text x="715" y="80" text-anchor="middle" font-size="6" fill="#3a3630">Le travailleur est</text>
+    <text x="715" y="90" text-anchor="middle" font-size="6" fill="#3a3630">responsable, il faut</text>
+    <text x="715" y="100" text-anchor="middle" font-size="6" fill="#3a3630">l'impliquer</text>
+    <text x="715" y="115" text-anchor="middle" font-size="6" font-weight="700" fill="#1a7a3c">&#8594; Style participatif</text>
+
+    <!-- Vs -->
+    <text x="650" y="92" text-anchor="middle" font-size="10" font-weight="900" fill="#2a69a8">vs</text>
+
+    <!-- Fleche vers GPEC -->
+    <text x="400" y="208" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0" letter-spacing="1">COMMENT AGIR ?</text>
+    <line x1="400" y1="195" x2="400" y2="215" stroke="#7030a0" stroke-width="2" marker-end="url(#ar7)"/>
+
+    <!-- GPEC -->
+    <rect x="250" y="220" width="300" height="35" rx="10" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="400" y="237" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">GPEC / GEPP</text>
+    <text x="400" y="249" text-anchor="middle" font-size="7" font-weight="700" fill="#7030a0">Anticiper les besoins en competences (3-5 ans)</text>
+
+    <!-- Pastille -->
+    <g transform="translate(28, 240)">
+      <circle cx="0" cy="0" r="16" fill="#3d1a5c"/>
+      <text x="0" y="1" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#f5c842">RH</text>
+    </g>
+  </svg>
+</div>
+
+<!-- Detail chapitre 7 -->
+<div class="tree">
+  <div class="tree-card c-violet tree-full">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">Theories de la motivation</div>
+    <div class="tree-def">Trois auteurs a connaitre pour justifier les pratiques de management observees dans les documents du Bac.</div>
+    <table class="bilan-table">
+      <tr><th>Theorie</th><th>Auteur</th><th>Idee centrale</th></tr>
+      <tr><td><strong>Hierarchie des besoins</strong></td><td>Maslow</td><td>5 niveaux : physiologiques &#8594; securite &#8594; appartenance &#8594; estime &#8594; realisation de soi. Un besoin superieur ne motive que si les inferieurs sont satisfaits.</td></tr>
+      <tr><td><strong>Deux facteurs</strong></td><td>Herzberg</td><td>Facteurs d'hygiene (evitent l'insatisfaction : salaire, conditions) vs facteurs de motivation (creent satisfaction : responsabilites, reconnaissance).</td></tr>
+      <tr><td><strong>Theorie X et Y</strong></td><td>McGregor</td><td>X : le travailleur est paresseux, il faut le controler. Y : le travailleur est responsable, il faut l'impliquer.</td></tr>
+    </table>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="maslow">Maslow</span>
+      <span class="tree-chip chip-vert" data-tip="herzberg">Herzberg</span>
+      <span class="tree-chip chip-bleu" data-tip="mcgregor">McGregor X/Y</span>
+    </div>
+    <div class="tree-ex">Au Bac : "Identifier la theorie mobilisee", "justifier les pratiques de management par une theorie"</div>
+  </div>
+
+  <div class="tree-card c-violet">
+    <div class="tree-label">Notion <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">GPEC / GEPP</div>
+    <div class="tree-def"><strong>Gestion Previsionnelle des Emplois et Competences.</strong> Demarche anticipatrice (3 a 5 ans) visant a identifier les ecarts entre RH actuelles et besoins futurs, puis a agir (formation, recrutement, mobilite interne).</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="gpec">GPEC / GEPP</span>
+    </div>
+    <div class="tree-ex">Au Bac : "Presenter la demarche GPEC", "montrer que X anticipe ses besoins en competences"</div>
+  </div>
+</div>
+</div>
+
+<!-- ================================================= -->
+<!-- SCHEMA 4 : CHAPITRE 8 — ORGANISATION ET COORD.    -->
+<!-- ================================================= -->
+<div class="chapter-section">
+<div class="chapter-title"><span class="chapter-num">Chapitre 8</span> Organisation et coordination du travail</div>
+
+<div style="text-align:center;margin:12px 0 20px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">Mecanismes de coordination (Mintzberg) + Modes de production</div>
+  <svg viewBox="0 0 800 300" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+    <defs>
+      <marker id="ar8" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7030a0"/></marker>
+    </defs>
+
+    <!-- MINTZBERG -->
+    <rect x="10" y="10" width="380" height="180" rx="12" fill="#fffdf8" stroke="#7030a0" stroke-width="2"/>
+    <text x="200" y="30" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0" letter-spacing="1">MINTZBERG — COORDINATION</text>
+
+    <!-- 5 mecanismes -->
+    <rect x="25" y="40" width="350" height="26" rx="6" fill="#f3eafc"/>
+    <text x="200" y="52" text-anchor="middle" font-size="7" font-weight="700" fill="#7030a0">1. Ajustement mutuel</text>
+    <text x="200" y="62" text-anchor="middle" font-size="6" fill="#7a6a58">Communication informelle entre operateurs</text>
+
+    <rect x="25" y="70" width="350" height="26" rx="6" fill="#e8f3ff"/>
+    <text x="200" y="82" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">2. Supervision directe</text>
+    <text x="200" y="92" text-anchor="middle" font-size="6" fill="#7a6a58">Un manager surveille et dirige directement</text>
+
+    <rect x="25" y="100" width="350" height="26" rx="6" fill="#fef8e2"/>
+    <text x="200" y="112" text-anchor="middle" font-size="7" font-weight="700" fill="#946e00">3. Standardisation des procedes</text>
+    <text x="200" y="122" text-anchor="middle" font-size="6" fill="#7a6a58">Processus formalises, procedures ecrites (ISO)</text>
+
+    <rect x="25" y="130" width="350" height="26" rx="6" fill="#e6f5ec"/>
+    <text x="200" y="142" text-anchor="middle" font-size="7" font-weight="700" fill="#1a7a3c">4. Standardisation des resultats</text>
+    <text x="200" y="152" text-anchor="middle" font-size="6" fill="#7a6a58">Objectifs a atteindre sans preciser comment</text>
+
+    <rect x="25" y="160" width="350" height="26" rx="6" fill="#fdeef2"/>
+    <text x="200" y="172" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">5. Standardisation des qualifications</text>
+    <text x="200" y="182" text-anchor="middle" font-size="6" fill="#7a6a58">Formation commune en amont (diplome requis)</text>
+
+    <!-- MODES DE PRODUCTION -->
+    <rect x="410" y="10" width="380" height="180" rx="12" fill="#fffdf8" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="600" y="30" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c" letter-spacing="1">MODES DE PRODUCTION</text>
+
+    <rect x="425" y="40" width="350" height="26" rx="6" fill="#f3eafc"/>
+    <text x="600" y="52" text-anchor="middle" font-size="7" font-weight="700" fill="#7030a0">Artisanal</text>
+    <text x="600" y="62" text-anchor="middle" font-size="6" fill="#7a6a58">Production unitaire, main-d'oeuvre qualifiee</text>
+
+    <rect x="425" y="70" width="350" height="26" rx="6" fill="#e8f3ff"/>
+    <text x="600" y="82" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">En serie (industriel)</text>
+    <text x="600" y="92" text-anchor="middle" font-size="6" fill="#7a6a58">Grande quantite, economies d'echelle</text>
+
+    <rect x="425" y="100" width="350" height="26" rx="6" fill="#fef8e2"/>
+    <text x="600" y="112" text-anchor="middle" font-size="7" font-weight="700" fill="#946e00">En continu</text>
+    <text x="600" y="122" text-anchor="middle" font-size="6" fill="#7a6a58">24h/24 sans interruption (chimie, energie)</text>
+
+    <rect x="425" y="130" width="350" height="26" rx="6" fill="#e6f5ec"/>
+    <text x="600" y="142" text-anchor="middle" font-size="7" font-weight="700" fill="#1a7a3c">Flux pousses</text>
+    <text x="600" y="152" text-anchor="middle" font-size="6" fill="#7a6a58">Production sur previsions, constitution de stocks</text>
+
+    <rect x="425" y="160" width="350" height="26" rx="6" fill="#fdeef2"/>
+    <text x="600" y="172" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">Flux tires (juste-a-temps)</text>
+    <text x="600" y="182" text-anchor="middle" font-size="6" fill="#7a6a58">Declenchee par la demande, zero stock (Toyota)</text>
+
+    <!-- Lien entre les deux -->
+    <rect x="200" y="210" width="400" height="40" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/>
+    <text x="400" y="228" text-anchor="middle" font-size="8" font-weight="800" fill="#946e00">Le mode de production influence le mecanisme de coordination</text>
+    <text x="400" y="242" text-anchor="middle" font-size="7" fill="#7a6a58">Ex. : production artisanale &#8594; ajustement mutuel / production en serie &#8594; standardisation des procedes</text>
+
+    <line x1="200" y1="190" x2="350" y2="210" stroke="#946e00" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <line x1="600" y1="190" x2="450" y2="210" stroke="#946e00" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+    <!-- Pastille -->
+    <g transform="translate(28, 280)">
+      <circle cx="0" cy="0" r="16" fill="#3d1a5c"/>
+      <text x="0" y="1" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#f5c842">RH</text>
+    </g>
+  </svg>
+</div>
+
+<!-- Detail chapitre 8 -->
+<div class="tree">
+  <div class="tree-card c-violet tree-full">
+    <div class="tree-label">Notion <span class="freq">&#9733;&#9733;&#9733;&#9734;&#9734;</span></div>
+    <div class="tree-h">Mecanismes de coordination (Mintzberg)</div>
+    <div class="tree-def">Cinq facons de coordonner le travail au sein d'une organisation, selon la taille, la complexite et le secteur.</div>
+    <table class="bilan-table">
+      <tr><th>Mecanisme</th><th>Description</th><th>Exemple</th></tr>
+      <tr><td><strong>Ajustement mutuel</strong></td><td>Communication informelle entre operateurs</td><td>Petite equipe qui se coordonne spontanement</td></tr>
+      <tr><td><strong>Supervision directe</strong></td><td>Un manager surveille et dirige directement</td><td>Le chef d'atelier qui donne les ordres</td></tr>
+      <tr><td><strong>Std. des procedes</strong></td><td>Processus formalises, procedures ecrites</td><td>Manuel de qualite ISO</td></tr>
+      <tr><td><strong>Std. des resultats</strong></td><td>Objectifs a atteindre sans preciser comment</td><td>Objectifs commerciaux</td></tr>
+      <tr><td><strong>Std. des qualifications</strong></td><td>Formation commune en amont</td><td>Diplome requis a l'embauche</td></tr>
+    </table>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="ajustement_mutuel">Ajustement mutuel</span>
+      <span class="tree-chip chip-bleu" data-tip="supervision_directe">Supervision directe</span>
+      <span class="tree-chip chip-jaune" data-tip="std_procedes">Std. procedes</span>
+      <span class="tree-chip chip-vert" data-tip="std_resultats">Std. resultats</span>
+      <span class="tree-chip chip-rose" data-tip="std_qualifications">Std. qualifications</span>
+    </div>
+    <div class="tree-ex">Au Bac : "Identifier le mecanisme de coordination"</div>
+  </div>
+
+  <div class="tree-card c-vert tree-full">
+    <div class="tree-label">Notion <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">Modes de production</div>
+    <div class="tree-def">Le choix du mode de production depend de la nature du produit, du volume et de la strategie de l'entreprise.</div>
+    <table class="bilan-table">
+      <tr><th>Mode</th><th>Description</th><th>Exemple</th></tr>
+      <tr><td><strong>Artisanal</strong></td><td>Production unitaire ou en petites series, main-d'oeuvre qualifiee</td><td>Fromagerie, chocolaterie haut de gamme</td></tr>
+      <tr><td><strong>En serie</strong></td><td>Grande quantite, machines, economies d'echelle</td><td>Industrie textile, agroalimentaire</td></tr>
+      <tr><td><strong>En continu</strong></td><td>Production 24h/24 sans interruption</td><td>Chimie, energie</td></tr>
+      <tr><td><strong>Flux pousses</strong></td><td>Production basee sur les previsions, constitution de stocks</td><td>Grande distribution</td></tr>
+      <tr><td><strong>Flux tires</strong></td><td>Production declenchee par la demande reelle, zero stock</td><td>Automobile (Toyota), luxe sur mesure</td></tr>
+    </table>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="artisanal">Artisanal</span>
+      <span class="tree-chip chip-bleu" data-tip="serie">En serie</span>
+      <span class="tree-chip chip-jaune" data-tip="continu">En continu</span>
+      <span class="tree-chip chip-vert" data-tip="flux_pousses">Flux pousses</span>
+      <span class="tree-chip chip-rose" data-tip="flux_tires">Flux tires</span>
+    </div>
+    <div class="tree-ex">Au Bac : "Identifier le mode de production", "justifier le choix"</div>
+  </div>
+</div>
+</div>
+
+<!-- ================================================= -->
+<!-- CHAINE LOGIQUE GLOBALE                             -->
+<!-- ================================================= -->
+<div class="chain" style="margin-bottom:16px">
+  <div class="tree-label">Chaine logique du Bloc B</div>
+  <div class="chain-flow">
+    <span class="chain-node">Style de direction</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">Culture org.</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">Cohesion</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">Marque employeur</span>
+    <span class="chain-arrow">|</span>
+    <span class="chain-node">Motivation</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">Engagement</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">GPEC</span>
+    <span class="chain-arrow">|</span>
+    <span class="chain-node">Coordination</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">Mode de production</span>
+  </div>
+</div>
+
+<!-- ================================================= -->
+<!-- PARTIE RECUPERER                                    -->
+<!-- ================================================= -->
+<div class="recup">
+
+  <!-- Confusions -->
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques au Bac</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Style de direction</strong> (mode de relation manager/equipe) &#8800; <strong>Personnalite du dirigeant</strong> (caractere personnel). Le style peut changer selon le contexte, pas la personnalite.</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Facteurs d'hygiene</strong> (Herzberg) &#8800; <strong>Facteurs de motivation</strong>. Un bon salaire evite l'insatisfaction mais ne motive pas &#8594; il faut aussi des responsabilites, de la reconnaissance.</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>GPEC</strong> (demarche previsionnelle a 3-5 ans) &#8800; <strong>Plan de formation</strong> (outil operationnel annuel). La GPEC est strategique, le plan de formation en est un outil.</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Flux pousses</strong> (on produit sur prevision, risque de surstock) &#8800; <strong>Flux tires</strong> (on produit sur commande, zero stock). Les confondre = contresens au Bac.</span>
+    </div>
+  </div>
+
+  <!-- Mnemos -->
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>"A-P-C-P"</strong> : Autoritaire, Paternaliste, Consultatif, Participatif &#8594; du plus centralise au plus delegue</div>
+    <div class="mnemo-item"><strong>"Maslow = la pyramide"</strong> : on grimpe les etages un par un, du bas (manger) au sommet (s'accomplir)</div>
+    <div class="mnemo-item"><strong>"Herzberg = le robinet"</strong> : l'hygiene empeche la fuite (insatisfaction) mais il faut un moteur (motivation) pour faire couler l'eau</div>
+    <div class="mnemo-item"><strong>"X = eXigeant, Y = Yes"</strong> : X controle, Y fait confiance</div>
+    <div class="mnemo-item"><strong>"Culture = VRS"</strong> : Valeurs + Rites + Symboles</div>
+    <div class="mnemo-item"><strong>"Pousse = prevision, Tire = demande"</strong> : on pousse les previsions, la demande tire la production</div>
+  </div>
+
+</div>
+
+<!-- Frequences BAC -->
+<div class="recup">
+  <div class="freq-box recup-full">
+    <div class="tree-label" style="margin-bottom:8px">Frequence au Bac (sujets analyses)</div>
+
+    <div class="freq-row">
+      <span class="freq-notion">Styles de direction (Likert)</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Culture organisationnelle</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Marque employeur</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">QVT / QVCT</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Theories de la motivation</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">GPEC / GEPP</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Modes de production</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Mecanismes coordination (Mintzberg)</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
+  Revizo  ·  Memo Bloc B  ·  SDGN STMG  ·  Avril 2026  ·  Sources : programme STMG, annales post-reforme
+</div>
+
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tip-overlay" id="tipOverlay" onclick="closeTip()">
+  <div class="tip-card" onclick="event.stopPropagation()">
+    <button class="tip-close" onclick="closeTip()">&times;</button>
+    <div class="tip-term" id="tipTerm"></div>
+    <div class="tip-def" id="tipDef"></div>
+    <div class="tip-example" id="tipEx"></div>
+    <div class="tip-bac" id="tipBac"></div>
+  </div>
+</div>
+
+<script>
+const TIPS = {
+  autoritaire: {
+    term: "Style autoritaire",
+    def: "Decisions centralisees, controle strict, sanctions, communication descendante uniquement. Le dirigeant decide seul et impose ses choix sans consulter les salaries.",
+    ex: "Un directeur qui fixe seul les objectifs, les methodes et les horaires, sans jamais demander l'avis de ses equipes.",
+    bac: "★★★★★ — Tres frequent, souvent a identifier dans un document"
+  },
+  paternaliste: {
+    term: "Style paternaliste (bienveillant-autoritaire)",
+    def: "Autorite teintee de bienveillance, peu de delegation, systeme de recompenses. Le dirigeant fait confiance mais garde la decision finale. Il se comporte comme un 'pere' bienveillant.",
+    ex: "Un patron de PME qui ecoute ses salaries, offre des avantages (primes, cadeaux), mais prend toutes les decisions importantes seul.",
+    bac: "★★★★★ — A distinguer de l'autoritaire pur"
+  },
+  consultatif: {
+    term: "Style consultatif",
+    def: "Les avis des salaries sont recueillis avant chaque decision, mais les decisions restent au manager. La communication est bidirectionnelle, mais le pouvoir de decision est centralise.",
+    ex: "Un manager qui organise des reunions d'equipe pour recueillir les idees, mais qui tranche seul a la fin.",
+    bac: "★★★★★ — Souvent confondu avec le participatif"
+  },
+  participatif: {
+    term: "Style participatif",
+    def: "Co-decision, delegation, confiance mutuelle, communication bidirectionnelle. Les equipes participent activement aux decisions. Management horizontal.",
+    ex: "Une start-up ou les decisions sont prises en equipe, avec des votes et une autonomie forte pour chaque collaborateur.",
+    bac: "★★★★★ — Le style le plus 'moderne', souvent valorise dans les sujets"
+  },
+  culture_org: {
+    term: "Culture organisationnelle",
+    def: "Ensemble de valeurs partagees, croyances, rites, symboles et normes qui creent la cohesion et l'identite collective d'une organisation. Elle se construit dans le temps et distingue une organisation d'une autre.",
+    ex: "Ankama (2023) a une culture forte fondee sur la passion creative, avec des rituels de creation collective et un esprit communautaire.",
+    bac: "★★★★★ — 'Montrer que X possede une culture forte', 'identifier les elements de culture'"
+  },
+  valeurs: {
+    term: "Valeurs (composante de la culture)",
+    def: "Ce en quoi l'organisation croit : les principes fondamentaux qui guident les comportements et les decisions. Exemples : excellence, respect, innovation, solidarite, transparence.",
+    ex: "Google met en avant l'innovation et la liberte creative comme valeurs centrales.",
+    bac: "★★★★★ — Toujours a citer quand on parle de culture organisationnelle"
+  },
+  rites: {
+    term: "Rites (composante de la culture)",
+    def: "Pratiques repetees qui renforcent le sentiment d'appartenance : reunions annuelles, rituels d'integration, ceremonies de remise de prix, team building.",
+    ex: "Le seminaire annuel d'entreprise, le pot de depart, la reunion du lundi matin.",
+    bac: "★★★★☆ — Souvent demande comme element de culture"
+  },
+  symboles: {
+    term: "Symboles (composante de la culture)",
+    def: "Elements visuels ou materiels qui incarnent les valeurs de l'organisation : logo, tenue vestimentaire, amenagement des locaux, langage interne.",
+    ex: "Le logo Apple, l'uniforme des employes McDonald's, les bureaux ouverts d'une start-up.",
+    bac: "★★★★☆ — A identifier dans les documents"
+  },
+  marque_employeur: {
+    term: "Marque employeur",
+    def: "Image d'une organisation en tant qu'employeur, construite a travers ses pratiques RH, sa culture et sa reputation. Objectif : attirer les meilleurs candidats et fideliser les salaries en poste.",
+    ex: "TPS (2023) developpe sa marque employeur en proposant des formations et une progression interne.",
+    bac: "★★★★☆ — En forte hausse depuis 2022. 'Montrer comment X developpe sa marque employeur'"
+  },
+  qvt: {
+    term: "QVT / QVCT (Qualite de Vie et des Conditions de Travail)",
+    def: "Ensemble des conditions (physiques, psychologiques, organisationnelles) dans lesquelles les salaries exercent leur activite. Influe directement sur l'engagement, la sante et la performance. Depuis 2022, on parle de QVCT pour inclure les conditions de travail.",
+    ex: "Teletravail, amenagement des horaires, salle de repos, droit a la deconnexion, prevention des risques psychosociaux.",
+    bac: "★★★★☆ — 'Identifier les actions de QVT', 'montrer le lien QVT-performance'"
+  },
+  maslow: {
+    term: "Maslow — Hierarchie des besoins",
+    def: "5 niveaux de besoins sous forme de pyramide : 1. Physiologiques (manger, dormir) 2. Securite (emploi stable) 3. Appartenance (equipe, liens sociaux) 4. Estime (reconnaissance) 5. Realisation de soi (accomplissement). Un besoin superieur ne motive que si les inferieurs sont satisfaits.",
+    ex: "Un salarie mal paye (besoin physiologique non satisfait) ne sera pas motive par des responsabilites (besoin d'estime).",
+    bac: "★★★★☆ — Souvent demande pour justifier une pratique de management"
+  },
+  herzberg: {
+    term: "Herzberg — Theorie des deux facteurs",
+    def: "Facteurs d'hygiene : evitent l'insatisfaction (salaire, conditions de travail, securite de l'emploi) mais ne motivent pas a eux seuls. Facteurs de motivation : creent la satisfaction (responsabilites, reconnaissance, accomplissement, autonomie). Les deux sont necessaires.",
+    ex: "Augmenter le salaire supprime le mecontentement, mais pour vraiment motiver, il faut donner des responsabilites et reconnaitre le travail.",
+    bac: "★★★★☆ — Distinguer hygiene et motivation est un piege classique"
+  },
+  mcgregor: {
+    term: "McGregor — Theorie X et Y",
+    def: "Theorie X : le travailleur est naturellement paresseux, il faut le controler et le sanctionner (vision pessimiste, style autoritaire). Theorie Y : le travailleur est naturellement responsable et creatif, il faut l'impliquer et lui faire confiance (vision optimiste, style participatif).",
+    ex: "Un manager X surveille constamment et impose des regles strictes. Un manager Y delegue et encourage l'initiative.",
+    bac: "★★★★☆ — Souvent lie aux styles de direction (Ch.5)"
+  },
+  gpec: {
+    term: "GPEC / GEPP (Gestion Previsionnelle des Emplois et Competences)",
+    def: "Demarche anticipatrice (3 a 5 ans) visant a identifier les ecarts entre les ressources humaines actuelles et les besoins futurs, puis a agir : formation, recrutement, mobilite interne, reconversion. Obligatoire dans les entreprises de +300 salaries.",
+    ex: "Une entreprise qui anticipe la numerisation de ses metiers forme ses salaries 3 ans a l'avance aux outils digitaux.",
+    bac: "★★★★☆ — 'Presenter la demarche GPEC', 'montrer que X anticipe ses besoins en competences'"
+  },
+  ajustement_mutuel: {
+    term: "Ajustement mutuel (Mintzberg)",
+    def: "Coordination par communication informelle entre les operateurs. Chacun s'ajuste en fonction de ce que font les autres, sans hierarchie formelle. Typique des petites structures ou des equipes tres qualifiees.",
+    ex: "Deux developpeurs qui discutent directement pour se repartir les taches d'un projet.",
+    bac: "★★★☆☆ — A identifier dans les organisations de petite taille"
+  },
+  supervision_directe: {
+    term: "Supervision directe (Mintzberg)",
+    def: "Un responsable hierarchique donne des ordres et controle directement le travail des subordonnees. Un seul individu prend la responsabilite du travail des autres.",
+    ex: "Le chef d'atelier qui distribue les taches et verifie le travail de chaque ouvrier.",
+    bac: "★★★☆☆ — Souvent associe au style autoritaire"
+  },
+  std_procedes: {
+    term: "Standardisation des procedes (Mintzberg)",
+    def: "Le travail est coordonne par des procedures ecrites, des modes operatoires, des protocoles. Chacun sait exactement quoi faire car les etapes sont formalisees.",
+    ex: "Manuel qualite ISO, procedures de securite, protocole d'accueil client standardise.",
+    bac: "★★★☆☆"
+  },
+  std_resultats: {
+    term: "Standardisation des resultats (Mintzberg)",
+    def: "On fixe les objectifs a atteindre sans preciser la methode. Chacun est libre de ses moyens mais doit atteindre le resultat attendu.",
+    ex: "Un commercial doit realiser 100 000 EUR de CA trimestriel, mais choisit sa methode de prospection.",
+    bac: "★★★☆☆"
+  },
+  std_qualifications: {
+    term: "Standardisation des qualifications (Mintzberg)",
+    def: "La coordination repose sur la formation commune des individus. Parce qu'ils ont la meme formation, ils savent comment travailler ensemble sans instruction supplementaire.",
+    ex: "Des chirurgiens formes dans les memes ecoles savent operer ensemble sans qu'on leur dicte chaque geste.",
+    bac: "★★★☆☆"
+  },
+  artisanal: {
+    term: "Mode de production artisanal",
+    def: "Production unitaire ou en tres petites series. Main-d'oeuvre hautement qualifiee, savoir-faire manuel. Chaque produit peut etre unique ou personnalise. Cout unitaire eleve mais forte valeur ajoutee.",
+    ex: "Une fromagerie fermiere, une chocolaterie haut de gamme, un ateliers de haute couture.",
+    bac: "★★★★☆ — A identifier et justifier dans le contexte"
+  },
+  serie: {
+    term: "Mode de production en serie (industriel)",
+    def: "Production en grande quantite de produits standardises, grace a des machines et des chaines de production. Permet des economies d'echelle : le cout unitaire baisse avec le volume.",
+    ex: "Industrie textile qui produit des milliers de t-shirts identiques, agroalimentaire.",
+    bac: "★★★★☆"
+  },
+  continu: {
+    term: "Mode de production en continu",
+    def: "Production 24h/24 sans interruption. Les installations fonctionnent en permanence car l'arret et le redemarrage seraient trop couteux ou techniquement impossibles.",
+    ex: "Raffineries de petrole, centrales electriques, cimenteries.",
+    bac: "★★★☆☆"
+  },
+  flux_pousses: {
+    term: "Flux pousses",
+    def: "Production basee sur des previsions de vente. On produit a l'avance et on constitue des stocks. Risque : surproduction si les previsions sont inexactes.",
+    ex: "Grande distribution qui stocke des produits en prevision des fetes de fin d'annee.",
+    bac: "★★★★☆ — A ne pas confondre avec les flux tires"
+  },
+  flux_tires: {
+    term: "Flux tires (juste-a-temps)",
+    def: "Production declenchee uniquement par la demande reelle du client. Objectif : zero stock, reduction des couts de stockage. Risque : rupture de stock si la demande augmente brutalement.",
+    ex: "Toyota a invente le juste-a-temps : chaque voiture est produite apres la commande du client.",
+    bac: "★★★★☆ — A ne pas confondre avec les flux pousses"
+  }
+};
+
+// Open tip
+document.querySelectorAll('[data-tip]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.getAttribute('data-tip');
+    const tip = TIPS[key];
+    if (!tip) return;
+    document.getElementById('tipTerm').textContent = tip.term;
+    document.getElementById('tipDef').textContent = tip.def;
+    document.getElementById('tipEx').textContent = tip.ex;
+    document.getElementById('tipBac').textContent = tip.bac;
+    document.getElementById('tipOverlay').classList.add('show');
+  });
+});
+
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTip(); });
+</script>
+
+</body>
+</html>

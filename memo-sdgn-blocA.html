@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Revizo — Memo SDGN Bloc A · Management strategique</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* PRINT-FIRST DESIGN */
+@page { size: A4; margin: 12mm; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; }
+
+/* MEMO LAYOUT */
+.memo { max-width: 900px; margin: 0 auto; padding: 100px 20px 40px; }
+
+/* Header */
+.memo-hd { text-align: center; margin-bottom: 20px; }
+.memo-badge { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #3d1a5c; color: #f5c842; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 8px; }
+.memo-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 2px; }
+.memo-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+.memo-question { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: #3d1a5c; margin-top: 8px; font-style: italic; }
+
+/* TREE CARDS */
+.tree { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.tree-full { grid-column: 1 / -1; }
+
+.tree-card { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); border-left: 4px solid #ccc; }
+.tree-card.c-violet { border-left-color: #7030a0; }
+.tree-card.c-rose  { border-left-color: #b5415a; }
+.tree-card.c-bleu  { border-left-color: #2a69a8; }
+.tree-card.c-vert  { border-left-color: #1a7a3c; }
+.tree-card.c-jaune { border-left-color: #946e00; }
+
+.tree-label { font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a09880; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.tree-label .freq { font-size: 10px; letter-spacing: 0; text-transform: none; color: #f5c842; }
+.tree-h { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: #1e1c18; margin-bottom: 5px; }
+.tree-def { font-size: 12px; line-height: 1.55; color: #3a3630; }
+.tree-def strong { color: #1e1c18; }
+.tree-ex { font-size: 11px; color: #7a6a58; margin-top: 4px; font-style: italic; }
+.tree-formula { font-family: 'Inter', monospace; font-size: 11px; font-weight: 700; background: rgba(61,26,92,.08); color: #3d1a5c; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+
+/* Sub-items */
+.tree-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tree-chip { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 12px; cursor: default; }
+.tree-chip[data-tip] { cursor: pointer; transition: transform .1s, box-shadow .1s; }
+.tree-chip[data-tip]:hover { transform: scale(1.05); box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+/* Tooltip popup */
+.tip-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; z-index:9000; background:rgba(30,28,24,.25); }
+.tip-overlay.show { display:flex; align-items:center; justify-content:center; animation: fadeIn .15s ease; }
+@keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+.tip-card { background:#fffdf8; border-radius:16px; padding:20px 24px; max-width:420px; width:90%; box-shadow:0 8px 40px rgba(0,0,0,.18); position:relative; }
+.tip-close { position:absolute; top:10px; right:14px; font-size:18px; cursor:pointer; color:#a09880; background:none; border:none; font-weight:700; }
+.tip-close:hover { color:#1e1c18; }
+.tip-term { font-family:'Nunito',sans-serif; font-size:16px; font-weight:900; color:#1e1c18; margin-bottom:6px; }
+.tip-def { font-size:13px; line-height:1.6; color:#3a3630; margin-bottom:8px; }
+.tip-example { font-size:12px; color:#7a6a58; font-style:italic; padding:8px 12px; background:#f3eafc; border-radius:8px; border-left:3px solid #3d1a5c; }
+.tip-bac { font-size:10px; font-weight:700; color:#3d1a5c; margin-top:8px; text-transform:uppercase; letter-spacing:1px; }
+
+/* Schema section */
+.schema-section { margin-bottom: 16px; }
+.schema-box { background: #fffdf8; border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.05); overflow-x: auto; }
+.schema-box svg { display: block; margin: 0 auto; }
+
+.chip-bleu   { background: #e8f3ff; color: #2a69a8; }
+.chip-rose   { background: #fdeef2; color: #b5415a; }
+.chip-jaune  { background: #fef8e2; color: #946e00; }
+.chip-vert   { background: #e6f5ec; color: #1a7a3c; }
+.chip-violet { background: #f3eafc; color: #7030a0; }
+.chip-gris   { background: rgba(30,28,24,.07); color: #5a5448; }
+
+/* SECTION BOTTOM: RECUPERER */
+.recup { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.recup-full { grid-column: 1 / -1; }
+
+/* Confusion box */
+.confuse-box { background: #fdeef2; border-radius: 12px; padding: 14px 16px; }
+.confuse-box .tree-label { color: #b5415a; }
+.confuse-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 11px; line-height: 1.5; }
+.confuse-row:last-child { margin-bottom: 0; }
+.confuse-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.confuse-text strong { font-weight: 800; }
+
+/* Mnemo box */
+.mnemo-box { background: #e8f3ff; border-radius: 12px; padding: 14px 16px; }
+.mnemo-box .tree-label { color: #2a69a8; }
+.mnemo-item { font-size: 11px; line-height: 1.6; margin-bottom: 4px; }
+.mnemo-item:last-child { margin-bottom: 0; }
+
+/* Bac frequency bar */
+.freq-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 11px; }
+.freq-row:last-child { margin-bottom: 0; }
+.freq-bar-track { flex: 1; height: 6px; background: #e8e4dc; border-radius: 3px; overflow: hidden; }
+.freq-bar-fill { height: 100%; border-radius: 3px; }
+.freq-bar-fill.f5 { width: 100%; background: #b5415a; }
+.freq-bar-fill.f4 { width: 80%; background: #d46a1a; }
+.freq-bar-fill.f3 { width: 60%; background: #946e00; }
+.freq-bar-fill.f2 { width: 40%; background: #2a69a8; }
+.freq-bar-fill.f1 { width: 20%; background: #a09880; }
+.freq-notion { font-weight: 700; min-width: 160px; }
+.freq-stars { color: #f5c842; font-size: 10px; min-width: 50px; text-align: right; letter-spacing: 1px; }
+
+/* Link chain */
+.chain { background: #fef8e2; border-radius: 12px; padding: 14px 16px; }
+.chain .tree-label { color: #946e00; }
+.chain-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+.chain-node { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; background: #fff; border: 2px solid #e0d8a8; color: #5a4e00; }
+.chain-arrow { font-size: 14px; color: #c8b850; padding: 0 2px; }
+
+/* Chapter sections */
+.chapter-section { margin-bottom: 32px; }
+.chapter-title { font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 900; color: #3d1a5c; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.chapter-num { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; background: #3d1a5c; color: #f5c842; padding: 3px 10px; border-radius: 12px; }
+
+/* Structure de reponse type */
+.reponse-type { background: #f3eafc; border-radius: 12px; padding: 14px 16px; margin-top: 12px; border-left: 4px solid #3d1a5c; }
+.reponse-type .tree-label { color: #3d1a5c; }
+.reponse-step { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 5px; font-size: 11px; line-height: 1.5; }
+.reponse-step:last-child { margin-bottom: 0; }
+.reponse-num { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 900; color: #3d1a5c; background: rgba(61,26,92,.12); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* Interpretation box */
+.interp-box { background: #fffdf8; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); margin-top: 10px; }
+.interp-row { display: flex; gap: 8px; align-items: center; margin-bottom: 5px; font-size: 11px; }
+.interp-row:last-child { margin-bottom: 0; }
+.interp-icon { font-size: 14px; flex-shrink: 0; }
+.interp-text { line-height: 1.5; }
+.interp-text strong { font-weight: 800; }
+
+/* Bilan table */
+.bilan-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 11px; }
+.bilan-table th { background: #3d1a5c; color: #f5c842; font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 6px 10px; text-align: left; }
+.bilan-table td { padding: 6px 10px; border-bottom: 1px solid #e8e4dc; color: #3a3630; }
+.bilan-table tr:nth-child(even) td { background: rgba(61,26,92,.03); }
+
+/* PRINT */
+@media print {
+  .nav-epreuve, .nav-rubriques { display: none !important; }
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .memo { padding: 0; max-width: 100%; }
+  .tree-card, .confuse-box, .mnemo-box, .freq-box, .chain, .reponse-type { break-inside: avoid; }
+}
+
+@media (max-width: 600px) {
+  .tree, .recup { grid-template-columns: 1fr; }
+  .tree-full, .recup-full { grid-column: 1; }
+  .memo { padding: 100px 12px 30px; }
+}
+</style>
+</head>
+<body data-subject="sgdn">
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Revi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Eco-Droit</a>
+  <a href="revizo-msgn.html" class="epreuve-link active">SGDN</a>
+  <a href="epreuve-philo.html" class="epreuve-link">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">SDGN</span>
+  <a href="revizo-msgn.html">Accueil SGDN</a>
+  <a href="memo-sdgn-blocA.html" class="active">Memos</a>
+  <a href="glossaire.html">Glossaire</a>
+</nav>
+
+<div class="memo">
+
+<!-- HEADER -->
+<div class="memo-hd">
+  <div class="memo-badge">MEMO · SDGN · BLOC A</div>
+  <div class="memo-title">Bloc A · Management strategique</div>
+  <div class="memo-sub">Terminale STMG · Chapitres 1-2-3-4 · Encoder · Comprendre · Recuperer</div>
+  <div class="memo-question">"Comment l'organisation definit-elle sa strategie ?"</div>
+</div>
+
+<!-- ================================================= -->
+<!-- CHAPITRE 1 — FINALITES ET PARTIES PRENANTES       -->
+<!-- ================================================= -->
+<div class="chapter-section">
+<div class="chapter-title"><span class="chapter-num">Chapitre 1</span> Finalites et parties prenantes</div>
+
+<div style="text-align:center;margin:12px 0 20px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">Pourquoi une organisation existe-t-elle et pour qui ?</div>
+  <svg viewBox="0 0 800 280" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+    <defs>
+      <marker id="arA1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7030a0"/></marker>
+    </defs>
+
+    <!-- Organisation centrale -->
+    <rect x="280" y="20" width="240" height="55" rx="12" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="400" y="42" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0" letter-spacing="1">POINT DE DEPART</text>
+    <text x="400" y="60" text-anchor="middle" font-size="13" font-weight="900" fill="#1e1c18">Organisation</text>
+
+    <!-- Fleche vers Finalites -->
+    <line x1="340" y1="75" x2="220" y2="110" stroke="#7030a0" stroke-width="2" marker-end="url(#arA1)"/>
+    <!-- Fleche vers Parties prenantes -->
+    <line x1="460" y1="75" x2="580" y2="110" stroke="#7030a0" stroke-width="2" marker-end="url(#arA1)"/>
+
+    <!-- FINALITES -->
+    <rect x="60" y="110" width="320" height="50" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="220" y="130" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c" letter-spacing="1">FINALITES</text>
+    <text x="220" y="148" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Raison d'etre de l'organisation</text>
+
+    <!-- Sous-types finalites -->
+    <rect x="60" y="172" width="95" height="42" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="107" y="189" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c">Lucratif</text>
+    <text x="107" y="201" text-anchor="middle" font-size="6" fill="#7a6a58">Profit, valeur</text>
+
+    <rect x="165" y="172" width="105" height="42" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1"/>
+    <text x="217" y="189" text-anchor="middle" font-size="8" font-weight="800" fill="#946e00">Non lucratif</text>
+    <text x="217" y="201" text-anchor="middle" font-size="6" fill="#7a6a58">Interet general</text>
+
+    <rect x="280" y="172" width="100" height="42" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1"/>
+    <text x="330" y="189" text-anchor="middle" font-size="8" font-weight="800" fill="#2a69a8">ESS</text>
+    <text x="330" y="201" text-anchor="middle" font-size="6" fill="#7a6a58">Asso, SCOP, mutuelle</text>
+
+    <line x1="150" y1="160" x2="107" y2="172" stroke="#1a7a3c" stroke-width="1" stroke-dasharray="3,2"/>
+    <line x1="220" y1="160" x2="217" y2="172" stroke="#946e00" stroke-width="1" stroke-dasharray="3,2"/>
+    <line x1="290" y1="160" x2="330" y2="172" stroke="#2a69a8" stroke-width="1" stroke-dasharray="3,2"/>
+
+    <!-- PARTIES PRENANTES -->
+    <rect x="420" y="110" width="320" height="50" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+    <text x="580" y="130" text-anchor="middle" font-size="8" font-weight="800" fill="#b5415a" letter-spacing="1">PARTIES PRENANTES</text>
+    <text x="580" y="148" text-anchor="middle" font-size="10" font-weight="900" fill="#1e1c18">Acteurs ayant un interet dans l'organisation</text>
+
+    <!-- Internes / Externes -->
+    <rect x="420" y="172" width="150" height="55" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1"/>
+    <text x="495" y="189" text-anchor="middle" font-size="8" font-weight="800" fill="#b5415a">Internes</text>
+    <text x="495" y="201" text-anchor="middle" font-size="6" fill="#7a6a58">Salaries, dirigeants</text>
+    <text x="495" y="213" text-anchor="middle" font-size="6" fill="#7a6a58">Actionnaires</text>
+
+    <rect x="585" y="172" width="155" height="55" rx="8" fill="#f3eafc" stroke="#7030a0" stroke-width="1"/>
+    <text x="662" y="189" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0">Externes</text>
+    <text x="662" y="201" text-anchor="middle" font-size="6" fill="#7a6a58">Clients, fournisseurs</text>
+    <text x="662" y="213" text-anchor="middle" font-size="6" fill="#7a6a58">Etat, societe civile</text>
+
+    <line x1="520" y1="160" x2="495" y2="172" stroke="#b5415a" stroke-width="1" stroke-dasharray="3,2"/>
+    <line x1="640" y1="160" x2="662" y2="172" stroke="#7030a0" stroke-width="1" stroke-dasharray="3,2"/>
+
+    <!-- Lien attentes -->
+    <rect x="460" y="240" width="240" height="28" rx="6" fill="rgba(181,65,90,.06)" stroke="#b5415a" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="580" y="258" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">Attentes parfois divergentes = tensions a gerer</text>
+
+    <!-- Pastille MS -->
+    <g transform="translate(30, 40)">
+      <circle cx="0" cy="0" r="18" fill="#3d1a5c"/>
+      <text x="0" y="4" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#f5c842">MS</text>
+    </g>
+  </svg>
+</div>
+
+<!-- Detail chapitre 1 -->
+<div class="tree">
+  <div class="tree-card c-vert tree-full">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">Finalite</div>
+    <div class="tree-def">Raison d'etre d'une organisation. Pour une <strong>entreprise privee</strong> : creer de la valeur (profit), mais aussi satisfaire des besoins sociaux et societaux. Pour une <strong>organisation de l'ESS</strong> (association, SCOP) : finalite non lucrative, interet general.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="finalite">Finalite</span>
+      <span class="tree-chip chip-vert" data-tip="ess">ESS</span>
+    </div>
+    <div class="tree-ex">Topschuss (2024) recherche la croissance commerciale tout en affichant des engagements environnementaux (finalite sociale).</div>
+  </div>
+
+  <div class="tree-card c-rose tree-full">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">Parties prenantes</div>
+    <div class="tree-def">Tout acteur ayant un interet dans l'activite de l'organisation. <strong>Internes</strong> (salaries, dirigeants, actionnaires) et <strong>externes</strong> (clients, fournisseurs, Etat, societe civile, associations).</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="pp">Parties prenantes</span>
+      <span class="tree-chip chip-rose" data-tip="pp_internes">PP internes</span>
+      <span class="tree-chip chip-violet" data-tip="pp_externes">PP externes</span>
+    </div>
+    <div class="tree-ex">Dans le sujet YBRA (2024), les chauffeurs et les clients sont des parties prenantes aux attentes differentes.</div>
+  </div>
+</div>
+
+<!-- Confusion Ch1 -->
+<div class="recup">
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text">Les <strong>actionnaires</strong> sont des parties prenantes <strong>internes</strong> (capital), pas externes.</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text">Les <strong>clients</strong> sont toujours des parties prenantes <strong>externes</strong>, meme s'ils sont fideles.</span>
+    </div>
+  </div>
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>"Lucratif = profit"</strong> : l'entreprise privee cherche a gagner de l'argent</div>
+    <div class="mnemo-item"><strong>"ESS = interet general"</strong> : association, SCOP, mutuelle, cooperative</div>
+    <div class="mnemo-item"><strong>"PP internes = dans les murs"</strong> : salaries, dirigeants, actionnaires</div>
+  </div>
+</div>
+</div>
+
+<!-- ================================================= -->
+<!-- CHAPITRE 2 — DIAGNOSTIC STRATEGIQUE               -->
+<!-- ================================================= -->
+<div class="chapter-section">
+<div class="chapter-title"><span class="chapter-num">Chapitre 2</span> Diagnostic strategique</div>
+
+<div style="text-align:center;margin:12px 0 20px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">Forces, faiblesses, opportunites et menaces</div>
+  <svg viewBox="0 0 800 320" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+    <defs>
+      <marker id="arA2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7030a0"/></marker>
+    </defs>
+
+    <!-- DIAGNOSTIC INTERNE -->
+    <rect x="40" y="15" width="320" height="140" rx="12" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="200" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c" letter-spacing="1">DIAGNOSTIC INTERNE</text>
+
+    <rect x="60" y="45" width="130" height="40" rx="8" fill="#fff" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="125" y="62" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">Forces</text>
+    <text x="125" y="76" text-anchor="middle" font-size="7" fill="#7a6a58">Ressources, savoir-faire</text>
+
+    <rect x="210" y="45" width="130" height="40" rx="8" fill="#fff" stroke="#b5415a" stroke-width="1"/>
+    <text x="275" y="62" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a">Faiblesses</text>
+    <text x="275" y="76" text-anchor="middle" font-size="7" fill="#7a6a58">Manques, limites</text>
+
+    <!-- Competences distinctives -->
+    <rect x="100" y="100" width="200" height="40" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1.5"/>
+    <text x="200" y="117" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c">Competences distinctives</text>
+    <text x="200" y="131" text-anchor="middle" font-size="7" fill="#7a6a58">Rares, difficiles a imiter, creatrices de valeur</text>
+
+    <line x1="125" y1="85" x2="170" y2="100" stroke="#1a7a3c" stroke-width="1" stroke-dasharray="3,2"/>
+    <line x1="275" y1="85" x2="230" y2="100" stroke="#1a7a3c" stroke-width="1" stroke-dasharray="3,2"/>
+
+    <!-- DIAGNOSTIC EXTERNE -->
+    <rect x="440" y="15" width="320" height="140" rx="12" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="600" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0" letter-spacing="1">DIAGNOSTIC EXTERNE</text>
+
+    <!-- PESTEL -->
+    <rect x="460" y="45" width="130" height="48" rx="8" fill="#fff" stroke="#7030a0" stroke-width="1"/>
+    <text x="525" y="62" text-anchor="middle" font-size="9" font-weight="800" fill="#7030a0">PESTEL</text>
+    <text x="525" y="76" text-anchor="middle" font-size="6" fill="#7a6a58">Politique, Economique</text>
+    <text x="525" y="85" text-anchor="middle" font-size="6" fill="#7a6a58">Socio, Techno, Enviro, Legal</text>
+
+    <!-- Porter -->
+    <rect x="610" y="45" width="130" height="48" rx="8" fill="#fff" stroke="#946e00" stroke-width="1"/>
+    <text x="675" y="62" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00">5 forces de Porter</text>
+    <text x="675" y="76" text-anchor="middle" font-size="6" fill="#7a6a58">Concurrents, entrants</text>
+    <text x="675" y="85" text-anchor="middle" font-size="6" fill="#7a6a58">Substitution, fournisseurs, clients</text>
+
+    <!-- Opportunites / Menaces -->
+    <rect x="460" y="105" width="130" height="35" rx="8" fill="#fff" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="525" y="126" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">Opportunites</text>
+
+    <rect x="610" y="105" width="130" height="35" rx="8" fill="#fff" stroke="#b5415a" stroke-width="1"/>
+    <text x="675" y="126" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a">Menaces</text>
+
+    <!-- Fleches vers SWOT -->
+    <line x1="200" y1="155" x2="340" y2="200" stroke="#7030a0" stroke-width="2" marker-end="url(#arA2)"/>
+    <line x1="600" y1="155" x2="460" y2="200" stroke="#7030a0" stroke-width="2" marker-end="url(#arA2)"/>
+
+    <!-- SWOT -->
+    <rect x="280" y="200" width="240" height="60" rx="12" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
+    <text x="400" y="222" text-anchor="middle" font-size="8" font-weight="800" fill="#946e00" letter-spacing="1">SYNTHESE</text>
+    <text x="400" y="240" text-anchor="middle" font-size="14" font-weight="900" fill="#1e1c18">SWOT</text>
+    <text x="400" y="254" text-anchor="middle" font-size="7" fill="#7a6a58">Forces / Faiblesses / Opportunites / Menaces</text>
+
+    <!-- Avantage concurrentiel -->
+    <line x1="400" y1="260" x2="400" y2="280" stroke="#946e00" stroke-width="2" marker-end="url(#arA2)"/>
+    <rect x="280" y="280" width="240" height="32" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1.5"/>
+    <text x="400" y="300" text-anchor="middle" font-size="9" font-weight="900" fill="#b5415a">Avantage concurrentiel</text>
+
+    <!-- Legende PESTEL vs Porter -->
+    <rect x="460" y="155" width="280" height="30" rx="6" fill="rgba(112,48,160,.06)" stroke="#7030a0" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="600" y="174" text-anchor="middle" font-size="7" font-weight="700" fill="#7030a0">PESTEL = macro (environnement general) / Porter = meso (concurrence)</text>
+
+    <!-- Pastille MS -->
+    <g transform="translate(20, 30)">
+      <circle cx="0" cy="0" r="18" fill="#3d1a5c"/>
+      <text x="0" y="4" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#f5c842">MS</text>
+    </g>
+  </svg>
+</div>
+
+<!-- Detail chapitre 2 -->
+<div class="tree">
+  <div class="tree-card c-vert">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+    <div class="tree-h">Diagnostic interne</div>
+    <div class="tree-def">Analyse des <strong>forces et faiblesses</strong> de l'organisation : ressources humaines, financieres, technologiques, immaterielles (marque, reputation). Permet d'identifier les <strong>competences distinctives</strong>.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="diag_interne">Diagnostic interne</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-vert">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+    <div class="tree-h">Competences distinctives</div>
+    <div class="tree-def">Ressources et savoir-faire <strong>rares, difficiles a imiter et createurs de valeur</strong>, qui fondent l'avantage concurrentiel.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="comp_dist">Competences distinctives</span>
+    </div>
+    <div class="tree-ex">Ankama (2023) possede une competence distinctive dans la creation de personnages originaux utilises sur tous ses supports.</div>
+  </div>
+
+  <div class="tree-card c-rose tree-full">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+    <div class="tree-h">Avantage concurrentiel</div>
+    <div class="tree-def">Position superieure durable d'une entreprise face a ses concurrents, fondee sur ses competences distinctives. Peut etre un <strong>cout plus faible</strong>, une <strong>offre percue comme unique</strong>, ou une <strong>relation client superieure</strong>.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="avantage_conc">Avantage concurrentiel</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-violet">
+    <div class="tree-label">Notion <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">Diagnostic externe — PESTEL</div>
+    <div class="tree-def">Analyse de l'environnement en 6 dimensions : <strong>P</strong>olitique, <strong>E</strong>conomique, <strong>S</strong>ocioculturel, <strong>T</strong>echnologique, <strong>E</strong>nvironnemental, <strong>L</strong>egal.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="pestel">PESTEL</span>
+    </div>
+    <div class="tree-ex">OPC (2024 CE) : l'essor des preoccupations ecologiques (facteur E) est une opportunite pour les vetements eco-responsables.</div>
+  </div>
+
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Notion <span class="freq">&#9733;&#9733;&#9733;&#9734;&#9734;</span></div>
+    <div class="tree-h">Forces de Porter (5 forces)</div>
+    <div class="tree-def">Modele d'analyse de la <strong>concurrence</strong> : concurrents directs, entrants potentiels, produits de substitution, pouvoir des fournisseurs, pouvoir des clients.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="porter">5 forces de Porter</span>
+    </div>
+  </div>
+</div>
+
+<!-- Confusion Ch2 -->
+<div class="recup">
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text">Le <strong>PESTEL</strong> analyse l'environnement <strong>general</strong> (macro). Les <strong>5 forces</strong> analysent l'environnement <strong>concurrentiel</strong> (meso). Ne pas les melanger.</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Force</strong> (atout interne de l'organisation) &#8800; <strong>Opportunite</strong> (element favorable de l'environnement externe).</span>
+    </div>
+  </div>
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>"SWOT = 2x2"</strong> : Interne (Forces/Faiblesses) + Externe (Opportunites/Menaces)</div>
+    <div class="mnemo-item"><strong>"PESTEL = 6 lettres, 6 dimensions"</strong> : Politique, Economique, Socioculturel, Technologique, Environnemental, Legal</div>
+    <div class="mnemo-item"><strong>"Competence distinctive = rare + inimitable + valeur"</strong> : les 3 criteres a verifier</div>
+  </div>
+</div>
+</div>
+
+<!-- ================================================= -->
+<!-- CHAPITRE 3 — OPTIONS STRATEGIQUES                 -->
+<!-- ================================================= -->
+<div class="chapter-section">
+<div class="chapter-title"><span class="chapter-num">Chapitre 3</span> Options strategiques</div>
+
+<div style="text-align:center;margin:12px 0 20px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">Comment l'organisation choisit-elle de se developper ?</div>
+  <svg viewBox="0 0 800 340" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+    <defs>
+      <marker id="arA3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7030a0"/></marker>
+    </defs>
+
+    <!-- STRATEGIE GLOBALE -->
+    <rect x="20" y="10" width="240" height="155" rx="12" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="140" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0" letter-spacing="1">STRATEGIE GLOBALE</text>
+    <text x="140" y="44" text-anchor="middle" font-size="7" fill="#7a6a58">Quel(s) DAS pour l'entreprise ?</text>
+
+    <rect x="40" y="55" width="200" height="30" rx="6" fill="#fff" stroke="#7030a0" stroke-width="1"/>
+    <text x="140" y="70" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0">Specialisation</text>
+    <text x="140" y="80" text-anchor="middle" font-size="6" fill="#7a6a58">1 seul DAS</text>
+
+    <rect x="40" y="90" width="200" height="30" rx="6" fill="#fff" stroke="#946e00" stroke-width="1"/>
+    <text x="140" y="105" text-anchor="middle" font-size="8" font-weight="800" fill="#946e00">Diversification concentrique</text>
+    <text x="140" y="115" text-anchor="middle" font-size="6" fill="#7a6a58">DAS lies (activites complementaires)</text>
+
+    <rect x="40" y="125" width="200" height="30" rx="6" fill="#fff" stroke="#b5415a" stroke-width="1"/>
+    <text x="140" y="140" text-anchor="middle" font-size="8" font-weight="800" fill="#b5415a">Diversification conglomerale</text>
+    <text x="140" y="150" text-anchor="middle" font-size="6" fill="#7a6a58">DAS sans lien</text>
+
+    <!-- STRATEGIE DE DOMAINE -->
+    <rect x="280" y="10" width="250" height="155" rx="12" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="405" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c" letter-spacing="1">STRATEGIE DE DOMAINE</text>
+    <text x="405" y="44" text-anchor="middle" font-size="7" fill="#7a6a58">Comment se battre sur chaque DAS ?</text>
+
+    <rect x="300" y="55" width="210" height="26" rx="6" fill="#fff" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="405" y="72" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c">Domination par les couts</text>
+
+    <rect x="300" y="85" width="210" height="26" rx="6" fill="#fff" stroke="#946e00" stroke-width="1"/>
+    <text x="405" y="98" text-anchor="middle" font-size="7" font-weight="800" fill="#946e00">Differenciation par le haut = Sophistication</text>
+
+    <rect x="300" y="115" width="210" height="26" rx="6" fill="#fff" stroke="#b5415a" stroke-width="1"/>
+    <text x="405" y="128" text-anchor="middle" font-size="7" font-weight="800" fill="#b5415a">Differenciation par le bas = Epuration</text>
+
+    <rect x="300" y="145" width="210" height="16" rx="5" fill="#fef8e2" stroke="#946e00" stroke-width="1"/>
+    <text x="405" y="156" text-anchor="middle" font-size="7" font-weight="800" fill="#946e00">Focalisation / Niche</text>
+
+    <!-- MODE DE CROISSANCE -->
+    <rect x="550" y="10" width="230" height="155" rx="12" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+    <text x="665" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#b5415a" letter-spacing="1">MODE DE CROISSANCE</text>
+    <text x="665" y="44" text-anchor="middle" font-size="7" fill="#7a6a58">Comment grandir ?</text>
+
+    <rect x="570" y="55" width="190" height="30" rx="6" fill="#fff" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="665" y="70" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c">Croissance interne</text>
+    <text x="665" y="80" text-anchor="middle" font-size="6" fill="#7a6a58">Investissements, embauches</text>
+
+    <rect x="570" y="90" width="190" height="30" rx="6" fill="#fff" stroke="#b5415a" stroke-width="1"/>
+    <text x="665" y="105" text-anchor="middle" font-size="8" font-weight="800" fill="#b5415a">Croissance externe</text>
+    <text x="665" y="115" text-anchor="middle" font-size="6" fill="#7a6a58">Acquisitions, fusions</text>
+
+    <rect x="570" y="125" width="190" height="30" rx="6" fill="#fff" stroke="#7030a0" stroke-width="1"/>
+    <text x="665" y="140" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0">Croissance partenariale</text>
+    <text x="665" y="150" text-anchor="middle" font-size="6" fill="#7a6a58">Alliances, franchises, coopetition</text>
+
+    <!-- Fleches vers Integration verticale + Chaine de valeur -->
+    <line x1="140" y1="165" x2="260" y2="200" stroke="#7030a0" stroke-width="2" marker-end="url(#arA3)"/>
+    <line x1="405" y1="165" x2="400" y2="200" stroke="#7030a0" stroke-width="2" marker-end="url(#arA3)"/>
+    <line x1="665" y1="165" x2="540" y2="200" stroke="#7030a0" stroke-width="2" marker-end="url(#arA3)"/>
+
+    <!-- DAS -->
+    <rect x="220" y="200" width="360" height="45" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
+    <text x="400" y="218" text-anchor="middle" font-size="8" font-weight="800" fill="#946e00" letter-spacing="1">NOTION TRANSVERSALE</text>
+    <text x="400" y="236" text-anchor="middle" font-size="11" font-weight="900" fill="#1e1c18">DAS (Domaine d'Activite Strategique)</text>
+
+    <!-- Integration verticale -->
+    <rect x="120" y="260" width="260" height="35" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/>
+    <text x="250" y="278" text-anchor="middle" font-size="8" font-weight="800" fill="#2a69a8">Integration verticale</text>
+    <text x="250" y="290" text-anchor="middle" font-size="6" fill="#7a6a58">Amont (fournisseurs) ou aval (distribution)</text>
+
+    <!-- Chaine de valeur -->
+    <rect x="420" y="260" width="260" height="35" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/>
+    <text x="550" y="278" text-anchor="middle" font-size="8" font-weight="800" fill="#2a69a8">Chaine de valeur (Porter)</text>
+    <text x="550" y="290" text-anchor="middle" font-size="6" fill="#7a6a58">Activites primaires + de soutien = avantage</text>
+
+    <line x1="350" y1="245" x2="250" y2="260" stroke="#2a69a8" stroke-width="1" stroke-dasharray="3,2"/>
+    <line x1="450" y1="245" x2="550" y2="260" stroke="#2a69a8" stroke-width="1" stroke-dasharray="3,2"/>
+
+    <!-- Pastille MS -->
+    <g transform="translate(20, 320)">
+      <circle cx="0" cy="0" r="18" fill="#3d1a5c"/>
+      <text x="0" y="4" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#f5c842">MS</text>
+    </g>
+  </svg>
+</div>
+
+<!-- Detail chapitre 3 -->
+<div class="tree">
+  <div class="tree-card c-violet">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">Strategie de specialisation</div>
+    <div class="tree-def">L'entreprise concentre ses ressources sur <strong>un seul DAS</strong> pour en faire son coeur de metier. Avantage : expertise, economies d'echelle. Risque : dependance a un seul marche.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="specialisation">Specialisation</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">Strategie de diversification</div>
+    <div class="tree-def">L'entreprise developpe plusieurs DAS. <strong>Diversification concentrique</strong> (DAS lies, activites complementaires) ou <strong>diversification conglomerale</strong> (DAS sans lien).</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="diversif">Diversification</span>
+      <span class="tree-chip chip-jaune" data-tip="das">DAS</span>
+    </div>
+    <div class="tree-ex">Ankama (2023) a diversifie de l'animation vers les jeux video, la BD, les goodies.</div>
+  </div>
+
+  <div class="tree-card c-vert">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9733;</span></div>
+    <div class="tree-h">Strategie de differenciation</div>
+    <div class="tree-def">Offre percue comme unique par les clients. <strong>Differenciation par le haut = Sophistication</strong> (qualite, prix premium). <strong>Differenciation par le bas = Epuration</strong> (offre simplifiee, prix reduit).</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="diff_haut">Sophistication</span>
+      <span class="tree-chip chip-vert" data-tip="diff_bas">Epuration</span>
+    </div>
+    <div class="tree-ex">Topschuss se differencie par la qualite de ses equipements outdoor et son expertise conseil (sophistication).</div>
+  </div>
+
+  <div class="tree-card c-bleu">
+    <div class="tree-label">Notion <span class="freq">&#9733;&#9733;&#9733;&#9734;&#9734;</span></div>
+    <div class="tree-h">Domination par les couts</div>
+    <div class="tree-def">L'entreprise produit a un cout inferieur a ses concurrents grace aux <strong>economies d'echelle</strong>, l'effet d'experience ou l'optimisation des processus.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="dom_couts">Domination par les couts</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-rose">
+    <div class="tree-label">Notion <span class="freq">&#9733;&#9733;&#9733;&#9734;&#9734;</span></div>
+    <div class="tree-h">Focalisation / Niche</div>
+    <div class="tree-def">L'entreprise se concentre sur un <strong>segment precis</strong> de marche (geographique, demographique, ou par usage) et y applique differenciation ou domination par les couts.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-rose" data-tip="niche">Niche / Focalisation</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-jaune">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">DAS (Domaine d'Activite Strategique)</div>
+    <div class="tree-def">Sous-ensemble d'activites qui partagent les memes <strong>concurrents, clients et facteurs cles de succes</strong>. Chaque DAS dispose d'une strategie propre.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-jaune" data-tip="das">DAS</span>
+    </div>
+    <div class="tree-ex">Ankama a 3 DAS : Jeux video / BD / Animation.</div>
+  </div>
+
+  <div class="tree-card c-bleu">
+    <div class="tree-label">Notion <span class="freq">&#9733;&#9733;&#9733;&#9734;&#9734;</span></div>
+    <div class="tree-h">Integration verticale</div>
+    <div class="tree-def">L'entreprise prend le controle d'activites situees en <strong>amont</strong> (fournisseurs) ou en <strong>aval</strong> (distribution) de sa chaine de valeur.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="integ_vert">Integration verticale</span>
+    </div>
+    <div class="tree-ex">Ankama (2023) integre la production, l'edition et la distribution de ses BD.</div>
+  </div>
+
+  <div class="tree-card c-rose tree-full">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">Croissance interne / externe / partenariale</div>
+    <div class="tree-def"><strong>Interne</strong> : developpement par ses propres ressources (investissements, embauches). <strong>Externe</strong> : croissance par acquisitions, fusions. <strong>Partenariale</strong> : alliances, partenariats, franchises, coopetition.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-vert" data-tip="croiss_int">Interne</span>
+      <span class="tree-chip chip-rose" data-tip="croiss_ext">Externe</span>
+      <span class="tree-chip chip-violet" data-tip="croiss_part">Partenariale</span>
+    </div>
+  </div>
+
+  <div class="tree-card c-bleu">
+    <div class="tree-label">Notion <span class="freq">&#9733;&#9733;&#9733;&#9734;&#9734;</span></div>
+    <div class="tree-h">Chaine de valeur (Porter)</div>
+    <div class="tree-def">Decomposition des activites de l'entreprise en activites <strong>primaires</strong> (production, logistique, vente, SAV) et <strong>de soutien</strong> (RH, infrastructure, R&amp;D, achats) dont la coordination cree l'avantage concurrentiel.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-bleu" data-tip="chaine_valeur">Chaine de valeur</span>
+    </div>
+  </div>
+</div>
+
+<!-- Confusion Ch3 -->
+<div class="recup">
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Strategie globale</strong> (quel(s) DAS ?) &#8800; <strong>Strategie de domaine</strong> (comment se battre sur un DAS ?). Deux niveaux differents.</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Differenciation par le haut</strong> (= sophistication, prix premium) &#8800; <strong>Differenciation par le bas</strong> (= epuration, offre simplifiee).</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Diversification concentrique</strong> (DAS lies) &#8800; <strong>Diversification conglomerale</strong> (DAS sans lien).</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Croissance interne</strong> (on grandit seul) &#8800; <strong>Croissance externe</strong> (on achete / fusionne).</span>
+    </div>
+  </div>
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>"Globale = macro, Domaine = micro"</strong> : globale = combien de DAS, domaine = comment se battre dans chacun</div>
+    <div class="mnemo-item"><strong>"Sophistication = + cher, Epuration = - cher"</strong> : haut = premium, bas = simplifie</div>
+    <div class="mnemo-item"><strong>"3 modes de croissance : I-E-P"</strong> : Interne, Externe, Partenariale</div>
+    <div class="mnemo-item"><strong>"Niche = petit segment, grosse expertise"</strong> : on se concentre sur un marche precis</div>
+  </div>
+</div>
+</div>
+
+<!-- ================================================= -->
+<!-- CHAPITRE 4 — MODELE ECONOMIQUE                    -->
+<!-- ================================================= -->
+<div class="chapter-section">
+<div class="chapter-title"><span class="chapter-num">Chapitre 4</span> Modele economique</div>
+
+<div style="text-align:center;margin:12px 0 20px">
+  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#a09880;margin-bottom:10px">Comment l'entreprise cree, delivre et capture de la valeur ?</div>
+  <svg viewBox="0 0 800 260" width="100%" style="max-width:800px;font-family:'Nunito Sans',sans-serif;">
+    <defs>
+      <marker id="arA4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7030a0"/></marker>
+    </defs>
+
+    <!-- Titre central -->
+    <rect x="240" y="10" width="320" height="45" rx="12" fill="#f3eafc" stroke="#7030a0" stroke-width="2"/>
+    <text x="400" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#7030a0" letter-spacing="1">BUSINESS MODEL</text>
+    <text x="400" y="46" text-anchor="middle" font-size="12" font-weight="900" fill="#1e1c18">Modele economique</text>
+
+    <!-- Fleches vers les 3 blocs -->
+    <line x1="320" y1="55" x2="160" y2="85" stroke="#7030a0" stroke-width="2" marker-end="url(#arA4)"/>
+    <line x1="400" y1="55" x2="400" y2="85" stroke="#7030a0" stroke-width="2" marker-end="url(#arA4)"/>
+    <line x1="480" y1="55" x2="640" y2="85" stroke="#7030a0" stroke-width="2" marker-end="url(#arA4)"/>
+
+    <!-- CREER -->
+    <rect x="40" y="85" width="240" height="110" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/>
+    <text x="160" y="105" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c" letter-spacing="1">CREER DE LA VALEUR</text>
+
+    <rect x="55" y="115" width="105" height="30" rx="6" fill="#fff" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="107" y="130" text-anchor="middle" font-size="7" font-weight="800" fill="#1a7a3c">Proposition</text>
+    <text x="107" y="140" text-anchor="middle" font-size="7" font-weight="800" fill="#1a7a3c">de valeur</text>
+
+    <rect x="170" y="115" width="95" height="30" rx="6" fill="#fff" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="217" y="130" text-anchor="middle" font-size="7" font-weight="800" fill="#1a7a3c">Ressources</text>
+    <text x="217" y="140" text-anchor="middle" font-size="7" font-weight="800" fill="#1a7a3c">cles</text>
+
+    <rect x="55" y="150" width="105" height="28" rx="6" fill="#fff" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="107" y="168" text-anchor="middle" font-size="7" font-weight="800" fill="#1a7a3c">Activites cles</text>
+
+    <rect x="170" y="150" width="95" height="28" rx="6" fill="#fff" stroke="#1a7a3c" stroke-width="1"/>
+    <text x="217" y="168" text-anchor="middle" font-size="7" font-weight="800" fill="#1a7a3c">Partenaires</text>
+
+    <!-- DELIVRER -->
+    <rect x="300" y="85" width="200" height="110" rx="10" fill="#fef8e2" stroke="#946e00" stroke-width="2"/>
+    <text x="400" y="105" text-anchor="middle" font-size="8" font-weight="800" fill="#946e00" letter-spacing="1">DELIVRER</text>
+
+    <rect x="315" y="115" width="170" height="30" rx="6" fill="#fff" stroke="#946e00" stroke-width="1"/>
+    <text x="400" y="130" text-anchor="middle" font-size="7" font-weight="800" fill="#946e00">Segments clients</text>
+    <text x="400" y="140" text-anchor="middle" font-size="6" fill="#7a6a58">A qui on vend</text>
+
+    <rect x="315" y="150" width="170" height="28" rx="6" fill="#fff" stroke="#946e00" stroke-width="1"/>
+    <text x="400" y="168" text-anchor="middle" font-size="7" font-weight="800" fill="#946e00">Canaux de distribution</text>
+
+    <!-- CAPTURER -->
+    <rect x="520" y="85" width="240" height="110" rx="10" fill="#fdeef2" stroke="#b5415a" stroke-width="2"/>
+    <text x="640" y="105" text-anchor="middle" font-size="8" font-weight="800" fill="#b5415a" letter-spacing="1">CAPTURER LA VALEUR</text>
+
+    <rect x="535" y="115" width="105" height="30" rx="6" fill="#fff" stroke="#b5415a" stroke-width="1"/>
+    <text x="587" y="130" text-anchor="middle" font-size="7" font-weight="800" fill="#b5415a">Sources</text>
+    <text x="587" y="140" text-anchor="middle" font-size="7" font-weight="800" fill="#b5415a">de revenus</text>
+
+    <rect x="650" y="115" width="95" height="30" rx="6" fill="#fff" stroke="#b5415a" stroke-width="1"/>
+    <text x="697" y="130" text-anchor="middle" font-size="7" font-weight="800" fill="#b5415a">Structure</text>
+    <text x="697" y="140" text-anchor="middle" font-size="7" font-weight="800" fill="#b5415a">de couts</text>
+
+    <rect x="535" y="150" width="210" height="28" rx="6" fill="rgba(181,65,90,.06)" stroke="#b5415a" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="640" y="168" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">Revenus > Couts = modele viable</text>
+
+    <!-- Evolution -->
+    <rect x="200" y="215" width="400" height="35" rx="8" fill="rgba(112,48,160,.06)" stroke="#7030a0" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="400" y="230" text-anchor="middle" font-size="7" font-weight="800" fill="#7030a0">LE MODELE ECONOMIQUE PEUT EVOLUER</text>
+    <text x="400" y="243" text-anchor="middle" font-size="7" fill="#7a6a58">Numerisation, nouveaux canaux (abonnement, freemium), pivot strategique</text>
+
+    <!-- Pastille MS -->
+    <g transform="translate(20, 30)">
+      <circle cx="0" cy="0" r="18" fill="#3d1a5c"/>
+      <text x="0" y="4" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#f5c842">MS</text>
+    </g>
+  </svg>
+</div>
+
+<!-- Detail chapitre 4 -->
+<div class="tree">
+  <div class="tree-card c-violet tree-full">
+    <div class="tree-label">Notion cle <span class="freq">&#9733;&#9733;&#9733;&#9733;&#9734;</span></div>
+    <div class="tree-h">Modele economique (Business Model)</div>
+    <div class="tree-def">Description de la facon dont une organisation <strong>cree de la valeur</strong> pour ses clients et en capte une partie sous forme de revenus. Inclut : la proposition de valeur, les segments clients, les ressources cles, les activites cles, les canaux, les partenaires, la structure de couts et les sources de revenus.</div>
+    <div class="tree-sub">
+      <span class="tree-chip chip-violet" data-tip="business_model">Business Model</span>
+      <span class="tree-chip chip-vert" data-tip="prop_valeur">Proposition de valeur</span>
+      <span class="tree-chip chip-jaune" data-tip="segments">Segments clients</span>
+      <span class="tree-chip chip-rose" data-tip="revenus">Sources de revenus</span>
+    </div>
+    <div class="tree-ex">Bebe Serein (2025) cree de la valeur par des produits ecologiques (proposition) vendus en abonnement (modele de revenus).</div>
+  </div>
+</div>
+
+<!-- Confusion Ch4 -->
+<div class="recup">
+  <div class="confuse-box">
+    <div class="tree-label">Confusions classiques</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Modele economique</strong> (comment on gagne de l'argent) &#8800; <strong>Strategie</strong> (comment on se positionne face a la concurrence).</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Proposition de valeur</strong> (ce qu'on offre au client) &#8800; <strong>Valeur ajoutee</strong> (richesse creee au sens comptable, bloc C).</span>
+    </div>
+  </div>
+  <div class="mnemo-box">
+    <div class="tree-label">Trucs pour retenir</div>
+    <div class="mnemo-item"><strong>"BM = 3 questions"</strong> : Quoi (proposition de valeur) ? Pour qui (segments) ? Comment on gagne (revenus) ?</div>
+    <div class="mnemo-item"><strong>"Le BM n'est pas fige"</strong> : il peut evoluer avec le numerique, un pivot, de nouveaux canaux</div>
+  </div>
+</div>
+</div>
+
+<!-- ================================================= -->
+<!-- CHAINE LOGIQUE GLOBALE                             -->
+<!-- ================================================= -->
+<div class="chain" style="margin-bottom:16px">
+  <div class="tree-label">Chaine logique du Bloc A</div>
+  <div class="chain-flow">
+    <span class="chain-node">Finalites</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">Parties prenantes</span>
+    <span class="chain-arrow">|</span>
+    <span class="chain-node">Diag. interne</span>
+    <span class="chain-arrow">+</span>
+    <span class="chain-node">Diag. externe</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">SWOT</span>
+    <span class="chain-arrow">|</span>
+    <span class="chain-node">Strat. globale</span>
+    <span class="chain-arrow">+</span>
+    <span class="chain-node">Strat. domaine</span>
+    <span class="chain-arrow">&#8594;</span>
+    <span class="chain-node">Mode croissance</span>
+    <span class="chain-arrow">|</span>
+    <span class="chain-node">Business Model</span>
+  </div>
+</div>
+
+<!-- ================================================= -->
+<!-- PARTIE RECUPERER                                    -->
+<!-- ================================================= -->
+<div class="recup">
+
+  <!-- Confusions globales -->
+  <div class="confuse-box recup-full">
+    <div class="tree-label">Confusions classiques au Bac — Bloc A complet</div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Actionnaires</strong> = parties prenantes <strong>internes</strong> (ils detiennent le capital) &#8800; <strong>Clients</strong> = toujours <strong>externes</strong>.</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>PESTEL</strong> (environnement general, macro) &#8800; <strong>Porter</strong> (environnement concurrentiel, meso). Deux niveaux d'analyse differents.</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Strategie globale</strong> (quel(s) DAS ?) &#8800; <strong>Strategie de domaine</strong> (comment se battre sur chaque DAS ?).</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Sophistication</strong> (differenciation par le haut, prix premium) &#8800; <strong>Epuration</strong> (differenciation par le bas, offre simplifiee).</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;</span>
+      <span class="confuse-text"><strong>Proposition de valeur</strong> (ce qu'on offre) &#8800; <strong>Valeur ajoutee</strong> (richesse creee comptablement).</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Frequences BAC -->
+<div class="recup">
+  <div class="freq-box recup-full">
+    <div class="tree-label" style="margin-bottom:8px">Frequence au Bac (sujets analyses)</div>
+
+    <div class="freq-row">
+      <span class="freq-notion">Diagnostic interne</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Competences distinctives</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Avantage concurrentiel</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Differenciation</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f5"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Finalite</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Parties prenantes</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">PESTEL</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Specialisation / Diversification</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">DAS</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Croissance (int./ext./part.)</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Modele economique</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f4"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">5 forces de Porter</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Domination par les couts</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Focalisation / Niche</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Integration verticale</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+    </div>
+    <div class="freq-row">
+      <span class="freq-notion">Chaine de valeur</span>
+      <div class="freq-bar-track"><div class="freq-bar-fill f3"></div></div>
+      <span class="freq-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
+  Revizo  ·  Memo Bloc A  ·  SDGN STMG  ·  Avril 2026  ·  Sources : programme STMG, annales post-reforme
+</div>
+
+</div>
+
+<!-- TOOLTIP OVERLAY -->
+<div class="tip-overlay" id="tipOverlay" onclick="closeTip()">
+  <div class="tip-card" onclick="event.stopPropagation()">
+    <button class="tip-close" onclick="closeTip()">&times;</button>
+    <div class="tip-term" id="tipTerm"></div>
+    <div class="tip-def" id="tipDef"></div>
+    <div class="tip-example" id="tipEx"></div>
+    <div class="tip-bac" id="tipBac"></div>
+  </div>
+</div>
+
+<script>
+const TIPS = {
+  finalite: {
+    term: "Finalite",
+    def: "Raison d'etre d'une organisation. Pour une entreprise privee : creer de la valeur (profit). Pour une organisation de l'ESS (association, SCOP) : finalite non lucrative, interet general. Les finalites peuvent evoluer dans le temps.",
+    ex: "Topschuss (2024) recherche la croissance commerciale tout en affichant des engagements environnementaux (finalite sociale).",
+    bac: "★★★★☆ — Souvent demande en introduction du Dossier 1"
+  },
+  ess: {
+    term: "Economie Sociale et Solidaire (ESS)",
+    def: "Ensemble d'organisations (associations, cooperatives, mutuelles, SCOP) dont la finalite est l'interet general et non le profit. Elles reinvestissent leurs excedents dans leur mission sociale.",
+    ex: "Une SCOP (societe cooperative) est detenue par ses salaries qui partagent les decisions et les benefices.",
+    bac: "★★★☆☆ — Utile pour differencier les types de finalites"
+  },
+  pp: {
+    term: "Parties prenantes",
+    def: "Tout acteur ayant un interet dans l'activite de l'organisation. Elles se divisent en internes (salaries, dirigeants, actionnaires) et externes (clients, fournisseurs, Etat, societe civile). Leurs attentes sont parfois divergentes, ce qui cree des tensions que l'organisation doit gerer.",
+    ex: "Dans le sujet YBRA (2024), les chauffeurs et les clients sont des parties prenantes aux attentes differentes.",
+    bac: "★★★★☆ — Identifier les PP et leurs attentes, montrer les tensions"
+  },
+  pp_internes: {
+    term: "Parties prenantes internes",
+    def: "Acteurs situes a l'interieur de l'organisation : salaries (attentes de remuneration, conditions de travail), dirigeants (attentes de performance), actionnaires (attentes de dividendes, rentabilite). Attention : les actionnaires sont bien des PP internes car ils detiennent le capital.",
+    ex: "Les salaries d'une entreprise attendent un salaire juste et de bonnes conditions de travail. Les actionnaires attendent un retour sur investissement.",
+    bac: "★★★★☆"
+  },
+  pp_externes: {
+    term: "Parties prenantes externes",
+    def: "Acteurs situes a l'exterieur de l'organisation : clients (qualite, prix), fournisseurs (paiement, volume), Etat (impots, respect des lois), societe civile (impact social et environnemental), associations, banques.",
+    ex: "Les clients de Topschuss attendent des produits outdoor de qualite a un prix raisonnable.",
+    bac: "★★★★☆"
+  },
+  diag_interne: {
+    term: "Diagnostic interne",
+    def: "Analyse des forces et faiblesses de l'organisation : ressources humaines, financieres, technologiques, immaterielles (marque, reputation). Permet d'identifier les competences distinctives qui fondent l'avantage concurrentiel.",
+    ex: "Une entreprise avec une marque forte (force) mais des equipements vieillissants (faiblesse).",
+    bac: "★★★★★ — Identifier les forces de l'organisation, reperer les ressources cles"
+  },
+  comp_dist: {
+    term: "Competences distinctives",
+    def: "Ressources et savoir-faire rares, difficiles a imiter et createurs de valeur, qui fondent l'avantage concurrentiel. Les 3 criteres a verifier : rarete, inimitabilite, creation de valeur.",
+    ex: "Ankama (2023) possede une competence distinctive dans la creation de personnages originaux utilises sur tous ses supports (jeux, BD, animation).",
+    bac: "★★★★★ — Montrer que X possede une competence distinctive"
+  },
+  avantage_conc: {
+    term: "Avantage concurrentiel",
+    def: "Position superieure durable d'une entreprise face a ses concurrents, fondee sur ses competences distinctives. Peut etre un cout plus faible, une offre percue comme unique, ou une relation client superieure.",
+    ex: "Apple dispose d'un avantage concurrentiel fonde sur le design et l'ecosysteme logiciel (differenciation par le haut).",
+    bac: "★★★★★ — Montrer que X dispose d'un avantage concurrentiel"
+  },
+  pestel: {
+    term: "PESTEL",
+    def: "Analyse de l'environnement general (macro) en 6 dimensions : Politique (stabilite, reglementation), Economique (croissance, taux), Socioculturel (modes, demographe), Technologique (innovations), Environnemental (ecologie), Legal (lois, normes). Identifie les opportunites et menaces.",
+    ex: "OPC (2024 CE) : l'essor des preoccupations ecologiques (facteur E) est une opportunite pour les vetements eco-responsables.",
+    bac: "★★★★☆ — Identifier les opportunites et menaces"
+  },
+  porter: {
+    term: "5 forces de Porter",
+    def: "Modele d'analyse de l'environnement concurrentiel (meso) : intensite de la concurrence directe, menace des entrants potentiels, menace des produits de substitution, pouvoir de negociation des fournisseurs, pouvoir de negociation des clients. Plus les forces sont intenses, plus le secteur est difficile.",
+    ex: "Sur le marche du streaming video, la concurrence directe est tres forte (Netflix, Disney+, Amazon...) et la menace de substitution elevee (jeux video, reseaux sociaux).",
+    bac: "★★★☆☆ — Analyser la pression concurrentielle"
+  },
+  specialisation: {
+    term: "Strategie de specialisation",
+    def: "L'entreprise concentre ses ressources sur un seul domaine d'activite strategique (DAS) pour en faire son coeur de metier. Avantage : expertise, economies d'echelle. Risque : dependance a un seul marche.",
+    ex: "Un artisan boulanger qui ne fait que du pain artisanal est dans une strategie de specialisation.",
+    bac: "★★★★☆ — Caracteriser la strategie de developpement choisie"
+  },
+  diversif: {
+    term: "Strategie de diversification",
+    def: "L'entreprise developpe plusieurs DAS distincts. Diversification concentrique : DAS lies, activites complementaires. Diversification conglomerale : DAS sans aucun lien entre eux.",
+    ex: "Ankama (2023) a diversifie de l'animation vers les jeux video, la BD, les goodies (diversification concentrique car les DAS partagent le meme univers creatif).",
+    bac: "★★★★☆ — Caracteriser la strategie"
+  },
+  das: {
+    term: "DAS (Domaine d'Activite Strategique)",
+    def: "Sous-ensemble d'activites d'une entreprise qui partagent les memes concurrents, clients et facteurs cles de succes. Chaque DAS dispose d'une strategie propre (strategie de domaine).",
+    ex: "Ankama a 3 DAS : Jeux video / BD / Animation. Chaque DAS a ses propres concurrents et son propre marche.",
+    bac: "★★★★☆ — Identifier les DAS, presenter le portefeuille d'activites"
+  },
+  diff_haut: {
+    term: "Differenciation par le haut (Sophistication)",
+    def: "L'entreprise propose une offre percue comme superieure par les clients (qualite, design, image de marque, innovation), justifiant un prix premium. Le surcout est compense par la valeur percue.",
+    ex: "Topschuss se differencie par la qualite de ses equipements outdoor et son expertise conseil (sophistication).",
+    bac: "★★★★★ — Justifier la strategie concurrentielle"
+  },
+  diff_bas: {
+    term: "Differenciation par le bas (Epuration)",
+    def: "L'entreprise propose une offre simplifiee, depourvue de certains attributs, a un prix reduit. L'objectif est d'etre plus accessible que les concurrents en retirant des elements non essentiels.",
+    ex: "Les compagnies aeriennes low-cost (Ryanair) pratiquent l'epuration : pas de repas, pas de bagage en soute, mais un prix tres bas.",
+    bac: "★★★★★"
+  },
+  dom_couts: {
+    term: "Domination par les couts",
+    def: "L'entreprise produit a un cout inferieur a ses concurrents grace aux economies d'echelle, l'effet d'experience ou l'optimisation des processus. Elle peut alors vendre au meme prix (marge superieure) ou moins cher (volume superieur).",
+    ex: "Amazon domine par les couts grace a ses entrepots automatises et ses volumes colossaux.",
+    bac: "★★★☆☆ — Identifier et justifier la strategie de domaine"
+  },
+  niche: {
+    term: "Focalisation / Niche",
+    def: "L'entreprise se concentre sur un segment precis de marche (geographique, demographique, ou par usage) et y applique soit la differenciation, soit la domination par les couts. L'objectif est de devenir incontournable sur ce segment.",
+    ex: "Un fabricant de chaussures de danse classique sur mesure se positionne sur une niche : petit segment, forte expertise.",
+    bac: "★★★☆☆ — Identifier la strategie"
+  },
+  integ_vert: {
+    term: "Integration verticale",
+    def: "L'entreprise prend le controle d'activites situees en amont (fournisseurs) ou en aval (distribution) de sa chaine de valeur. Permet de maitriser les couts, la qualite, et de capter plus de valeur.",
+    ex: "Ankama (2023) integre la production, l'edition et la distribution de ses BD (integration aval).",
+    bac: "★★★☆☆ — Caracteriser la strategie"
+  },
+  croiss_int: {
+    term: "Croissance interne",
+    def: "Developpement par ses propres ressources : investissements, embauches, ouverture de nouveaux points de vente, lancement de nouveaux produits. Plus lente mais plus maitrisee.",
+    ex: "Une boulangerie qui ouvre un deuxieme point de vente avec ses propres fonds pratique la croissance interne.",
+    bac: "★★★★☆ — Identifier le mode de developpement"
+  },
+  croiss_ext: {
+    term: "Croissance externe",
+    def: "Croissance par acquisitions ou fusions avec d'autres entreprises. Plus rapide mais plus risquee (integration, culture d'entreprise).",
+    ex: "LVMH rachete Tiffany pour se renforcer sur le marche de la joaillerie (croissance externe).",
+    bac: "★★★★☆"
+  },
+  croiss_part: {
+    term: "Croissance partenariale",
+    def: "Alliances, partenariats, franchises, coopetition (cooperation entre concurrents). Permet de partager les risques et les ressources sans fusion.",
+    ex: "McDonald's se developpe par la franchise : les franchises investissent et gerent les restaurants, McDonald's fournit la marque et le savoir-faire.",
+    bac: "★★★★☆"
+  },
+  chaine_valeur: {
+    term: "Chaine de valeur (Porter)",
+    def: "Decomposition des activites de l'entreprise en activites primaires (logistique interne, production, logistique externe, marketing/vente, SAV) et de soutien (infrastructure, RH, R&D, achats). La coordination de ces activites cree l'avantage concurrentiel.",
+    ex: "Pour Ankama, la R&D (creation de personnages) est une activite de soutien essentielle qui alimente tous les DAS.",
+    bac: "★★★☆☆ — Montrer comment X cree de la valeur"
+  },
+  business_model: {
+    term: "Modele economique (Business Model)",
+    def: "Description de la facon dont une organisation cree de la valeur pour ses clients et en capte une partie sous forme de revenus. Les 9 blocs du Business Model Canvas : proposition de valeur, segments clients, canaux, relations clients, sources de revenus, ressources cles, activites cles, partenaires cles, structure de couts.",
+    ex: "Bebe Serein (2025) cree de la valeur par des produits ecologiques (proposition) vendus en abonnement (modele de revenus).",
+    bac: "★★★★☆ — Presenter le modele economique, montrer qu'il evolue"
+  },
+  prop_valeur: {
+    term: "Proposition de valeur",
+    def: "Ce que l'entreprise offre a ses clients pour repondre a leurs besoins : la combinaison de produits, services, experience qui rend l'offre attractive. C'est le coeur du modele economique.",
+    ex: "La proposition de valeur de Netflix : un catalogue illimite de films et series, accessible partout, sans engagement, a un prix mensuel fixe.",
+    bac: "★★★★☆"
+  },
+  segments: {
+    term: "Segments clients",
+    def: "Les groupes de clients que l'entreprise cible avec sa proposition de valeur. Chaque segment a des besoins, des comportements d'achat et une sensibilite au prix differents.",
+    ex: "Topschuss cible les sportifs outdoor exigeants (segment premium) et pas le grand public (positionnement niche).",
+    bac: "★★★☆☆"
+  },
+  revenus: {
+    term: "Sources de revenus",
+    def: "La facon dont l'entreprise gagne de l'argent : vente directe, abonnement, commission, freemium, licence, publicite... Le modele de revenus doit etre coherent avec la proposition de valeur.",
+    ex: "Spotify utilise un modele freemium : version gratuite avec publicite + version payante sans publicite (premium).",
+    bac: "★★★★☆"
+  }
+};
+
+// Open tip
+document.querySelectorAll('[data-tip]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.getAttribute('data-tip');
+    const tip = TIPS[key];
+    if (!tip) return;
+    document.getElementById('tipTerm').textContent = tip.term;
+    document.getElementById('tipDef').textContent = tip.def;
+    document.getElementById('tipEx').textContent = tip.ex;
+    document.getElementById('tipBac').textContent = tip.bac;
+    document.getElementById('tipOverlay').classList.add('show');
+  });
+});
+
+function closeTip() {
+  document.getElementById('tipOverlay').classList.remove('show');
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTip(); });
+</script>
+
+</body>
+</html>
