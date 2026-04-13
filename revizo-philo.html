@@ -73,12 +73,13 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 .tension-row { margin-bottom: 14px; }
 .tension-row:last-child { margin-bottom: 0; }
 .tension-name { font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 800; color: var(--texte); margin-bottom: 6px; }
-.tension-bar { display: flex; align-items: center; gap: 10px; }
-.tension-bar .pole { font-size: 0.78rem; font-weight: 600; color: var(--gris); white-space: nowrap; min-width: 80px; }
+.tension-bar { display: flex; align-items: center; gap: 12px; max-width: 500px; margin: 0 auto; }
+.tension-bar .pole { font-size: 0.92rem; font-weight: 700; color: var(--texte); white-space: nowrap; min-width: 100px; }
 .tension-bar .pole:last-child { text-align: right; }
 .tension-bar input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 6px; background: #c8c0b4; border-radius: 3px; outline: none; }
-.tension-bar input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: #1e1c18; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); cursor: grab; }
-.tension-bar input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; background: #1e1c18; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); cursor: grab; border: none; }
+.tension-bar input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; background: #1e1c18; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); cursor: grab; }
+.tension-bar input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; background: #1e1c18; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); cursor: grab; border: none; }
+.tension-indication { font-size: 0.78rem; color: #7a6a58; text-align: center; margin-top: 6px; font-style: italic; }
 .tension-hint { font-size: 0.72rem; color: var(--gris); text-align: center; margin-top: 10px; font-style: italic; }
 
 /* Popup repère */
@@ -180,6 +181,7 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
             <span class="pole">Tout est déterminé</span>
           </div>
         </div>
+        <div class="tension-indication">La plupart des textes du Bac défendent la liberté par la raison</div>
         <div class="tension-hint">Chaque notion est une tension entre deux pôles. En explication de texte, cherche quel côté l'auteur privilégie.</div>
       </div>
       <div class="these"><strong>La thèse à retenir :</strong> Oui. La vraie liberté n'est pas de faire n'importe quoi. C'est d'agir selon la raison.</div>
@@ -211,6 +213,7 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
             <span class="pole">La raison seule atteint le vrai</span>
           </div>
         </div>
+        <div class="tension-indication">Les auteurs au programme privilégient la raison sur les sens</div>
         <div class="tension-hint">Chaque notion est une tension entre deux pôles. En explication de texte, cherche quel côté l'auteur privilégie.</div>
       </div>
 <div class="these"><strong>La thèse à retenir :</strong> Non. La vérité exige souvent de dépasser les apparences et l'opinion commune.</div>
@@ -245,6 +248,7 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
             <span class="pole">Équité selon les situations</span>
           </div>
         </div>
+        <div class="tension-indication">Aristote et la plupart des textes penchent vers l'équité</div>
         <div class="tension-hint">Chaque notion est une tension entre deux pôles. En explication de texte, cherche quel côté l'auteur privilégie.</div>
       </div>
 <div class="these"><strong>La thèse à retenir :</strong> Non. La vraie justice, c'est l'équité, pas l'égalité mathématique.</div>
@@ -282,6 +286,7 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
             <span class="pole">Aliénation de l'homme</span>
           </div>
         </div>
+        <div class="tension-indication">Tension vraiment ouverte — ça dépend du texte</div>
         <div class="tension-hint">Chaque notion est une tension entre deux pôles. En explication de texte, cherche quel côté l'auteur privilégie.</div>
       </div>
 <div class="these"><strong>La thèse à retenir :</strong> La technique est d'abord un moyen pour l'homme de maîtriser une nature parfois hostile.</div>
@@ -312,6 +317,7 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
             <span class="pole">Création originale</span>
           </div>
         </div>
+        <div class="tension-indication">Les textes valorisent souvent la création sur l'imitation</div>
         <div class="tension-row">
           <div class="tension-bar">
             <span class="pole">Le beau (gratuit)</span>
@@ -319,6 +325,7 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
             <span class="pole">L'utile (engagé)</span>
           </div>
         </div>
+        <div class="tension-indication">Débat ouvert — certains textes défendent l'art engagé</div>
         <div class="tension-hint">Chaque notion est une tension entre deux pôles. En explication de texte, cherche quel côté l'auteur privilégie.</div>
       </div>
 <div class="these"><strong>Thèse 1 :</strong> Non. L'artisan produit un objet utile et reproductible. L'artiste crée une œuvre unique irréductible à une technique.</div>
@@ -354,6 +361,7 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
             <span class="pole">Ce qui est acquis</span>
           </div>
         </div>
+        <div class="tension-indication">Débat équilibré — tout dépend de l'auteur</div>
         <div class="tension-hint">Chaque notion est une tension entre deux pôles. En explication de texte, cherche quel côté l'auteur privilégie.</div>
       </div>
 <div class="these"><strong>La thèse à retenir :</strong> Non. Le naturel ne garantit pas le bien.</div>
@@ -388,6 +396,7 @@ tr:nth-child(even) td { background: rgba(30,28,24,.025); }
             <span class="pole">La raison prime</span>
           </div>
         </div>
+        <div class="tension-indication">Les textes philo penchent souvent vers la raison</div>
         <div class="tension-hint">Chaque notion est une tension entre deux pôles. En explication de texte, cherche quel côté l'auteur privilégie.</div>
       </div>
 <div class="these"><strong>La thèse à retenir :</strong> La religion répond à une angoisse profonde face à la mort et à la fragilité de la condition humaine.</div>
