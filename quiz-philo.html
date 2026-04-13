@@ -29,8 +29,8 @@ body { font-family: 'Inter', sans-serif; background: #f0ede6; color: #1e1c18; mi
 .f-notion.on { background: #2563a8; color: #fff; border-color: #2563a8; }
 .f-repere    { background: #e8f5ee; color: #2d7a4f; border-color: #e8f5ee; }
 .f-repere.on { background: #2d7a4f; color: #fff; border-color: #2d7a4f; }
-.f-appli    { background: #fdf7e3; color: #946e00; border-color: #fdf7e3; }
-.f-appli.on { background: #946e00; color: #fff; border-color: #946e00; }
+.f-methode    { background: #2c2920; color: #f5c842; border-color: #2c2920; }
+.f-methode.on { background: #f5c842; color: #1e1c18; border-color: #f5c842; }
 
 /* PROGRESS */
 .progress-wrap { margin-bottom: 20px; }
@@ -43,7 +43,7 @@ body { font-family: 'Inter', sans-serif; background: #f0ede6; color: #1e1c18; mi
 .qcard-cat { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 3px 10px; border-radius: 12px; display: inline-block; margin-bottom: 14px; }
 .cat-notion  { background: #e8f0fb; color: #2563a8; }
 .cat-repere  { background: #e8f5ee; color: #2d7a4f; }
-.cat-appli   { background: #fdf7e3; color: #946e00; }
+.cat-methode { background: #2c2920; color: #f5c842; }
 .qcard-text { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.15rem; line-height: 1.45; color: #1e1c18; margin-bottom: 22px; }
 
 /* CHOICES */
@@ -113,15 +113,15 @@ body { font-family: 'Inter', sans-serif; background: #f0ede6; color: #1e1c18; mi
   <div class="q-header">
     <div class="q-badge">Philosophie · Quiz</div>
     <div class="q-title">Quiz de compréhension</div>
-    <div class="q-sub" id="sub-count">20 questions · Notions + Repères + Cas concrets</div>
+    <div class="q-sub" id="sub-count">30 questions · Notions · Repères · Méthode</div>
   </div>
 
   <!-- FILTRES -->
   <div class="filters">
-    <button class="f-btn f-all on" onclick="setFilter('all', this)">Tout (20)</button>
-    <button class="f-btn f-notion"  onclick="setFilter('notion', this)">Notions (8)</button>
-    <button class="f-btn f-repere"  onclick="setFilter('repere', this)">Repères (8)</button>
-    <button class="f-btn f-appli"   onclick="setFilter('appli', this)">Cas concrets (4)</button>
+    <button class="f-btn f-all on"   onclick="setFilter('all', this)">Tout (30)</button>
+    <button class="f-btn f-notion"   onclick="setFilter('notion', this)">Notions (14)</button>
+    <button class="f-btn f-repere"   onclick="setFilter('repere', this)">Repères (12)</button>
+    <button class="f-btn f-methode"  onclick="setFilter('methode', this)">Méthode (4)</button>
   </div>
 
   <!-- PROGRESS -->
@@ -161,251 +161,41 @@ body { font-family: 'Inter', sans-serif; background: #f0ede6; color: #1e1c18; mi
 <script>
 const ALL_QUESTIONS = [
 
-  // ===== NOTIONS (8) =====
-  {
-    cat: 'notion',
-    q: 'Pour Spinoza, le citoyen qui obéit aux lois est-il libre ?',
-    choices: [
-      'Non — obéir, c\'est toujours être contraint',
-      'Oui, s\'il a lui-même voté ces lois',
-      'Oui, si les lois sont fondées sur la raison',
-      'Non — la vraie liberté c\'est faire ce qu\'on veut'
-    ],
-    correct: 2,
-    explain: 'Spinoza distingue la contrainte brute (esclave) de l\'obéissance raisonnée (citoyen). Agir selon une loi juste qu\'on comprend et approuve, c\'est exercer sa raison — c\'est donc être libre. La liberté n\'est pas l\'absence de règles, c\'est l\'adhésion à des règles raisonnables.'
-  },
-  {
-    cat: 'notion',
-    q: 'Selon Platon, pourquoi nos sens ne nous donnent-ils pas accès à la vérité ?',
-    choices: [
-      'Parce qu\'ils varient d\'une personne à l\'autre',
-      'Parce qu\'ils donnent accès aux apparences, pas à la réalité profonde',
-      'Parce qu\'ils sont trop lents pour percevoir tout ce qui se passe',
-      'Parce que la vérité est trop complexe pour être perçue'
-    ],
-    correct: 1,
-    explain: 'L\'allégorie de la caverne illustre cela : les prisonniers croient que les ombres sont la réalité — c\'est tout ce que leurs sens leur montrent. Il faut sortir de la caverne, c\'est-à-dire utiliser la raison, pour accéder à la réalité véritable. Voir ≠ savoir.'
-  },
-  {
-    cat: 'notion',
-    q: 'Aristote dit que la vraie justice c\'est l\'équité. Qu\'est-ce que ça signifie concrètement ?',
-    choices: [
-      'Donner exactement la même chose à tout le monde',
-      'Laisser les gens décider eux-mêmes ce qui est juste',
-      'Favoriser les plus pauvres pour compenser les inégalités',
-      'Adapter le traitement selon les besoins et la situation de chacun'
-    ],
-    correct: 3,
-    explain: 'L\'équité selon Aristote, c\'est tenir compte des différences réelles entre les personnes pour produire une justice réelle. Traiter de façon identique des personnes dans des situations très différentes, c\'est une inégalité déguisée en égalité — et donc une injustice.'
-  },
-  {
-    cat: 'notion',
-    q: 'Selon Mill, pourquoi la technique est-elle nécessaire à l\'être humain ?',
-    choices: [
-      'Par désir de confort et de progrès',
-      'Pour dominer la nature et en faire une ressource illimitée',
-      'Parce que la nature est indifférente voire hostile à l\'homme',
-      'Parce que l\'homme est naturellement paresseux'
-    ],
-    correct: 2,
-    explain: 'Mill montre que la nature n\'est pas bienveillante : tempêtes, maladies, prédateurs, catastrophes. Elle est indifférente à l\'être humain. La technique est une réponse à cette hostilité : digues, vaccins, paratonnerres. Ce n\'est pas une trahison de la nature, c\'est une correction de ses dangers.'
-  },
-  {
-    cat: 'notion',
-    q: 'Qu\'est-ce qui distingue fondamentalement une œuvre d\'art d\'un objet artisanal ?',
-    choices: [
-      'Le prix de vente sur le marché',
-      'Le temps mis à le créer',
-      'L\'œuvre d\'art est unique et irréductible à une technique',
-      'La matière utilisée pour le fabriquer'
-    ],
-    correct: 2,
-    explain: 'N\'importe quel bon artisan peut reproduire une chaise identique — la technique suffit. Une œuvre d\'art porte la marque singulière de son créateur : son regard, sa vision, son intention. Elle ne se "refait" pas. C\'est ce que montrent les deux photographes avec le même appareil qui font des photos radicalement différentes.'
-  },
-  {
-    cat: 'notion',
-    q: '"C\'est naturel donc c\'est bon." Que faut-il penser de cet argument ?',
-    choices: [
-      'C\'est vrai — la nature est toujours bienveillante',
-      'C\'est vrai seulement pour les aliments et les plantes',
-      'C\'est un argument à questionner — le naturel ne garantit pas le bien',
-      'C\'est vrai si c\'est confirmé par la science moderne'
-    ],
-    correct: 2,
-    explain: 'La douleur est naturelle — elle est parfois insupportable. Un champignon vénéneux est naturel — il peut tuer. La morphine est artificielle — elle soulage. Le "sophisme naturaliste" consiste à confondre ce qui est naturel avec ce qui est bien. Ce sont deux choses distinctes.'
-  },
-  {
-    cat: 'notion',
-    q: 'Selon Freud, à quoi répond le besoin de religion chez l\'être humain ?',
-    choices: [
-      'Au besoin d\'expliquer rationnellement les phénomènes naturels',
-      'À une tradition culturelle transmise par l\'éducation',
-      'À l\'angoisse face à la mort et à la fragilité de la condition humaine',
-      'Au besoin de règles morales pour organiser la société'
-    ],
-    correct: 2,
-    explain: 'Pour Freud, la religion est une "illusion consolatrice". Face à la mort, à la souffrance et à l\'impuissance, l\'homme réactive le besoin de protection qu\'il avait enfant. Il s\'invente une figure divine toute-puissante. La religion console — mais ce n\'est pas une connaissance du monde, c\'est un mécanisme psychologique de défense.'
-  },
-  {
-    cat: 'notion',
-    q: 'Rousseau pense que l\'homme naturel est bon. Cela signifie-t-il que tout ce qui est naturel est bien ?',
-    choices: [
-      'Oui — si l\'homme naturel est bon, la nature entière l\'est aussi',
-      'Non — dire que l\'homme naturel est bon ne signifie pas que la nature est toujours bienveillante',
-      'Oui — Rousseau le dit explicitement dans ses œuvres',
-      'Non — Rousseau pense au contraire que la nature est dangereuse'
-    ],
-    correct: 1,
-    explain: 'Rousseau affirme que l\'état de nature de l\'homme était bon — avant que la société ne le corrompe. Mais cela ne veut pas dire que tout ce qui est naturel est bien. Les maladies, les prédateurs, les catastrophes sont naturels — ils ne sont pas bons pour autant. "Naturel" et "bon" sont deux choses différentes.'
-  },
+  // ===== NOTIONS (14) =====
+  { cat:'notion', q:'Un détenu accepte des règles strictes pour sortir en liberté conditionnelle. Cet exemple montre que :', choices:["La vraie liberté c'est l'absence de toute règle","On peut être libre en acceptant des règles qu'on comprend","La justice est toujours arbitraire","L'obligation et la contrainte sont identiques"], correct:1, explain:"Spinoza montre que la liberté véritable n'est pas de faire n'importe quoi, mais d'obéir à des règles fondées sur la raison. Le détenu qui accepte les conditions de sa liberté conditionnelle en est l'exemple parfait : c'est en acceptant les règles qu'il gagne sa liberté." },
+  { cat:'notion', q:"Si la liberté n'existe pas et que tout est déterminé à l'avance, quelle conséquence s'ensuit directement ?", choices:["La technique devient inutile","La responsabilité morale n'a plus de sens","La religion disparaît","La vérité devient relative"], correct:1, explain:"Si tout est déterminé — si on ne peut pas faire autrement que ce qu'on fait — on ne peut pas tenir quelqu'un pour responsable de ses actes. Pas de liberté = pas de responsabilité = pas de justice possible." },
+  { cat:'notion', q:"Les médecins croyaient que les maladies venaient de 'mauvais airs' — c'était faux. Que montre cet exemple ?", choices:["Que les médecins anciens étaient incompétents","Que l'observation quotidienne peut produire des croyances fausses","Que la science a toujours raison","Que les sens sont fiables quand on les entraîne"], correct:1, explain:"Ce n'est pas une question de compétence. Des gens instruits, qui observaient soigneusement, se trompaient quand même — parce que l'observation seule ne suffit pas. La vérité demande un effort de la raison et des outils (comme le microscope) qui dépassent les sens." },
+  { cat:'notion', q:"Si toutes les opinions se valent et qu'il n'y a pas de vérité objective, qu'est-ce qui devient impossible ?", choices:["Distinguer une théorie scientifique d'une rumeur","Pratiquer une religion","Créer des œuvres d'art","Vivre en société"], correct:0, explain:"Si toutes les opinions se valent, la théorie de l'évolution ne vaut pas plus qu'une rumeur inventée. La science repose sur l'idée qu'il existe des vérités démontrables — sans ça, tout s'effondre." },
+  { cat:'notion', q:"Aux Jeux paralympiques, les athlètes ne concourent pas tous dans les mêmes catégories. C'est un exemple de :", choices:["Discrimination injuste","Égalité stricte","Équité","Légalité sans légitimité"], correct:2, explain:"L'équité consiste à adapter le traitement selon les situations différentes. Imposer les mêmes conditions à tous les athlètes paralympiques serait une égalité stricte — mais ce serait injuste. L'équité est ici plus juste que l'égalité." },
+  { cat:'notion', q:"Si l'arbitraire remplace le droit et qu'il n'y a plus de justice, qu'est-ce qui disparaît ?", choices:["La technique","La possibilité de vivre ensemble","La religion","La vérité"], correct:1, explain:"La justice est le fondement du lien social. Sans elle, chacun agit selon son intérêt immédiat, la force remplace le droit, et la vie en commun devient impossible." },
+  { cat:'notion', q:"Un bébé prématuré survit grâce à une couveuse. Que montre cet exemple ?", choices:["Que la nature est bienveillante","Que la technique trahit la nature","Que la technique corrige ce que la nature n'a pas pu finir","Que l'artificiel est toujours supérieur au naturel"], correct:2, explain:"Mill montre que la nature est indifférente à l'homme — elle n'est ni bienveillante ni malveillante. La technique ne trahit pas la nature : elle complète ce qu'elle n'a pas achevé. La couveuse ne remplace pas la nature, elle la prolonge." },
+  { cat:'notion', q:"Si on ne peut plus distinguer technique libératrice et technique aliénante, quel problème se pose ?", choices:["On ne peut plus juger si un progrès est bon ou mauvais pour l'humanité","La religion perd son sens","La justice devient impossible","La vérité disparaît"], correct:0, explain:"La technique n'est pas bonne ou mauvaise en soi — c'est son usage qui compte. Si on perd la capacité de distinguer ce qui libère de ce qui asservit, on ne peut plus exercer de jugement critique sur le progrès." },
+  { cat:'notion', q:"Deux photographes, même appareil, même rue. L'un fait une photo banale, l'autre une photo d'expo. Que montre cet exemple ?", choices:["Que la technique est inutile en art","Que la technique seule ne suffit pas — c'est le regard qui fait l'œuvre","Que l'art est purement subjectif","Que tout le monde peut être artiste"], correct:1, explain:"Les deux photographes maîtrisent la même technique. Ce qui les distingue, c'est le regard, le sens du moment, le cadrage — quelque chose qui ne s'enseigne pas comme une recette. C'est ce qui sépare l'artiste de l'artisan." },
+  { cat:'notion', q:"Après le 13 novembre 2015, les gens ont spontanément chanté et apporté des guitares dans la rue. Que montre cet exemple ?", choices:["Que l'art est un luxe réservé aux moments de paix","Que face au trauma, l'art répond à un besoin que rien d'autre ne comble","Que l'art n'a de valeur que collectif","Que la musique est la plus importante des disciplines artistiques"], correct:1, explain:"Face à l'horreur, le premier réflexe collectif n'était pas utilitaire — il était artistique. Cela montre que l'art répond à un besoin spécifiquement humain : donner une forme à ce qu'on ne peut pas dire, traverser ensemble ce qu'on ne peut pas expliquer." },
+  { cat:'notion', q:"La douleur est naturelle. La morphine est artificielle. Faut-il refuser la morphine au nom du 'naturel' ?", choices:["Oui, le naturel est toujours préférable","Non, naturel ne veut pas dire bon","Oui, la douleur a une utilité biologique donc il faut la respecter","Non, la technique est toujours supérieure à la nature"], correct:1, explain:"Le naturel ne garantit pas le bien. La douleur est naturelle mais personne ne soutient qu'il faut souffrir sans soin. L'argument 'c'est naturel donc c'est bon' est un sophisme — un raisonnement qui semble logique mais qui ne tient pas." },
+  { cat:'notion', q:"Si on ne peut plus distinguer ce qui est naturel de ce qui est culturel, quel problème se pose ?", choices:["On ne sait plus ce qui est propre à l'être humain en tant qu'espèce","La technique devient inutile","La justice est impossible","La vérité disparaît"], correct:0, explain:"La distinction inné/acquis est fondamentale pour comprendre ce qui appartient à la nature humaine universelle et ce qui est construit par la société. Sans cette distinction, on ne peut plus questionner ce qui pourrait ou devrait changer dans nos comportements." },
+  { cat:'notion', q:"Pour Freud, la religion est une 'illusion consolatrice'. Ça veut dire :", choices:["Que la religion est fausse et inutile","Qu'elle répond à un besoin psychologique réel même si elle ne dit pas la vérité sur le monde","Que les croyants sont naïfs","Que Dieu n'existe pas"], correct:1, explain:"Freud ne dit pas que les croyants sont stupides. Il dit que la religion répond à quelque chose de profondément humain — l'angoisse face à la mort, le besoin de protection. C'est une illusion au sens où elle ne correspond pas à la réalité du monde, mais elle remplit une fonction psychologique réelle." },
+  { cat:'notion', q:"Si la religion disparaît sans être remplacée, quel besoin humain reste sans réponse ?", choices:["Le besoin de justice","Faire face à la mort et donner un sens à la vie","Le besoin de technique","Le besoin de vérité scientifique"], correct:1, explain:"La religion répond à une angoisse existentielle que la science ne résout pas. Savoir comment on meurt biologiquement ne dit pas pourquoi on vit. Ce besoin de sens face à la mort est universel — toutes les cultures connues ont des rites funèbres." },
 
-  // ===== REPÈRES (8) =====
-  {
-    cat: 'repere',
-    q: '"La Déclaration des droits de l\'homme affirme que tous les êtres humains naissent libres et égaux en dignité." C\'est un jugement…',
-    choices: [
-      'En fait — c\'est un constat de la réalité observable',
-      'En droit — c\'est ce qui devrait être selon un idéal',
-      'Objectif — c\'est vérifiable scientifiquement',
-      'Légal — c\'est inscrit dans la loi française'
-    ],
-    correct: 1,
-    explain: '"En droit" désigne ce qui devrait être selon la justice ou un idéal moral — une norme, un principe. "En fait", des inégalités énormes existent dans le monde. La DDHC énonce un idéal (en droit), pas un constat (en fait).'
-  },
-  {
-    cat: 'repere',
-    q: 'En France jusqu\'en 1965, une femme mariée devait obtenir l\'accord de son mari pour ouvrir un compte bancaire. C\'était…',
-    choices: [
-      'Légal et légitime',
-      'Illégal mais légitime',
-      'Légal mais illégitime',
-      'Ni légal ni légitime — c\'était déjà interdit'
-    ],
-    correct: 2,
-    explain: 'Cette règle était inscrite dans le Code civil — donc légale. Mais elle était illégitime : contraire à l\'égalité entre hommes et femmes, contraire à la justice morale. Légal et légitime sont deux choses distinctes. Une loi peut être injuste, et une action juste peut être illégale.'
-  },
-  {
-    cat: 'repere',
-    q: 'Semmelweis prouve avec des données précises que le lavage des mains divise la mortalité par 10. Ses collègues refusent de le croire. Ils ont…',
-    choices: [
-      'Un savoir — ils connaissent la médecine mieux que lui',
-      'Une croyance — ils rejettent des preuves sans contre-preuves',
-      'Une opinion légitime — les données pouvaient être fausses',
-      'Un savoir différent — il peut y avoir plusieurs vérités'
-    ],
-    correct: 1,
-    explain: 'Ses collègues "croient" que le lavage des mains ne change rien — sans preuve. C\'est une conviction sans démonstration. Semmelweis, lui, "sait" — il a des chiffres vérifiables, répétables. Croire ≠ Savoir. On peut croire fermement une chose fausse.'
-  },
-  {
-    cat: 'repere',
-    q: '"Cette symphonie de Beethoven est la plus belle jamais composée." C\'est un jugement…',
-    choices: [
-      'Objectif — la beauté musicale est mesurable',
-      'En droit — c\'est ce que la musique devrait être',
-      'Subjectif — ça dépend de la sensibilité de chacun',
-      'Légal — c\'est reconnu par les institutions culturelles'
-    ],
-    correct: 2,
-    explain: 'La beauté d\'une œuvre dépend de la perception, des goûts, de la sensibilité de chacun — c\'est donc subjectif. "Cette symphonie dure 42 minutes" serait objectif (vérifiable par tous). "Cette symphonie est magnifique" varie selon les personnes.'
-  },
-  {
-    cat: 'repere',
-    q: 'L\'association L214 diffuse des vidéos choquantes filmées dans des abattoirs pour amener les gens à ne plus manger de viande. C\'est surtout…',
-    choices: [
-      'Convaincre — ils utilisent des arguments rationnels et des données',
-      'Obliger — ils forcent le public à regarder',
-      'Contraindre — l\'impact émotionnel est irrésistible',
-      'Persuader — ils jouent sur l\'émotion et la compassion'
-    ],
-    correct: 3,
-    explain: 'Persuader = agir sur les émotions pour faire changer d\'avis. Les images d\'abattoirs provoquent de la compassion, du dégoût, de l\'empathie — c\'est une technique émotionnelle. Convaincre, c\'est s\'adresser à la raison par des arguments et des preuves (comme un chercheur qui publie des données nutritionnelles).'
-  },
-  {
-    cat: 'repere',
-    q: 'Quelqu\'un te ligote les mains dans le dos. Tu ne peux plus bouger. C\'est…',
-    choices: [
-      'Une obligation — tu dois rester immobile',
-      'Une contrainte — une force physique que tu ne peux pas surmonter',
-      'Une persuasion — on cherche à t\'influencer',
-      'Un devoir — tu dois accepter cette situation'
-    ],
-    correct: 1,
-    explain: 'La contrainte est une force physique extérieure impossible à éviter — tu ne peux physiquement pas bouger, même si tu le voulais. L\'obligation, elle, est morale ou juridique : tu pourrais théoriquement la refuser, mais avec des conséquences. Ligoté = contrainte. Arrêter au feu rouge = obligation.'
-  },
-  {
-    cat: 'repere',
-    q: 'La Terre plate est une conviction répandue dans certains groupes. La Terre sphérique est prouvée par des mesures depuis l\'Antiquité. Lequel est un "savoir" ?',
-    choices: [
-      'Les deux — chaque groupe a ses propres preuves',
-      'Ni l\'un ni l\'autre — c\'est une question de point de vue',
-      'La Terre sphérique — c\'est vérifiable, reproductible et démontré',
-      'La Terre plate — car beaucoup le croient sincèrement'
-    ],
-    correct: 2,
-    explain: 'Le savoir exige une preuve vérifiable et reproductible par tous. La sphéricité de la Terre est démontrée par des mesures géodésiques, des photos satellites, des navigations. La croyance en la Terre plate est une conviction sans preuves solides. La sincérité ne suffit pas à transformer une croyance en savoir.'
-  },
-  {
-    cat: 'repere',
-    q: 'En France, ne pas secourir une personne en danger est un délit. Tu es une excellente nageuse — une personne se noie devant toi. Tu dois plonger. C\'est…',
-    choices: [
-      'Une contrainte — tu n\'as pas le choix',
-      'Une obligation — tu pourrais ne pas plonger, mais la loi et la morale te l\'imposent',
-      'Une persuasion — tu es influencée par les cris',
-      'Un fait en droit — tu devrais le faire idéalement'
-    ],
-    correct: 1,
-    explain: 'C\'est une obligation : tu as physiquement la capacité de ne pas plonger, mais la loi (non-assistance à personne en danger) et la morale t\'imposent de le faire. Si tu ne savais pas nager, ce serait une contrainte physique — tu serais dans l\'impossibilité réelle d\'agir sans risquer ta vie.'
-  },
+  // ===== REPÈRES (12) =====
+  { cat:'repere', q:"'Tous les hommes sont égaux en droits.' Cette affirmation relève de :", choices:["En fait","En droit","Les deux à la fois","Ni l'un ni l'autre"], correct:1, explain:"'En droit' désigne ce qui devrait être selon la loi ou la justice — un idéal ou une norme. 'En fait' désigne ce qui existe réellement dans le monde. L'égalité en droits est une norme juridique et morale, pas un constat de la réalité." },
+  { cat:'repere', q:"'1% de la population possède 50% des richesses.' Cette affirmation relève de :", choices:["En droit","En fait","Une obligation morale","Une contrainte juridique"], correct:1, explain:"C'est un constat de la réalité économique — ce qui existe concrètement dans le monde, indépendamment de ce qui devrait être. C'est donc une affirmation 'en fait'." },
+  { cat:'repere', q:"En France jusqu'en 1965, une femme ne pouvait pas ouvrir un compte bancaire sans l'accord de son mari. C'était :", choices:["Légal et légitime","Illégal et illégitime","Légal mais illégitime","Illégitime mais juste"], correct:2, explain:"C'était inscrit dans le Code civil donc parfaitement légal. Mais c'était moralement injuste — contraire à l'égalité humaine fondamentale. Une loi peut donc être légale sans être légitime." },
+  { cat:'repere', q:"Un lanceur d'alerte publie des documents secrets pour révéler une corruption d'État. Son acte est :", choices:["Légal et légitime","Illégal mais potentiellement légitime","Légal mais illégitime","Ni légal ni légitime"], correct:1, explain:"Divulguer des documents confidentiels est illégal. Mais si c'est pour révéler une injustice grave, l'acte peut être moralement justifié — donc légitime. C'est le principe de la désobéissance civile : un acte illégal peut être légitime." },
+  { cat:'repere', q:"'Cette chanson est triste.' C'est :", choices:["Objectif","Subjectif","Objectif car tout le monde est d'accord","Ni objectif ni subjectif"], correct:1, explain:"La tristesse ressentie à l'écoute d'une chanson dépend du ressenti de chaque auditeur — de son histoire, de son humeur, de sa sensibilité. Ce n'est pas vérifiable comme une mesure physique. C'est donc subjectif." },
+  { cat:'repere', q:"'Il fait 4 degrés dehors.' C'est :", choices:["Subjectif car le froid se ressent différemment selon les personnes","Objectif car vérifiable par un thermomètre","Une croyance","Une opinion"], correct:1, explain:"Peu importe si tu as chaud ou froid, le thermomètre indique 4 degrés — c'est vérifiable et indépendant du ressenti individuel. C'est donc objectif. Attention : 'j'ai froid' est subjectif, mais 'il fait 4 degrés' est objectif." },
+  { cat:'repere', q:"Les médecins refusaient les preuves de Semmelweis sur le lavage des mains. Que montre cet exemple ?", choices:["Que la science est toujours en retard sur la pratique","Que croire et savoir peuvent s'opposer même chez des gens instruits","Que Semmelweis avait tort","Que les croyances sont invincibles"], correct:1, explain:"Des médecins formés et expérimentés ont refusé des preuves chiffrées parce qu'elles contredisaient leurs croyances établies. Cela montre que même des gens instruits peuvent préférer croire plutôt que savoir — et que la frontière entre les deux demande un effort." },
+  { cat:'repere', q:"'Je sais que 2+2=4' vs 'Je crois que mon équipe va gagner ce soir'. La différence c'est :", choices:["L'un est vrai, l'autre est faux","L'un repose sur une démonstration, l'autre sur une espérance sans preuve","L'un est objectif, l'autre est illégitime","L'un concerne la raison, l'autre la contrainte"], correct:1, explain:"Savoir c'est tenir pour vrai en s'appuyant sur une démonstration ou des preuves vérifiables. Croire c'est tenir pour vrai sans preuve suffisante — par espoir, confiance ou intuition. Les deux peuvent porter sur des choses vraies ou fausses, mais la méthode est différente." },
+  { cat:'repere', q:"L214 diffuse des vidéos choc tournées dans des abattoirs pour changer les comportements alimentaires. C'est :", choices:["Convaincre par la raison","Persuader par l'émotion","Démontrer une vérité objective","Une obligation légale"], correct:1, explain:"Les images choc visent à provoquer une réaction émotionnelle — dégoût, culpabilité, empathie. C'est une stratégie de persuasion : on agit sur les émotions pour modifier le comportement, pas sur la raison par des arguments." },
+  { cat:'repere', q:"Un chercheur publie une étude comparative sur l'impact environnemental de différents régimes alimentaires. C'est :", choices:["Persuader par la peur","Convaincre par des arguments rationnels","Une contrainte morale","Une croyance collective"], correct:1, explain:"Une étude scientifique s'adresse à la raison : elle présente des données, des méthodes, des résultats vérifiables. L'objectif est de convaincre — d'obtenir l'adhésion par la démonstration, pas par l'émotion." },
+  { cat:'repere', q:"Tu ne sais pas nager. Quelqu'un se noie devant toi. Tu es légalement obligé de porter secours mais physiquement incapable de plonger. Ici :", choices:["Obligation et contrainte coïncident","La contrainte physique annule la possibilité d'accomplir l'obligation","Tu es en faute car tu n'as pas aidé","Il n'y a ni obligation ni contrainte"], correct:1, explain:"L'obligation juridique existe — ne pas secourir est un délit. Mais la contrainte physique (ne pas savoir nager) rend l'acte impossible. Les deux s'affrontent dans le même instant. La contrainte ne supprime pas l'obligation morale, mais elle en empêche l'accomplissement." },
+  { cat:'repere', q:"'Je dois rendre ce devoir demain' vs 'Je ne peux pas voler sans ailes.' Laquelle décrit une contrainte ?", choices:["La première","La deuxième","Les deux","Aucune des deux"], correct:1, explain:"Voler sans ailes est physiquement impossible — c'est une contrainte absolue imposée par la nature. Rendre un devoir est une obligation : on peut techniquement ne pas le rendre, mais on doit le faire. La contrainte supprime le choix, l'obligation le suppose." },
 
-  // ===== CAS CONCRETS / APPLICATION (4) =====
-  {
-    cat: 'appli',
-    q: 'Un bébé né prématurément à 6 mois est placé en couveuse. Sans cela, il ne survivrait pas. Quelle notion philosophique cela illustre le mieux ?',
-    choices: [
-      'La religion — c\'est un miracle de la médecine',
-      'La justice — chaque bébé a droit à la vie',
-      'La nature — c\'est naturel de survivre',
-      'La technique — elle supplée à ce que la nature ne peut faire'
-    ],
-    correct: 3,
-    explain: 'C\'est l\'illustration parfaite de Mill sur la Technique : la nature (naissance prématurée) est hostile à la vie de cet enfant. La technique (couveuse, monitoring, alimentation artificielle) corrige cette hostilité. La technique ne s\'oppose pas à la nature — elle la prolonge là où elle échoue.'
-  },
-  {
-    cat: 'appli',
-    q: 'Des astronautes scientifiques, souvent athées, décrivent en orbite un sentiment d\'émerveillement profond et mystique face à la Terre. Quelle notion cela illustre ?',
-    choices: [
-      'La vérité — ils voient la Terre telle qu\'elle est vraiment',
-      'La technique — la conquête spatiale comme exploit humain',
-      'La religion — le besoin humain de transcendance, même chez des scientifiques',
-      'La liberté — être libre de ses convictions personnelles'
-    ],
-    correct: 2,
-    explain: 'Même des scientifiques rationalistes ressentent en orbite quelque chose qui dépasse la raison pure. Ça illustre la thèse de Freud sur la Religion : le besoin de transcendance — d\'être face à quelque chose qui nous dépasse — est profondément humain. Ce n\'est pas de la religion institutionnelle, mais c\'en est le terreau.'
-  },
-  {
-    cat: 'appli',
-    q: 'Aux Jeux paralympiques, les athlètes sont classés par catégories selon leur type de handicap. Les règles sont différentes pour chaque catégorie. Quelle thèse philosophique cela illustre ?',
-    choices: [
-      'La liberté — chacun peut participer selon ses capacités',
-      'La justice — l\'équité n\'est pas l\'égalité stricte',
-      'La nature — les différences entre individus sont naturelles',
-      'La technique — utilisation de prothèses et d\'équipements adaptés'
-    ],
-    correct: 1,
-    explain: 'C\'est l\'illustration d\'Aristote sur la Justice. Imposer les mêmes règles à tous (valides et handicapés) serait une égalité formelle — mais injuste en réalité. Adapter les catégories selon les situations, c\'est de l\'équité. C\'est la vraie justice selon Aristote : traiter différemment ce qui est différent.'
-  },
-  {
-    cat: 'appli',
-    q: 'Après les attentats du 13 novembre 2015, des inconnus se retrouvent spontanément place de la République pour chanter, apporter des fleurs, jouer de la guitare. Quel besoin philosophique cela illustre ?',
-    choices: [
-      'La technique — le besoin d\'agir concrètement face au chaos',
-      'La liberté — le droit de se rassembler librement',
-      'L\'art — un besoin humain profond, pas biologique mais existentiel',
-      'La justice — rendre symboliquement hommage aux victimes'
-    ],
-    correct: 2,
-    explain: 'C\'est l\'illustration de la deuxième thèse sur l\'Art. Personne ne les y a obligés — aucun besoin biologique. Mais ce besoin de créer, de chanter, de partager de la beauté face à la douleur et au chaos est profondément humain. L\'art répond à un besoin existentiel, pas à une nécessité de survie.'
-  }
+  // ===== MÉTHODE (4) =====
+  { cat:'methode', q:"L'explication de texte au bac techno c'est :", choices:["5 questions libres au choix","3 questions dans un ordre fixe imposé","Une dissertation courte","Un résumé du texte suivi d'un commentaire libre"], correct:1, explain:"Le format est fixé par le ministère et ne change pas : Q1 = thèse et argumentation, Q2 = explication de deux passages, Q3 = réflexion personnelle. Toujours dans cet ordre." },
+  { cat:'methode', q:"La thèse d'un texte philosophique c'est :", choices:["Le sujet général dont parle le texte","La réponse que l'auteur donne à une question philosophique","Le titre du texte reformulé","L'exemple principal utilisé par l'auteur"], correct:1, explain:"Le thème c'est le sujet (ex : la liberté). La thèse c'est ce que l'auteur affirme sur ce sujet (ex : on peut être libre en obéissant à des lois raisonnées). C'est la distinction fondamentale pour répondre à la Q1." },
+  { cat:'methode', q:"Tu dois expliquer un passage. Laquelle de ces réponses est une paraphrase à éviter ?", choices:["L'auteur veut dire que la liberté n'est pas l'absence de règle","L'auteur établit une distinction entre liberté et absence de contrainte","D'après l'auteur, la liberté ne consiste pas à faire ce que l'on veut","Cette phrase signifie que la liberté demande d'accepter certaines contraintes"], correct:2, explain:"La réponse C recopie quasi mot pour mot la phrase du texte avec de légères variantes. C'est exactement ce qu'on appelle une paraphrase — ça ne montre pas qu'on a compris, ça montre juste qu'on sait reformuler superficiellement." },
+  { cat:'methode', q:"Pour la Q3, le réflexe le plus utile est :", choices:["Citer le plus d'auteurs possible","Recopier des passages du texte pour montrer qu'on l'a bien lu","Se demander 'quel est le risque si l'auteur a tort ?' pour trouver un argument","Donner son opinion personnelle sans justification"], correct:2, explain:"Se demander 'quel est le risque si l'auteur a tort ?' force à comprendre l'enjeu philosophique de la question — et donne immédiatement un argument à développer. C'est le réflexe le plus efficace pour construire une réponse à la Q3." }
 ];
 
 let currentFilter = 'all';
@@ -451,7 +241,7 @@ function renderQuestion() {
   document.getElementById('prog-fill').style.width = (idx / total * 100) + '%';
 
   // Category badge
-  const catLabels = { notion: 'Notion', repere: 'Repère', appli: 'Cas concret' };
+  const catLabels = { notion: 'Notion', repere: 'Repère', methode: 'Méthode' };
   const catEl = document.getElementById('qcat');
   catEl.textContent = catLabels[q.cat];
   catEl.className = 'qcard-cat cat-' + q.cat;
