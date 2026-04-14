@@ -186,6 +186,10 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
         <span class="q-name">Présenter le modèle économique</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
       </div>
+      <div class="q-item" onclick="show('diagnostic', this)">
+        <span class="q-name">Réaliser le diagnostic interne / externe</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★☆☆</span></div>
+      </div>
     </div>
   </div>
 
@@ -207,6 +211,10 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
       <div class="q-item" onclick="show('couts', this)">
         <span class="q-name">Calculer coût de revient + taux de marge</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="q-item" onclick="show('financement', this)">
+        <span class="q-name">Justifier les choix de financement</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
       </div>
     </div>
   </div>
@@ -230,6 +238,14 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
         <span class="q-name">Analyser les pratiques GRH / motivation</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
       </div>
+      <div class="q-item" onclick="show('production', this)">
+        <span class="q-name">Identifier le mode de production / flux</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="q-item" onclick="show('gpecq', this)">
+        <span class="q-name">Montrer l'importance de la GPEC</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★☆☆</span></div>
+      </div>
     </div>
   </div>
 
@@ -247,6 +263,10 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
       <div class="q-item" onclick="show('rse', this)">
         <span class="q-name">Montrer que X intègre la RSE</span>
         <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('communication', this)">
+        <span class="q-name">Analyser la communication / relation client</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★☆☆</span></div>
       </div>
     </div>
   </div>
@@ -643,23 +663,117 @@ const Q = {
     alerte:"Décrire l'outil sans montrer son impact sur la performance = réponse incomplète.",
     astuce:"PGI + CRM + RGPD apparaissent souvent dans le même dossier. Traiter les 3 si les docs le permettent."
   },
+  diagnostic: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 13", titre:"Réaliser le diagnostic interne / externe",
+    freq:"★★★☆☆ — ~40% des sujets", pts:"~2-3 pts", temps:"≈ 12 min",
+    annales:"Renou Textiles (2024) · TPS (2023) · Caraïbes Fumés (2022)",
+    notions:["competences","das"],
+    methode:[
+      {n:1, t:"Diagnostic interne : forces et faiblesses", d:"Ressources humaines, financières, technologiques, immatérielles (marque, savoir-faire)."},
+      {n:2, t:"Identifier les compétences distinctives", d:"Rares ? Difficiles à imiter ? Créatrices de valeur ?"},
+      {n:3, t:"Diagnostic externe : opportunités et menaces", d:"PESTEL (macro) et/ou 5 forces de Porter (concurrence)."},
+      {n:4, t:"Synthétiser en SWOT si demandé", d:"Forces/Faiblesses (interne) + Opportunités/Menaces (externe)."}
+    ],
+    mots:["diagnostic interne","diagnostic externe","SWOT","PESTEL","forces","faiblesses","opportunités","menaces"],
+    annale:{src:"Bac STMG MSGN · Polynésie 2024 (Renou Textiles)", q:"Réaliser le diagnostic externe de Renou Textiles et en déduire les facteurs clés de succès."},
+    corrige:`<strong>Diagnostic externe (PESTEL) :</strong><br>— Économique : hausse des coûts des matières premières → menace pour les marges<br>— Socioculturel : engouement pour le made in France → opportunité<br>— Environnemental : sensibilité croissante à l'éco-responsabilité → opportunité<br>— Technologique : e-commerce en forte croissance → opportunité<br><br><strong>Facteurs clés de succès :</strong><br>Qualité (labels EPV, OFG) + fabrication française + innovation (matériaux recyclés) + présence en ligne`,
+    alerte:"PESTEL = environnement GÉNÉRAL (macro). 5 forces Porter = environnement CONCURRENTIEL. Ne pas les confondre.",
+    astuce:"Si la question demande 'diagnostic externe', commencer par le PESTEL. Si elle demande 'pression concurrentielle', utiliser Porter."
+  },
+  financement: {
+    dossier:"Dossier 2 — Finances", type:"TYPE 14", titre:"Justifier les choix de financement",
+    freq:"★★★★☆ — ~50% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Topschuss (2024) · Eyecontact (2024) · Renou (2024) · Caraïbes Fumés (2022)",
+    notions:["frng"],
+    methode:[
+      {n:1, t:"Identifier les sources de financement dans les docs", d:"Autofinancement, emprunt bancaire, augmentation de capital, financement participatif, subventions."},
+      {n:2, t:"Pour chaque source : avantages et inconvénients", d:"Autofinancement = pas de dette MAIS limite la capacité. Emprunt = effet de levier MAIS charges financières."},
+      {n:3, t:"Justifier la pertinence par rapport au projet", d:"Relier le choix de financement au contexte de l'entreprise (taille du projet, situation financière, FRNG)."},
+      {n:4, t:"Proposer des alternatives si demandé", d:"Toujours proposer au moins 2 sources complémentaires."}
+    ],
+    mots:["autofinancement","emprunt","augmentation de capital","CAF","financement participatif","crowdfunding"],
+    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Repérer et justifier la pertinence du choix de financement de Topschuss pour son développement."},
+    corrige:`<strong>Augmentation de capital (10M€) :</strong><br>Doc 9 → Topschuss a levé 10 millions d'euros auprès d'investisseurs. Ce mode de financement renforce les capitaux propres sans créer de dette. Il améliore le FRNG et la capacité d'emprunt future.<br><br><strong>Pertinence :</strong> Un emprunt bancaire de ce montant aurait alourdi les charges financières et fragilisé la trésorerie dans un contexte de forte croissance (CA visé de 100M€). L'augmentation de capital est cohérente avec un projet de développement ambitieux.`,
+    alerte:"Ne jamais se limiter à lister les sources. Toujours JUSTIFIER pourquoi ce choix est adapté au contexte.",
+    astuce:"Relier le financement au FRNG : si l'augmentation de capital augmente les ressources stables → le FRNG s'améliore → plus de marge de sécurité."
+  },
+  production: {
+    dossier:"Dossier 2 — GRH", type:"TYPE 15", titre:"Identifier le mode de production / flux",
+    freq:"★★★★☆ — ~50% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Ankama (2023) · TPS (2023) · Beyer (2023) · Fromagerie Réo (2021)",
+    notions:[],
+    methode:[
+      {n:1, t:"Identifier le mode de production", d:"Artisanal / en série / en continu. Justifier avec les docs."},
+      {n:2, t:"Identifier le mode de gestion des flux", d:"Flux poussés (prévisions → stocks) ou flux tirés/tendus (commande → production)."},
+      {n:3, t:"Justifier la pertinence du choix", d:"Lier au type de produit, au marché, aux contraintes de l'entreprise."},
+      {n:4, t:"Comparer si 2 modes coexistent", d:"Certaines entreprises combinent flux poussés ET flux tirés selon les produits."}
+    ],
+    mots:["flux poussés","flux tirés","juste-à-temps","mode de production","artisanal","en série","stocks"],
+    annale:{src:"Bac STMG MSGN · Asie 2023 (TPS)", q:"Identifier le mode de gestion des stocks pour les matières premières destinées à la fabrication des commandes des clients occasionnels et préciser son intérêt."},
+    corrige:`TPS utilise un mode de gestion en <strong>flux tirés</strong> (juste-à-temps) pour les commandes occasionnelles :<br><br>— La production est déclenchée par la commande du client (pas de stock de produits finis)<br>— Intérêt : réduction des coûts de stockage, adaptation à la demande spécifique de chaque client<br>— Pertinence pour TPS : les commandes occasionnelles portent sur des produits sur mesure (dimensions spécifiques) → impossible de stocker à l'avance<br><br>En revanche, pour les clients grands comptes, TPS utilise des <strong>flux poussés</strong> : les matières premières sont achetées par le client lui-même, ce qui réduit le BFR de TPS.`,
+    alerte:"Flux poussés ≠ mauvaise gestion. C'est adapté quand la demande est prévisible (ex : grande distribution). Flux tirés = adapté quand la demande est variable ou sur mesure.",
+    astuce:"Chercher dans les docs : 'sur commande' = flux tirés. 'Prévisions de vente' ou 'stocks' = flux poussés."
+  },
+  gpecq: {
+    dossier:"Dossier 2 — GRH", type:"TYPE 16", titre:"Montrer l'importance de la GPEC",
+    freq:"★★★☆☆ — ~40% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Renou Textiles (2024) · TPS (2023) · Beyer (2023)",
+    notions:["gpec"],
+    methode:[
+      {n:1, t:"Définir la GPEC en 1 ligne", d:"Démarche d'anticipation des besoins en emplois et compétences sur 3-5 ans."},
+      {n:2, t:"Identifier le problème RH dans les docs", d:"Pénurie de compétences ? Nouvelles technologies ? Départs en retraite ? Croissance ?"},
+      {n:3, t:"Présenter les actions GPEC", d:"Formation interne, recrutement, mobilité, reconversion, partenariats écoles."},
+      {n:4, t:"Lier à la performance", d:"La GPEC anticipe → réduit le turnover → maintient les compétences clés → performance durable."}
+    ],
+    mots:["GPEC","GEPP","anticipation","formation","recrutement","mobilité interne","compétences"],
+    annale:{src:"Bac STMG MSGN · Asie 2023 (TPS)", q:"Recenser les principales causes du problème de recrutement des perforateurs et montrer l'importance pour TPS de mettre en place une GPEC."},
+    corrige:`<strong>Causes du problème :</strong><br>— Métier de perforateur peu connu → manque d'attractivité<br>— Compétences rares sur le marché du travail<br>— Départs en retraite anticipés<br><br><strong>Importance de la GPEC :</strong><br>— Anticiper les besoins : identifier les postes critiques à 3-5 ans<br>— Former en interne : transmission du savoir-faire par les seniors aux juniors<br>— Recruter en amont : partenariats avec des écoles techniques<br>— Mobilité interne : reconvertir des salariés vers le métier de perforateur<br><br>Sans GPEC, TPS risque de perdre son savoir-faire unique (compétence distinctive) et donc son avantage concurrentiel.`,
+    alerte:"GPEC ≠ simple recrutement. C'est une démarche PRÉVISIONNELLE sur plusieurs années, pas un recrutement ponctuel.",
+    astuce:"Relier la GPEC aux compétences distinctives : si les compétences clés partent sans être transmises → l'avantage concurrentiel disparaît."
+  },
+  communication: {
+    dossier:"Dossier 3 — RSE & SI", type:"TYPE 17", titre:"Analyser la communication / relation client",
+    freq:"★★★☆☆ — ~25% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Beyer (2023) · Fromagerie Réo (2021)",
+    notions:["pgi"],
+    methode:[
+      {n:1, t:"Identifier les modalités de communication utilisées", d:"Publicité, réseaux sociaux, site web, newsletter, relations presse, événements."},
+      {n:2, t:"Pour chaque modalité : objectif + cible", d:"Notoriété ? Fidélisation ? Acquisition ? Vers les clients B2B ou B2C ?"},
+      {n:3, t:"Justifier la pertinence", d:"Pourquoi ce mix de communication est adapté au positionnement et à la cible de l'entreprise."},
+      {n:4, t:"Lier au numérique si pertinent", d:"E-commerce, CRM, réseaux sociaux = outils de relation client."}
+    ],
+    mots:["communication","relation client","réseaux sociaux","e-commerce","fidélisation","notoriété","CRM"],
+    annale:{src:"Bac STMG MSGN · Liban 2023 (Beyer)", q:"Repérer les différentes modalités de communication mobilisées par l'entreprise Beyer et justifier la pertinence de chacune d'entre elles pour soutenir le lancement de la nouvelle gamme."},
+    corrige:`<strong>Site e-commerce :</strong> vente en ligne directe → touche une clientèle nationale au-delà de la zone de distribution traditionnelle. Pertinent pour une PME alsacienne qui veut élargir sa couverture géographique.<br><br><strong>Page Facebook :</strong> publications régulières sur les produits et l'histoire familiale → crée une communauté, humanise la marque. Pertinent pour le positionnement artisanal et authentique de Beyer.<br><br><strong>Avis clients :</strong> Doc 8 et 12 → témoignages positifs visibles en ligne → crédibilité et réassurance pour les nouveaux clients. Pertinent car les "Fruits à tartiner" sont un produit innovant que les consommateurs ne connaissent pas encore.`,
+    alerte:"Lister les outils sans justifier leur pertinence par rapport à la stratégie = réponse incomplète.",
+    astuce:"Chaque outil de communication doit être relié à un OBJECTIF (notoriété, fidélisation, conversion) et une CIBLE (B2B, B2C, prescripteurs)."
+  },
   synthese: {
     dossier:"Transversal", type:"SYNTHÈSE", titre:"Rédiger la synthèse (~15 lignes)",
-    freq:"★★★★★ — Présente dans TOUS les sujets", pts:"~4-6 pts", temps:"≈ 20 min",
-    annales:"Tous les sujets depuis 2021 — toujours en fin de dossier 3 (RSE/performance globale/numérique)",
+    freq:"★★★★★ — Présente dans TOUS les sujets (8/8)", pts:"~4-6 pts", temps:"≈ 20 min",
+    annales:"TOUS les sujets depuis 2021. Sujets variés : RSE (2x), numérique (3x), marque employeur (1x), QVT (1x), innovation (1x), performance sociale (1x)",
     notions:["rse","performance"],
     methode:[
-      {n:1, t:"Lire la question : identifier les 2-3 thèmes demandés", d:"Souvent : RSE + performance + numérique ou stratégie."},
-      {n:2, t:"Faire un plan en 3 parties", d:"1 partie par thème ou par pilier RSE (économique / social / environnemental)."},
-      {n:3, t:"Rédiger une intro de 2 lignes", d:"<em>'L'entreprise X évolue dans un contexte où la performance ne se mesure plus uniquement sur le plan financier.'</em>"},
+      {n:1, t:"Lire la question : identifier les 2-3 thèmes demandés", d:"⚠️ Ce n'est PAS toujours la RSE ! Ça peut être : numérique, QVT, marque employeur, innovation..."},
+      {n:2, t:"Faire un plan en 3 parties", d:"Si RSE → 3 piliers (éco/social/enviro). Si numérique → 3 impacts. Si QVT → 3 dimensions."},
+      {n:3, t:"Rédiger une intro de 2 lignes", d:"Reformuler la question + annoncer le plan."},
       {n:4, t:"Développer chaque partie avec un argument + une preuve du doc", d:"Pas de liste à puces — des phrases rédigées. Citer le numéro du document."},
-      {n:5, t:"Conclure en 2 lignes : synthèse + ouverture", d:"<em>'Ainsi, X montre que RSE et performance économique ne s'opposent pas mais se renforcent mutuellement.'</em>"}
+      {n:5, t:"Conclure en 2 lignes : synthèse + ouverture", d:"Montrer que les éléments se renforcent mutuellement."}
     ],
-    mots:["performance globale","RSE","3 piliers","développement durable","parties prenantes","avantage concurrentiel"],
-    annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"En vous appuyant sur vos connaissances et les documents, montrez que la démarche RSE de Bébé Serein contribue à sa performance globale. (15 lignes environ)"},
-    corrige:`<strong>Introduction :</strong><br>Bébé Serein intègre une démarche RSE ambitieuse qui dépasse ses obligations légales. Cette responsabilité sociétale se déploie sur 3 piliers et contribue directement à sa performance globale.<br><br><strong>Pilier économique :</strong><br>Doc 2 → Le modèle d'abonnement mensuel crée des revenus récurrents (+32% de CA en 2 ans). L'éco-conception réduit les coûts de matières premières sur le long terme. La performance économique est renforcée par la fidélisation client.<br><br><strong>Pilier social :</strong><br>Doc 4 → QVT renforcée (horaires flexibles, télétravail). Turnover réduit de 15% à 8%. La marque employeur attire des profils qualifiés dans un secteur concurrentiel. La performance sociale est mesurable par ces indicateurs.<br><br><strong>Pilier environnemental :</strong><br>Doc 3 → Matériaux certifiés OEKO-TEX, emballages recyclables, bilan carbone en baisse de 20%. Ces engagements répondent aux attentes des consommateurs éco-responsables → avantage concurrentiel.<br><br><strong>Conclusion :</strong><br>La démarche RSE de Bébé Serein montre que performance économique, sociale et environnementale se renforcent mutuellement. Loin d'être un coût, la RSE est un levier de création de valeur durable.`,
-    alerte:"Répondre en liste à puces = perte de points. C'est une RÉDACTION : phrases complètes, connecteurs logiques, intro et conclusion obligatoires.",
-    astuce:"Structure gagnante : 1 intro + 3 paragraphes (1 par pilier RSE) + 1 conclusion = 15 lignes exactement. Les correcteurs adorent cette structure."
+    mots:["performance globale","RSE","valeur perçue","marque employeur","QVT","innovation","numérique","avantage concurrentiel"],
+    annale:{src:"Les 8 sujets de synthèse tombés au Bac (2021-2025)", q:`<div style="font-size:12px;line-height:1.8;margin-top:8px">
+<strong style="color:#b5415a">① Réo 2021 (D3) :</strong> En quoi le numérique peut contribuer à l'amélioration de la performance dans les entreprises<br>
+<strong style="color:#b5415a">② Caraïbes 2022 (D2, au choix) :</strong> La performance sociale est une préoccupation OU Les outils numériques au service de la performance commerciale<br>
+<strong style="color:#b5415a">③ Ankama 2023 (D3) :</strong> Les outils numériques de communication influencent l'identité des organisations<br>
+<strong style="color:#b5415a">④ TPS 2023 (D2) :</strong> La marque employeur participe à la performance globale de l'entreprise<br>
+<strong style="color:#b5415a">⑤ Beyer 2023 (D2) :</strong> Une innovation peut contribuer à améliorer la valeur perçue d'une entreprise<br>
+<strong style="color:#b5415a">⑥ Topschuss 2024 (D2) :</strong> La qualité de vie au travail (QVT) peut contribuer à la performance globale<br>
+<strong style="color:#b5415a">⑦ Eyecontact 2024 (D3) :</strong> Les technologies du numérique sont sources d'opportunités mais aussi de risques, tant pour les salariés que pour les organisations<br>
+<strong style="color:#b5415a">⑧ Renou 2024 (D2) :</strong> La démarche RSE d'une entreprise peut être créatrice de valeur
+</div>`},
+    corrige:`<strong>Exemple corrigé — Topschuss 2024 : La QVT contribue à la performance globale</strong><br><br><strong>Introduction :</strong><br>La qualité de vie au travail (QVT) désigne l'ensemble des conditions dans lesquelles les salariés exercent leur activité. Loin d'être un simple avantage social, elle peut constituer un véritable levier de performance pour l'entreprise.<br><br><strong>1. Performance sociale :</strong><br>Topschuss a investi dans un nouveau siège social pensé pour le bien-être (espaces ouverts, salle de sport, crèche). Ces aménagements réduisent l'absentéisme et le turnover. Un salarié épanoui est plus engagé et plus productif.<br><br><strong>2. Performance économique :</strong><br>La QVT renforce la marque employeur : Topschuss attire des profils qualifiés (experts outdoor) dans un secteur concurrentiel. La stabilité des équipes réduit les coûts de recrutement et de formation. À long terme, cela améliore la productivité et donc les résultats financiers.<br><br><strong>3. Image et attractivité :</strong><br>En communiquant sur sa politique QVT (site de recrutement, réseaux sociaux), Topschuss renforce son image d'employeur responsable. Cette image rejaillit sur la marque commerciale et fidélise les clients sensibles aux valeurs de l'entreprise.<br><br><strong>Conclusion :</strong><br>La QVT chez Topschuss montre que performance sociale et performance économique ne s'opposent pas mais se renforcent. Investir dans le bien-être des salariés est un choix stratégique créateur de valeur durable.`,
+    alerte:"Répondre en liste à puces = perte de points. C'est une RÉDACTION : phrases complètes, connecteurs logiques, intro et conclusion obligatoires. Le sujet de synthèse n'est PAS toujours sur la RSE — il peut porter sur le numérique, la QVT, l'innovation ou la marque employeur.",
+    astuce:"Structure gagnante : 1 intro (2 lignes) + 3 paragraphes développés + 1 conclusion (2 lignes) = 15 lignes. Chaque paragraphe = 1 argument + 1 preuve tirée des docs + 1 lien avec la performance. Les 8 sujets tombés montrent 3 grands thèmes récurrents : RSE/performance (2x), numérique/opportunités-risques (3x), GRH/marque employeur/QVT (3x)."
   }
 };
 
