@@ -164,63 +164,91 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
   <div class="sidebar-intro">Questions du Bac</div>
 
   <!-- DOSSIER 1 — STRATÉGIE -->
-  <div class="dossier-label">Dossier 1 — Stratégie</div>
-  <div class="q-item" onclick="show('parties', this)">
-    <span class="q-name">Identifier les parties prenantes</span>
-    <div class="q-meta"><span class="q-pts">~1-2 pts</span><span class="q-time">≈ 7 min</span><span class="q-time">★★★★☆</span></div>
-  </div>
-  <div class="q-item" onclick="show('competences', this)">
-    <span class="q-name">Identifier les compétences distinctives</span>
-    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★★</span></div>
-  </div>
-  <div class="q-item" onclick="show('strategie', this)">
-    <span class="q-name">Caractériser la stratégie</span>
-    <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
-  </div>
-  <div class="q-item" onclick="show('modele', this)">
-    <span class="q-name">Présenter le modèle économique</span>
-    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
+  <div class="group">
+    <div class="group-header" onclick="toggleGroup(this)">
+      <span class="group-label">Dossier 1 — Stratégie</span>
+      <span class="group-arrow">▶</span>
+    </div>
+    <div class="group-body">
+      <div class="q-item" onclick="show('parties', this)">
+        <span class="q-name">Identifier les parties prenantes</span>
+        <div class="q-meta"><span class="q-pts">~1-2 pts</span><span class="q-time">≈ 7 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="q-item" onclick="show('competences', this)">
+        <span class="q-name">Identifier les compétences distinctives</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('strategie', this)">
+        <span class="q-name">Caractériser la stratégie</span>
+        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('modele', this)">
+        <span class="q-name">Présenter le modèle économique</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- DOSSIER 2 — FINANCES -->
-  <div class="dossier-label">Dossier 2 — Finances</div>
-  <div class="q-item" onclick="show('va', this)">
-    <span class="q-name">Calculer VA + Résultat d'exploitation</span>
-    <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
-  </div>
-  <div class="q-item active" onclick="show('frng', this)">
-    <span class="q-name">Calculer FRNG / BFR / TN</span>
-    <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
-  </div>
-  <div class="q-item" onclick="show('couts', this)">
-    <span class="q-name">Calculer coût de revient + taux de marge</span>
-    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+  <div class="group">
+    <div class="group-header" onclick="toggleGroup(this)">
+      <span class="group-label">Dossier 2 — Finances</span>
+      <span class="group-arrow">▶</span>
+    </div>
+    <div class="group-body">
+      <div class="q-item" onclick="show('va', this)">
+        <span class="q-name">Calculer VA + Résultat d'exploitation</span>
+        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('frng', this)">
+        <span class="q-name">Calculer FRNG / BFR / TN</span>
+        <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('couts', this)">
+        <span class="q-name">Calculer coût de revient + taux de marge</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- DOSSIER 2 — GRH -->
-  <div class="dossier-label">Dossier 2 — GRH</div>
-  <div class="q-item" onclick="show('direction', this)">
-    <span class="q-name">Identifier le style de direction</span>
-    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★★</span></div>
-  </div>
-  <div class="q-item" onclick="show('culture', this)">
-    <span class="q-name">Analyser la culture organisationnelle</span>
-    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★★</span></div>
-  </div>
-  <div class="q-item" onclick="show('grh', this)">
-    <span class="q-name">Analyser les pratiques GRH / motivation</span>
-    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+  <div class="group">
+    <div class="group-header" onclick="toggleGroup(this)">
+      <span class="group-label">Dossier 2 — GRH</span>
+      <span class="group-arrow">▶</span>
+    </div>
+    <div class="group-body">
+      <div class="q-item" onclick="show('direction', this)">
+        <span class="q-name">Identifier le style de direction</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('culture', this)">
+        <span class="q-name">Analyser la culture organisationnelle</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('grh', this)">
+        <span class="q-name">Analyser les pratiques GRH / motivation</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- DOSSIER 3 — RSE & SI -->
-  <div class="dossier-label">Dossier 3 — RSE & SI</div>
-  <div class="q-item" onclick="show('numerique', this)">
-    <span class="q-name">Identifier l'intérêt du PGI / CRM / RGPD</span>
-    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
-  </div>
-  <div class="q-item" onclick="show('rse', this)">
-    <span class="q-name">Montrer que X intègre la RSE</span>
-    <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
+  <div class="group">
+    <div class="group-header" onclick="toggleGroup(this)">
+      <span class="group-label">Dossier 3 — RSE & SI</span>
+      <span class="group-arrow">▶</span>
+    </div>
+    <div class="group-body">
+      <div class="q-item" onclick="show('numerique', this)">
+        <span class="q-name">Identifier l'intérêt du PGI / CRM / RGPD</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="q-item" onclick="show('rse', this)">
+        <span class="q-name">Montrer que X intègre la RSE</span>
+        <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+    </div>
   </div>
 
 </aside>
