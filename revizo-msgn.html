@@ -251,6 +251,12 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
     </div>
   </div>
 
+  <!-- SYNTHÈSE 15 LIGNES -->
+  <div class="q-item" onclick="show('synthese', this)" style="border-top:1px solid var(--bordure);margin-top:8px;padding-top:12px">
+    <span class="q-name">✍️ Rédiger la synthèse (~15 lignes)</span>
+    <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 20 min</span><span class="q-time">★★★★★</span></div>
+  </div>
+
 </aside>
 
 <!-- ════════════════ MAIN ════════════════ -->
@@ -636,6 +642,24 @@ const Q = {
     corrige:`<strong>CRM :</strong><br>Doc 4 → Topschuss utilise un CRM pour centraliser l'historique d'achat de ses clients. Cela permet des offres personnalisées → fidélisation + hausse du panier moyen.<br><br><strong>E-commerce :</strong><br>Doc 3 → site marchand 24h/24 = 28% du CA en N. Réduit la dépendance aux magasins physiques et touche une clientèle nationale.<br><br><strong>RGPD :</strong><br>Doc 5 → Topschuss collecte des données clients (CRM, commandes). Obligations : recueil du consentement explicite, politique de confidentialité, sécurisation des données.<br><br>Ces outils numériques renforcent la performance commerciale (CRM, e-commerce) tout en nécessitant une gestion responsable des données (RGPD).`,
     alerte:"Décrire l'outil sans montrer son impact sur la performance = réponse incomplète.",
     astuce:"PGI + CRM + RGPD apparaissent souvent dans le même dossier. Traiter les 3 si les docs le permettent."
+  },
+  synthese: {
+    dossier:"Transversal", type:"SYNTHÈSE", titre:"Rédiger la synthèse (~15 lignes)",
+    freq:"★★★★★ — Présente dans TOUS les sujets", pts:"~4-6 pts", temps:"≈ 20 min",
+    annales:"Tous les sujets depuis 2021 — toujours en fin de dossier 3 (RSE/performance globale/numérique)",
+    notions:["rse","performance"],
+    methode:[
+      {n:1, t:"Lire la question : identifier les 2-3 thèmes demandés", d:"Souvent : RSE + performance + numérique ou stratégie."},
+      {n:2, t:"Faire un plan en 3 parties", d:"1 partie par thème ou par pilier RSE (économique / social / environnemental)."},
+      {n:3, t:"Rédiger une intro de 2 lignes", d:"<em>'L'entreprise X évolue dans un contexte où la performance ne se mesure plus uniquement sur le plan financier.'</em>"},
+      {n:4, t:"Développer chaque partie avec un argument + une preuve du doc", d:"Pas de liste à puces — des phrases rédigées. Citer le numéro du document."},
+      {n:5, t:"Conclure en 2 lignes : synthèse + ouverture", d:"<em>'Ainsi, X montre que RSE et performance économique ne s'opposent pas mais se renforcent mutuellement.'</em>"}
+    ],
+    mots:["performance globale","RSE","3 piliers","développement durable","parties prenantes","avantage concurrentiel"],
+    annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"En vous appuyant sur vos connaissances et les documents, montrez que la démarche RSE de Bébé Serein contribue à sa performance globale. (15 lignes environ)"},
+    corrige:`<strong>Introduction :</strong><br>Bébé Serein intègre une démarche RSE ambitieuse qui dépasse ses obligations légales. Cette responsabilité sociétale se déploie sur 3 piliers et contribue directement à sa performance globale.<br><br><strong>Pilier économique :</strong><br>Doc 2 → Le modèle d'abonnement mensuel crée des revenus récurrents (+32% de CA en 2 ans). L'éco-conception réduit les coûts de matières premières sur le long terme. La performance économique est renforcée par la fidélisation client.<br><br><strong>Pilier social :</strong><br>Doc 4 → QVT renforcée (horaires flexibles, télétravail). Turnover réduit de 15% à 8%. La marque employeur attire des profils qualifiés dans un secteur concurrentiel. La performance sociale est mesurable par ces indicateurs.<br><br><strong>Pilier environnemental :</strong><br>Doc 3 → Matériaux certifiés OEKO-TEX, emballages recyclables, bilan carbone en baisse de 20%. Ces engagements répondent aux attentes des consommateurs éco-responsables → avantage concurrentiel.<br><br><strong>Conclusion :</strong><br>La démarche RSE de Bébé Serein montre que performance économique, sociale et environnementale se renforcent mutuellement. Loin d'être un coût, la RSE est un levier de création de valeur durable.`,
+    alerte:"Répondre en liste à puces = perte de points. C'est une RÉDACTION : phrases complètes, connecteurs logiques, intro et conclusion obligatoires.",
+    astuce:"Structure gagnante : 1 intro + 3 paragraphes (1 par pilier RSE) + 1 conclusion = 15 lignes exactement. Les correcteurs adorent cette structure."
   }
 };
 
