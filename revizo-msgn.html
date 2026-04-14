@@ -163,92 +163,64 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
 <aside class="sidebar">
   <div class="sidebar-intro">Questions du Bac</div>
 
-  <!-- ★★★★★ -->
-  <div class="group">
-    <div class="group-header" onclick="toggleGroup(this)">
-      <span class="group-stars stars-5">★★★★★</span>
-      <span class="group-label">Incontournables</span>
-      <span class="group-arrow open">▶</span>
-    </div>
-    <div class="group-body open">
-
-      <div class="dossier-label">Dossier 1 — Stratégie</div>
-      <div class="q-item" onclick="show('competences', this)">
-        <span class="q-name">Identifier les compétences distinctives</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span></div>
-      </div>
-      <div class="q-item" onclick="show('strategie', this)">
-        <span class="q-name">Caractériser la stratégie</span>
-        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span></div>
-      </div>
-
-      <div class="dossier-label">Dossier 2 — Finances</div>
-      <div class="q-item active" onclick="show('frng', this)">
-        <span class="q-name">Calculer FRNG / BFR / TN</span>
-        <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span></div>
-      </div>
-      <div class="q-item" onclick="show('va', this)">
-        <span class="q-name">Calculer VA + Résultat d'exploitation</span>
-        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span></div>
-      </div>
-
-      <div class="dossier-label">Dossier 2 — GRH</div>
-      <div class="q-item" onclick="show('direction', this)">
-        <span class="q-name">Identifier le style de direction</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span></div>
-      </div>
-      <div class="q-item" onclick="show('culture', this)">
-        <span class="q-name">Analyser la culture organisationnelle</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span></div>
-      </div>
-
-      <div class="dossier-label">Dossier 3 — RSE</div>
-      <div class="q-item" onclick="show('rse', this)">
-        <span class="q-name">Montrer que X intègre la RSE</span>
-        <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span></div>
-      </div>
-
-    </div>
+  <!-- DOSSIER 1 — STRATÉGIE -->
+  <div class="dossier-label">Dossier 1 — Stratégie</div>
+  <div class="q-item" onclick="show('parties', this)">
+    <span class="q-name">Identifier les parties prenantes</span>
+    <div class="q-meta"><span class="q-pts">~1-2 pts</span><span class="q-time">≈ 7 min</span><span class="q-time">★★★★☆</span></div>
+  </div>
+  <div class="q-item" onclick="show('competences', this)">
+    <span class="q-name">Identifier les compétences distinctives</span>
+    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★★</span></div>
+  </div>
+  <div class="q-item" onclick="show('strategie', this)">
+    <span class="q-name">Caractériser la stratégie</span>
+    <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
+  </div>
+  <div class="q-item" onclick="show('modele', this)">
+    <span class="q-name">Présenter le modèle économique</span>
+    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
   </div>
 
-  <!-- ★★★★☆ -->
-  <div class="group">
-    <div class="group-header" onclick="toggleGroup(this)">
-      <span class="group-stars stars-4">★★★★☆</span>
-      <span class="group-label">Récurrentes</span>
-      <span class="group-arrow">▶</span>
-    </div>
-    <div class="group-body">
+  <!-- DOSSIER 2 — FINANCES -->
+  <div class="dossier-label">Dossier 2 — Finances</div>
+  <div class="q-item" onclick="show('va', this)">
+    <span class="q-name">Calculer VA + Résultat d'exploitation</span>
+    <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
+  </div>
+  <div class="q-item active" onclick="show('frng', this)">
+    <span class="q-name">Calculer FRNG / BFR / TN</span>
+    <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
+  </div>
+  <div class="q-item" onclick="show('couts', this)">
+    <span class="q-name">Calculer coût de revient + taux de marge</span>
+    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+  </div>
 
-      <div class="dossier-label">Dossier 1 — Stratégie</div>
-      <div class="q-item" onclick="show('modele', this)">
-        <span class="q-name">Présenter le modèle économique</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span></div>
-      </div>
-      <div class="q-item" onclick="show('parties', this)">
-        <span class="q-name">Identifier les parties prenantes</span>
-        <div class="q-meta"><span class="q-pts">~1-2 pts</span><span class="q-time">≈ 7 min</span></div>
-      </div>
+  <!-- DOSSIER 2 — GRH -->
+  <div class="dossier-label">Dossier 2 — GRH</div>
+  <div class="q-item" onclick="show('direction', this)">
+    <span class="q-name">Identifier le style de direction</span>
+    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★★</span></div>
+  </div>
+  <div class="q-item" onclick="show('culture', this)">
+    <span class="q-name">Analyser la culture organisationnelle</span>
+    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★★</span></div>
+  </div>
+  <div class="q-item" onclick="show('grh', this)">
+    <span class="q-name">Analyser les pratiques GRH / motivation</span>
+    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+  </div>
 
-      <div class="dossier-label">Dossier 2 — Finances</div>
-      <div class="q-item" onclick="show('couts', this)">
-        <span class="q-name">Calculer coût de revient + taux de marge</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span></div>
-      </div>
-
-      <div class="dossier-label">Dossier 2 — GRH</div>
-      <div class="q-item" onclick="show('grh', this)">
-        <span class="q-name">Analyser les pratiques GRH</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span></div>
-      </div>
-
-      <div class="dossier-label">Dossier 3 — Numérique</div>
-      <div class="q-item" onclick="show('numerique', this)">
-        <span class="q-name">Identifier l'intérêt du PGI / CRM / RGPD</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span></div>
-      </div>
-
-    </div>
+  <!-- DOSSIER 3 — RSE & SI -->
+  <div class="dossier-label">Dossier 3 — RSE & SI</div>
+  <div class="q-item" onclick="show('numerique', this)">
+    <span class="q-name">Identifier l'intérêt du PGI / CRM / RGPD</span>
+    <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
+  </div>
+  <div class="q-item" onclick="show('rse', this)">
+    <span class="q-name">Montrer que X intègre la RSE</span>
+    <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
   </div>
 
 </aside>
@@ -273,6 +245,7 @@ const N = {
     tag:"Gestion financière", titre:"FRNG — Fonds de Roulement Net Global", freq:"★★★★★ Constante",
     def:"Marge de sécurité financière : part des ressources durables (capitaux propres + dettes LT) qui finance le cycle d'exploitation après avoir couvert les immobilisations.",
     form:"FRNG = Ressources stables − Emplois stables\n\nRessources stables = Capitaux propres + Dettes financières LT\nEmplois stables = Actif immobilisé brut",
+    svg:`<svg viewBox="0 0 500 200" width="100%" style="max-width:480px;font-family:'Inter',sans-serif"><rect x="20" y="10" width="200" height="40" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="120" y="28" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">FRNG</text><text x="120" y="42" text-anchor="middle" font-size="7" fill="#5a5448">Ressources stables − Emplois stables</text><line x1="220" y1="30" x2="240" y2="30" stroke="#a09880" stroke-width="2"/><text x="260" y="26" font-size="10" font-weight="900" fill="#1e1c18">−</text><line x1="280" y1="30" x2="300" y2="30" stroke="#a09880" stroke-width="2"/><rect x="300" y="10" width="180" height="40" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1.5"/><text x="390" y="28" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a">BFR</text><text x="390" y="42" text-anchor="middle" font-size="7" fill="#5a5448">Actif circ. expl. − Passif circ. expl.</text><line x1="250" y1="50" x2="250" y2="80" stroke="#a09880" stroke-width="2"/><text x="250" y="72" text-anchor="middle" font-size="12" font-weight="900" fill="#1e1c18">=</text><rect x="130" y="80" width="240" height="46" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/><text x="250" y="100" text-anchor="middle" font-size="11" font-weight="900" fill="#1a7a3c">TRÉSORERIE NETTE</text><text x="250" y="118" text-anchor="middle" font-size="8" fill="#5a5448">TN = FRNG − BFR</text><rect x="50" y="145" width="400" height="36" rx="6" fill="#fef8e2" stroke="#946e00" stroke-width="1" stroke-dasharray="4,2"/><text x="250" y="162" text-anchor="middle" font-size="8" font-weight="700" fill="#946e00">✅ TN > 0 = solvable   ⚠️ TN < 0 = dépend des banques</text><text x="250" y="176" text-anchor="middle" font-size="7" fill="#7a6a58">Toujours : 1) Formule → 2) Calcul → 3) Signe → 4) Contexte entreprise</text></svg>`,
     interp:"✅ FRNG > 0 : marge de sécurité, ressources durables couvrent les immobilisations\n⚠️ FRNG < 0 : risque potentiel (sauf grande distribution)",
     ex:"Topschuss (2024) : FRNG positif en forte hausse après augmentation de capital.",
     conf:"⚠️ FRNG négatif ≠ faillite. Dans la grande distribution, c'est normal (clients paient comptant, fournisseurs réglés à 60 j)."
@@ -312,6 +285,7 @@ const N = {
   likert: {
     tag:"Management RH", titre:"Styles de direction — Grille de Likert", freq:"★★★★★ Constante",
     def:"Classification des modes d'exercice de l'autorité managériale en 4 styles selon le degré de délégation et de participation des collaborateurs.",
+    svg:`<svg viewBox="0 0 520 120" width="100%" style="max-width:500px;font-family:'Inter',sans-serif"><line x1="30" y1="50" x2="490" y2="50" stroke="#c8c0b4" stroke-width="4" stroke-linecap="round"/><rect x="10" y="25" width="100" height="50" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1.5"/><text x="60" y="46" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a">Autoritaire</text><text x="60" y="60" text-anchor="middle" font-size="6.5" fill="#7a6a58">décide seul</text><rect x="135" y="25" width="100" height="50" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/><text x="185" y="42" text-anchor="middle" font-size="8" font-weight="800" fill="#946e00">Paternaliste</text><text x="185" y="56" text-anchor="middle" font-size="6.5" fill="#7a6a58">bienveillant mais</text><text x="185" y="66" text-anchor="middle" font-size="6.5" fill="#7a6a58">garde la main</text><rect x="260" y="25" width="100" height="50" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="310" y="46" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">Consultatif</text><text x="310" y="60" text-anchor="middle" font-size="6.5" fill="#7a6a58">consulte puis décide</text><rect x="385" y="25" width="110" height="50" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1.5"/><text x="440" y="46" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">Participatif</text><text x="440" y="60" text-anchor="middle" font-size="6.5" fill="#7a6a58">co-décision, délègue</text><text x="30" y="100" font-size="8" fill="#b5415a" font-weight="700">← Centralisé</text><text x="420" y="100" font-size="8" fill="#1a7a3c" font-weight="700">Délégué →</text></svg>`,
     form:"1. Autoritaire : décisions centralisées, contrôle strict, communication descendante\n2. Bienveillant-autoritaire : autorité avec bienveillance, peu de délégation\n3. Consultatif : avis recueillis, décisions conservées par le manager\n4. Participatif : co-décision, délégation, confiance, communication bidirectionnelle",
     interp:"Mots-signaux dans les docs :\n'décide seul' → autoritaire\n'consulte avant de décider' → consultatif\n'délègue / équipe autonome' → participatif\n'bienveillant mais garde la main' → bienveillant-autoritaire",
     ex:"Ankama (2023) : style participatif — équipes créatives autonomes dans leurs choix artistiques.",
@@ -320,6 +294,7 @@ const N = {
   culture: {
     tag:"Management RH", titre:"Culture organisationnelle", freq:"★★★★★ Constante",
     def:"Ensemble de valeurs, croyances, rites, symboles et normes partagés par les membres d'une organisation, créant cohésion et identité collective.",
+    svg:`<svg viewBox="0 0 460 160" width="100%" style="max-width:440px;font-family:'Inter',sans-serif"><rect x="10" y="10" width="100" height="50" rx="8" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1.5"/><text x="60" y="32" text-anchor="middle" font-size="9" font-weight="800" fill="#3d1a5c">Valeurs</text><text x="60" y="48" text-anchor="middle" font-size="7" fill="#7a6a58">ce qu'on croit</text><rect x="120" y="10" width="100" height="50" rx="8" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1.5"/><text x="170" y="32" text-anchor="middle" font-size="9" font-weight="800" fill="#3d1a5c">Rites</text><text x="170" y="48" text-anchor="middle" font-size="7" fill="#7a6a58">pratiques répétées</text><rect x="230" y="10" width="100" height="50" rx="8" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1.5"/><text x="280" y="32" text-anchor="middle" font-size="9" font-weight="800" fill="#3d1a5c">Symboles</text><text x="280" y="48" text-anchor="middle" font-size="7" fill="#7a6a58">logo, tenue, locaux</text><line x1="60" y1="60" x2="60" y2="80" stroke="#a09880" stroke-width="1.5"/><line x1="170" y1="60" x2="170" y2="80" stroke="#a09880" stroke-width="1.5"/><line x1="280" y1="60" x2="280" y2="80" stroke="#a09880" stroke-width="1.5"/><line x1="60" y1="80" x2="280" y2="80" stroke="#a09880" stroke-width="1.5"/><line x1="170" y1="80" x2="170" y2="95" stroke="#a09880" stroke-width="2"/><rect x="100" y="95" width="140" height="40" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/><text x="170" y="114" text-anchor="middle" font-size="10" font-weight="800" fill="#1a7a3c">COHÉSION</text><text x="170" y="128" text-anchor="middle" font-size="8" fill="#5a5448">Identité collective</text><text x="370" y="105" font-size="8" font-weight="700" fill="#946e00">→ Marque employeur</text><text x="370" y="120" font-size="8" font-weight="700" fill="#946e00">→ QVT</text><text x="370" y="135" font-size="8" font-weight="700" fill="#946e00">→ Fidélisation</text></svg>`,
     form:"3 composantes :\n→ Valeurs : ce en quoi l'organisation croit (excellence, innovation…)\n→ Rites : pratiques répétées qui renforcent l'appartenance\n→ Symboles : éléments visuels qui incarnent les valeurs (logo, tenue, locaux)",
     interp:"Une culture forte favorise la cohésion, la motivation et la fidélisation.\nElle peut aussi freiner le changement si trop rigide.",
     ex:"Ankama (2023) : culture forte fondée sur la passion créative, des rituels de co-création et un univers graphique identitaire.",
@@ -329,6 +304,7 @@ const N = {
     tag:"Stratégie", titre:"Compétences distinctives & Avantage concurrentiel", freq:"★★★★★ Constante",
     def:"Compétence distinctive : ressource ou savoir-faire rare, difficile à imiter et créateur de valeur.\nAvantage concurrentiel : position supérieure durable face aux concurrents, fondée sur ces compétences.",
     form:"Diagnostic interne → identifier ressources et compétences\n→ Rares ? Difficiles à imiter ? Créatrices de valeur ?\n→ OUI sur les 3 = compétence DISTINCTIVE\n→ Elle fonde l'avantage concurrentiel",
+    svg:`<svg viewBox="0 0 500 220" width="100%" style="max-width:480px;font-family:'Inter',sans-serif"><rect x="10" y="10" width="140" height="60" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="80" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">DIAGNOSTIC INTERNE</text><text x="80" y="52" text-anchor="middle" font-size="8" fill="#5a5448">Forces / Faiblesses</text><line x1="150" y1="40" x2="170" y2="40" stroke="#a09880" stroke-width="2" marker-end="url(#arr)"/><rect x="170" y="10" width="160" height="60" rx="8" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1.5"/><text x="250" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#3d1a5c">COMPÉTENCE DISTINCTIVE</text><text x="250" y="44" text-anchor="middle" font-size="7" fill="#5a5448">Rare ?</text><text x="250" y="55" text-anchor="middle" font-size="7" fill="#5a5448">Difficile à imiter ? Crée de la valeur ?</text><line x1="330" y1="40" x2="350" y2="40" stroke="#a09880" stroke-width="2" marker-end="url(#arr)"/><rect x="350" y="10" width="140" height="60" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/><text x="420" y="32" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">AVANTAGE</text><text x="420" y="48" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">CONCURRENTIEL</text><text x="420" y="62" text-anchor="middle" font-size="7" fill="#5a5448">Position durable</text><rect x="60" y="90" width="380" height="50" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1" stroke-dasharray="4,2"/><text x="250" y="112" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00">3 TESTS : Rare + Difficile à imiter + Crée de la valeur</text><text x="250" y="128" text-anchor="middle" font-size="8" fill="#5a4e00">OUI aux 3 = distinctive → fonde l'avantage concurrentiel</text><defs><marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs></svg>`,
     interp:"L'avantage concurrentiel peut être un coût plus faible, une offre perçue comme unique, ou une relation client supérieure.",
     ex:"Topschuss (2024) : expertise conseil outdoor + marque reconnue = compétences distinctives difficiles à imiter par les distributeurs généralistes.",
     conf:"⚠️ Une simple force (notoriété, bonne localisation) n'est pas une compétence distinctive. Elle doit être RARE et DIFFICILE À IMITER."
@@ -345,6 +321,7 @@ const N = {
     tag:"Stratégie", titre:"Stratégies globales & de domaine", freq:"★★★★★ Constante",
     def:"Stratégie globale : choix du portefeuille d'activités (spécialisation ou diversification).\nStratégie de domaine : comment concurrencer sur un DAS (coûts, différenciation, focalisation).",
     form:"Stratégies globales :\n→ Spécialisation : 1 seul DAS, expertise maximale\n→ Diversification concentrique : développe dans plusieurs DAS qui sont liés entre eux\n→ Diversification conglomérale : développe dans plusieurs DAS qui n'ont pas de lien entre eux\n\nStratégies de domaine :\n→ Domination par les coûts : produire moins cher\n→ Différenciation par le haut : Sophistication (offre premium)\n→ Différenciation par le bas : Épuration (offre accessible)\n→ Focalisation / niche : segment précis",
+    svg:`<svg viewBox="0 0 520 340" width="100%" style="max-width:500px;font-family:'Inter',sans-serif"><rect x="150" y="5" width="220" height="36" rx="8" fill="#3d1a5c"/><text x="260" y="28" text-anchor="middle" font-size="11" font-weight="800" fill="#f5c842">CHOIX STRATÉGIQUE</text><line x1="260" y1="41" x2="260" y2="55" stroke="#a09880" stroke-width="2"/><line x1="130" y1="55" x2="390" y2="55" stroke="#a09880" stroke-width="2"/><line x1="130" y1="55" x2="130" y2="70" stroke="#a09880" stroke-width="2"/><line x1="390" y1="55" x2="390" y2="70" stroke="#a09880" stroke-width="2"/><rect x="20" y="70" width="220" height="32" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="130" y="90" text-anchor="middle" font-size="10" font-weight="800" fill="#2a69a8">STRATÉGIE GLOBALE</text><line x1="130" y1="102" x2="130" y2="116" stroke="#a09880" stroke-width="1.5"/><rect x="20" y="116" width="70" height="40" rx="6" fill="#e8f3ff"/><text x="55" y="134" text-anchor="middle" font-size="8" font-weight="700" fill="#2a69a8">Spécialisation</text><text x="55" y="148" text-anchor="middle" font-size="6.5" fill="#7a6a58">1 seul DAS</text><rect x="95" y="116" width="70" height="40" rx="6" fill="#e8f3ff"/><text x="130" y="130" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">Diversif.</text><text x="130" y="142" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">concentrique</text><text x="130" y="153" text-anchor="middle" font-size="6" fill="#7a6a58">DAS liés</text><rect x="170" y="116" width="70" height="40" rx="6" fill="#e8f3ff"/><text x="205" y="130" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">Diversif.</text><text x="205" y="142" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">conglomérale</text><text x="205" y="153" text-anchor="middle" font-size="6" fill="#7a6a58">DAS sans lien</text><rect x="280" y="70" width="220" height="32" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1.5"/><text x="390" y="90" text-anchor="middle" font-size="10" font-weight="800" fill="#b5415a">STRATÉGIE DE DOMAINE</text><line x1="390" y1="102" x2="390" y2="116" stroke="#a09880" stroke-width="1.5"/><rect x="280" y="116" width="55" height="44" rx="6" fill="#fdeef2"/><text x="307" y="132" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">Coûts</text><text x="307" y="146" text-anchor="middle" font-size="6" fill="#7a6a58">produire</text><text x="307" y="155" text-anchor="middle" font-size="6" fill="#7a6a58">moins cher</text><rect x="340" y="116" width="55" height="44" rx="6" fill="#fdeef2"/><text x="367" y="128" text-anchor="middle" font-size="6.5" font-weight="700" fill="#b5415a">Sophistication</text><text x="367" y="142" text-anchor="middle" font-size="6" fill="#7a6a58">diff. par</text><text x="367" y="151" text-anchor="middle" font-size="6" fill="#7a6a58">le haut</text><rect x="400" y="116" width="55" height="44" rx="6" fill="#fdeef2"/><text x="427" y="128" text-anchor="middle" font-size="6.5" font-weight="700" fill="#b5415a">Épuration</text><text x="427" y="142" text-anchor="middle" font-size="6" fill="#7a6a58">diff. par</text><text x="427" y="151" text-anchor="middle" font-size="6" fill="#7a6a58">le bas</text><rect x="460" y="116" width="55" height="44" rx="6" fill="#fdeef2"/><text x="487" y="132" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">Niche</text><text x="487" y="146" text-anchor="middle" font-size="6" fill="#7a6a58">segment</text><text x="487" y="155" text-anchor="middle" font-size="6" fill="#7a6a58">précis</text><rect x="100" y="180" width="320" height="28" rx="6" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1"/><text x="260" y="198" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">MODE DE CROISSANCE : Interne · Externe · Partenariale</text></svg>`,
     interp:"Au Bac, toujours traiter les 2 niveaux : 1) globale (portefeuille) puis 2) domaine (comment concurrencer).",
     ex:"Topschuss (2024) : spécialisation (outdoor uniquement) + différenciation par le haut (équipements premium).",
     conf:"⚠️ Ne jamais confondre les 2 niveaux. Dire 'différenciation' sans préciser si c'est globale ou de domaine = réponse incomplète."
@@ -352,6 +329,7 @@ const N = {
   rse: {
     tag:"RSE", titre:"RSE — Responsabilité Sociétale des Entreprises", freq:"★★★★★ Constante",
     def:"Engagement VOLONTAIRE d'une organisation à intégrer des préoccupations sociales et environnementales dans ses activités, au-delà de ses obligations légales.",
+    svg:`<svg viewBox="0 0 420 180" width="100%" style="max-width:400px;font-family:'Inter',sans-serif"><rect x="130" y="5" width="160" height="36" rx="8" fill="#3d1a5c"/><text x="210" y="28" text-anchor="middle" font-size="11" font-weight="800" fill="#f5c842">RSE = 3 PILIERS</text><line x1="210" y1="41" x2="210" y2="55" stroke="#a09880" stroke-width="2"/><line x1="70" y1="55" x2="350" y2="55" stroke="#a09880" stroke-width="2"/><line x1="70" y1="55" x2="70" y2="70" stroke="#a09880" stroke-width="1.5"/><line x1="210" y1="55" x2="210" y2="70" stroke="#a09880" stroke-width="1.5"/><line x1="350" y1="55" x2="350" y2="70" stroke="#a09880" stroke-width="1.5"/><rect x="10" y="70" width="120" height="50" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1.5"/><text x="70" y="90" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">Économique</text><text x="70" y="106" text-anchor="middle" font-size="7" fill="#5a5448">CA, résultat, PDM</text><rect x="150" y="70" width="120" height="50" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="210" y="90" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">Social</text><text x="210" y="106" text-anchor="middle" font-size="7" fill="#5a5448">QVT, emploi, diversité</text><rect x="290" y="70" width="120" height="50" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/><text x="350" y="90" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00">Environnemental</text><text x="350" y="106" text-anchor="middle" font-size="7" fill="#5a5448">carbone, déchets</text><rect x="80" y="140" width="260" height="30" rx="8" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1.5"/><text x="210" y="160" text-anchor="middle" font-size="9" font-weight="800" fill="#3d1a5c">→ PERFORMANCE GLOBALE (pas que financière)</text></svg>`,
     form:"3 piliers (triple bottom line) :\n→ Économique : performance financière, création de valeur\n→ Social : conditions de travail, emploi, diversité, QVT\n→ Environnemental : bilan carbone, déchets, éco-conception",
     interp:"La RSE est VOLONTAIRE (≠ contrainte légale).\nElle crée de la valeur : différenciation, fidélisation client, attractivité RH, réduction des coûts.",
     ex:"Bébé Serein (2025) : matériaux certifiés (env.) + QVT renforcée (social) + croissance CA (éco) = RSE comme levier de performance.",
@@ -682,11 +660,13 @@ function toggleCorr(btn) {
 
 function openN(id) {
   const n = N[id];
+  const svgBtn = n.svg ? `<button onclick="toggleSvg()" style="background:#3d1a5c;color:white;border:none;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px;font-family:'Inter',sans-serif">📊 Voir le schéma</button><div id="modal-svg" style="display:none;margin-bottom:14px;text-align:center">${n.svg}</div>` : '';
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-tag">${n.tag}</div>
     <h3>${n.titre}</h3>
     <div class="freq-pill">${n.freq}</div>
     <div class="modal-def">${n.def}</div>
+    ${svgBtn}
     <div class="modal-form">${n.form.replace(/\n/g,'<br>')}</div>
     <div class="modal-interp"><strong>Interprétation</strong>${n.interp.replace(/\n/g,'<br>')}</div>
     <div class="modal-interp"><strong>Exemple annale</strong>${n.ex}</div>
@@ -694,6 +674,11 @@ function openN(id) {
   `;
   document.getElementById('overlay').classList.add('show');
   document.body.style.overflow = 'hidden';
+}
+
+function toggleSvg() {
+  const el = document.getElementById('modal-svg');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
 function closeModal() {
