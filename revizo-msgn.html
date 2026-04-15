@@ -190,6 +190,10 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
         <span class="q-name">Réaliser le diagnostic interne / externe</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★☆☆</span></div>
       </div>
+      <div class="q-item" onclick="show('mercatique', this)">
+        <span class="q-name">Identifier l'approche mercatique (SCP + 4P)</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
     </div>
   </div>
 
@@ -237,6 +241,10 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
       <div class="q-item" onclick="show('grh', this)">
         <span class="q-name">Analyser les pratiques GRH / motivation</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="q-item" onclick="show('marque_employeur', this)">
+        <span class="q-name">Justifier la marque employeur / QVT</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
       </div>
       <div class="q-item" onclick="show('production', this)">
         <span class="q-name">Identifier le mode de production / flux</span>
@@ -754,6 +762,41 @@ const Q = {
     corrige:`<strong>Causes du problème :</strong><br>— Métier de perforateur peu connu → manque d'attractivité<br>— Compétences rares sur le marché du travail<br>— Départs en retraite anticipés<br><br><strong>Importance de la GPEC :</strong><br>— Anticiper les besoins : identifier les postes critiques à 3-5 ans<br>— Former en interne : transmission du savoir-faire par les seniors aux juniors<br>— Recruter en amont : partenariats avec des écoles techniques<br>— Mobilité interne : reconvertir des salariés vers le métier de perforateur<br><br>Sans GPEC, TPS risque de perdre son savoir-faire unique (compétence distinctive) et donc son avantage concurrentiel.`,
     alerte:"GPEC ≠ simple recrutement. C'est une démarche PRÉVISIONNELLE sur plusieurs années, pas un recrutement ponctuel.",
     astuce:"Relier la GPEC aux compétences distinctives : si les compétences clés partent sans être transmises → l'avantage concurrentiel disparaît."
+  },
+  marque_employeur: {
+    dossier:"Dossier 2 — GRH", type:"TYPE 18", titre:"Justifier la marque employeur / QVT",
+    freq:"★★★★☆ — ~40% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Topschuss (2024) · TPS (2023) · Eyecontact (2024)",
+    notions:["gpec"],
+    methode:[
+      {n:1, t:"Définir marque employeur et QVT", d:"Marque employeur = image en tant qu'employeur. QVT = conditions physiques, psychologiques, organisationnelles du travail."},
+      {n:2, t:"Identifier les actions concrètes dans les docs", d:"Formations, locaux, horaires flexibles, télétravail, événements, avantages sociaux..."},
+      {n:3, t:"Lier à l'attractivité et la fidélisation", d:"Ces actions attirent les talents (recrutement) et réduisent le turnover (fidélisation)."},
+      {n:4, t:"Conclure sur la performance globale", d:"Marque employeur forte → meilleure productivité, moins de coûts de recrutement, image positive."}
+    ],
+    mots:["marque employeur","QVT","QVCT","attractivité","fidélisation","turnover","bien-être au travail","engagement"],
+    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Justifier l'intérêt de la marque employeur pour répondre aux besoins de recrutement de Topschuss."},
+    corrige:`La <strong>marque employeur</strong> est l'image d'une organisation en tant qu'employeur, construite à travers ses pratiques RH et sa culture.<br><br><strong>Chez Topschuss :</strong><br>— Doc 7 (site de recrutement) : Topschuss met en avant ses valeurs (passion outdoor, esprit d'équipe) et ses avantages (locaux modernes, crèche, salle de sport) pour attirer des candidats.<br>— Doc 6 : le nouveau siège social à Annecy est conçu pour le bien-être → QVT renforcée.<br><br><strong>Intérêt :</strong><br>Dans un secteur concurrentiel où les profils experts outdoor sont rares, la marque employeur permet de se différencier des autres recruteurs. Elle attire des profils qualifiés qui partagent les valeurs de l'entreprise → meilleure adéquation poste/candidat → réduction du turnover → économies sur les coûts de recrutement.`,
+    alerte:"Marque employeur ≠ communication externe vers les clients. C'est l'image auprès des CANDIDATS et des SALARIÉS.",
+    astuce:"Lier toujours marque employeur + QVT + GPEC : ce sont les 3 leviers RH qui se renforcent mutuellement."
+  },
+  mercatique: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 19", titre:"Identifier l'approche mercatique (SCP + 4P)",
+    freq:"★★★★☆ — ~50% des sujets", pts:"~2-3 pts", temps:"≈ 12 min",
+    annales:"Eyecontact (2024) · Renou (2024) · Beyer (2023) · Fromagerie Réo (2021)",
+    notions:["strategies"],
+    methode:[
+      {n:1, t:"Identifier la segmentation", d:"Comment l'entreprise découpe son marché ? Critères : géographiques, socio-démo, comportementaux."},
+      {n:2, t:"Identifier le ciblage", d:"Quel(s) segment(s) l'entreprise vise ? B2B, B2C, niche, masse ?"},
+      {n:3, t:"Identifier le positionnement", d:"Comment l'entreprise veut être perçue par rapport aux concurrents ? Premium, accessible, artisanal, innovant ?"},
+      {n:4, t:"Si demandé : présenter le mix 4P", d:"Produit (gamme, qualité) · Prix (premium/pénétration) · Place (distribution) · Promotion (communication)."},
+      {n:5, t:"Lier au comportement consommateur si demandé", d:"Freins (prix, méfiance), motivations (santé, éco-responsabilité), attitudes."}
+    ],
+    mots:["segmentation","ciblage","positionnement","mix marketing","4P","comportement consommateur","freins","motivations"],
+    annale:{src:"Bac STMG MSGN · Polynésie 2024 (Renou Textiles)", q:"Identifier l'approche mercatique choisie par l'entreprise Renou Textiles pour leur marque Maison Renou et justifier votre réponse."},
+    corrige:`<strong>Segmentation :</strong><br>Renou Textiles segmente son marché en 2 catégories : les professionnels du textile (B2B, 95% du CA) et les particuliers (B2C, via la marque Maison Renou).<br><br><strong>Ciblage :</strong><br>Pour Maison Renou, l'entreprise cible les particuliers sensibles au made in France, à la qualité artisanale et à l'éco-responsabilité (matériaux recyclés).<br><br><strong>Positionnement :</strong><br>Positionnement premium artisanal : "la chaussette 100% made in France, fabriquée en Haute-Vienne depuis 1938". Les labels EPV et Origine France Garantie renforcent ce positionnement de qualité et d'authenticité.<br><br><strong>Mix marketing :</strong><br>— Produit : chaussettes haut de gamme, coton recyclé, design tendance<br>— Prix : premium (justifié par la fabrication française)<br>— Place : e-commerce (vente en ligne nationale) + boutiques locales<br>— Promotion : réseaux sociaux, storytelling familial`,
+    alerte:"SCP = Segmentation → Ciblage → Positionnement. Les 3 vont TOUJOURS ensemble. Ne jamais présenter l'un sans les autres.",
+    astuce:"Chercher dans les docs : 'nos clients sont...' = ciblage. 'Nous nous positionnons comme...' = positionnement. 'Notre gamme...' = produit (4P)."
   },
   communication: {
     dossier:"Dossier 3 — RSE & SI", type:"TYPE 17", titre:"Analyser la communication / relation client",
