@@ -450,6 +450,30 @@ const N = {
     interp:"Ces 3 outils sont souvent liés : le CRM collecte des données → le RGPD encadre leur usage → le PGI les intègre dans la gestion globale.",
     ex:"Topschuss (2024) : CRM pour personnaliser les offres + RGPD pour sécuriser les données clients + PGI pour gérer stocks et commandes.",
     conf:"⚠️ RGPD = règlement (obligatoire). CRM et PGI = outils (choix de l'entreprise). Ne pas mélanger les deux catégories."
+  },
+  diagnostic_ext: {
+    tag:"Stratégie", titre:"Diagnostic PESTEL / SWOT", freq:"★★★☆☆ Régulière",
+    def:"Diagnostic externe (PESTEL) : analyse de l'environnement général en 6 dimensions (Politique, Économique, Socioculturel, Technologique, Environnemental, Légal).\nSWOT : synthèse du diagnostic interne (Forces/Faiblesses) et externe (Opportunités/Menaces).",
+    form:"PESTEL → 6 dimensions de l'environnement GÉNÉRAL (macro)\n5 forces de Porter → analyse de la CONCURRENCE (méso)\nSWOT = synthèse interne + externe → aide à la décision stratégique",
+    interp:"PESTEL = macro (tendances générales). Porter = méso (concurrence directe). Ne pas les mélanger.",
+    ex:"Renou (2024) : facteur socioculturel (engouement made in France) = opportunité. Facteur économique (hausse matières premières) = menace.",
+    conf:"⚠️ Le PESTEL analyse l'environnement GÉNÉRAL. Les 5 forces de Porter analysent la CONCURRENCE. Ce sont deux outils complémentaires, pas interchangeables."
+  },
+  production_n: {
+    tag:"Organisation", titre:"Modes de production et gestion des flux", freq:"★★★★☆ Récurrente",
+    def:"Mode de production : artisanal (petites séries, savoir-faire) ou industriel (grandes séries, machines).\nGestion des flux : poussés (prévisions → stocks) ou tirés/tendus (commande → production, zéro stock).",
+    form:"Flux poussés : production basée sur les PRÉVISIONS → constitution de stocks\n→ Adapté quand la demande est stable et prévisible\n\nFlux tirés (juste-à-temps) : production déclenchée par la COMMANDE\n→ Adapté quand la demande est variable ou les produits sont sur mesure\n\nCertaines entreprises combinent les deux selon les produits",
+    interp:"Dans les docs, chercher : 'sur commande' = flux tirés. 'Prévisions' ou 'stocks' = flux poussés.",
+    ex:"TPS (2023) : flux tirés pour les clients occasionnels (sur mesure) + flux poussés via les matières achetées par les grands comptes.",
+    conf:"⚠️ Flux poussés ≠ mauvaise gestion. C'est le bon choix quand la demande est prévisible (ex : grande distribution)."
+  },
+  communication_n: {
+    tag:"Mercatique", titre:"Communication et relation client", freq:"★★★☆☆ Régulière",
+    def:"Ensemble des actions pour informer, persuader et fidéliser les clients. Inclut : publicité, réseaux sociaux, site web, newsletter, événements, e-commerce.",
+    form:"Modalités de communication :\n→ Publicité (notoriété)\n→ Réseaux sociaux (communauté, engagement)\n→ Site e-commerce (vente directe)\n→ Newsletter / emailing (fidélisation)\n→ Relations presse (crédibilité)\n→ Événements (expérience client)",
+    interp:"Chaque outil doit être relié à un OBJECTIF (notoriété, fidélisation, conversion) et une CIBLE (B2B, B2C).",
+    ex:"Beyer (2023) : site e-commerce (vente nationale) + Facebook (communauté) + avis clients (réassurance) pour le lancement de 'Fruits à tartiner'.",
+    conf:"⚠️ Lister les outils sans justifier leur pertinence par rapport à la stratégie = réponse incomplète."
   }
 };
 
@@ -667,7 +691,7 @@ const Q = {
     dossier:"Dossier 1 — Stratégie", type:"TYPE 13", titre:"Réaliser le diagnostic interne / externe",
     freq:"★★★☆☆ — ~40% des sujets", pts:"~2-3 pts", temps:"≈ 12 min",
     annales:"Renou Textiles (2024) · TPS (2023) · Caraïbes Fumés (2022)",
-    notions:["competences","das"],
+    notions:["diagnostic_ext","competences"],
     methode:[
       {n:1, t:"Diagnostic interne : forces et faiblesses", d:"Ressources humaines, financières, technologiques, immatérielles (marque, savoir-faire)."},
       {n:2, t:"Identifier les compétences distinctives", d:"Rares ? Difficiles à imiter ? Créatrices de valeur ?"},
@@ -701,7 +725,7 @@ const Q = {
     dossier:"Dossier 2 — GRH", type:"TYPE 15", titre:"Identifier le mode de production / flux",
     freq:"★★★★☆ — ~50% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
     annales:"Ankama (2023) · TPS (2023) · Beyer (2023) · Fromagerie Réo (2021)",
-    notions:[],
+    notions:["production_n"],
     methode:[
       {n:1, t:"Identifier le mode de production", d:"Artisanal / en série / en continu. Justifier avec les docs."},
       {n:2, t:"Identifier le mode de gestion des flux", d:"Flux poussés (prévisions → stocks) ou flux tirés/tendus (commande → production)."},
@@ -735,7 +759,7 @@ const Q = {
     dossier:"Dossier 3 — RSE & SI", type:"TYPE 17", titre:"Analyser la communication / relation client",
     freq:"★★★☆☆ — ~25% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
     annales:"Beyer (2023) · Fromagerie Réo (2021)",
-    notions:["pgi"],
+    notions:["communication_n","pgi"],
     methode:[
       {n:1, t:"Identifier les modalités de communication utilisées", d:"Publicité, réseaux sociaux, site web, newsletter, relations presse, événements."},
       {n:2, t:"Pour chaque modalité : objectif + cible", d:"Notoriété ? Fidélisation ? Acquisition ? Vers les clients B2B ou B2C ?"},
@@ -752,7 +776,7 @@ const Q = {
     dossier:"Transversal", type:"SYNTHÈSE", titre:"Rédiger la synthèse (~15 lignes)",
     freq:"★★★★★ — Présente dans TOUS les sujets (8/8)", pts:"~4-6 pts", temps:"≈ 20 min",
     annales:"TOUS les sujets depuis 2021. Sujets variés : RSE (2x), numérique (3x), marque employeur (1x), QVT (1x), innovation (1x), performance sociale (1x)",
-    notions:["rse","performance"],
+    notions:["rse","performance","pgi","gpec"],
     methode:[
       {n:1, t:"Lire la question : identifier les 2-3 thèmes demandés", d:"⚠️ Ce n'est PAS toujours la RSE ! Ça peut être : numérique, QVT, marque employeur, innovation..."},
       {n:2, t:"Faire un plan en 3 parties", d:"Si RSE → 3 piliers (éco/social/enviro). Si numérique → 3 impacts. Si QVT → 3 dimensions."},
