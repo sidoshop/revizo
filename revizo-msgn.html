@@ -482,6 +482,70 @@ const N = {
     interp:"Chaque outil doit être relié à un OBJECTIF (notoriété, fidélisation, conversion) et une CIBLE (B2B, B2C).",
     ex:"Beyer (2023) : site e-commerce (vente nationale) + Facebook (communauté) + avis clients (réassurance) pour le lancement de 'Fruits à tartiner'.",
     conf:"⚠️ Lister les outils sans justifier leur pertinence par rapport à la stratégie = réponse incomplète."
+  },
+  integration: {
+    tag:"Stratégie", titre:"Intégration verticale", freq:"★★☆☆☆ Rare",
+    def:"L'entreprise prend le contrôle d'activités situées en amont (fournisseurs) ou en aval (distribution) de sa chaîne de valeur.",
+    form:"Intégration en amont : l'entreprise contrôle ses fournisseurs\nIntégration en aval : l'entreprise contrôle sa distribution\nAvantage : maîtrise de la chaîne, réduction des coûts, qualité\nRisque : investissements lourds, perte de flexibilité",
+    interp:"Au Bac, souvent liée à la chaîne de valeur de Porter : l'entreprise décide de maîtriser certaines activités plutôt que de les externaliser.",
+    ex:"Ankama (2023) : intègre production, édition et distribution de ses BD → maîtrise toute la chaîne de valeur.",
+    conf:"⚠️ Intégration verticale ≠ diversification. L'intégration reste dans le MÊME métier (amont/aval). La diversification va vers un AUTRE métier."
+  },
+  croissance: {
+    tag:"Stratégie", titre:"Modes de croissance", freq:"★★☆☆☆ Rare",
+    def:"3 modes de développement : interne (par ses propres ressources), externe (acquisitions, fusions), partenariale (alliances, franchises, coopétition).",
+    form:"Croissance interne : investissements, embauches, autofinancement\nCroissance externe : rachats, fusions-acquisitions\nCroissance partenariale : alliances, joint-ventures, franchises, coopétition",
+    interp:"Chaque mode a ses avantages : interne = autonomie, externe = rapidité, partenariale = partage des risques.",
+    ex:"Eyecontact (2024) : croissance partenariale (partenariats avec Atol, Afflelou) + croissance interne (R&D, 30% du CA réinvesti).",
+    conf:"⚠️ Ne pas confondre mode de croissance (comment se développer) et stratégie de domaine (comment concurrencer)."
+  },
+  mintzberg: {
+    tag:"Organisation", titre:"Mécanismes de coordination (Mintzberg)", freq:"★★☆☆☆ Rare",
+    def:"5 mécanismes pour coordonner le travail dans une organisation.",
+    form:"1. Ajustement mutuel : communication informelle entre opérateurs\n2. Supervision directe : un manager dirige et contrôle\n3. Standardisation des procédés : procédures écrites (ex : ISO)\n4. Standardisation des résultats : objectifs à atteindre\n5. Standardisation des qualifications : formation commune requise",
+    interp:"Plus l'organisation grandit, plus elle passe de l'ajustement mutuel à la standardisation.",
+    ex:"Fromagerie Réo (2021) : standardisation des procédés (démarche qualité AOP) + supervision directe (chef de production).",
+    conf:"⚠️ Un mécanisme n'exclut pas les autres. Une entreprise utilise souvent plusieurs mécanismes simultanément."
+  },
+  seuil: {
+    tag:"Gestion financière", titre:"Seuil de rentabilité", freq:"★★☆☆☆ Rare",
+    def:"Niveau de chiffre d'affaires à partir duquel l'entreprise couvre toutes ses charges (fixes + variables) et commence à générer du bénéfice.",
+    form:"Seuil de rentabilité = Charges fixes / Taux de MSCV\navec MSCV = CA − Charges variables\net Taux MSCV = MSCV / CA × 100\n\nEn dessous du seuil → perte\nAu-dessus → bénéfice",
+    interp:"Le seuil peut s'exprimer en € (CA) ou en jours (point mort = date à laquelle le seuil est atteint dans l'année).",
+    ex:"Permet de répondre à : 'À partir de quel CA l'entreprise est-elle rentable ?'",
+    conf:"⚠️ Charges fixes ≠ charges variables. Fixes = loyer, salaires. Variables = matières premières, commissions."
+  },
+  caf: {
+    tag:"Gestion financière", titre:"CAF — Capacité d'Autofinancement", freq:"★★☆☆☆ Rare",
+    def:"Ressources internes générées par l'activité, disponibles pour financer les investissements, rembourser les dettes ou distribuer des dividendes.",
+    form:"CAF ≈ Résultat net + Dotations aux amortissements − Reprises\n\nCAF élevée = bonne capacité à se financer seul\nCAF faible = dépendance aux financements externes",
+    interp:"La CAF mesure la capacité de l'entreprise à s'autofinancer. Plus elle est élevée, moins l'entreprise a besoin d'emprunter.",
+    ex:"Myfood (2023) : calcul de la CAF pour évaluer la capacité de la start-up à financer sa croissance sans lever de fonds.",
+    conf:"⚠️ CAF ≠ trésorerie. La CAF est un flux potentiel, la trésorerie est le solde réel en banque."
+  },
+  identite_num: {
+    tag:"Numérique", titre:"Identité numérique", freq:"★★☆☆☆ Rare",
+    def:"Ensemble des traces et représentations d'une organisation sur internet : site web, réseaux sociaux, avis clients, articles de presse.",
+    form:"Identité maîtrisée : ce que l'entreprise publie (site, réseaux officiels)\nIdentité subie : ce que les autres disent (avis, articles, bad buzz)\n\nRisques : e-réputation négative, bad buzz, données personnelles exposées",
+    interp:"L'identité numérique peut être un avantage (notoriété positive) ou un risque (avis négatifs, bad buzz).",
+    ex:"Fromagerie Réo (2021) : identifier les risques liés à l'identité numérique (avis clients négatifs, gestion de l'e-réputation).",
+    conf:"⚠️ Identité numérique ≠ communication digitale. L'identité inclut ce qu'on NE contrôle PAS (avis, articles tiers)."
+  },
+  ethique: {
+    tag:"RSE", titre:"Éthique des affaires", freq:"★★☆☆☆ Rare",
+    def:"Application de principes moraux dans les décisions et pratiques de l'entreprise, au-delà du respect de la loi.",
+    form:"Exemples de pratiques éthiques :\n→ Refus de la corruption\n→ Transparence envers les parties prenantes\n→ Conditions de travail équitables dans toute la chaîne\n→ Approvisionnement responsable\n→ Respect de l'environnement au-delà des normes",
+    interp:"L'éthique va PLUS LOIN que la loi : une entreprise peut être légale mais non éthique (ex : optimisation fiscale agressive).",
+    ex:"Bébé Serein (2025) : partenariat avec des ESAT (insertion handicap), matériaux sans perturbateurs endocriniens → démarche éthique.",
+    conf:"⚠️ Éthique ≠ RSE. L'éthique est un PRINCIPE (faire le bien). La RSE est une DÉMARCHE (intégrer social + environnement + économie)."
+  },
+  ess: {
+    tag:"Management", titre:"ESS / SCOP", freq:"★★☆☆☆ Rare",
+    def:"Économie Sociale et Solidaire : organisations à finalité NON lucrative (associations, coopératives, mutuelles, fondations). SCOP = Société Coopérative de Production où les salariés sont associés majoritaires.",
+    form:"ESS : finalité sociale ou solidaire, gouvernance démocratique, bénéfices réinvestis\nSCOP : 1 personne = 1 voix, salariés = associés majoritaires, dirigeant élu par les salariés",
+    interp:"L'ESS montre que la performance n'est pas que financière. Une SCOP privilégie l'intérêt collectif sur le profit individuel.",
+    ex:"Titi Floris (2021) : SCOP de transport adapté. Management coopératif, finalité sociale (insertion des personnes handicapées).",
+    conf:"⚠️ ESS ≠ entreprise caritative. Les organisations de l'ESS ont une activité économique réelle, mais leur finalité première n'est pas le profit."
   }
 };
 
@@ -579,7 +643,7 @@ const Q = {
     dossier:"Dossier 1 — Stratégie", type:"TYPE 6", titre:"Caractériser la stratégie (globale + domaine)",
     freq:"★★★★★ — Tous les sujets depuis 2021", pts:"~3-4 pts", temps:"≈ 15 min",
     annales:"Topschuss (2024) · Ankama (2023) · Caraïbes Fumés (2022) · Doitrand (2022) · Fromagerie Réo (2021)",
-    notions:["strategies","das"],
+    notions:["strategies","das","integration","croissance"],
     methode:[
       {n:1, t:"Identifier la stratégie globale", d:"Spécialisation (1 DAS) ou diversification (plusieurs DAS, liée ou conglomérale) ?"},
       {n:2, t:"Identifier la stratégie de domaine", d:"Domination par les coûts / différenciation par le haut / bas / focalisation ?"},
@@ -631,7 +695,7 @@ const Q = {
     dossier:"Dossier 1 — Stratégie", type:"TYPE 9", titre:"Identifier les parties prenantes et leurs attentes",
     freq:"★★★★☆ — ~65% des sujets", pts:"~1-2 pts", temps:"≈ 7 min",
     annales:"YBRA (2024) · Myfood (2023) · Caraïbes Fumés (2022) · Titi Floris (2021)",
-    notions:["parties"],
+    notions:["parties","ess"],
     methode:[
       {n:1, t:"Distinguer parties prenantes internes et externes", d:"Internes : salariés, dirigeants, actionnaires. Externes : clients, fournisseurs, État…"},
       {n:2, t:"Pour chaque PP : nommer + attentes", d:"<em>'Les salariés (PP interne) attendent de bonnes conditions de travail et une rémunération équitable.'</em>"},
@@ -664,7 +728,7 @@ const Q = {
     dossier:"Dossier 2 — Finances", type:"TYPE 11", titre:"Calculer coût de revient + taux de marge",
     freq:"★★★★☆ — ~60% des sujets", pts:"~2-3 pts", temps:"≈ 12 min",
     annales:"Ankama (2023) · Fromagerie Réo (2021) · Caraïbes Fumés (2022)",
-    notions:["couts"],
+    notions:["couts","seuil","caf"],
     methode:[
       {n:1, t:"Additionner toutes les charges du tableau", d:"Production + distribution. Ne pas oublier les coûts de distribution."},
       {n:2, t:"Diviser par la quantité → coût de revient unitaire", d:"Unité : €/unité."},
@@ -682,7 +746,7 @@ const Q = {
     dossier:"Dossier 3 — Numérique", type:"TYPE 12", titre:"Identifier l'intérêt du PGI / CRM / RGPD",
     freq:"★★★★☆ — ~80% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
     annales:"Topschuss (2024) · Myfood (2023) · Fromagerie Réo (2021) · Agesys (2022)",
-    notions:["pgi"],
+    notions:["pgi","identite_num"],
     methode:[
       {n:1, t:"Identifier l'outil numérique dans les docs", d:"PGI / CRM / e-commerce / RGPD / Big Data ?"},
       {n:2, t:"Définir l'outil en 1 ligne", d:"Sa fonction principale."},
@@ -733,7 +797,7 @@ const Q = {
     dossier:"Dossier 2 — GRH", type:"TYPE 15", titre:"Identifier le mode de production / flux",
     freq:"★★★★☆ — ~50% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
     annales:"Ankama (2023) · TPS (2023) · Beyer (2023) · Fromagerie Réo (2021)",
-    notions:["production_n"],
+    notions:["production_n","mintzberg"],
     methode:[
       {n:1, t:"Identifier le mode de production", d:"Artisanal / en série / en continu. Justifier avec les docs."},
       {n:2, t:"Identifier le mode de gestion des flux", d:"Flux poussés (prévisions → stocks) ou flux tirés/tendus (commande → production)."},
