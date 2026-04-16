@@ -357,44 +357,69 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
   <!-- MODE SYNTHÈSE -->
   <div id="sidebar-synthese" style="display:none">
     <div class="sidebar-intro">Synthèse 15 lignes</div>
-    <div class="q-item" onclick="showSynthMethode(this)">
+
+    <div class="q-item" onclick="showSynthMethode(this)" style="border-bottom:1px solid var(--bordure)">
       <span class="q-name">📐 Méthode générale</span>
       <div class="q-meta"><span class="q-time">5 étapes · 4-6 pts</span></div>
     </div>
-    <div class="dossier-label">Dossier 3 · Numérique</div>
-    <div class="q-item" onclick="showSynthSujet(0,this)">
-      <span class="q-name">Numérique et performance</span>
-      <div class="q-meta"><span class="q-time">Réo · 2021</span></div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-label">Numérique (3 sujets)</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showSynthSujet(0,this)">
+          <span class="q-name">Numérique et performance</span>
+          <div class="q-meta"><span class="q-time">Réo · 2021</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(2,this)">
+          <span class="q-name">Numérique et identité</span>
+          <div class="q-meta"><span class="q-time">Ankama · 2023</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(6,this)">
+          <span class="q-name">Opportunités et risques</span>
+          <div class="q-meta"><span class="q-time">Eyecontact · 2024</span></div>
+        </div>
+      </div>
     </div>
-    <div class="q-item" onclick="showSynthSujet(2,this)">
-      <span class="q-name">Numérique et identité</span>
-      <div class="q-meta"><span class="q-time">Ankama · 2023</span></div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-label">GRH / QVT (3 sujets)</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showSynthSujet(1,this)">
+          <span class="q-name">Performance sociale</span>
+          <div class="q-meta"><span class="q-time">Caraïbes Fumés · 2022</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(3,this)">
+          <span class="q-name">Marque employeur</span>
+          <div class="q-meta"><span class="q-time">TPS · 2023</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(5,this)">
+          <span class="q-name">QVT et performance</span>
+          <div class="q-meta"><span class="q-time">Topschuss · 2024</span></div>
+        </div>
+      </div>
     </div>
-    <div class="q-item" onclick="showSynthSujet(6,this)">
-      <span class="q-name">Opportunités et risques</span>
-      <div class="q-meta"><span class="q-time">Eyecontact · 2024</span></div>
-    </div>
-    <div class="dossier-label">Dossier 2 · GRH / QVT</div>
-    <div class="q-item" onclick="showSynthSujet(1,this)">
-      <span class="q-name">Performance sociale</span>
-      <div class="q-meta"><span class="q-time">Caraïbes Fumés · 2022</span></div>
-    </div>
-    <div class="q-item" onclick="showSynthSujet(3,this)">
-      <span class="q-name">Marque employeur</span>
-      <div class="q-meta"><span class="q-time">TPS · 2023</span></div>
-    </div>
-    <div class="q-item" onclick="showSynthSujet(5,this)">
-      <span class="q-name">QVT et performance</span>
-      <div class="q-meta"><span class="q-time">Topschuss · 2024</span></div>
-    </div>
-    <div class="dossier-label">Dossier 3 · RSE / Innovation</div>
-    <div class="q-item" onclick="showSynthSujet(4,this)">
-      <span class="q-name">Innovation et valeur perçue</span>
-      <div class="q-meta"><span class="q-time">Beyer · 2023</span></div>
-    </div>
-    <div class="q-item" onclick="showSynthSujet(7,this)">
-      <span class="q-name">RSE créatrice de valeur</span>
-      <div class="q-meta"><span class="q-time">Renou · 2024</span></div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-label">RSE / Innovation (2 sujets)</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showSynthSujet(4,this)">
+          <span class="q-name">Innovation et valeur perçue</span>
+          <div class="q-meta"><span class="q-time">Beyer · 2023</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(7,this)">
+          <span class="q-name">RSE créatrice de valeur</span>
+          <div class="q-meta"><span class="q-time">Renou · 2024</span></div>
+        </div>
+      </div>
     </div>
   </div><!-- /sidebar-synthese -->
 
@@ -402,46 +427,63 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
   <div id="sidebar-fiches" style="display:none">
     <div class="sidebar-intro">Fiches mémo</div>
 
-    <div class="dossier-label">Dossier 1 — Stratégie</div>
-    <div class="q-item" onclick="showFiche('d1','q1',this)">
-      <span class="q-name">🔍 Où je suis ?</span>
-      <div class="q-meta"><span class="q-time">4 notions · Analyser</span></div>
-    </div>
-    <div class="q-item" onclick="showFiche('d1','q2',this)">
-      <span class="q-name">🧭 Où veux-je aller ?</span>
-      <div class="q-meta"><span class="q-time">3 notions · Décider</span></div>
-    </div>
-    <div class="q-item" onclick="showFiche('d1','q3',this)">
-      <span class="q-name">🛤️ Comment j'y vais ?</span>
-      <div class="q-meta"><span class="q-time">3 notions · Agir</span></div>
-    </div>
-
-    <div class="dossier-label">Dossier 2 — Finances & GRH</div>
-    <div class="q-item" onclick="showFiche('d2','fin',this)">
-      <span class="q-name">💰 Performance financière</span>
-      <div class="q-meta"><span class="q-time">7 notions · Formules</span></div>
-    </div>
-    <div class="q-item" onclick="showFiche('d2','soc',this)">
-      <span class="q-name">👥 Performance sociale</span>
-      <div class="q-meta"><span class="q-time">5 notions · Théories</span></div>
-    </div>
-    <div class="q-item" onclick="showFiche('d2','ope',this)">
-      <span class="q-name">⚙️ Performance opérationnelle</span>
-      <div class="q-meta"><span class="q-time">2 notions · Flux</span></div>
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-label">Dossier 1 — Stratégie</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showFiche('d1','q1',this)">
+          <span class="q-name">Où je suis ?</span>
+          <div class="q-meta"><span class="q-time">4 notions · Analyser</span></div>
+        </div>
+        <div class="q-item" onclick="showFiche('d1','q2',this)">
+          <span class="q-name">Où veux-je aller ?</span>
+          <div class="q-meta"><span class="q-time">3 notions · Décider</span></div>
+        </div>
+        <div class="q-item" onclick="showFiche('d1','q3',this)">
+          <span class="q-name">Comment j'y vais ?</span>
+          <div class="q-meta"><span class="q-time">3 notions · Agir</span></div>
+        </div>
+      </div>
     </div>
 
-    <div class="dossier-label">Dossier 3 — RSE & Numérique</div>
-    <div class="q-item" onclick="showFiche('d3','num',this)">
-      <span class="q-name">💻 Mes outils</span>
-      <div class="q-meta"><span class="q-time">3 notions · Numérique</span></div>
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-label">Dossier 2 — Finances & GRH</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showFiche('d2','fin',this)">
+          <span class="q-name">Performance financière</span>
+          <div class="q-meta"><span class="q-time">7 notions · Formules</span></div>
+        </div>
+        <div class="q-item" onclick="showFiche('d2','soc',this)">
+          <span class="q-name">Performance sociale</span>
+          <div class="q-meta"><span class="q-time">5 notions · Théories</span></div>
+        </div>
+        <div class="q-item" onclick="showFiche('d2','ope',this)">
+          <span class="q-name">Performance opérationnelle</span>
+          <div class="q-meta"><span class="q-time">2 notions · Flux</span></div>
+        </div>
+      </div>
     </div>
-    <div class="q-item" onclick="showFiche('d3','rse',this)">
-      <span class="q-name">🌿 Mes valeurs</span>
-      <div class="q-meta"><span class="q-time">3 notions · RSE</span></div>
-    </div>
-    <div class="q-item" onclick="showFiche('d3','syn',this)">
-      <span class="q-name">✍️ La synthèse</span>
-      <div class="q-meta"><span class="q-time">Méthode + 8 sujets</span></div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-label">Dossier 3 — RSE & Numérique</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showFiche('d3','num',this)">
+          <span class="q-name">Mes outils</span>
+          <div class="q-meta"><span class="q-time">3 notions · Numérique</span></div>
+        </div>
+        <div class="q-item" onclick="showFiche('d3','rse',this)">
+          <span class="q-name">Mes valeurs</span>
+          <div class="q-meta"><span class="q-time">3 notions · RSE</span></div>
+        </div>
+      </div>
     </div>
   </div><!-- /sidebar-fiches -->
 
@@ -1217,22 +1259,68 @@ function switchMode(mode) {
         <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px">📝 Fiches mémo MSGN</h2>
         <p style="color:var(--gris);font-size:13px;margin-bottom:24px">3 dossiers · 32 notions · Tout retenir pour le Bac</p>
 
-        <div style="background:#fdeef1;border-left:5px solid #e8526b;border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:14px;cursor:pointer" onclick="showFiche('d1','q1',document.querySelector('#sidebar-fiches .q-item'))">
-          <div style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;margin-bottom:4px">Dossier 1 — Stratégie</div>
-          <div style="font-size:13px;color:#5a5448;line-height:1.5">3 questions dans l'ordre : <strong>où je suis</strong> → <strong>où je veux aller</strong> → <strong>comment j'y vais</strong></div>
-          <div style="font-size:11px;color:#7a6a58;margin-top:4px">10 notions · Parties prenantes · Compétences · Stratégie · Mercatique</div>
+        <div style="background:#fdeef1;border-left:5px solid #e8526b;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
+          <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 1 — Stratégie</div>
+          <div style="display:flex;gap:8px;margin-bottom:8px">
+            <div onclick="showFiche('d1','q1',document.querySelector('#sidebar-fiches .q-item'))" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+              <div style="font-size:18px;margin-bottom:3px">🔍</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où je suis ?</div>
+              <div style="font-size:10px;color:#7a6a58">Analyser</div>
+            </div>
+            <div style="align-self:center;color:#a09880;font-size:16px">→</div>
+            <div onclick="showFiche('d1','q2',document.querySelectorAll('#sidebar-fiches .q-item')[1])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+              <div style="font-size:18px;margin-bottom:3px">🧭</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où veux-je aller ?</div>
+              <div style="font-size:10px;color:#7a6a58">Décider</div>
+            </div>
+            <div style="align-self:center;color:#a09880;font-size:16px">→</div>
+            <div onclick="showFiche('d1','q3',document.querySelectorAll('#sidebar-fiches .q-item')[2])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+              <div style="font-size:18px;margin-bottom:3px">🛤️</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Comment j'y vais ?</div>
+              <div style="font-size:10px;color:#7a6a58">Agir</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#7a6a58">10 notions · Parties prenantes · Compétences · Stratégie · Mercatique</div>
         </div>
 
-        <div style="background:#e8f3ff;border-left:5px solid #3a82c8;border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:14px;cursor:pointer" onclick="document.querySelectorAll('#sidebar-fiches .q-item')[3].click()">
-          <div style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;margin-bottom:4px">Dossier 2 — Finances & GRH</div>
-          <div style="font-size:13px;color:#5a5448;line-height:1.5">3 leviers de performance : <strong>financière</strong> · <strong>sociale</strong> · <strong>opérationnelle</strong></div>
-          <div style="font-size:11px;color:#7a6a58;margin-top:4px">14 notions · VA · FRNG · Likert · Maslow · GPEC · Flux</div>
+        <div style="background:#e8f3ff;border-left:5px solid #3a82c8;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
+          <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 2 — Finances & GRH</div>
+          <div style="display:flex;gap:8px;margin-bottom:8px">
+            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[3].click()" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+              <div style="font-size:18px;margin-bottom:3px">💰</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance financière</div>
+              <div style="font-size:10px;color:#7a6a58">7 notions</div>
+            </div>
+            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[4].click()" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+              <div style="font-size:18px;margin-bottom:3px">👥</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance sociale</div>
+              <div style="font-size:10px;color:#7a6a58">5 notions</div>
+            </div>
+            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[5].click()" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+              <div style="font-size:18px;margin-bottom:3px">⚙️</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance opérationnelle</div>
+              <div style="font-size:10px;color:#7a6a58">2 notions</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#7a6a58">14 notions · VA · FRNG · Likert · Maslow · GPEC · Flux</div>
         </div>
 
-        <div style="background:#eaf8ef;border-left:5px solid #1a7a3c;border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:14px;cursor:pointer" onclick="document.querySelectorAll('#sidebar-fiches .q-item')[6].click()">
-          <div style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;margin-bottom:4px">Dossier 3 — RSE & Numérique</div>
-          <div style="font-size:13px;color:#5a5448;line-height:1.5">3 étapes : <strong>mes outils</strong> → <strong>mes valeurs</strong> → <strong>ma performance globale</strong></div>
-          <div style="font-size:11px;color:#7a6a58;margin-top:4px">8 notions · PGI · CRM · RGPD · RSE · 3 piliers · Synthèse</div>
+        <div style="background:#eaf8ef;border-left:5px solid #1a7a3c;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
+          <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 3 — RSE & Numérique</div>
+          <div style="display:flex;gap:8px;margin-bottom:8px">
+            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[6].click()" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+              <div style="font-size:18px;margin-bottom:3px">💻</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes outils</div>
+              <div style="font-size:10px;color:#7a6a58">Numérique</div>
+            </div>
+            <div style="align-self:center;color:#a09880;font-size:16px">→</div>
+            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[7].click()" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+              <div style="font-size:18px;margin-bottom:3px">🌿</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes valeurs</div>
+              <div style="font-size:10px;color:#7a6a58">RSE</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#7a6a58">6 notions · PGI · CRM · RGPD · RSE · 3 piliers</div>
         </div>
       </div>`;
   } else {
