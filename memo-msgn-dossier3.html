@@ -453,22 +453,43 @@ body {
   .rse-pillars { grid-template-columns: 1fr; }
   .checklist-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── NAV SITE ─── */
+.nav1{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.95);backdrop-filter:blur(16px);height:48px;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid rgba(30,28,24,.1);gap:20px;font-family:'Inter',sans-serif}
+.nav1 a{font-size:0.78rem;font-weight:600;color:#7a6a58;text-decoration:none;padding:4px 12px;border-radius:16px}
+.nav1 .logo{font-size:0.95rem;font-weight:900;color:#1e1c18;padding:0}
+.nav1 .logo span{color:#b5415a}
+.nav1 .on{background:#1e1c18;color:#f5c842}
+.nav2{position:fixed;top:48px;left:0;right:0;z-index:999;background:rgba(240,237,230,0.95);backdrop-filter:blur(16px);height:36px;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid rgba(30,28,24,.08);gap:16px;font-family:'Inter',sans-serif}
+.nav2 .badge-nav{font-size:0.7rem;font-weight:800;background:#3d1a5c;color:#f5c842;padding:3px 10px;border-radius:12px}
+.nav2 a{font-size:0.78rem;font-weight:600;color:#7a6a58;text-decoration:none}
+.nav2 a.on{color:#1e1c18;font-weight:700}
 </style>
 </head>
 <body>
 
-<div class="page">
+<nav class="nav1">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html">Éco-Droit</a>
+  <a href="revizo-msgn.html" class="on">SGDN</a>
+  <a href="revizo-philo.html">Philo</a>
+</nav>
+<div class="nav2">
+  <span class="badge-nav">SDGN</span>
+  <a href="revizo-msgn.html">Questions Bac</a>
+  <a href="memo-msgn-dossier1.html" class="on">Fiches mémo</a>
+</div>
+
+<div class="page" style="margin-top:84px">
 
   <!-- HEADER -->
   <div class="header">
-    <div class="badge">Révizo · MSGN · Terminale STMG</div>
-    <h1>Mémo Dossier 3 — <span>RSE & Numérique</span></h1>
-    <div class="header-sub">8 notions · 3 étapes vers la performance globale · Objectif : tout retenir</div>
+    <h1>Dossier 3 — <span>RSE & Numérique</span></h1>
+    <div class="header-sub">8 notions · 3 étapes vers la performance globale</div>
     <div class="dnav">
       <a href="memo-msgn-dossier1.html">D1 · Stratégie</a>
       <a href="memo-msgn-dossier2.html">D2 · Finances & GRH</a>
       <a href="memo-msgn-dossier3.html" class="on">D3 · RSE & Numérique</a>
-      <a href="revizo-msgn.html">← Questions Bac</a>
     </div>
   </div>
 
