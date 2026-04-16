@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mémo Dossier 3 · RSE & Numérique — Révizo MSGN</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  background: #f0ede6;
+  color: #1e1c18;
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  min-height: 100vh;
+}
+
+.page {
+  width: 900px;
+  max-width: 100%;
+  background: #fffdf8;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  height: fit-content;
+}
+
+/* ─── HEADER ─── */
+.header {
+  background: #1e1c18;
+  color: #fffdf8;
+  padding: 22px 32px 18px;
+}
+.badge {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.10);
+  padding: 4px 12px;
+  border-radius: 20px;
+  color: #e8e2d6;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.header h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+.header h1 span { color: #f5c842; }
+.header-sub { font-size: 13px; color: #a09880; font-weight: 600; margin-top: 4px; }
+
+/* ─── MANTRA ─── */
+.mantra {
+  background: #fef8e2;
+  border-bottom: 2px solid #f5c842;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mantra-icon { font-size: 22px; flex-shrink: 0; }
+.mantra-text {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: #7a5800;
+  line-height: 1.4;
+}
+.mantra-text em { color: #b5415a; font-style: normal; }
+
+/* ─── NAV STICKY ─── */
+.qnav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  background: #fffdf8;
+  border-bottom: 2px solid #e8e2d6;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.qnav a {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 10px;
+  text-decoration: none;
+  color: #1e1c18;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  transition: background .15s;
+  border-right: 1px solid #e8e2d6;
+}
+.qnav a:last-child { border-right: none; }
+.qnav a:hover { background: #f8f5ef; }
+.qnav .qi { font-size: 18px; }
+.qnav .ql { line-height: 1.2; }
+.qnav .qs { font-size: 10px; font-weight: 600; color: #7a6a58; display: block; }
+.q1:hover { background: #e8f3ff !important; border-bottom: 3px solid #2a69a8; }
+.q2:hover { background: #eaf8ef !important; border-bottom: 3px solid #1a7a3c; }
+.q3:hover { background: #fdeef1 !important; border-bottom: 3px solid #b5415a; }
+
+/* ─── SECTION ─── */
+.section {
+  padding: 28px 32px 22px;
+  border-bottom: 1px solid #e8e2d6;
+}
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.sec-icon { font-size: 28px; }
+.sec-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.sec-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.s1 .sec-label { color: #2a69a8; }
+.s2 .sec-label { color: #1a7a3c; }
+.s3 .sec-label { color: #b5415a; }
+.s1 { border-left: 5px solid #2a69a8; }
+.s2 { border-left: 5px solid #1a7a3c; }
+.s3 { border-left: 5px solid #b5415a; }
+
+/* ─── FICHE NOTION ─── */
+.fiche {
+  background: #fff;
+  border: 1.5px solid #e8e2d6;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.fiche-header {
+  padding: 12px 16px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #f0ede6;
+}
+.fiche-icon { font-size: 20px; flex-shrink: 0; }
+.fiche-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  flex: 1;
+}
+.fiche-freq {
+  font-size: 10px;
+  font-weight: 700;
+  color: #7a6a58;
+  white-space: nowrap;
+}
+.tag-bonus {
+  background: #fde8a0;
+  color: #7a5800;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.fiche-body {
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+}
+
+.fb {
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.fb-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.fb-def .fb-label { color: #b5415a; }
+.fb-retenir .fb-label { color: #2a69a8; }
+.fb-exemple .fb-label { color: #946e00; }
+.fb-bac .fb-label { color: #1a7a3c; }
+
+.fb ul { padding-left: 16px; margin: 0; }
+.fb li { margin-bottom: 2px; }
+.fb strong { font-weight: 800; color: #1e1c18; }
+
+.fb-bac-tag {
+  display: inline-block;
+  background: #eaf8ef;
+  border: 1px solid #bce8cd;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1a5c35;
+  margin-top: 2px;
+}
+
+/* ─── SCHÉMA RSE 3 PILIERS ─── */
+.rse-schema {
+  background: #f8fdf9;
+  border: 1.5px solid #bce8cd;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.rse-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  color: #1a7a3c;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.rse-pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.rse-p {
+  border-radius: 10px;
+  padding: 12px 10px;
+  text-align: center;
+}
+.rse-p-eco { background: #e8f3ff; border: 1.5px solid #a0c8ee; }
+.rse-p-soc { background: #fdeef1; border: 1.5px solid #e8a0b0; }
+.rse-p-env { background: #eaf8ef; border: 1.5px solid #a0d8b8; }
+.rse-p-icon { font-size: 22px; margin-bottom: 4px; }
+.rse-p-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+.rse-p-eco .rse-p-title { color: #1a4f82; }
+.rse-p-soc .rse-p-title { color: #7a2038; }
+.rse-p-env .rse-p-title { color: #1a5c35; }
+.rse-p-desc {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #5a5448;
+  line-height: 1.4;
+}
+.rse-center {
+  text-align: center;
+  margin-top: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  color: #1a7a3c;
+}
+
+/* ─── MINI TABLEAU ─── */
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+  margin: 6px 0;
+}
+.mini-table th {
+  background: #2a69a8;
+  color: white;
+  padding: 5px 8px;
+  font-weight: 800;
+  font-size: 10.5px;
+  text-align: left;
+}
+.mini-table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid #f0ede6;
+  font-weight: 600;
+  vertical-align: top;
+  line-height: 1.4;
+}
+.mini-table tr:nth-child(even) td { background: #fafaf6; }
+
+/* ─── PIÈGE BAC ─── */
+.piege {
+  background: #fdf5f7;
+  border-left: 4px solid #b5415a;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #5a5448;
+}
+.piege strong { color: #b5415a; font-weight: 800; }
+
+/* ─── SYNTHÈSE ENCADRÉ ─── */
+.synthese-box {
+  background: #fef8e2;
+  border: 2px solid #f5c842;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.synthese-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  color: #7a5800;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.synthese-steps {
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+.synthese-steps ol { padding-left: 20px; }
+.synthese-steps li { margin-bottom: 4px; }
+
+/* ─── CHECKLIST RÉASSURANCE ─── */
+.checklist {
+  background: #1e1c18;
+  color: #fffdf8;
+  padding: 24px 32px;
+}
+.checklist-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  color: #f5c842;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.checklist-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.check-item {
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.check-icon {
+  background: #f5c842;
+  color: #1e1c18;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 11px;
+  flex-shrink: 0;
+  font-family: 'Nunito', sans-serif;
+}
+.check-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #d8d2c6;
+  line-height: 1.4;
+}
+.check-text strong { color: #fff; font-weight: 800; }
+
+/* ─── FOOTER ─── */
+.footer {
+  background: #f0ede6;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.footer a { color: #b5415a; font-weight: 800; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.footer-brand { font-family: 'Nunito', sans-serif; font-weight: 900; color: #7a7160; }
+.footer-brand span { color: #1e1c18; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 700px) {
+  body { padding: 12px; }
+  .header, .mantra, .section, .checklist, .footer { padding-left: 18px; padding-right: 18px; }
+  .header h1 { font-size: 22px; }
+  .qnav a { font-size: 11px; padding: 10px 6px; gap: 5px; }
+  .qnav .qi { font-size: 15px; }
+  .fiche-body { grid-template-columns: 1fr; }
+  .rse-pillars { grid-template-columns: 1fr; }
+  .checklist-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="badge">Révizo · MSGN · Terminale STMG</div>
+    <h1>Mémo Dossier 3 — <span>RSE & Numérique</span></h1>
+    <div class="header-sub">8 notions · 3 étapes vers la performance globale · Objectif : tout retenir</div>
+  </div>
+
+  <!-- MANTRA -->
+  <div class="mantra">
+    <div class="mantra-icon">🎯</div>
+    <div class="mantra-text">La performance globale articule <em>l'économique</em>, <em>le social</em> et <em>l'environnemental</em> — au-delà des obligations légales.</div>
+  </div>
+
+  <!-- NAV STICKY -->
+  <div class="qnav">
+    <a href="#num" class="q1"><span class="qi">💻</span><span class="ql">Mes outils<span class="qs">3 notions · numérique</span></span></a>
+    <a href="#rse" class="q2"><span class="qi">🌿</span><span class="ql">Mes valeurs<span class="qs">3 notions · RSE</span></span></a>
+    <a href="#syn" class="q3"><span class="qi">✍️</span><span class="ql">Synthèse 15 lignes<span class="qs">méthode + exemples</span></span></a>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- ÉTAPE 1 — MES OUTILS (NUMÉRIQUE)            -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section s1" id="num">
+    <div class="sec-head">
+      <div class="sec-icon">💻</div>
+      <div>
+        <div class="sec-label">Étape 1</div>
+        <div class="sec-title">Mes outils — Le numérique au service de la performance</div>
+      </div>
+    </div>
+
+    <!-- PGI / CRM / RGPD -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🖥️</span>
+        <span class="fiche-title">PGI (ERP) / CRM / RGPD</span>
+        <span class="fiche-freq">★★★★☆ ~80%</span>
+      </div>
+      <div class="fiche-body" style="grid-template-columns:1fr">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Les 3 outils à connaître</div>
+          <table class="mini-table">
+            <thead><tr><th>Outil</th><th>Définition</th><th>Impact</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>PGI (ERP)</strong></td>
+                <td>Logiciel intégrant <strong>tous les processus</strong> dans une base de données unique</td>
+                <td>Cohérence des données, gains de temps, moins d'erreurs</td>
+              </tr>
+              <tr>
+                <td><strong>CRM</strong></td>
+                <td>Outil de <strong>gestion de la relation client</strong> : historique, préférences, interactions</td>
+                <td>Personnalisation, fidélisation, hausse du panier moyen</td>
+              </tr>
+              <tr>
+                <td><strong>RGPD</strong></td>
+                <td>Règlement européen (2018) sur la <strong>protection des données personnelles</strong></td>
+                <td>Obligations : consentement, droit d'accès/suppression, sécurité</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>PGI + CRM + RGPD apparaissent souvent <strong>dans le même dossier</strong></li>
+            <li>Décrire l'outil <strong>sans montrer son impact</strong> sur la performance = réponse incomplète</li>
+            <li>Le RGPD est une <strong>obligation</strong>, pas un choix (contrairement à la RSE qui est volontaire)</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Topschuss 2024</strong> — CRM pour personnaliser les offres outdoor → CA e-commerce = 28%. PGI pour gérer stocks en temps réel. RGPD : consentement obligatoire pour les données clients.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« base de données unique »</div>
+          <div class="fb-bac-tag" style="margin-left:4px">« consentement explicite »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Communication / relation client -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">📢</span>
+        <span class="fiche-title">Communication & relation client</span>
+        <span class="fiche-freq">★★★☆☆ ~25%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Ensemble des <strong>modalités</strong> utilisées pour toucher, convaincre et fidéliser les clients.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          Chaque modalité a un <strong>objectif</strong> et une <strong>cible</strong> :
+          <ul>
+            <li><strong>Réseaux sociaux</strong> → communauté, engagement (B2C)</li>
+            <li><strong>Site e-commerce</strong> → vente directe, couverture nationale</li>
+            <li><strong>Newsletter</strong> → fidélisation, relation dans le temps</li>
+            <li><strong>Relations presse</strong> → crédibilité, notoriété</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Beyer 2023</strong> — Facebook pour humaniser la marque artisanale + avis clients pour rassurer sur un produit innovant (« Fruits à tartiner »).
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« stratégie de communication omnicanale »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Identité numérique (bonus) -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🌐</span>
+        <span class="fiche-title">Identité numérique</span>
+        <span class="tag-bonus">bonus</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Ensemble des <strong>traces</strong> d'une organisation sur internet : ce qu'elle publie + ce que les autres disent d'elle.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li><strong>Identité maîtrisée</strong> : site officiel, réseaux, contenus publiés</li>
+            <li><strong>Identité subie</strong> : avis clients, articles, bad buzz</li>
+            <li>Risques : e-réputation négative, données exposées, bad buzz viral</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Ankama 2023</strong> — Sujet de synthèse : « les outils numériques de communication influencent l'identité des organisations ».
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« e-réputation »</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="piege">
+      <strong>⚠ Piège bac Numérique :</strong> lister des outils (PGI, CRM…) sans montrer leur <strong>impact concret</strong> sur la performance = réponse incomplète. Toujours lier outil → bénéfice chiffré ou observable.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- ÉTAPE 2 — MES VALEURS (RSE)                 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section s2" id="rse">
+    <div class="sec-head">
+      <div class="sec-icon">🌿</div>
+      <div>
+        <div class="sec-label">Étape 2</div>
+        <div class="sec-title">Mes valeurs — RSE & performance globale</div>
+      </div>
+    </div>
+
+    <!-- Schéma 3 piliers RSE -->
+    <div class="rse-schema">
+      <div class="rse-label">🌿 Les 3 piliers de la performance globale</div>
+      <div class="rse-pillars">
+        <div class="rse-p rse-p-eco">
+          <div class="rse-p-icon">💰</div>
+          <div class="rse-p-title">Économique</div>
+          <div class="rse-p-desc">Rentabilité, CA, croissance, parts de marché, compétitivité</div>
+        </div>
+        <div class="rse-p rse-p-soc">
+          <div class="rse-p-icon">👥</div>
+          <div class="rse-p-title">Social</div>
+          <div class="rse-p-desc">QVT, formation, diversité, conditions de travail, turnover</div>
+        </div>
+        <div class="rse-p rse-p-env">
+          <div class="rse-p-icon">🌱</div>
+          <div class="rse-p-title">Environnemental</div>
+          <div class="rse-p-desc">Bilan carbone, matériaux recyclés, déchets, énergie verte</div>
+        </div>
+      </div>
+      <div class="rse-center">RSE = engagement <strong>VOLONTAIRE</strong>, au-delà des obligations légales</div>
+    </div>
+
+    <!-- RSE + Performance -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🌿</span>
+        <span class="fiche-title">RSE & Performance globale</span>
+        <span class="fiche-freq">★★★★★ 100%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          La RSE est un engagement <strong>volontaire</strong> de l'entreprise à intégrer les préoccupations sociales et environnementales dans ses activités. La performance globale évalue les résultats sur les <strong>3 piliers</strong>.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>RSE = <strong>volontaire</strong>, au-delà de la loi (≠ RGPD qui est obligatoire)</li>
+            <li>Toujours structurer en <strong>3 piliers</strong> (éco/social/enviro)</li>
+            <li>La RSE peut être un <strong>levier d'avantage concurrentiel</strong> (différenciation)</li>
+            <li>⚠ Réponse sans les 3 piliers = incomplète</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Topschuss 2024</strong> — Éco : CA +18% grâce à l'image engagée. Social : télétravail, turnover bas. Enviro : 60% matières recyclées d'ici 2026.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« performance globale »</div>
+          <div class="fb-bac-tag" style="margin-left:4px">« engagement volontaire »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Éthique (bonus) -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">⚖️</span>
+        <span class="fiche-title">Éthique des affaires</span>
+        <span class="tag-bonus">bonus</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Ensemble des principes <strong>moraux</strong> qui guident les décisions d'une entreprise. L'éthique va <strong>plus loin que la loi</strong>.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>Légal ≠ éthique : une entreprise peut être <strong>légale mais non éthique</strong> (ex : optimisation fiscale agressive)</li>
+            <li>Outils : charte éthique, label, commerce équitable</li>
+            <li>L'éthique <strong>renforce la RSE</strong> mais ne s'y réduit pas</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Quand ça tombe</div>
+          Rare en question directe, mais utile pour enrichir une réponse RSE ou synthèse. Montre une réflexion approfondie.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« responsabilité morale »</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="piege">
+      <strong>⚠ Piège bac RSE :</strong> RSE = VOLONTAIRE. Dire « l'entreprise est obligée de faire de la RSE » = faux et pénalisé. C'est un <strong>choix stratégique</strong>, pas une contrainte légale.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- ÉTAPE 3 — LA SYNTHÈSE 15 LIGNES             -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section s3" id="syn">
+    <div class="sec-head">
+      <div class="sec-icon">✍️</div>
+      <div>
+        <div class="sec-label">Étape 3</div>
+        <div class="sec-title">La synthèse 15 lignes — La question qui rapporte le plus</div>
+      </div>
+    </div>
+
+    <!-- Méthode -->
+    <div class="synthese-box">
+      <div class="synthese-title">📐 Méthode en 5 étapes (4-6 pts · ~20 min)</div>
+      <div class="synthese-steps">
+        <ol>
+          <li><strong>Lire la question</strong> — identifier les 2-3 thèmes demandés. ⚠ Ce n'est PAS toujours la RSE !</li>
+          <li><strong>Faire un plan en 3 parties</strong> — si RSE → 3 piliers. Si numérique → 3 impacts. Si QVT → 3 dimensions.</li>
+          <li><strong>Rédiger une intro (2 lignes)</strong> — reformuler la question + annoncer le plan.</li>
+          <li><strong>Développer chaque partie</strong> — argument + preuve du document. Pas de liste à puces → des phrases rédigées.</li>
+          <li><strong>Conclure (2 lignes)</strong> — synthèse + montrer que les éléments se renforcent mutuellement.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Les 8 sujets tombés -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🎯</span>
+        <span class="fiche-title">Les 8 sujets de synthèse tombés au bac (2021-2025)</span>
+        <span class="fiche-freq">★★★★★ 100%</span>
+      </div>
+      <div class="fiche-body" style="grid-template-columns:1fr">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Panorama des sujets réels</div>
+          <table class="mini-table">
+            <thead><tr><th>Année</th><th>Sujet</th><th>Thème dominant</th></tr></thead>
+            <tbody>
+              <tr><td><strong>2021</strong> Réo</td><td>Le numérique contribue à la performance</td><td>Numérique</td></tr>
+              <tr><td><strong>2022</strong> Caraïbes</td><td>Performance sociale / OU outils numériques</td><td>QVT / Numérique</td></tr>
+              <tr><td><strong>2023</strong> Ankama</td><td>Outils numériques influencent l'identité</td><td>Numérique</td></tr>
+              <tr><td><strong>2023</strong> TPS</td><td>Marque employeur et performance globale</td><td>Marque employeur</td></tr>
+              <tr><td><strong>2023</strong> Beyer</td><td>Innovation et valeur perçue</td><td>Innovation</td></tr>
+              <tr><td><strong>2024</strong> Topschuss</td><td>QVT et performance globale</td><td>QVT</td></tr>
+              <tr><td><strong>2024</strong> Eyecontact</td><td>Numérique : opportunités et risques</td><td>Numérique</td></tr>
+              <tr><td><strong>2024</strong> Renou</td><td>La RSE créatrice de valeur</td><td>RSE</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 Ce qu'on en déduit</div>
+          <ul>
+            <li><strong>Numérique = 3/8</strong> sujets → le thème le plus fréquent en synthèse</li>
+            <li><strong>RSE pure = 1/8</strong> seulement → la synthèse n'est PAS toujours sur la RSE</li>
+            <li><strong>QVT / marque employeur = 2/8</strong> → thème montant</li>
+            <li>Chaque sujet est différent → pas de réponse pré-rédigée possible, il faut <strong>la méthode</strong></li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Astuce</div>
+          Intro réutilisable : « La performance globale de [entreprise] repose sur l'articulation de trois dimensions : économique, sociale et environnementale. [Sujet] y contribue de la manière suivante. »<br>
+          → Adapter les 3 dimensions au sujet réel (pas toujours éco/social/enviro).
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mots-clés copie</div>
+          <div class="fb-bac-tag">« performance globale »</div>
+          <div class="fb-bac-tag" style="margin-left:4px">« levier de différenciation »</div>
+          <div class="fb-bac-tag" style="margin-left:4px">« avantage concurrentiel durable »</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="piege">
+      <strong>⚠ Piège bac Synthèse :</strong> 3 paragraphes = 3 parties. C'est la structure que les correcteurs attendent. Une synthèse sans plan visible = note divisée par 2. Et toujours citer les <strong>numéros de documents</strong> comme preuves.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHECKLIST RÉASSURANCE                       -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="checklist">
+    <div class="checklist-title">✨ Tu maîtrises le Dossier 3 si tu sais…</div>
+    <div class="checklist-grid">
+      <div class="check-item">
+        <div class="check-icon">1</div>
+        <div class="check-text">Expliquer les rôles du <strong>PGI</strong>, <strong>CRM</strong> et <strong>RGPD</strong> avec leur impact sur la performance.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">2</div>
+        <div class="check-text">Relier chaque outil de communication à un <strong>objectif</strong> (notoriété, fidélisation, conversion).</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">3</div>
+        <div class="check-text">Définir la RSE comme un engagement <strong>volontaire</strong> et la structurer en <strong>3 piliers</strong>.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">4</div>
+        <div class="check-text">Distinguer <strong>RSE</strong> (volontaire) et <strong>RGPD</strong> (obligatoire).</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">5</div>
+        <div class="check-text">Rédiger une <strong>synthèse structurée en 3 parties</strong> avec intro + preuves documentaires.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">6</div>
+        <div class="check-text">Adapter le plan de synthèse au <strong>sujet réel</strong> (pas toujours les 3 piliers RSE).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand"><span>Révizo</span> · Mémo Dossier 3 · RSE & Numérique · MSGN</div>
+    <a href="revizo-msgn.html">← Retour aux Questions Bac MSGN</a>
+  </div>
+
+</div>
+
+</body>
+</html>

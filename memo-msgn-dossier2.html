@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mémo Dossier 2 · Finances & GRH — Révizo MSGN</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  background: #f0ede6;
+  color: #1e1c18;
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  min-height: 100vh;
+}
+
+.page {
+  width: 900px;
+  max-width: 100%;
+  background: #fffdf8;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  height: fit-content;
+}
+
+/* ─── HEADER ─── */
+.header {
+  background: #1e1c18;
+  color: #fffdf8;
+  padding: 22px 32px 18px;
+}
+.badge {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.10);
+  padding: 4px 12px;
+  border-radius: 20px;
+  color: #e8e2d6;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.header h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+.header h1 span { color: #f5c842; }
+.header-sub { font-size: 13px; color: #a09880; font-weight: 600; margin-top: 4px; }
+
+/* ─── MANTRA ─── */
+.mantra {
+  background: #fef8e2;
+  border-bottom: 2px solid #f5c842;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mantra-icon { font-size: 22px; flex-shrink: 0; }
+.mantra-text {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: #7a5800;
+  line-height: 1.4;
+}
+.mantra-text em { color: #b5415a; font-style: normal; }
+
+/* ─── NAV 3 LEVIERS (sticky) ─── */
+.qnav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  background: #fffdf8;
+  border-bottom: 2px solid #e8e2d6;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.qnav a {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 10px;
+  text-decoration: none;
+  color: #1e1c18;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  transition: background .15s;
+  border-right: 1px solid #e8e2d6;
+}
+.qnav a:last-child { border-right: none; }
+.qnav a:hover { background: #f8f5ef; }
+.qnav .qi { font-size: 18px; }
+.qnav .ql { line-height: 1.2; }
+.qnav .qs { font-size: 10px; font-weight: 600; color: #7a6a58; display: block; }
+.q1:hover { background: #e8f3ff !important; border-bottom: 3px solid #2a69a8; }
+.q2:hover { background: #fdeef1 !important; border-bottom: 3px solid #b5415a; }
+.q3:hover { background: #fef8e2 !important; border-bottom: 3px solid #946e00; }
+
+/* ─── SECTION ─── */
+.section {
+  padding: 28px 32px 22px;
+  border-bottom: 1px solid #e8e2d6;
+}
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.sec-icon { font-size: 28px; }
+.sec-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.sec-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.s1 .sec-label { color: #2a69a8; }
+.s2 .sec-label { color: #b5415a; }
+.s3 .sec-label { color: #946e00; }
+.s1 { border-left: 5px solid #2a69a8; }
+.s2 { border-left: 5px solid #b5415a; }
+.s3 { border-left: 5px solid #946e00; }
+
+/* ─── FICHE NOTION ─── */
+.fiche {
+  background: #fff;
+  border: 1.5px solid #e8e2d6;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.fiche-header {
+  padding: 12px 16px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #f0ede6;
+}
+.fiche-icon { font-size: 20px; flex-shrink: 0; }
+.fiche-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  flex: 1;
+}
+.fiche-freq {
+  font-size: 10px;
+  font-weight: 700;
+  color: #7a6a58;
+  white-space: nowrap;
+}
+.tag-bonus {
+  background: #fde8a0;
+  color: #7a5800;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.fiche-body {
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+}
+
+.fb {
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.fb-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.fb-def .fb-label { color: #b5415a; }
+.fb-retenir .fb-label { color: #2a69a8; }
+.fb-exemple .fb-label { color: #946e00; }
+.fb-bac .fb-label { color: #1a7a3c; }
+
+.fb ul { padding-left: 16px; margin: 0; }
+.fb li { margin-bottom: 2px; }
+.fb strong { font-weight: 800; color: #1e1c18; }
+
+.fb-bac-tag {
+  display: inline-block;
+  background: #eaf8ef;
+  border: 1px solid #bce8cd;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1a5c35;
+  margin-top: 2px;
+}
+
+/* ─── FORMULE ENCADRÉE ─── */
+.formule {
+  background: #f8f5ef;
+  border: 1px solid #e8e2d6;
+  border-radius: 7px;
+  padding: 6px 12px;
+  font-family: 'Inter', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e1c18;
+  display: inline-block;
+  margin: 2px 0;
+}
+
+/* ─── MINI TABLEAU ─── */
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+  margin: 6px 0;
+}
+.mini-table th {
+  background: #2a69a8;
+  color: white;
+  padding: 5px 8px;
+  font-weight: 800;
+  font-size: 10.5px;
+  text-align: left;
+}
+.mini-table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid #f0ede6;
+  font-weight: 600;
+  vertical-align: top;
+  line-height: 1.4;
+}
+.mini-table tr:nth-child(even) td { background: #fafaf6; }
+.ok { color: #1a7a3c; font-weight: 800; }
+.bad { color: #b5415a; font-weight: 800; }
+
+/* ─── SCHÉMA FLUX ─── */
+.flux-schema {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+.flux-box {
+  flex: 1;
+  border-radius: 8px;
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.flux-pousse { background: #cce2f8; color: #1a4f82; }
+.flux-tendu { background: #bce8cd; color: #1a5c35; }
+.flux-vs { color: #7a7160; font-size: 18px; font-weight: 900; }
+
+/* ─── PIÈGE BAC ─── */
+.piege {
+  background: #fdf5f7;
+  border-left: 4px solid #b5415a;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #5a5448;
+}
+.piege strong { color: #b5415a; font-weight: 800; }
+
+/* ─── PILLS COORDINATION ─── */
+.pills { display: flex; gap: 5px; flex-wrap: wrap; margin: 6px 0; }
+.pill-coord {
+  background: #fde8a0;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #7a5800;
+}
+
+/* ─── CHECKLIST RÉASSURANCE ─── */
+.checklist {
+  background: #1e1c18;
+  color: #fffdf8;
+  padding: 24px 32px;
+}
+.checklist-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  color: #f5c842;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.checklist-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.check-item {
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.check-icon {
+  background: #f5c842;
+  color: #1e1c18;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 11px;
+  flex-shrink: 0;
+  font-family: 'Nunito', sans-serif;
+}
+.check-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #d8d2c6;
+  line-height: 1.4;
+}
+.check-text strong { color: #fff; font-weight: 800; }
+
+/* ─── FOOTER ─── */
+.footer {
+  background: #f0ede6;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.footer a { color: #b5415a; font-weight: 800; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.footer-brand { font-family: 'Nunito', sans-serif; font-weight: 900; color: #7a7160; }
+.footer-brand span { color: #1e1c18; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 700px) {
+  body { padding: 12px; }
+  .header, .mantra, .section, .checklist, .footer { padding-left: 18px; padding-right: 18px; }
+  .header h1 { font-size: 22px; }
+  .qnav a { font-size: 11px; padding: 10px 6px; gap: 5px; }
+  .qnav .qi { font-size: 15px; }
+  .fiche-body { grid-template-columns: 1fr; }
+  .checklist-grid { grid-template-columns: 1fr; }
+  .flux-schema { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="badge">Révizo · MSGN · Terminale STMG</div>
+    <h1>Mémo Dossier 2 — <span>Finances & GRH</span></h1>
+    <div class="header-sub">14 notions · 3 leviers de performance · Objectif : tout retenir</div>
+  </div>
+
+  <!-- MANTRA -->
+  <div class="mantra">
+    <div class="mantra-icon">🎯</div>
+    <div class="mantra-text">Une entreprise performante est <em>solide financièrement</em>, <em>engagée humainement</em>, et <em>efficace opérationnellement</em>.</div>
+  </div>
+
+  <!-- NAV 3 LEVIERS (sticky) -->
+  <div class="qnav">
+    <a href="#fin" class="q1"><span class="qi">💰</span><span class="ql">Financière<span class="qs">7 notions · formules</span></span></a>
+    <a href="#soc" class="q2"><span class="qi">👥</span><span class="ql">Sociale / Humaine<span class="qs">5 notions · théories</span></span></a>
+    <a href="#ope" class="q3"><span class="qi">⚙️</span><span class="ql">Opérationnelle<span class="qs">2 notions · flux</span></span></a>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- LEVIER 1 — PERFORMANCE FINANCIÈRE           -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section s1" id="fin">
+    <div class="sec-head">
+      <div class="sec-icon">💰</div>
+      <div>
+        <div class="sec-label">Levier 1</div>
+        <div class="sec-title">Performance financière — L'entreprise est-elle solide ?</div>
+      </div>
+    </div>
+
+    <!-- VA -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">📊</span>
+        <span class="fiche-title">Valeur ajoutée (VA)</span>
+        <span class="fiche-freq">★★★★★ ~90%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          <strong>Richesse créée</strong> par l'entreprise elle-même, mesurée par ce qu'elle ajoute aux biens/services achetés à l'extérieur.
+          <div class="formule" style="margin-top:6px">VA = Production − Consommations intermédiaires</div>
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>VA ≠ chiffre d'affaires (le CA inclut ce qu'on achète)</li>
+            <li>La VA se <strong>répartit</strong> entre : salariés, État, actionnaires, autofinancement</li>
+            <li>Toujours comparer <strong>N et N-1</strong></li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Caraïbes Fumés 2022</strong> — VA en hausse de 21% → l'entreprise valorise de plus en plus sa transformation artisanale locale.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« richesse créée par l'activité propre »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Résultat d'exploitation -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">📈</span>
+        <span class="fiche-title">Résultat d'exploitation (Rex)</span>
+        <span class="fiche-freq">★★★★★ ~90%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Mesure la <strong>rentabilité de l'activité principale</strong>, hors éléments financiers et exceptionnels.
+          <div class="formule" style="margin-top:6px">Rex = VA − Charges de personnel − Dotations ± autres</div>
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>Rex <strong>positif</strong> = l'activité principale est rentable</li>
+            <li>Rex <strong>négatif</strong> = l'entreprise perd de l'argent sur son cœur de métier</li>
+            <li>Toujours <strong>contextualiser</strong> : pourquoi il monte/baisse ?</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Caraïbes Fumés 2022</strong> — Rex positif à 125 000€, en progression → la montée en gamme porte ses fruits.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« performance opérationnelle »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coût de revient + marges -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🧮</span>
+        <span class="fiche-title">Coût de revient + Taux de marge / marque</span>
+        <span class="fiche-freq">★★★★☆ ~60%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Coût <strong>total</strong> pour produire ET distribuer une unité. Le taux de marge mesure la rentabilité.
+          <div class="formule" style="margin-top:6px">Coût de revient = charges prod + charges distrib</div>
+          <div class="formule">Marge = PV HT − Coût de revient</div>
+          <div class="formule">Taux de marge = Marge / Coût × 100</div>
+          <div class="formule">Taux de marque = Marge / PV × 100</div>
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>⚠ Coût de revient ≠ coût de production (inclut la <strong>distribution</strong>)</li>
+            <li>⚠ Taux de marque TOUJOURS &lt; taux de marge</li>
+            <li>Si l'inverse → erreur de calcul</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Ankama 2023</strong> — Coût revient album BD = 10,70€, PV = 14,90€ → taux de marge 39,25%.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« maîtrise des coûts »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRNG / BFR / TN -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🏦</span>
+        <span class="fiche-title">FRNG / BFR / Trésorerie nette</span>
+        <span class="fiche-freq">★★★★★ 100%</span>
+      </div>
+      <div class="fiche-body" style="grid-template-columns:1fr">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Les 3 indicateurs du bilan fonctionnel</div>
+          <table class="mini-table">
+            <thead><tr><th>Indicateur</th><th>Formule</th><th>Si positif</th><th>Si négatif</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>FRNG</strong></td>
+                <td><span class="formule">Ress. stables − Emplois stables</span></td>
+                <td class="ok">✔ Marge de sécurité</td>
+                <td class="bad">⚠ Risque (sauf grande distrib.)</td>
+              </tr>
+              <tr>
+                <td><strong>BFR</strong></td>
+                <td><span class="formule">Actif circulant − Passif circulant</span></td>
+                <td class="bad">↑ Besoin à financer</td>
+                <td class="ok">✔ Ressource de trésorerie</td>
+              </tr>
+              <tr>
+                <td><strong>TN</strong></td>
+                <td><span class="formule">FRNG − BFR</span></td>
+                <td class="ok">✔ Liquidités disponibles</td>
+                <td class="bad">⚠ Dépendance bancaire</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>⚠ <strong>Calcul = moitié des points</strong>. Le commentaire est aussi important.</li>
+            <li>Vérification : TN = FRNG − BFR. Si ça ne coïncide pas → erreur.</li>
+            <li>Toujours mentionner le nom de l'entreprise dans l'interprétation.</li>
+            <li>Comparer N et N-1 : amélioration ou dégradation ?</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Topschuss 2024</strong> — FRNG passe de 25 000 à 50 000€ (augmentation de capital) → TN positive à 20 000€ → solvable à court terme.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« équilibre financier »</div>
+          <div class="fb-bac-tag" style="margin-left:4px">« solvabilité à court terme »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Choix de financement -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">💳</span>
+        <span class="fiche-title">Choix de financement</span>
+        <span class="fiche-freq">★★★★☆ ~50%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Comment l'entreprise <strong>finance ses investissements</strong> : ressources internes ou externes.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li><strong>Autofinancement</strong> (CAF) — pas de dette, mais capacité limitée</li>
+            <li><strong>Emprunt bancaire</strong> — effet de levier, mais charges financières</li>
+            <li><strong>Augmentation de capital</strong> — renforce les fonds propres, dilue le pouvoir</li>
+            <li><strong>Crowdfunding / subventions</strong> — sources complémentaires</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Topschuss 2024</strong> — Levée de 10M€ en capital. Cohérent : un emprunt aurait fragilisé la trésorerie en période de forte croissance.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« capacité d'investissement »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAF (bonus) -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🔄</span>
+        <span class="fiche-title">CAF — Capacité d'Autofinancement</span>
+        <span class="tag-bonus">bonus</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Ressources internes générées par l'activité, disponibles pour investir, rembourser ou distribuer.
+          <div class="formule" style="margin-top:6px">CAF ≈ Résultat net + Dotations aux amortissements</div>
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>CAF élevée = <strong>autonomie financière</strong> (moins besoin d'emprunter)</li>
+            <li>⚠ CAF ≠ trésorerie (la CAF est un flux <em>potentiel</em>, la tréso est le solde réel)</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Myfood 2023</strong> — Calcul de la CAF pour évaluer si la start-up peut financer sa croissance sans lever de fonds.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« capacité d'autofinancement »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seuil de rentabilité (bonus) -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">📍</span>
+        <span class="fiche-title">Seuil de rentabilité</span>
+        <span class="tag-bonus">bonus</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          CA à partir duquel l'entreprise couvre <strong>toutes</strong> ses charges et commence à gagner de l'argent.
+          <div class="formule" style="margin-top:6px">SR = Charges fixes / Taux de MSCV</div>
+          <div class="formule">MSCV = CA − Charges variables</div>
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>En dessous du SR → <strong>perte</strong></li>
+            <li>Au-dessus → <strong>bénéfice</strong></li>
+            <li><strong>Point mort</strong> = date à laquelle le SR est atteint dans l'année</li>
+            <li>⚠ Charges fixes (loyer, salaires) ≠ variables (matières premières)</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Quand ça tombe</div>
+          Rare mais peut apparaître dans un dossier finances. Savoir la formule suffit.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« seuil de rentabilité »</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="piege">
+      <strong>⚠ Piège bac Finances :</strong> le calcul seul = moitié des points. Toujours interpréter ET contextualiser avec le nom de l'entreprise. « La TN positive de 20 000€ montre que Topschuss est solvable. »
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- LEVIER 2 — PERFORMANCE SOCIALE              -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section s2" id="soc">
+    <div class="sec-head">
+      <div class="sec-icon">👥</div>
+      <div>
+        <div class="sec-label">Levier 2</div>
+        <div class="sec-title">Performance sociale — Les équipes sont-elles engagées ?</div>
+      </div>
+    </div>
+
+    <!-- Style de direction -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">👔</span>
+        <span class="fiche-title">Style de direction (grille de Likert)</span>
+        <span class="fiche-freq">★★★★★ ~90%</span>
+      </div>
+      <div class="fiche-body" style="grid-template-columns:1fr">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Les 4 styles</div>
+          <table class="mini-table">
+            <thead><tr><th>Style</th><th>Décision</th><th>Communication</th><th>Signal dans les docs</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Autoritaire</strong></td><td>Le chef seul</td><td>Descendante</td><td>« décide seul », « impose »</td></tr>
+              <tr><td><strong>Paternaliste</strong></td><td>Le chef + récompenses</td><td>Descendante + écoute limitée</td><td>« bienveillant », « protège »</td></tr>
+              <tr><td><strong>Consultatif</strong></td><td>Le chef consulte</td><td>Bidirectionnelle</td><td>« consulte », « réunions »</td></tr>
+              <tr><td><strong>Participatif</strong></td><td>Co-décision</td><td>Bidirectionnelle forte</td><td>« autonomie », « équipes proposent »</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>Nommer <strong>UN SEUL</strong> style, le plus représentatif</li>
+            <li>Apporter <strong>2-3 preuves</strong> dans les documents</li>
+            <li>⚠ Style ≠ personnalité du dirigeant</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Ankama 2023</strong> — Style participatif : les équipes proposent et valident elles-mêmes les projets artistiques (doc 2). Faible turnover (doc 5).
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« grille de Likert »</div>
+          <div class="fb-bac-tag" style="margin-left:4px">« communication bidirectionnelle »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Culture organisationnelle -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🏛️</span>
+        <span class="fiche-title">Culture organisationnelle</span>
+        <span class="fiche-freq">★★★★★ ~85%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Ensemble des <strong>valeurs</strong>, <strong>rites</strong> et <strong>symboles</strong> partagés qui créent l'identité collective.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          Les 3 composantes obligatoires :
+          <ul>
+            <li><strong>Valeurs</strong> — convictions fondatrices (innovation, qualité, éco…)</li>
+            <li><strong>Rites</strong> — pratiques répétées (réunion hebdo, team building…)</li>
+            <li><strong>Symboles</strong> — logo, tenue, locaux, langage interne</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Ankama 2023</strong> — Valeur : passion créative. Rite : sessions de pitching. Symbole : univers graphique Krosmoz sur tous les supports.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« identité collective »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Motivation -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🔥</span>
+        <span class="fiche-title">Théories de la motivation</span>
+        <span class="fiche-freq">★★★★☆ Récurrente</span>
+      </div>
+      <div class="fiche-body" style="grid-template-columns:1fr">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Les 3 théories à connaître</div>
+          <table class="mini-table">
+            <thead><tr><th>Théorie</th><th>Principe</th><th>Au bac</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Maslow</strong></td>
+                <td>5 niveaux de besoins : physiologiques → sécurité → appartenance → estime → réalisation</td>
+                <td>Identifier à quel <strong>niveau</strong> correspond la pratique RH</td>
+              </tr>
+              <tr>
+                <td><strong>Herzberg</strong></td>
+                <td><strong>Hygiène</strong> = évite l'insatisfaction (salaire, conditions)<br><strong>Motivation</strong> = crée la satisfaction (responsabilités, reconnaissance)</td>
+                <td>⚠ Salaire = hygiène, PAS motivation</td>
+              </tr>
+              <tr>
+                <td><strong>McGregor</strong></td>
+                <td><strong>X</strong> = salarié paresseux → contrôle<br><strong>Y</strong> = salarié responsable → implication</td>
+                <td>X → style autoritaire / Y → style participatif</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>Citer Maslow <strong>sans préciser le niveau</strong> de besoin = réponse incomplète</li>
+            <li>Lier chaque pratique RH à une théorie = <strong>différence copie moyenne / bonne copie</strong></li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>TPS 2023</strong> — Formations internes → besoin d'estime (Maslow 4). Primes de résultats → facteur de motivation (Herzberg). Autonomie des équipes → Théorie Y (McGregor).
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« facteur de motivation (Herzberg) »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GPEC -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🗓️</span>
+        <span class="fiche-title">GPEC — Gestion Prévisionnelle des Emplois et Compétences</span>
+        <span class="fiche-freq">★★★☆☆ ~40%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Démarche d'<strong>anticipation</strong> des besoins en emplois et compétences sur <strong>3 à 5 ans</strong>.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          Les 4 actions GPEC :
+          <ul>
+            <li><strong>Formation interne</strong> — montée en compétences</li>
+            <li><strong>Recrutement</strong> — profils manquants</li>
+            <li><strong>Mobilité interne</strong> — reconversion vers postes critiques</li>
+            <li><strong>Partenariats écoles</strong> — former en amont</li>
+          </ul>
+          ⚠ GPEC ≠ simple recrutement ponctuel (c'est une démarche <strong>prévisionnelle</strong>)
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>TPS 2023</strong> — Métier de perforateur rare + départs en retraite → la GPEC anticipe : formation interne + transmission des seniors aux juniors.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« démarche prévisionnelle »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Marque employeur + QVT -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🌟</span>
+        <span class="fiche-title">Marque employeur + QVT</span>
+        <span class="fiche-freq">★★★★☆ ~40%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          <strong>Marque employeur</strong> = image de l'entreprise en tant qu'employeur (auprès des candidats ET salariés).<br>
+          <strong>QVT</strong> = conditions physiques, psychologiques et organisationnelles du travail.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>⚠ Marque employeur ≠ communication <strong>client</strong> (c'est l'image auprès des <strong>candidats et salariés</strong>)</li>
+            <li>Leviers : formations, locaux, horaires flexibles, télétravail, crèche…</li>
+            <li>Impact : attirer (recrutement) + garder (fidélisation) → réduire le turnover</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Topschuss 2024</strong> — Siège à Annecy conçu pour le bien-être + crèche + salle de sport → attractivité dans un secteur où les profils experts outdoor sont rares.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« attractivité employeur »</div>
+          <div class="fb-bac-tag" style="margin-left:4px">« fidélisation des talents »</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="piege">
+      <strong>⚠ Piège bac GRH :</strong> ne jamais citer une théorie (Maslow, Herzberg) sans préciser exactement à quel niveau ou facteur correspond la pratique. « Formation → Maslow » = insuffisant. « Formation → besoin d'estime, niveau 4 de Maslow » = correct.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- LEVIER 3 — PERFORMANCE OPÉRATIONNELLE       -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section s3" id="ope">
+    <div class="sec-head">
+      <div class="sec-icon">⚙️</div>
+      <div>
+        <div class="sec-label">Levier 3</div>
+        <div class="sec-title">Performance opérationnelle — La production est-elle efficace ?</div>
+      </div>
+    </div>
+
+    <!-- Modes de production + flux -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🏭</span>
+        <span class="fiche-title">Modes de production + Gestion des flux</span>
+        <span class="fiche-freq">★★★★☆ ~50%</span>
+      </div>
+      <div class="fiche-body" style="grid-template-columns:1fr">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Modes de production</div>
+          <ul>
+            <li><strong>Artisanal</strong> — petites quantités, savoir-faire, sur mesure</li>
+            <li><strong>En série</strong> — grandes quantités, standardisé, chaîne</li>
+            <li><strong>En continu</strong> — 24h/24, process industriel (chimie, énergie)</li>
+          </ul>
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 Flux poussés vs flux tendus</div>
+          <div class="flux-schema">
+            <div class="flux-box flux-pousse">
+              📦 <strong>Flux poussés</strong><br>
+              Produire à l'avance<br>
+              <span style="font-size:10px">Stocks · Prévisions</span><br>
+              <span style="font-size:10px">→ si demande <strong>prévisible</strong></span>
+            </div>
+            <div class="flux-vs">⟺</div>
+            <div class="flux-box flux-tendu">
+              🎯 <strong>Flux tendus</strong><br>
+              Produire à la commande<br>
+              <span style="font-size:10px">Zéro stock · Réactivité</span><br>
+              <span style="font-size:10px">→ si demande <strong>variable</strong></span>
+            </div>
+          </div>
+          ⚠ Flux poussés ≠ mauvaise gestion. C'est adapté quand la demande est régulière (ex : grande distribution).
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>TPS 2023</strong> — Flux tendus pour les commandes occasionnelles (produits sur mesure). Flux poussés pour les grands comptes (matières achetées par le client).
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mots-clés copie</div>
+          <div class="fb-bac-tag">« juste-à-temps »</div>
+          <div class="fb-bac-tag" style="margin-left:4px">« optimisation du cycle de production »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coordination Mintzberg (bonus) -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🔗</span>
+        <span class="fiche-title">5 mécanismes de coordination (Mintzberg)</span>
+        <span class="tag-bonus">bonus</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Comment le travail est <strong>coordonné</strong> dans une organisation. Plus elle grandit, plus elle passe de l'informel à la standardisation.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 Les 5 mécanismes</div>
+          <div class="pills">
+            <span class="pill-coord">💬 Ajustement mutuel</span>
+            <span class="pill-coord">👀 Supervision directe</span>
+            <span class="pill-coord">📋 Standard. procédés</span>
+            <span class="pill-coord">🎯 Standard. résultats</span>
+            <span class="pill-coord">🎓 Standard. qualifications</span>
+          </div>
+          Un même organisme utilise souvent <strong>plusieurs mécanismes</strong> en parallèle.
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Fromagerie Réo 2021</strong> — Standardisation des procédés (démarche qualité AOP) + supervision directe (chef de production).
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« mécanisme de coordination »</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="piege">
+      <strong>⚠ Piège bac Production :</strong> dans les docs, chercher les mots-clés : « sur commande » = flux tirés. « Prévisions de vente » ou « stocks » = flux poussés. Ne jamais dire que l'un est mieux que l'autre — c'est une question de contexte.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHECKLIST RÉASSURANCE                       -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="checklist">
+    <div class="checklist-title">✨ Tu maîtrises le Dossier 2 si tu sais…</div>
+    <div class="checklist-grid">
+      <div class="check-item">
+        <div class="check-icon">1</div>
+        <div class="check-text">Calculer <strong>VA</strong> et <strong>Rex</strong> puis interpréter l'évolution N / N-1.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">2</div>
+        <div class="check-text">Calculer <strong>FRNG, BFR, TN</strong> et vérifier que TN = FRNG − BFR.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">3</div>
+        <div class="check-text">Calculer un <strong>coût de revient</strong> et un <strong>taux de marge</strong> avec les bonnes formules.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">4</div>
+        <div class="check-text">Identifier le <strong>style de direction</strong> (Likert) avec 2-3 preuves documentaires.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">5</div>
+        <div class="check-text">Relier une pratique RH à <strong>Maslow (niveau)</strong> ou <strong>Herzberg (facteur)</strong>.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">6</div>
+        <div class="check-text">Distinguer <strong>GPEC</strong> (anticipation) et <strong>marque employeur</strong> (attractivité).</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">7</div>
+        <div class="check-text">Identifier <strong>flux poussés vs tendus</strong> à partir des docs et justifier la pertinence.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">8</div>
+        <div class="check-text">Expliquer en quoi les 3 leviers convergent vers la <strong>performance globale</strong> (→ D3).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand"><span>Révizo</span> · Mémo Dossier 2 · Finances & GRH · MSGN</div>
+    <a href="revizo-msgn.html">← Retour aux Questions Bac MSGN</a>
+  </div>
+
+</div>
+
+</body>
+</html>

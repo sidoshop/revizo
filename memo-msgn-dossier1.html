@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mémo Dossier 1 · Stratégie — Révizo MSGN</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  background: #f0ede6;
+  color: #1e1c18;
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  min-height: 100vh;
+}
+
+.page {
+  width: 900px;
+  max-width: 100%;
+  background: #fffdf8;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  height: fit-content;
+}
+
+/* ─── HEADER ─── */
+.header {
+  background: #1e1c18;
+  color: #fffdf8;
+  padding: 22px 32px 18px;
+}
+.badge {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.10);
+  padding: 4px 12px;
+  border-radius: 20px;
+  color: #e8e2d6;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.header h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+.header h1 span { color: #f5c842; }
+.header-sub { font-size: 13px; color: #a09880; font-weight: 600; margin-top: 4px; }
+
+/* ─── MANTRA ─── */
+.mantra {
+  background: #fef8e2;
+  border-bottom: 2px solid #f5c842;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mantra-icon { font-size: 22px; flex-shrink: 0; }
+.mantra-text {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: #7a5800;
+  line-height: 1.4;
+}
+.mantra-text em { color: #b5415a; font-style: normal; }
+
+/* ─── NAV 3 QUESTIONS (sticky) ─── */
+.qnav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  background: #fffdf8;
+  border-bottom: 2px solid #e8e2d6;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.qnav a {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 10px;
+  text-decoration: none;
+  color: #1e1c18;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  transition: background .15s;
+  border-right: 1px solid #e8e2d6;
+}
+.qnav a:last-child { border-right: none; }
+.qnav a:hover { background: #f8f5ef; }
+.qnav .qi { font-size: 18px; }
+.qnav .ql { line-height: 1.2; }
+.qnav .qs { font-size: 10px; font-weight: 600; color: #7a6a58; display: block; }
+.q1:hover, .q1.on { background: #fdeef1 !important; border-bottom: 3px solid #e8526b; }
+.q2:hover, .q2.on { background: #e8f3ff !important; border-bottom: 3px solid #3a82c8; }
+.q3:hover, .q3.on { background: #eaf8ef !important; border-bottom: 3px solid #1a7a3c; }
+
+/* ─── SECTION ─── */
+.section {
+  padding: 28px 32px 22px;
+  border-bottom: 1px solid #e8e2d6;
+}
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.sec-icon { font-size: 28px; }
+.sec-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.sec-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.s1 .sec-label { color: #b5415a; }
+.s2 .sec-label { color: #2a69a8; }
+.s3 .sec-label { color: #1a7a3c; }
+.s1 { border-left: 5px solid #e8526b; }
+.s2 { border-left: 5px solid #3a82c8; }
+.s3 { border-left: 5px solid #1a7a3c; }
+
+/* ─── FICHE NOTION ─── */
+.fiche {
+  background: #fff;
+  border: 1.5px solid #e8e2d6;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.fiche-header {
+  padding: 12px 16px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #f0ede6;
+}
+.fiche-icon { font-size: 20px; flex-shrink: 0; }
+.fiche-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  flex: 1;
+}
+.fiche-freq {
+  font-size: 10px;
+  font-weight: 700;
+  color: #7a6a58;
+  white-space: nowrap;
+}
+.tag-bonus {
+  background: #fde8a0;
+  color: #7a5800;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.fiche-body {
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+}
+
+.fb {
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.fb-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.fb-def .fb-label { color: #b5415a; }
+.fb-retenir .fb-label { color: #2a69a8; }
+.fb-exemple .fb-label { color: #946e00; }
+.fb-bac .fb-label { color: #1a7a3c; }
+
+.fb ul { padding-left: 16px; margin: 0; }
+.fb li { margin-bottom: 2px; }
+.fb strong { font-weight: 800; color: #1e1c18; }
+
+.fb-bac-tag {
+  display: inline-block;
+  background: #eaf8ef;
+  border: 1px solid #bce8cd;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1a5c35;
+  margin-top: 2px;
+}
+
+/* fiche large (1 col) */
+.fiche-body.wide { grid-template-columns: 1fr; }
+
+/* ─── SCHÉMA SCP ─── */
+.scp-schema {
+  background: #f8fdf9;
+  border: 1.5px solid #bce8cd;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.scp-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  color: #1a7a3c;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.scp-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.scp-box {
+  background: #eaf8ef;
+  border-radius: 8px;
+  padding: 8px 14px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #1a5c35;
+}
+.scp-arr { color: #7a7160; font-size: 14px; }
+.scp-4p {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+.scp-p {
+  background: #fef8e2;
+  border: 1px solid #f0dfa0;
+  border-radius: 7px;
+  padding: 6px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #7a5800;
+  text-align: center;
+}
+
+/* ─── PIÈGE BAC ─── */
+.piege {
+  background: #fdf5f7;
+  border-left: 4px solid #b5415a;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #5a5448;
+}
+.piege strong { color: #b5415a; font-weight: 800; }
+
+/* ─── CHECKLIST RÉASSURANCE ─── */
+.checklist {
+  background: #1e1c18;
+  color: #fffdf8;
+  padding: 24px 32px;
+}
+.checklist-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  color: #f5c842;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.checklist-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.check-item {
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.check-icon {
+  background: #f5c842;
+  color: #1e1c18;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 11px;
+  flex-shrink: 0;
+  font-family: 'Nunito', sans-serif;
+}
+.check-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #d8d2c6;
+  line-height: 1.4;
+}
+.check-text strong { color: #fff; font-weight: 800; }
+
+/* ─── FOOTER ─── */
+.footer {
+  background: #f0ede6;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.footer a { color: #b5415a; font-weight: 800; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.footer-brand { font-family: 'Nunito', sans-serif; font-weight: 900; color: #7a7160; }
+.footer-brand span { color: #1e1c18; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 700px) {
+  body { padding: 12px; }
+  .header, .mantra, .section, .checklist, .footer { padding-left: 18px; padding-right: 18px; }
+  .header h1 { font-size: 22px; }
+  .qnav a { font-size: 11px; padding: 10px 6px; gap: 5px; }
+  .qnav .qi { font-size: 15px; }
+  .fiche-body { grid-template-columns: 1fr; }
+  .scp-4p { grid-template-columns: 1fr 1fr; }
+  .checklist-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="badge">Révizo · MSGN · Terminale STMG</div>
+    <h1>Mémo Dossier 1 — <span>Stratégie</span></h1>
+    <div class="header-sub">10 notions · 3 questions à se poser · Objectif : tout retenir</div>
+  </div>
+
+  <!-- MANTRA -->
+  <div class="mantra">
+    <div class="mantra-icon">🎯</div>
+    <div class="mantra-text">Retiens <em>3 questions dans l'ordre</em> : où je suis → où je veux aller → comment j'y vais.</div>
+  </div>
+
+  <!-- NAV 3 QUESTIONS (sticky) -->
+  <div class="qnav">
+    <a href="#q1" class="q1"><span class="qi">🔍</span><span class="ql">Où je suis ?<span class="qs">Analyser · 4 notions</span></span></a>
+    <a href="#q2" class="q2"><span class="qi">🧭</span><span class="ql">Où veux-je aller ?<span class="qs">Décider · 3 notions</span></span></a>
+    <a href="#q3" class="q3"><span class="qi">🛤️</span><span class="ql">Comment j'y vais ?<span class="qs">Agir · 3 notions</span></span></a>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- QUESTION 1 — OÙ JE SUIS ?                  -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section s1" id="q1">
+    <div class="sec-head">
+      <div class="sec-icon">🔍</div>
+      <div>
+        <div class="sec-label">Question 1</div>
+        <div class="sec-title">Où je suis ? — Le diagnostic</div>
+      </div>
+    </div>
+
+    <!-- Parties prenantes -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">👥</span>
+        <span class="fiche-title">Parties prenantes & finalités</span>
+        <span class="fiche-freq">★★★★☆ ~65%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Acteurs internes ou externes qui ont un <strong>intérêt</strong> dans l'entreprise et en <strong>attendent</strong> quelque chose.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li><strong>Internes</strong> : salariés, dirigeants, actionnaires</li>
+            <li><strong>Externes</strong> : clients, fournisseurs, État, banques</li>
+            <li>Attentes souvent <strong>contradictoires</strong></li>
+            <li>⚠ Actionnaires = PP <strong>internes</strong> (capital)</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>YBRA 2024</strong> — Chauffeurs veulent de meilleures conditions / Clients veulent des tarifs bas → tension à arbitrer par le management.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« gouvernance partenariale »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modèle économique -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">💡</span>
+        <span class="fiche-title">Modèle économique (Business Model)</span>
+        <span class="fiche-freq">★★★★☆ ~70%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          La façon dont une entreprise <strong>crée</strong>, <strong>délivre</strong> et <strong>capte</strong> de la valeur.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li><strong>Proposition de valeur</strong> : quoi ? pour résoudre quel problème ?</li>
+            <li><strong>Segments clients</strong> : pour qui ?</li>
+            <li><strong>Sources de revenus</strong> : vente, abonnement, freemium…</li>
+            <li>Si pivot : montrer ce qui a <strong>changé</strong> et pourquoi</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Bébé Serein 2025</strong> — Pivot de la vente unitaire en pharmacie → abonnement mensuel (revenus récurrents + relation directe client).
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« proposition de valeur »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compétences distinctives -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🌟</span>
+        <span class="fiche-title">Compétences distinctives</span>
+        <span class="fiche-freq">★★★★★ 100%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Ressource ou savoir-faire qui fonde un <strong>avantage concurrentiel durable</strong>.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          Les 3 critères obligatoires :
+          <ul>
+            <li><strong>Rare</strong> — peu de concurrents l'ont</li>
+            <li><strong>Difficile à imiter</strong> — pas reproductible facilement</li>
+            <li><strong>Créatrice de valeur</strong> — avantage réel pour les clients</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Topschuss 2024</strong> — Expertise conseil outdoor + notoriété 15 ans. Les grandes surfaces ne peuvent pas copier ce savoir-faire humain.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« avantage concurrentiel durable »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Diagnostic externe -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🔭</span>
+        <span class="fiche-title">Diagnostic externe (PESTEL + Porter)</span>
+        <span class="fiche-freq">★★★☆☆ ~40%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Analyser l'<strong>environnement</strong> pour identifier les <strong>opportunités</strong> et <strong>menaces</strong>.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <strong>PESTEL</strong> (environnement général) :
+          <ul>
+            <li><strong>P</strong>olitique · <strong>É</strong>conomique · <strong>S</strong>ocioculturel</li>
+            <li><strong>T</strong>echnologique · <strong>E</strong>nvironnemental · <strong>L</strong>égal</li>
+          </ul>
+          <strong>5 forces de Porter</strong> = pression concurrentielle<br>
+          <strong>SWOT</strong> = synthèse interne (F/f) + externe (O/M)
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Renou 2024</strong> — Opportunités : engouement made in France (socio) + e-commerce (techno). Menace : hausse matières premières (éco).
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« facteurs clés de succès »</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="piege">
+      <strong>⚠ Piège bac global Q1 :</strong> PESTEL = environnement GÉNÉRAL (macro). 5 forces de Porter = environnement CONCURRENTIEL. Ne pas confondre.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- QUESTION 2 — OÙ VEUX-JE ALLER ?            -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section s2" id="q2">
+    <div class="sec-head">
+      <div class="sec-icon">🧭</div>
+      <div>
+        <div class="sec-label">Question 2</div>
+        <div class="sec-title">Où veux-je aller ? — La décision stratégique</div>
+      </div>
+    </div>
+
+    <!-- Stratégie globale -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🌐</span>
+        <span class="fiche-title">Stratégie globale</span>
+        <span class="fiche-freq">★★★★★ 100%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Choix du <strong>périmètre d'activité</strong> de l'entreprise : combien de DAS ?
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li><strong>1 seul DAS</strong> → spécialisation (expertise concentrée)</li>
+            <li><strong>Plusieurs DAS liés</strong> → diversification liée (synergies)</li>
+            <li><strong>DAS sans rapport</strong> → diversification conglomérale</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Ankama 2023</strong> — 3 DAS (jeux vidéo + BD + animation) autour de l'univers Krosmoz → diversification liée.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« périmètre d'activité »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stratégie de domaine -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">⚔️</span>
+        <span class="fiche-title">Stratégie de domaine</span>
+        <span class="fiche-freq">★★★★★ 100%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          <strong>Comment battre les concurrents</strong> sur un DAS donné.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li><strong>Domination par les coûts</strong> — produire moins cher (low-cost, volume)</li>
+            <li><strong>Différenciation par le haut</strong> — qualité, image, innovation (premium)</li>
+            <li><strong>Différenciation par le bas</strong> — service minimum, prix attractif</li>
+            <li><strong>Focalisation</strong> — niche, segment étroit, clients spécifiques</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Topschuss 2024</strong> — Différenciation par le haut : expertise outdoor + prix premium justifié par le conseil personnalisé.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« avantage concurrentiel soutenable »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESS / SCOP (bonus) -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🤝</span>
+        <span class="fiche-title">ESS / SCOP</span>
+        <span class="tag-bonus">bonus</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Économie Sociale et Solidaire : organisations à <strong>finalité sociale prioritaire</strong>, gouvernance <strong>démocratique</strong>.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li>SCOP = salariés <strong>associés majoritaires</strong></li>
+            <li>1 personne = 1 voix (pas proportionnel au capital)</li>
+            <li>Bénéfices réinvestis ou partagés équitablement</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Quand ça tombe</div>
+          Rare. Utile si le sujet parle d'une coopérative, d'une association, ou d'une gouvernance participative particulière.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« gouvernance démocratique »</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="piege">
+      <strong>⚠ Piège bac global Q2 :</strong> toujours traiter les DEUX niveaux (globale ET domaine) dans la même réponse. N'en traiter qu'un = réponse incomplète. Commencer par la globale (combien de DAS ?) puis descendre au domaine (comment concurrencer ?).
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- QUESTION 3 — COMMENT J'Y VAIS ?            -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section s3" id="q3">
+    <div class="sec-head">
+      <div class="sec-icon">🛤️</div>
+      <div>
+        <div class="sec-label">Question 3</div>
+        <div class="sec-title">Comment j'y vais ? — L'action</div>
+      </div>
+    </div>
+
+    <!-- Schéma SCP + 4P -->
+    <div class="scp-schema">
+      <div class="scp-label">🎯 Démarche mercatique — SCP + Mix 4P</div>
+      <div class="scp-flow">
+        <div class="scp-box">Segmentation<br><span style="font-size:10px;font-weight:600;color:#5a8a6a">Découper le marché</span></div>
+        <div class="scp-arr">→</div>
+        <div class="scp-box">Ciblage<br><span style="font-size:10px;font-weight:600;color:#5a8a6a">Choisir le segment</span></div>
+        <div class="scp-arr">→</div>
+        <div class="scp-box">Positionnement<br><span style="font-size:10px;font-weight:600;color:#5a8a6a">Image distinctive</span></div>
+      </div>
+      <div class="scp-4p">
+        <div class="scp-p">🛍️ <strong>Produit</strong><br><span style="font-size:10px">gamme, qualité</span></div>
+        <div class="scp-p">💰 <strong>Prix</strong><br><span style="font-size:10px">premium, pénétration</span></div>
+        <div class="scp-p">📍 <strong>Place</strong><br><span style="font-size:10px">distribution, canaux</span></div>
+        <div class="scp-p">📢 <strong>Promotion</strong><br><span style="font-size:10px">communication, pub</span></div>
+      </div>
+    </div>
+
+    <!-- Mercatique détail -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🎯</span>
+        <span class="fiche-title">Mercatique — détail SCP + 4P</span>
+        <span class="fiche-freq">★★★★☆ ~50%</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Processus allant de l'<strong>analyse du marché</strong> (SCP) à l'<strong>action commerciale</strong> (mix 4P).
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li><strong>Segmentation</strong> : critères géo, socio-démo, comportementaux</li>
+            <li><strong>Ciblage</strong> : B2B, B2C, niche, masse</li>
+            <li><strong>Positionnement</strong> : premium, accessible, artisanal, innovant</li>
+            <li><strong>Comportement conso</strong> : freins (prix, méfiance) / motivations (santé, éco)</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Renou 2024</strong> — Ciblage B2C éco-responsable + positionnement premium artisanal (labels EPV, Origine France) + e-commerce national.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« démarche SCP »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modes de croissance -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🌱</span>
+        <span class="fiche-title">Modes de croissance</span>
+        <span class="tag-bonus">bonus</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          3 façons de se développer : par soi-même, par acquisition, ou par alliance.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li><strong>Interne</strong> — R&D, embauches, nouveaux sites (lent mais maîtrisé)</li>
+            <li><strong>Externe</strong> — acquisitions, fusions (rapide mais coûteux)</li>
+            <li><strong>Partenariale</strong> — alliances, franchises, coopétition (partage de risques)</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          <strong>Eyecontact 2024</strong> — Partenariats avec Atol et Afflelou (partenariale) + 30% du CA réinvesti en R&D (interne).
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« modalités de développement »</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Intégration verticale -->
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-icon">🔗</span>
+        <span class="fiche-title">Intégration verticale</span>
+        <span class="tag-bonus">bonus</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          Contrôler des étapes <strong>en amont</strong> (fournisseurs) ou <strong>en aval</strong> (distributeurs) de sa chaîne de valeur.
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          <ul>
+            <li><strong>Amont</strong> : racheter un fournisseur → maîtrise des coûts, indépendance</li>
+            <li><strong>Aval</strong> : ouvrir ses propres boutiques → marge, relation client directe</li>
+            <li>Risque : rigidité (investissements lourds, perte de flexibilité)</li>
+          </ul>
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Quand ça tombe</div>
+          Rare. Utile si le sujet décrit une entreprise qui produit ET distribue, ou qui rachète ses fournisseurs.
+        </div>
+        <div class="fb fb-bac">
+          <div class="fb-label">🎯 Mot-clé copie</div>
+          <div class="fb-bac-tag">« maîtrise de la chaîne de valeur »</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="piege">
+      <strong>⚠ Piège bac global Q3 :</strong> SCP = Segmentation → Ciblage → Positionnement. Les 3 vont TOUJOURS ensemble. Ne jamais présenter l'un sans les autres. Et ne pas confondre mode de croissance (comment se développer) et stratégie de domaine (comment concurrencer).
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CHECKLIST RÉASSURANCE                       -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="checklist">
+    <div class="checklist-title">✨ Tu maîtrises le Dossier 1 si tu sais…</div>
+    <div class="checklist-grid">
+      <div class="check-item">
+        <div class="check-icon">1</div>
+        <div class="check-text">Distinguer <strong>PP internes / externes</strong> et nommer leurs attentes contradictoires.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">2</div>
+        <div class="check-text">Identifier une <strong>compétence distinctive</strong> avec les 3 critères (rare, imitable, valeur).</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">3</div>
+        <div class="check-text">Réaliser un <strong>PESTEL</strong> à 6 dimensions et conclure sur les opportunités/menaces.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">4</div>
+        <div class="check-text">Nommer la <strong>stratégie globale</strong> (spé/diversif) en comptant les DAS.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">5</div>
+        <div class="check-text">Nommer la <strong>stratégie de domaine</strong> (coûts / diff / focalisation) avec preuves.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">6</div>
+        <div class="check-text">Dérouler <strong>SCP + mix 4P</strong> à partir d'un cas concret.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand"><span>Révizo</span> · Mémo Dossier 1 · Stratégie MSGN</div>
+    <a href="revizo-msgn.html">← Retour aux Questions Bac MSGN</a>
+  </div>
+
+</div>
+
+</body>
+</html>
