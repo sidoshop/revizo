@@ -161,6 +161,31 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 .placeholder .big { font-size: 48px; margin-bottom: 12px; }
 .placeholder h3 { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; color: var(--texte); }
 
+/* FICHE MÉMO */
+.fiche { background: #fff; border: 1.5px solid var(--bordure); border-radius: 12px; margin-bottom: 14px; overflow: hidden; }
+.fiche-header { padding: 12px 16px 10px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f0ede6; }
+.fiche-icon { font-size: 20px; flex-shrink: 0; }
+.fiche-title { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; flex: 1; }
+.fiche-freq { font-size: 10px; font-weight: 700; color: var(--gris); white-space: nowrap; }
+.fiche-body { padding: 14px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+.fb { font-size: 12.5px; line-height: 1.5; }
+.fb-label { font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+.fb-def .fb-label { color: var(--accent); }
+.fb-retenir .fb-label { color: var(--bleu); }
+.fb-exemple .fb-label { color: #946e00; }
+.fb-bac .fb-label { color: #1a7a3c; }
+.fb ul { padding-left: 16px; margin: 0; }
+.fb li { margin-bottom: 2px; }
+.fb strong { font-weight: 800; color: var(--texte); }
+.fb-bac-tag { display: inline-block; background: #eaf8ef; border: 1px solid #bce8cd; border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 700; color: #1a5c35; margin-top: 2px; }
+.fb-piege { grid-column: 1 / -1; background: #fdf5f7; border: 1px solid #e8b4bf; border-radius: 7px; padding: 6px 10px; font-size: 11.5px; line-height: 1.45; color: #7a2038; }
+.fb-piege strong { color: var(--accent); font-weight: 800; }
+.tag-bonus { background: #fde8a0; color: #7a5800; font-size: 9px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; }
+.fiche-sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding: 0 4px; }
+.fiche-sec-icon { font-size: 24px; }
+.fiche-sec-label { font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--gris); }
+.fiche-sec-title { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; line-height: 1.2; }
+
 @media (max-width: 680px) {
   .layout { grid-template-columns: 1fr; }
   .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--bordure); }
@@ -1426,12 +1451,62 @@ function showSynthSujet(idx, el) {
 }
 
 // ═══════════════ FICHES MÉMO ═══════════════
+const FICHES = {
+  'd1-q1': {icon:'🔍', label:'Question 1', title:'Où je suis ? — Le diagnostic', color:'#b5415a', notions:['parties','modele','competences','diagnostic_ext']},
+  'd1-q2': {icon:'🧭', label:'Question 2', title:'Où veux-je aller ? — La décision', color:'#2a69a8', notions:['strategies','das','ess']},
+  'd1-q3': {icon:'🛤️', label:'Question 3', title:"Comment j'y vais ? — L'action", color:'#1a7a3c', notions:['mercatique_n','croissance','integration']},
+  'd2-fin': {icon:'💰', label:'Levier 1', title:'Performance financière — L\'entreprise est-elle solide ?', color:'#2a69a8', notions:['va','rex','couts','frng','bfr','tn','financement','caf','seuil']},
+  'd2-soc': {icon:'👥', label:'Levier 2', title:'Performance sociale — Les équipes sont-elles engagées ?', color:'#b5415a', notions:['likert','culture','motivation','gpec']},
+  'd2-ope': {icon:'⚙️', label:'Levier 3', title:'Performance opérationnelle — La production est-elle efficace ?', color:'#946e00', notions:['production_n','mintzberg']},
+  'd3-num': {icon:'💻', label:'Étape 1', title:'Mes outils — Le numérique au service de la performance', color:'#2a69a8', notions:['pgi','communication_n','identite_num']},
+  'd3-rse': {icon:'🌿', label:'Étape 2', title:'Mes valeurs — RSE & performance globale', color:'#1a7a3c', notions:['rse','performance','ethique']}
+};
+
+function buildFicheCard(n) {
+  const freq = n.freq || '';
+  return `<div class="fiche">
+    <div class="fiche-header">
+      <span class="fiche-title">${n.titre}</span>
+      <span class="fiche-freq">${freq}</span>
+    </div>
+    <div class="fiche-body">
+      <div class="fb fb-def">
+        <div class="fb-label">📖 Définition</div>
+        ${n.def}
+      </div>
+      <div class="fb fb-retenir">
+        <div class="fb-label">📋 À retenir</div>
+        ${n.form.replace(/\n/g,'<br>')}
+      </div>
+      <div class="fb fb-exemple">
+        <div class="fb-label">💡 Exemple bac</div>
+        ${n.ex}
+      </div>
+      <div class="fb fb-piege">
+        <div class="fb-label">⚠ Piège</div>
+        ${n.conf}
+      </div>
+    </div>
+  </div>`;
+}
+
 function showFiche(dossier, section, el) {
   document.querySelectorAll('#sidebar-fiches .q-item').forEach(i => i.classList.remove('active'));
   if (el) el.classList.add('active');
-  const urls = {d1:'memo-msgn-dossier1.html', d2:'memo-msgn-dossier2.html', d3:'memo-msgn-dossier3.html'};
-  const url = urls[dossier] + '?embed=1' + (section ? '#' + section : '');
-  document.getElementById('main').innerHTML = `<iframe src="${url}" style="width:100%;height:calc(100vh - 84px);border:none;border-radius:0"></iframe>`;
+  const sec = FICHES[dossier + '-' + section];
+  if (!sec) return;
+  let html = `<div class="fiche-sec-head">
+    <div class="fiche-sec-icon">${sec.icon}</div>
+    <div>
+      <div class="fiche-sec-label" style="color:${sec.color}">${sec.label}</div>
+      <div class="fiche-sec-title">${sec.title}</div>
+    </div>
+  </div>`;
+  sec.notions.forEach(nid => {
+    const n = N[nid];
+    if (n) html += buildFicheCard(n);
+  });
+  document.getElementById('main').innerHTML = html;
 }
 
 // Pas d'auto-chargement : le panneau reste vide jusqu'au clic
