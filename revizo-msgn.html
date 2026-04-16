@@ -1191,12 +1191,6 @@ function show(id, el) {
       <div class="type-tag">${q.dossier} · ${q.type}</div>
       <h2>${q.titre}</h2>
       <div class="freq">${q.freq}</div>
-      <div class="annales-list">Annales : ${q.annales}</div>
-    </div>
-
-    <div class="bareme-bar">
-      <div class="bareme-item"><span class="bareme-icon">🎯</span><span class="bareme-val">${q.pts}</span><span class="bareme-lab">au barème</span></div>
-      <div class="bareme-item"><span class="bareme-icon">⏱️</span><span class="bareme-val">${q.temps}</span><span class="bareme-lab">conseillé</span></div>
     </div>
 
     <div class="section">
@@ -1209,17 +1203,16 @@ function show(id, el) {
     <div class="section">
       <div class="sec-title bleu">⚙️ Méthode attendue</div>
       <div class="steps">
-        ${q.methode.map(s => `<div class="step"><div class="step-n">${s.n}</div><div class="step-body"><strong>${s.t}</strong><br><em>${s.d}</em></div></div>`).join('')}
+        ${q.methode.map(s => `<div class="step"><span style="color:var(--accent);font-weight:800;font-size:13px;margin-top:2px;flex-shrink:0">—</span><div class="step-body"><strong>${s.t}</strong><br><em>${s.d}</em></div></div>`).join('')}
       </div>
-      <div class="mots">${q.mots.map(m => `<span class="mot">${m}</span>`).join('')}</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--gris)"><strong>Mots-clés :</strong> ${q.mots.join(' · ')}</div>
     </div>
 
     <div class="section">
       <div class="sec-title vert">✏️ S'entraîner — Question d'annale</div>
       <div class="annale-box"><span class="annale-source">${q.annale.src}</span>${q.annale.q}</div>
-      <button class="btn-corr" onclick="toggleCorr(this)">Voir le corrigé attendu</button>
-      <div class="corr-block">
-        <div class="corr-title">✅ Réponse attendue</div>
+      <div class="corr-block show">
+        <div class="corr-title">✅ Corrigé</div>
         ${q.corrige}
       </div>
       <div class="alerte"><span class="alerte-i">⚠️</span><span>${q.alerte}</span></div>
@@ -1234,19 +1227,36 @@ function toggleCorr(btn) {
   btn.textContent = b.classList.contains('show') ? 'Masquer le corrigé' : 'Voir le corrigé attendu';
 }
 
+// Notions financières qui gardent le SVG
+const FINANCE_IDS = ['frng','bfr','tn','va','rex','couts','seuil','caf','financement'];
+
 function openN(id) {
   const n = N[id];
-  const svgBtn = n.svg ? `<button onclick="toggleSvg()" style="background:#3d1a5c;color:white;border:none;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px;font-family:'Inter',sans-serif">📊 Voir le schéma</button><div id="modal-svg" style="display:none;margin-bottom:14px;text-align:center">${n.svg}</div>` : '';
+  const isFinance = FINANCE_IDS.includes(id);
+  const svgHtml = (isFinance && n.svg) ? `<div style="text-align:center;margin-top:12px">${n.svg}</div>` : '';
   document.getElementById('modal-body').innerHTML = `
     <div class="modal-tag">${n.tag}</div>
     <h3>${n.titre}</h3>
     <div class="freq-pill">${n.freq}</div>
-    <div class="modal-def">${n.def}</div>
-    ${svgBtn}
-    <div class="modal-form">${n.form.replace(/\n/g,'<br>')}</div>
-    <div class="modal-interp"><strong>Interprétation</strong>${n.interp.replace(/\n/g,'<br>')}</div>
-    <div class="modal-interp"><strong>Exemple annale</strong>${n.ex}</div>
-    <div class="modal-conf">⚠️ ${n.conf}</div>
+    <div class="fiche-body" style="margin-top:14px">
+      <div class="fb fb-def">
+        <div class="fb-label">📖 Définition</div>
+        ${n.def}
+      </div>
+      <div class="fb fb-retenir">
+        <div class="fb-label">📋 À retenir</div>
+        ${n.form.replace(/\n/g,'<br>')}
+      </div>
+      <div class="fb fb-exemple">
+        <div class="fb-label">💡 Exemple bac</div>
+        ${n.ex}
+      </div>
+      <div class="fb fb-piege">
+        <div class="fb-label">⚠ Piège</div>
+        ${n.conf}
+      </div>
+    </div>
+    ${svgHtml}
   `;
   document.getElementById('overlay').classList.add('show');
   document.body.style.overflow = 'hidden';
