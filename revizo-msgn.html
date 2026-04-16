@@ -50,38 +50,6 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 .q-pts { font-size: 11px; font-weight: 700; color: var(--vert); background: #e8f4ee; padding: 2px 7px; border-radius: 10px; border: 1px solid #b8dfc9; }
 .q-time { font-size: 11px; color: var(--gris); }
 
-/* MÉMOS DE RÉVISION — bloc sidebar */
-.memo-links {
-  padding: 12px 16px 14px;
-  border-bottom: 1px solid var(--bordure);
-  background: #f8f5ef;
-}
-.memo-label {
-  font-family: 'Nunito', sans-serif;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .05em;
-  color: var(--gris);
-  margin-bottom: 6px;
-}
-.memo-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 10px;
-  border-radius: 7px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--texte);
-  text-decoration: none;
-  transition: background .15s;
-  cursor: pointer;
-}
-.memo-link:hover { background: #ede9e0; }
-.memo-arrow { font-size: 11px; color: var(--accent); font-weight: 800; }
-.memo-soon { opacity: .45; cursor: default; }
-.memo-soon:hover { background: transparent; }
-
 /* NOTIONS BONUS — groupe de notions rares */
 .group-bonus .group-header { background: #fdf9e8; }
 .group-bonus .group-header:hover { background: #f9f1d0; }
@@ -196,6 +164,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
   .main { padding: 16px; }
   .modal { max-height: 90vh; }
   .bareme-bar { gap: 8px; }
+  .fiche-body { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1226,11 +1195,7 @@ function show(id, el) {
   `;
 }
 
-function toggleCorr(btn) {
-  const b = btn.nextElementSibling;
-  b.classList.toggle('show');
-  btn.textContent = b.classList.contains('show') ? 'Masquer le corrigé' : 'Voir le corrigé attendu';
-}
+
 
 // Notions financières qui gardent le SVG
 const FINANCE_IDS = ['frng','bfr','tn','va','rex','couts','seuil','caf','financement'];
@@ -1265,11 +1230,6 @@ function openN(id) {
   `;
   document.getElementById('overlay').classList.add('show');
   document.body.style.overflow = 'hidden';
-}
-
-function toggleSvg() {
-  const el = document.getElementById('modal-svg');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
 function closeModal() {
@@ -1307,75 +1267,7 @@ function switchMode(mode) {
   // 3. Reset le panneau principal
   document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
   if (mode === 'fiches') {
-    document.getElementById('main').innerHTML = `
-      <div style="padding:40px 28px;max-width:700px">
-        <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px">📝 Fiches mémo MSGN</h2>
-        <p style="color:var(--gris);font-size:13px;margin-bottom:24px">3 dossiers · 32 notions · Tout retenir pour le Bac · <a href="print-fiches-memo.html" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none">🖨️ Version imprimable</a></p>
-
-        <div style="background:#fdeef1;border-left:5px solid #e8526b;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
-          <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 1 — Stratégie</div>
-          <div style="display:flex;gap:8px;margin-bottom:8px">
-            <div onclick="showFiche('d1','q1',document.querySelector('#sidebar-fiches .q-item'))" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
-              <div style="font-size:18px;margin-bottom:3px">🔍</div>
-              <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où je suis ?</div>
-              <div style="font-size:10px;color:#7a6a58">4 notions · Analyser</div>
-            </div>
-            <div style="align-self:center;color:#a09880;font-size:16px">→</div>
-            <div onclick="showFiche('d1','q2',document.querySelectorAll('#sidebar-fiches .q-item')[1])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
-              <div style="font-size:18px;margin-bottom:3px">🧭</div>
-              <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où veux-je aller ?</div>
-              <div style="font-size:10px;color:#7a6a58">3 notions · Décider</div>
-            </div>
-            <div style="align-self:center;color:#a09880;font-size:16px">→</div>
-            <div onclick="showFiche('d1','q3',document.querySelectorAll('#sidebar-fiches .q-item')[2])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
-              <div style="font-size:18px;margin-bottom:3px">🛤️</div>
-              <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Comment j'y vais ?</div>
-              <div style="font-size:10px;color:#7a6a58">3 notions · Agir</div>
-            </div>
-          </div>
-          <div style="font-size:11px;color:#7a6a58">10 notions · Parties prenantes · Compétences · Stratégie · Mercatique</div>
-        </div>
-
-        <div style="background:#e8f3ff;border-left:5px solid #3a82c8;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
-          <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 2 — Finances & GRH</div>
-          <div style="display:flex;gap:8px;margin-bottom:8px">
-            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[5].click()" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
-              <div style="font-size:18px;margin-bottom:3px">💰</div>
-              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance financière</div>
-              <div style="font-size:10px;color:#7a6a58">7 notions</div>
-            </div>
-            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[5].click()" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
-              <div style="font-size:18px;margin-bottom:3px">👥</div>
-              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance sociale</div>
-              <div style="font-size:10px;color:#7a6a58">5 notions</div>
-            </div>
-            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[5].click()" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
-              <div style="font-size:18px;margin-bottom:3px">⚙️</div>
-              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance opérationnelle</div>
-              <div style="font-size:10px;color:#7a6a58">2 notions</div>
-            </div>
-          </div>
-          <div style="font-size:11px;color:#7a6a58">14 notions · VA · FRNG · Likert · Maslow · GPEC · Flux</div>
-        </div>
-
-        <div style="background:#eaf8ef;border-left:5px solid #1a7a3c;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
-          <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 3 — RSE & Numérique</div>
-          <div style="display:flex;gap:8px;margin-bottom:8px">
-            <div onclick="showFiche('d3','num',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
-              <div style="font-size:18px;margin-bottom:3px">💻</div>
-              <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes outils</div>
-              <div style="font-size:10px;color:#7a6a58">Numérique</div>
-            </div>
-            <div style="align-self:center;color:#a09880;font-size:16px">→</div>
-            <div onclick="showFiche('d3','rse',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
-              <div style="font-size:18px;margin-bottom:3px">🌿</div>
-              <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes valeurs</div>
-              <div style="font-size:10px;color:#7a6a58">RSE</div>
-            </div>
-          </div>
-          <div style="font-size:11px;color:#7a6a58">6 notions · PGI · CRM · RGPD · RSE · 3 piliers</div>
-        </div>
-      </div>`;
+    showFicheHome();
   } else {
     document.getElementById('main').innerHTML = `
       <div class="placeholder">
@@ -1387,8 +1279,6 @@ function switchMode(mode) {
 
 function showFicheHome() {
   document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
-  switchMode.__ficheHTML = switchMode.__ficheHTML || document.getElementById('main').innerHTML;
-  // Reconstruire la page de garde
   document.getElementById('main').innerHTML = `
     <div style="padding:40px 28px;max-width:700px">
       <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px">📝 Fiches mémo MSGN</h2>
