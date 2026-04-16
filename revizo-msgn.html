@@ -605,6 +605,14 @@ const N = {
     ex:"Myfood (2023) : calcul de la CAF pour évaluer la capacité de la start-up à financer sa croissance sans lever de fonds.",
     conf:"⚠️ CAF ≠ trésorerie. La CAF est un flux potentiel, la trésorerie est le solde réel en banque."
   },
+  financement: {
+    tag:"Gestion financière", titre:"Choix de financement", freq:"★★★★☆ ~50%",
+    def:"Comment l'entreprise finance ses investissements : ressources internes (autofinancement/CAF) ou externes (emprunt, capital, subventions, crowdfunding).",
+    form:"Autofinancement (CAF) : pas de dette, mais capacité limitée\nEmprunt bancaire : effet de levier, mais charges financières\nAugmentation de capital : renforce fonds propres, mais dilue le pouvoir\nCrowdfunding / subventions : sources complémentaires",
+    interp:"Le choix dépend du contexte : taille du projet, situation financière (FRNG), coût de l'endettement, volonté de garder le contrôle.",
+    ex:"Topschuss (2024) : levée de 10M€ en capital. Cohérent car un emprunt aurait fragilisé la trésorerie en forte croissance.",
+    conf:"⚠️ Ne jamais se limiter à lister les sources. Toujours JUSTIFIER pourquoi ce choix est adapté au contexte de l'entreprise."
+  },
   identite_num: {
     tag:"Numérique", titre:"Identité numérique", freq:"★★☆☆☆ Rare",
     def:"Ensemble des traces et représentations d'une organisation sur internet : site web, réseaux sociaux, avis clients, articles de presse.",
@@ -871,7 +879,7 @@ const Q = {
     dossier:"Dossier 2 — Finances", type:"TYPE 14", titre:"Justifier les choix de financement",
     freq:"★★★★☆ — ~50% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
     annales:"Topschuss (2024) · Eyecontact (2024) · Renou (2024) · Caraïbes Fumés (2022)",
-    notions:["frng"],
+    notions:["financement","frng"],
     methode:[
       {n:1, t:"Identifier les sources de financement dans les docs", d:"Autofinancement, emprunt bancaire, augmentation de capital, financement participatif, subventions."},
       {n:2, t:"Pour chaque source : avantages et inconvénients", d:"Autofinancement = pas de dette MAIS limite la capacité. Emprunt = effet de levier MAIS charges financières."},
