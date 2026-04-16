@@ -186,6 +186,7 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
 <div style="position:fixed;top:48px;left:0;right:0;z-index:999;background:rgba(240,237,230,0.95);backdrop-filter:blur(16px);height:36px;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid rgba(30,28,24,.08);gap:16px;font-family:'Inter',sans-serif">
   <span style="font-size:0.7rem;font-weight:800;background:#3d1a5c;color:#f5c842;padding:3px 10px;border-radius:12px">SDGN</span>
   <a href="revizo-msgn.html" style="font-size:0.78rem;font-weight:700;color:#1e1c18;text-decoration:none">Questions Bac</a>
+  <a href="#" onclick="show('synthese',null);return false" style="font-size:0.78rem;font-weight:600;color:#7a6a58;text-decoration:none">Synthèse</a>
   <a href="memo-msgn-dossier1.html" style="font-size:0.78rem;font-weight:600;color:#7a6a58;text-decoration:none">Fiches mémo</a>
 </div>
 
@@ -361,16 +362,17 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
     </div>
   </div>
 
-  <!-- SYNTHÈSE 15 LIGNES -->
-  <div class="q-item" onclick="show('synthese', this)" style="border-top:1px solid var(--bordure);margin-top:8px;padding-top:12px">
-    <span class="q-name">✍️ Rédiger la synthèse (~15 lignes)</span>
-    <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 20 min</span><span class="q-time">★★★★★</span></div>
-  </div>
 
 </aside>
 
 <!-- ════════════════ MAIN ════════════════ -->
-<main class="main" id="main"></main>
+<main class="main" id="main">
+  <div class="placeholder">
+    <div class="big">📚</div>
+    <h3>Choisis une question à gauche</h3>
+    <p>Clique sur une question dans la sidebar pour commencer à réviser.</p>
+  </div>
+</main>
 </div>
 
 <!-- ════════════════ MODAL NOTION ════════════════ -->
