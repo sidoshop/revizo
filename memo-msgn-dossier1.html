@@ -920,6 +920,13 @@ body {
 </div>
 
 <script>
+// Si embed → cacher nav et ajuster le layout
+if (window.location.search.includes('embed=1')) {
+  document.querySelectorAll('.nav1,.nav2').forEach(n => n.style.display='none');
+  document.querySelector('.page').style.marginTop='0';
+  document.querySelector('.page').style.borderRadius='0';
+  document.querySelector('.page').style.boxShadow='none';
+}
 function toggleSection(el) {
   // Ne pas toggler si on clique sur un lien à l'intérieur
   if (event.target.closest('a, .fiche, .piege, .scp-schema')) return;

@@ -361,40 +361,40 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
       <span class="q-name">📐 Méthode générale</span>
       <div class="q-meta"><span class="q-time">5 étapes · 4-6 pts</span></div>
     </div>
-    <div class="dossier-label">Numérique (3 sujets)</div>
+    <div class="dossier-label">Dossier 3 · Numérique</div>
     <div class="q-item" onclick="showSynthSujet(0,this)">
-      <span class="q-name">Sujet 1 · Réo (2021)</span>
-      <div class="q-meta"><span class="q-time">Numérique et performance</span></div>
+      <span class="q-name">Numérique et performance</span>
+      <div class="q-meta"><span class="q-time">Réo · 2021</span></div>
     </div>
     <div class="q-item" onclick="showSynthSujet(2,this)">
-      <span class="q-name">Sujet 3 · Ankama (2023)</span>
-      <div class="q-meta"><span class="q-time">Numérique et identité</span></div>
+      <span class="q-name">Numérique et identité</span>
+      <div class="q-meta"><span class="q-time">Ankama · 2023</span></div>
     </div>
     <div class="q-item" onclick="showSynthSujet(6,this)">
-      <span class="q-name">Sujet 7 · Eyecontact (2024)</span>
-      <div class="q-meta"><span class="q-time">Opportunités et risques</span></div>
+      <span class="q-name">Opportunités et risques</span>
+      <div class="q-meta"><span class="q-time">Eyecontact · 2024</span></div>
     </div>
-    <div class="dossier-label">GRH / QVT (3 sujets)</div>
+    <div class="dossier-label">Dossier 2 · GRH / QVT</div>
     <div class="q-item" onclick="showSynthSujet(1,this)">
-      <span class="q-name">Sujet 2 · Caraïbes Fumés (2022)</span>
-      <div class="q-meta"><span class="q-time">Performance sociale</span></div>
+      <span class="q-name">Performance sociale</span>
+      <div class="q-meta"><span class="q-time">Caraïbes Fumés · 2022</span></div>
     </div>
     <div class="q-item" onclick="showSynthSujet(3,this)">
-      <span class="q-name">Sujet 4 · TPS (2023)</span>
-      <div class="q-meta"><span class="q-time">Marque employeur</span></div>
+      <span class="q-name">Marque employeur</span>
+      <div class="q-meta"><span class="q-time">TPS · 2023</span></div>
     </div>
     <div class="q-item" onclick="showSynthSujet(5,this)">
-      <span class="q-name">Sujet 6 · Topschuss (2024)</span>
-      <div class="q-meta"><span class="q-time">QVT et performance</span></div>
+      <span class="q-name">QVT et performance</span>
+      <div class="q-meta"><span class="q-time">Topschuss · 2024</span></div>
     </div>
-    <div class="dossier-label">RSE / Innovation (2 sujets)</div>
+    <div class="dossier-label">Dossier 3 · RSE / Innovation</div>
     <div class="q-item" onclick="showSynthSujet(4,this)">
-      <span class="q-name">Sujet 5 · Beyer (2023)</span>
-      <div class="q-meta"><span class="q-time">Innovation et valeur perçue</span></div>
+      <span class="q-name">Innovation et valeur perçue</span>
+      <div class="q-meta"><span class="q-time">Beyer · 2023</span></div>
     </div>
     <div class="q-item" onclick="showSynthSujet(7,this)">
-      <span class="q-name">Sujet 8 · Renou (2024)</span>
-      <div class="q-meta"><span class="q-time">RSE créatrice de valeur</span></div>
+      <span class="q-name">RSE créatrice de valeur</span>
+      <div class="q-meta"><span class="q-time">Renou · 2024</span></div>
     </div>
   </div><!-- /sidebar-synthese -->
 
@@ -1211,46 +1211,80 @@ function switchMode(mode) {
 
   // 3. Reset le panneau principal
   document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
-  document.getElementById('main').innerHTML = `
-    <div class="placeholder">
-      <div class="big">${mode === 'questions' ? '📚' : mode === 'synthese' ? '✍️' : '📝'}</div>
-      <h3>${mode === 'questions' ? 'Choisis une question à gauche' : mode === 'synthese' ? 'Choisis un sujet de synthèse' : 'Choisis un dossier à gauche'}</h3>
-    </div>`;
+  if (mode === 'fiches') {
+    document.getElementById('main').innerHTML = `
+      <div style="padding:40px 28px;max-width:700px">
+        <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px">📝 Fiches mémo MSGN</h2>
+        <p style="color:var(--gris);font-size:13px;margin-bottom:24px">3 dossiers · 32 notions · Tout retenir pour le Bac</p>
+
+        <div style="background:#fdeef1;border-left:5px solid #e8526b;border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:14px;cursor:pointer" onclick="showFiche('d1','q1',document.querySelector('#sidebar-fiches .q-item'))">
+          <div style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;margin-bottom:4px">Dossier 1 — Stratégie</div>
+          <div style="font-size:13px;color:#5a5448;line-height:1.5">3 questions dans l'ordre : <strong>où je suis</strong> → <strong>où je veux aller</strong> → <strong>comment j'y vais</strong></div>
+          <div style="font-size:11px;color:#7a6a58;margin-top:4px">10 notions · Parties prenantes · Compétences · Stratégie · Mercatique</div>
+        </div>
+
+        <div style="background:#e8f3ff;border-left:5px solid #3a82c8;border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:14px;cursor:pointer" onclick="document.querySelectorAll('#sidebar-fiches .q-item')[3].click()">
+          <div style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;margin-bottom:4px">Dossier 2 — Finances & GRH</div>
+          <div style="font-size:13px;color:#5a5448;line-height:1.5">3 leviers de performance : <strong>financière</strong> · <strong>sociale</strong> · <strong>opérationnelle</strong></div>
+          <div style="font-size:11px;color:#7a6a58;margin-top:4px">14 notions · VA · FRNG · Likert · Maslow · GPEC · Flux</div>
+        </div>
+
+        <div style="background:#eaf8ef;border-left:5px solid #1a7a3c;border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:14px;cursor:pointer" onclick="document.querySelectorAll('#sidebar-fiches .q-item')[6].click()">
+          <div style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;margin-bottom:4px">Dossier 3 — RSE & Numérique</div>
+          <div style="font-size:13px;color:#5a5448;line-height:1.5">3 étapes : <strong>mes outils</strong> → <strong>mes valeurs</strong> → <strong>ma performance globale</strong></div>
+          <div style="font-size:11px;color:#7a6a58;margin-top:4px">8 notions · PGI · CRM · RGPD · RSE · 3 piliers · Synthèse</div>
+        </div>
+      </div>`;
+  } else {
+    document.getElementById('main').innerHTML = `
+      <div class="placeholder">
+        <div class="big">${mode === 'questions' ? '📚' : '✍️'}</div>
+        <h3>${mode === 'questions' ? 'Choisis une question à gauche' : 'Choisis un sujet de synthèse'}</h3>
+      </div>`;
+  }
 }
 
 // ═══════════════ SYNTHÈSE ═══════════════
 const SYNTH = [
-  {titre:"Réo 2021 — Le numérique contribue à la performance", theme:"Numérique",
+  {titre:"Numérique et performance · Réo (2021)", theme:"Numérique",
    question:"En quoi le numérique peut contribuer à l'amélioration de la performance de la fromagerie Réo ?",
-   notions:"PGI, e-commerce, CRM, performance commerciale, performance opérationnelle",
+   attendu:"Performance = résultats mesurables. Montrer comment chaque outil numérique améliore un indicateur concret.",
+   notions:["PGI","e-commerce","CRM","performance commerciale","performance opérationnelle"],
    corrige:`<strong>Intro :</strong> Le numérique transforme les modes de production et de commercialisation. Chez Réo, il contribue à la performance sur plusieurs dimensions.<br><br><strong>1. Performance commerciale :</strong> Le site e-commerce permet à Réo de toucher une clientèle nationale au-delà de la Bretagne. Le CRM centralise les données clients pour personnaliser les offres → fidélisation.<br><br><strong>2. Performance opérationnelle :</strong> Le PGI intègre tous les processus (production, stocks, commandes) dans une base unique → réduction des erreurs, gain de temps, traçabilité des produits AOP.<br><br><strong>3. Image et notoriété :</strong> La présence en ligne et les avis clients renforcent l'e-réputation de la fromagerie artisanale → différenciation face aux industriels.<br><br><strong>Conclusion :</strong> Le numérique est un levier de performance globale pour Réo, à condition de maîtriser les risques (RGPD, cybersécurité).`},
-  {titre:"Caraïbes Fumés 2022 — Performance sociale / Numérique", theme:"QVT / Numérique",
+  {titre:"Performance sociale · Caraïbes Fumés (2022)", theme:"QVT / Numérique",
    question:"Montrez que la performance sociale est une préoccupation de Caraïbes Fumés. OU Les outils numériques au service de la performance commerciale.",
-   notions:"QVT, turnover, conditions de travail / CRM, e-commerce, fidélisation",
+   attendu:"Performance sociale = bien-être des salariés mesurable (turnover, absentéisme, conditions). Montrer les actions concrètes ET leurs résultats.",
+   notions:["QVT","turnover","conditions de travail","CRM","e-commerce","fidélisation"],
    corrige:`<strong>Version performance sociale :</strong><br><br><strong>Intro :</strong> La performance sociale mesure la capacité de l'entreprise à satisfaire ses salariés et à maintenir un climat social positif.<br><br><strong>1. Conditions de travail :</strong> Caraïbes Fumés a modernisé ses ateliers de transformation → amélioration des conditions physiques de travail pour les opérateurs.<br><br><strong>2. Formation :</strong> Plan de formation pour accompagner la montée en gamme → développement des compétences, besoin d'estime (Maslow niveau 4).<br><br><strong>3. Résultats :</strong> Turnover en baisse, absentéisme réduit → la performance sociale renforce la performance économique (productivité, qualité).<br><br><strong>Conclusion :</strong> La performance sociale est un investissement, pas un coût.`},
-  {titre:"Ankama 2023 — Numérique et identité", theme:"Numérique",
+  {titre:"Numérique et identité · Ankama (2023)", theme:"Numérique",
    question:"Montrez que les outils numériques de communication influencent l'identité des organisations.",
-   notions:"identité numérique, réseaux sociaux, communauté, culture organisationnelle",
+   attendu:"Identité = image perçue + culture + valeurs. Distinguer identité maîtrisée (ce qu'on publie) et identité subie (ce que les autres disent).",
+   notions:["identité numérique","réseaux sociaux","communauté","culture organisationnelle"],
    corrige:`<strong>Intro :</strong> L'identité d'une organisation se construit à travers ses valeurs, sa culture et son image. Les outils numériques influencent cette identité de manière croissante.<br><br><strong>1. Construction de l'identité :</strong> Ankama utilise les réseaux sociaux pour diffuser son univers Krosmoz → la communauté de fans devient partie intégrante de l'identité du studio.<br><br><strong>2. Identité maîtrisée vs subie :</strong> Les contenus publiés (site, réseaux officiels) construisent l'identité voulue. Mais les avis, articles et discussions échappent au contrôle → identité subie.<br><br><strong>3. Impact sur la culture :</strong> La communauté en ligne crée un sentiment d'appartenance qui dépasse les murs de l'entreprise → la culture organisationnelle se prolonge dans l'espace numérique.<br><br><strong>Conclusion :</strong> Le numérique est un amplificateur d'identité — positif si maîtrisé, risqué sinon.`},
-  {titre:"TPS 2023 — Marque employeur et performance", theme:"Marque employeur",
+  {titre:"Marque employeur · TPS (2023)", theme:"Marque employeur",
    question:"Montrez que la marque employeur participe à la performance globale de TPS.",
-   notions:"marque employeur, recrutement, fidélisation, performance sociale et économique",
+   attendu:"Marque employeur = image auprès des candidats ET salariés. Montrer comment elle attire (recrutement) et garde (fidélisation) → impact sur la performance globale.",
+   notions:["marque employeur","recrutement","fidélisation","performance sociale","performance économique"],
    corrige:`<strong>Intro :</strong> La marque employeur est l'image d'une organisation en tant qu'employeur. Elle vise à attirer et fidéliser les talents.<br><br><strong>1. Attirer les compétences rares :</strong> TPS souffre d'un manque de notoriété. En développant sa marque employeur (communication RH, présence réseaux), l'entreprise se rend visible auprès des profils qualifiés de perforateurs.<br><br><strong>2. Fidéliser les salariés :</strong> Formations, QVT, management participatif → un salarié valorisé reste plus longtemps → réduction du turnover et des coûts de recrutement.<br><br><strong>3. Performance globale :</strong> Performance sociale (turnover bas) + économique (productivité maintenue) + image (clients perçoivent stabilité et expertise).<br><br><strong>Conclusion :</strong> La marque employeur est un choix stratégique qui renforce la performance sur les 3 dimensions.`},
-  {titre:"Beyer 2023 — Innovation et valeur perçue", theme:"Innovation",
+  {titre:"Innovation et valeur perçue · Beyer (2023)", theme:"Innovation",
    question:"Montrez qu'une innovation peut contribuer à améliorer la valeur perçue par le client.",
-   notions:"innovation produit, valeur perçue, différenciation, positionnement",
+   attendu:"Valeur perçue = bénéfices attendus − sacrifices consentis (prix, effort). Montrer comment l'innovation augmente les bénéfices perçus.",
+   notions:["innovation produit","valeur perçue","différenciation","positionnement"],
    corrige:`<strong>Intro :</strong> La valeur perçue est la différence entre les bénéfices attendus par le client et les sacrifices consentis (prix, effort). L'innovation peut la renforcer.<br><br><strong>1. Innovation produit :</strong> Beyer lance les "Fruits à tartiner", un produit innovant qui se distingue de la confiture classique → nouveau segment, curiosité du consommateur.<br><br><strong>2. Valeur perçue renforcée :</strong> L'innovation crée une perception de qualité supérieure : ingrédients artisanaux, fabrication locale, packaging premium → le client accepte un prix plus élevé.<br><br><strong>3. Différenciation durable :</strong> L'innovation protège des concurrents low-cost car elle crée un positionnement unique difficile à copier → avantage concurrentiel.<br><br><strong>Conclusion :</strong> L'innovation est un levier de valeur perçue qui renforce le positionnement et la compétitivité.`},
-  {titre:"Topschuss 2024 — QVT et performance globale", theme:"QVT",
+  {titre:"QVT et performance · Topschuss (2024)", theme:"QVT",
    question:"Montrez que la QVT peut contribuer à la performance globale de Topschuss.",
-   notions:"QVT/QVCT, performance sociale, marque employeur, engagement, productivité",
+   attendu:"QVT = conditions physiques, psychologiques, organisationnelles du travail. Performance globale = 3 piliers (éco/social/enviro). Lier les deux.",
+   notions:["QVT","QVCT","performance sociale","marque employeur","engagement","productivité"],
    corrige:`<strong>Intro :</strong> La QVT désigne les conditions dans lesquelles les salariés exercent leur activité. Elle peut constituer un levier de performance.<br><br><strong>1. Performance sociale :</strong> Topschuss a investi dans un siège pensé pour le bien-être (espaces ouverts, crèche). Ces aménagements réduisent l'absentéisme et le turnover.<br><br><strong>2. Performance économique :</strong> La QVT renforce la marque employeur : Topschuss attire des experts outdoor dans un secteur concurrentiel. La stabilité réduit les coûts de recrutement.<br><br><strong>3. Image :</strong> En communiquant sur sa QVT, Topschuss renforce son image d'employeur responsable, ce qui rejaillit sur la marque commerciale.<br><br><strong>Conclusion :</strong> Performance sociale et économique se renforcent mutuellement.`},
-  {titre:"Eyecontact 2024 — Numérique : opportunités et risques", theme:"Numérique",
+  {titre:"Opportunités et risques · Eyecontact (2024)", theme:"Numérique",
    question:"Montrez que les technologies du numérique sont sources d'opportunités mais aussi de risques.",
-   notions:"numérique, opportunités (productivité, innovation), risques (emploi, données)",
+   attendu:"Le sujet attend les DEUX faces : opportunités (productivité, innovation, nouveaux marchés) ET risques (emploi, données, dépendance). Ne traiter qu'un seul côté = incomplet.",
+   notions:["numérique","opportunités","productivité","innovation","risques","emploi","données"],
    corrige:`<strong>Intro :</strong> Les technologies numériques transforment les organisations. Elles sont sources d'opportunités mais présentent aussi des risques.<br><br><strong>1. Opportunités pour l'organisation :</strong> Eyecontact utilise la réalité augmentée et l'IA pour un essayage virtuel de lunettes → avantage concurrentiel majeur (120M d'essayages/an), nouveaux marchés internationaux.<br><br><strong>2. Opportunités pour les salariés :</strong> Le numérique crée de nouveaux métiers (développeurs, data analysts). Chez Eyecontact, 70% des salariés travaillent en R&D → montée en compétences.<br><br><strong>3. Risques :</strong> Dépendance technologique, cybersécurité (RGPD), risques pour l'emploi (automatisation), charge mentale liée au tout-numérique.<br><br><strong>Conclusion :</strong> Le numérique est un levier de croissance à condition d'en maîtriser les risques.`},
-  {titre:"Renou 2024 — RSE créatrice de valeur", theme:"RSE",
+  {titre:"RSE créatrice de valeur · Renou (2024)", theme:"RSE",
    question:"Montrez que la démarche RSE peut être créatrice de valeur pour Renou Textiles.",
-   notions:"RSE, 3 piliers, performance globale, avantage concurrentiel",
+   attendu:"RSE = volontaire, au-delà de la loi. Valeur = pas seulement financière. Structurer en 3 piliers (éco/social/enviro) et montrer que chacun crée de la valeur.",
+   notions:["RSE","3 piliers","performance globale","avantage concurrentiel","fidélisation"],
    corrige:`<strong>Intro :</strong> La RSE est l'engagement volontaire d'une entreprise à intégrer des préoccupations sociales et environnementales au-delà de ses obligations légales.<br><br><strong>1. Pilier économique :</strong> Renou utilise des matériaux recyclés → réduit les coûts de matières premières et attire une clientèle sensible au made in France → hausse du CA.<br><br><strong>2. Pilier social :</strong> L'entreprise maintient son site en Haute-Vienne, créant de l'emploi local. La GPEC anticipe les besoins en compétences → performance sociale.<br><br><strong>3. Pilier environnemental :</strong> Le recyclage de coton réduit l'empreinte écologique. Les labels EPV et OFG renforcent la crédibilité de l'engagement.<br><br><strong>Conclusion :</strong> La RSE de Renou n'est pas un coût mais un avantage concurrentiel qui crée de la valeur sur les 3 dimensions.`}
 ];
 
@@ -1280,6 +1314,7 @@ function showSynthSujet(idx, el) {
   document.querySelectorAll('#sidebar-synthese .q-item').forEach(i => i.classList.remove('active'));
   if (el) el.classList.add('active');
   const s = SYNTH[idx];
+  const pills = s.notions.map(n => `<span class="mot">${n}</span>`).join('');
   document.getElementById('main').innerHTML = `
     <div class="q-header">
       <div class="type-tag">SYNTHÈSE · ${s.theme}</div>
@@ -1288,7 +1323,13 @@ function showSynthSujet(idx, el) {
     <div class="section">
       <div class="sec-title bleu">📝 Question posée</div>
       <div class="annale-box"><em>${s.question}</em></div>
-      <div style="margin-top:6px;font-size:12px;color:var(--gris)"><strong>Notions clés :</strong> ${s.notions}</div>
+      <div style="margin-top:12px;background:#fef8e2;border:1px solid #f0d070;border-radius:8px;padding:10px 14px;font-size:13px;line-height:1.5">
+        <strong style="color:#946e00">🎯 Ce qu'on attend :</strong> ${s.attendu}
+      </div>
+      <div style="margin-top:12px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px">📚 Notions clés</div>
+        <div class="mots">${pills}</div>
+      </div>
     </div>
     <div class="section">
       <div class="sec-title vert">✅ Corrigé type</div>
@@ -1301,7 +1342,7 @@ function showFiche(dossier, section, el) {
   document.querySelectorAll('#sidebar-fiches .q-item').forEach(i => i.classList.remove('active'));
   if (el) el.classList.add('active');
   const urls = {d1:'memo-msgn-dossier1.html', d2:'memo-msgn-dossier2.html', d3:'memo-msgn-dossier3.html'};
-  const url = urls[dossier] + (section ? '#' + section : '');
+  const url = urls[dossier] + '?embed=1' + (section ? '#' + section : '');
   document.getElementById('main').innerHTML = `<iframe src="${url}" style="width:100%;height:calc(100vh - 84px);border:none;border-radius:0"></iframe>`;
 }
 
