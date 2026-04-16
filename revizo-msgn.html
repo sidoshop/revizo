@@ -181,6 +181,10 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 .fb-piege { grid-column: 1 / -1; background: #fdf5f7; border: 1px solid #e8b4bf; border-radius: 7px; padding: 6px 10px; font-size: 11.5px; line-height: 1.45; color: #7a2038; }
 .fb-piege strong { color: var(--accent); font-weight: 800; }
 .tag-bonus { background: #fde8a0; color: #7a5800; font-size: 9px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; }
+.fiche-arrow { font-size: 10px; color: var(--gris); transition: transform .2s; flex-shrink: 0; }
+.fiche-open .fiche-arrow { transform: rotate(90deg); }
+.fiche-body-wrap { display: none; }
+.fiche-open .fiche-body-wrap { display: block; }
 .fiche-sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding: 0 4px; }
 .fiche-sec-icon { font-size: 24px; }
 .fiche-sec-label { font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--gris); }
@@ -226,6 +230,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
       <span class="group-arrow">▶</span>
     </div>
     <div class="group-body">
+      <div class="dossier-label">Où je suis ? — Analyser</div>
       <div class="q-item" onclick="show('parties', this)">
         <span class="q-name">Identifier les parties prenantes</span>
         <div class="q-meta"><span class="q-pts">~1-2 pts</span><span class="q-time">≈ 7 min</span><span class="q-time">★★★★☆</span></div>
@@ -233,10 +238,6 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
       <div class="q-item" onclick="show('competences', this)">
         <span class="q-name">Identifier les compétences distinctives</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★★</span></div>
-      </div>
-      <div class="q-item" onclick="show('strategie', this)">
-        <span class="q-name">Caractériser la stratégie</span>
-        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
       </div>
       <div class="q-item" onclick="show('modele', this)">
         <span class="q-name">Présenter le modèle économique</span>
@@ -246,6 +247,12 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
         <span class="q-name">Réaliser le diagnostic interne / externe</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★☆☆</span></div>
       </div>
+      <div class="dossier-label">Où veux-je aller ? — Décider</div>
+      <div class="q-item" onclick="show('strategie', this)">
+        <span class="q-name">Caractériser la stratégie</span>
+        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="dossier-label">Comment j'y vais ? — Agir</div>
       <div class="q-item" onclick="show('mercatique', this)">
         <span class="q-name">Identifier l'approche mercatique (SCP + 4P)</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
@@ -256,10 +263,11 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
   <!-- DOSSIER 2 — FINANCES -->
   <div class="group">
     <div class="group-header" onclick="toggleGroup(this)">
-      <span class="group-label">Dossier 2 — Finances</span>
+      <span class="group-label">Dossier 2 — Finances & GRH</span>
       <span class="group-arrow">▶</span>
     </div>
     <div class="group-body">
+      <div class="dossier-label">Performance financière</div>
       <div class="q-item" onclick="show('va', this)">
         <span class="q-name">Calculer VA + Résultat d'exploitation</span>
         <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
@@ -276,16 +284,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
         <span class="q-name">Justifier les choix de financement</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
       </div>
-    </div>
-  </div>
-
-  <!-- DOSSIER 2 — GRH -->
-  <div class="group">
-    <div class="group-header" onclick="toggleGroup(this)">
-      <span class="group-label">Dossier 2 — GRH</span>
-      <span class="group-arrow">▶</span>
-    </div>
-    <div class="group-body">
+      <div class="dossier-label">Performance sociale</div>
       <div class="q-item" onclick="show('direction', this)">
         <span class="q-name">Identifier le style de direction</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★★</span></div>
@@ -302,13 +301,14 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
         <span class="q-name">Justifier la marque employeur / QVT</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
       </div>
-      <div class="q-item" onclick="show('production', this)">
-        <span class="q-name">Identifier le mode de production / flux</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
-      </div>
       <div class="q-item" onclick="show('gpecq', this)">
         <span class="q-name">Montrer l'importance de la GPEC</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★☆☆</span></div>
+      </div>
+      <div class="dossier-label">Performance opérationnelle</div>
+      <div class="q-item" onclick="show('production', this)">
+        <span class="q-name">Identifier le mode de production / flux</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
       </div>
     </div>
   </div>
@@ -316,7 +316,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
   <!-- DOSSIER 3 — RSE & SI -->
   <div class="group">
     <div class="group-header" onclick="toggleGroup(this)">
-      <span class="group-label">Dossier 3 — RSE & SI</span>
+      <span class="group-label">Dossier 3 — RSE & Numérique</span>
       <span class="group-arrow">▶</span>
     </div>
     <div class="group-body">
@@ -390,28 +390,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 
     <div class="group">
       <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-label">Numérique (3 sujets)</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="showSynthSujet(0,this)">
-          <span class="q-name">Numérique et performance</span>
-          <div class="q-meta"><span class="q-time">Réo · 2021</span></div>
-        </div>
-        <div class="q-item" onclick="showSynthSujet(2,this)">
-          <span class="q-name">Numérique et identité</span>
-          <div class="q-meta"><span class="q-time">Ankama · 2023</span></div>
-        </div>
-        <div class="q-item" onclick="showSynthSujet(6,this)">
-          <span class="q-name">Opportunités et risques</span>
-          <div class="q-meta"><span class="q-time">Eyecontact · 2024</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-label">GRH / QVT (3 sujets)</span>
+        <span class="group-label">Dossier 2 — GRH / QVT (3 sujets)</span>
         <span class="group-arrow">▶</span>
       </div>
       <div class="group-body">
@@ -432,7 +411,28 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 
     <div class="group">
       <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-label">RSE / Innovation (2 sujets)</span>
+        <span class="group-label">Dossier 3 — Numérique (3 sujets)</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showSynthSujet(0,this)">
+          <span class="q-name">Numérique et performance</span>
+          <div class="q-meta"><span class="q-time">Réo · 2021</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(2,this)">
+          <span class="q-name">Numérique et identité</span>
+          <div class="q-meta"><span class="q-time">Ankama · 2023</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(6,this)">
+          <span class="q-name">Opportunités et risques</span>
+          <div class="q-meta"><span class="q-time">Eyecontact · 2024</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-label">Dossier 3 — RSE / Innovation (2 sujets)</span>
         <span class="group-arrow">▶</span>
       </div>
       <div class="group-body">
@@ -1534,41 +1534,49 @@ const FICHES = {
 function buildFicheCard(n) {
   const freq = n.freq || '';
   return `<div class="fiche">
-    <div class="fiche-header">
+    <div class="fiche-header" onclick="this.parentElement.classList.toggle('fiche-open')" style="cursor:pointer">
       <span class="fiche-title">${n.titre}</span>
       <span class="fiche-freq">${freq}</span>
+      <span class="fiche-arrow">▶</span>
     </div>
-    <div class="fiche-body">
-      <div class="fb fb-def">
-        <div class="fb-label">📖 Définition</div>
-        ${n.def}
-      </div>
-      <div class="fb fb-retenir">
-        <div class="fb-label">📋 À retenir</div>
-        ${n.form.replace(/\n/g,'<br>')}
-      </div>
-      <div class="fb fb-exemple">
-        <div class="fb-label">💡 Exemple bac</div>
-        ${n.ex}
-      </div>
-      <div class="fb fb-piege">
-        <div class="fb-label">⚠ Piège</div>
-        ${n.conf}
+    <div class="fiche-body-wrap">
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          ${n.def}
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          ${n.form.replace(/\n/g,'<br>')}
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          ${n.ex}
+        </div>
+        <div class="fb fb-piege">
+          <div class="fb-label">⚠ Piège</div>
+          ${n.conf}
+        </div>
       </div>
     </div>
   </div>`;
 }
+
+const DOSSIER_COLORS = {d1:{bg:'#fdeef1',border:'#e8526b'}, d2:{bg:'#e8f3ff',border:'#3a82c8'}, d3:{bg:'#eaf8ef',border:'#1a7a3c'}};
 
 function showFiche(dossier, section, el) {
   document.querySelectorAll('#sidebar-fiches .q-item').forEach(i => i.classList.remove('active'));
   if (el) el.classList.add('active');
   const sec = FICHES[dossier + '-' + section];
   if (!sec) return;
-  let html = `<div class="fiche-sec-head">
-    <div class="fiche-sec-icon">${sec.icon}</div>
-    <div>
-      <div class="fiche-sec-label" style="color:${sec.color}">${sec.label}</div>
-      <div class="fiche-sec-title">${sec.title}</div>
+  const dc = DOSSIER_COLORS[dossier];
+  let html = `<div style="border-left:5px solid ${dc.border};background:${dc.bg};border-radius:0 12px 12px 0;padding:16px 20px;margin-bottom:18px">
+    <div class="fiche-sec-head" style="margin-bottom:0">
+      <div class="fiche-sec-icon">${sec.icon}</div>
+      <div>
+        <div class="fiche-sec-label" style="color:${dc.border}">${sec.label}</div>
+        <div class="fiche-sec-title">${sec.title}</div>
+      </div>
     </div>
   </div>`;
   sec.notions.forEach(nid => {
