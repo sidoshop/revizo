@@ -205,9 +205,9 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 </nav>
 <nav class="nav-rubriques">
   <span class="matiere-pill">MSGN</span>
-  <a href="#" class="active" onclick="switchMode('questions');return false">Questions Bac</a>
-  <a href="#" onclick="switchMode('synthese');return false">Synthèse</a>
-  <a href="#" onclick="switchMode('fiches');return false">Fiches mémo</a>
+  <a href="#" class="active" onclick="switchMode('fiches');return false">Fiches mémo</a>
+  <a href="#" onclick="switchMode('questions');return false">Questions du Bac</a>
+  <a href="#" onclick="switchMode('synthese');return false">Questions de synthèse</a>
 </nav>
 
 <div class="layout">
@@ -453,7 +453,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
     <div class="sidebar-intro" style="cursor:pointer" onclick="switchMode('fiches')">Fiches mémo</div>
 
     <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
+      <div class="group-header" onclick="toggleGroup(this);showFicheHome()">
         <span class="group-label">Dossier 1 — Stratégie</span>
         <span class="group-arrow">▶</span>
       </div>
@@ -477,7 +477,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
     </div>
 
     <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
+      <div class="group-header" onclick="toggleGroup(this);showFicheHome()">
         <span class="group-label">Dossier 2 — Finances & GRH</span>
         <span class="group-arrow">▶</span>
       </div>
@@ -501,7 +501,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
     </div>
 
     <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
+      <div class="group-header" onclick="toggleGroup(this);showFicheHome()">
         <span class="group-label">Dossier 3 — RSE & Numérique</span>
         <span class="group-arrow">▶</span>
       </div>
@@ -1286,9 +1286,9 @@ function switchMode(mode) {
   // 1. Mettre à jour le lien actif dans la sous-nav
   document.querySelectorAll('.nav-rubriques a').forEach(a => a.classList.remove('active'));
   const links = document.querySelectorAll('.nav-rubriques a');
-  if (mode === 'questions') links[0].classList.add('active');
-  if (mode === 'synthese') links[1].classList.add('active');
-  if (mode === 'fiches') links[2].classList.add('active');
+  if (mode === 'fiches') links[0].classList.add('active');
+  if (mode === 'questions') links[1].classList.add('active');
+  if (mode === 'synthese') links[2].classList.add('active');
 
   // 2. Afficher la bonne sidebar
   document.getElementById('sidebar-questions').style.display = mode === 'questions' ? 'block' : 'none';
@@ -1334,12 +1334,12 @@ function switchMode(mode) {
         <div style="background:#e8f3ff;border-left:5px solid #3a82c8;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
           <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 2 — Finances & GRH</div>
           <div style="display:flex;gap:8px;margin-bottom:8px">
-            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[3].click()" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[5].click()" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
               <div style="font-size:18px;margin-bottom:3px">💰</div>
               <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance financière</div>
               <div style="font-size:10px;color:#7a6a58">7 notions</div>
             </div>
-            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[4].click()" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[5].click()" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
               <div style="font-size:18px;margin-bottom:3px">👥</div>
               <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance sociale</div>
               <div style="font-size:10px;color:#7a6a58">5 notions</div>
@@ -1356,13 +1356,13 @@ function switchMode(mode) {
         <div style="background:#eaf8ef;border-left:5px solid #1a7a3c;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
           <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 3 — RSE & Numérique</div>
           <div style="display:flex;gap:8px;margin-bottom:8px">
-            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[6].click()" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+            <div onclick="showFiche('d3','num',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
               <div style="font-size:18px;margin-bottom:3px">💻</div>
               <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes outils</div>
               <div style="font-size:10px;color:#7a6a58">Numérique</div>
             </div>
             <div style="align-self:center;color:#a09880;font-size:16px">→</div>
-            <div onclick="document.querySelectorAll('#sidebar-fiches .q-item')[7].click()" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
+            <div onclick="showFiche('d3','rse',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
               <div style="font-size:18px;margin-bottom:3px">🌿</div>
               <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes valeurs</div>
               <div style="font-size:10px;color:#7a6a58">RSE</div>
@@ -1378,6 +1378,46 @@ function switchMode(mode) {
         <h3>${mode === 'questions' ? 'Choisis une question à gauche' : 'Choisis un sujet de synthèse'}</h3>
       </div>`;
   }
+}
+
+function showFicheHome() {
+  document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
+  switchMode.__ficheHTML = switchMode.__ficheHTML || document.getElementById('main').innerHTML;
+  // Reconstruire la page de garde
+  document.getElementById('main').innerHTML = `
+    <div style="padding:40px 28px;max-width:700px">
+      <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px">📝 Fiches mémo MSGN</h2>
+      <p style="color:var(--gris);font-size:13px;margin-bottom:24px">3 dossiers · 32 notions · Tout retenir pour le Bac</p>
+      <div style="background:#fdeef1;border-left:5px solid #e8526b;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
+        <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 1 — Stratégie</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <div onclick="showFiche('d1','q1',document.querySelector('#sidebar-fiches .q-item'))" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🔍</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où je suis ?</div><div style="font-size:10px;color:#7a6a58">4 notions · Analyser</div></div>
+          <div style="align-self:center;color:#a09880;font-size:16px">→</div>
+          <div onclick="showFiche('d1','q2',document.querySelectorAll('#sidebar-fiches .q-item')[1])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🧭</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où veux-je aller ?</div><div style="font-size:10px;color:#7a6a58">3 notions · Décider</div></div>
+          <div style="align-self:center;color:#a09880;font-size:16px">→</div>
+          <div onclick="showFiche('d1','q3',document.querySelectorAll('#sidebar-fiches .q-item')[2])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🛤️</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Comment j'y vais ?</div><div style="font-size:10px;color:#7a6a58">3 notions · Agir</div></div>
+        </div>
+        <div style="font-size:11px;color:#7a6a58">10 notions · Parties prenantes · Compétences · Stratégie · Mercatique</div>
+      </div>
+      <div style="background:#e8f3ff;border-left:5px solid #3a82c8;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
+        <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 2 — Finances & GRH</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <div onclick="showFiche('d2','fin',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">💰</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance financière</div><div style="font-size:10px;color:#7a6a58">7 notions</div></div>
+          <div onclick="showFiche('d2','soc',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">👥</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance sociale</div><div style="font-size:10px;color:#7a6a58">5 notions</div></div>
+          <div onclick="showFiche('d2','ope',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">⚙️</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance opérationnelle</div><div style="font-size:10px;color:#7a6a58">2 notions</div></div>
+        </div>
+        <div style="font-size:11px;color:#7a6a58">14 notions · VA · FRNG · Likert · Maslow · GPEC · Flux</div>
+      </div>
+      <div style="background:#eaf8ef;border-left:5px solid #1a7a3c;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
+        <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 3 — RSE & Numérique</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <div onclick="showFiche('d3','num',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">💻</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes outils</div><div style="font-size:10px;color:#7a6a58">3 notions · Numérique</div></div>
+          <div style="align-self:center;color:#a09880;font-size:16px">→</div>
+          <div onclick="showFiche('d3','rse',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🌿</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes valeurs</div><div style="font-size:10px;color:#7a6a58">3 notions · RSE</div></div>
+        </div>
+        <div style="font-size:11px;color:#7a6a58">6 notions · PGI · CRM · RGPD · RSE · 3 piliers</div>
+      </div>
+    </div>`;
 }
 
 // ═══════════════ SYNTHÈSE ═══════════════
@@ -1592,7 +1632,8 @@ function showChecklist(dossier, el) {
     </div>`;
 }
 
-// Pas d'auto-chargement : le panneau reste vide jusqu'au clic
+// Charger Fiches mémo par défaut au démarrage
+switchMode('fiches');
 </script>
 </body>
 </html>
