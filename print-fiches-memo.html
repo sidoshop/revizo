@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Fiches mémo MSGN — Impression A4</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@page { size: A4; margin: 15mm 12mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; color: #1e1c18; background: white; }
+
+.page-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 4px;
+}
+.page-sub {
+  text-align: center;
+  font-size: 11px;
+  color: #7a6a58;
+  margin-bottom: 16px;
+}
+
+/* DOSSIER */
+.dossier {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  page-break-inside: avoid;
+}
+.d1 { background: #fdeef1; border-left: 5px solid #e8526b; }
+.d2 { background: #e8f3ff; border-left: 5px solid #3a82c8; }
+.d3 { background: #eaf8ef; border-left: 5px solid #1a7a3c; }
+
+.d-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+/* SECTION (Où je suis, Performance financière...) */
+.section {
+  margin-bottom: 10px;
+}
+.s-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #7a6a58;
+  margin-bottom: 5px;
+  padding-left: 2px;
+}
+
+/* CASES */
+.cases {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.case {
+  flex: 1;
+  background: white;
+  border-radius: 8px;
+  padding: 8px 6px;
+  text-align: center;
+}
+.d1 .case { border: 1.5px solid #e8526b; }
+.d2 .case { border: 1.5px solid #3a82c8; }
+.d3 .case { border: 1.5px solid #1a7a3c; }
+
+.case-icon { font-size: 14px; margin-bottom: 2px; }
+.case-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+.d1 .case-title { color: #b5415a; }
+.d2 .case-title { color: #2a69a8; }
+.d3 .case-title { color: #1a7a3c; }
+
+.case-notions {
+  font-size: 8.5px;
+  color: #5a5448;
+  line-height: 1.35;
+}
+.arrow { color: #a09880; font-size: 13px; flex-shrink: 0; }
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  font-size: 9px;
+  color: #a09880;
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid #e8e2d6;
+}
+
+@media screen {
+  body { max-width: 210mm; margin: 20px auto; padding: 20px; }
+  .no-print { display: block; text-align: center; margin-bottom: 16px; }
+  .no-print button {
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    background: #1e1c18;
+    color: #f5c842;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+}
+@media print { .no-print { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">🖨️ Imprimer cette fiche</button>
+</div>
+
+<div class="page-title">📝 Fiches mémo MSGN — Vue d'ensemble</div>
+<div class="page-sub">3 dossiers · 32 notions · Bac STMG · Tout retenir en 1 page</div>
+
+<!-- DOSSIER 1 -->
+<div class="dossier d1">
+  <div class="d-title">Dossier 1 — Stratégie (10 notions)</div>
+
+  <div class="section">
+    <div class="s-title">🔍 Où je suis ? — Analyser</div>
+    <div class="cases">
+      <div class="case">
+        <div class="case-title">Parties prenantes</div>
+        <div class="case-notions">Internes / externes<br>Attentes contradictoires</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Modèle économique</div>
+        <div class="case-notions">Proposition de valeur<br>Clients · Revenus</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Compétences distinctives</div>
+        <div class="case-notions">Rare · Imitable<br>Créatrice de valeur</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Diagnostic externe</div>
+        <div class="case-notions">PESTEL (6 dim.)<br>5 forces Porter</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="s-title">🧭 Où veux-je aller ? — Décider</div>
+    <div class="cases">
+      <div class="case">
+        <div class="case-title">Stratégie globale</div>
+        <div class="case-notions">Combien de DAS ?<br>Spécialisation / Diversification</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="case">
+        <div class="case-title">Stratégie de domaine</div>
+        <div class="case-notions">Coûts / Différenciation<br>Focalisation (niche)</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="case">
+        <div class="case-title">DAS</div>
+        <div class="case-notions">Mêmes concurrents<br>Mêmes clients · Mêmes FCS</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="s-title">🛤️ Comment j'y vais ? — Agir</div>
+    <div class="cases">
+      <div class="case">
+        <div class="case-title">Mercatique SCP + 4P</div>
+        <div class="case-notions">Segmentation → Ciblage<br>→ Positionnement + Mix 4P</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Modes de croissance</div>
+        <div class="case-notions">Interne · Externe<br>Partenariale</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Intégration verticale</div>
+        <div class="case-notions">Amont (fournisseurs)<br>Aval (distributeurs)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DOSSIER 2 -->
+<div class="dossier d2">
+  <div class="d-title">Dossier 2 — Finances & GRH (14 notions)</div>
+
+  <div class="section">
+    <div class="s-title">💰 Performance financière (7 notions)</div>
+    <div class="cases">
+      <div class="case">
+        <div class="case-title">VA</div>
+        <div class="case-notions">Production − CI<br>Richesse créée</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Rex</div>
+        <div class="case-notions">VA − charges<br>Rentabilité activité</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Coûts + marges</div>
+        <div class="case-notions">Coût de revient<br>Taux marge / marque</div>
+      </div>
+      <div class="case">
+        <div class="case-title">FRNG / BFR / TN</div>
+        <div class="case-notions">Bilan fonctionnel<br>TN = FRNG − BFR</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Financement</div>
+        <div class="case-notions">CAF · Emprunt<br>Capital · Subventions</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="s-title">👥 Performance sociale (5 notions)</div>
+    <div class="cases">
+      <div class="case">
+        <div class="case-title">Direction</div>
+        <div class="case-notions">Likert : 4 styles<br>Autoritaire → Participatif</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Culture</div>
+        <div class="case-notions">Valeurs · Rites<br>Symboles → Cohésion</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Motivation</div>
+        <div class="case-notions">Maslow (5 niveaux)<br>Herzberg · McGregor</div>
+      </div>
+      <div class="case">
+        <div class="case-title">GPEC</div>
+        <div class="case-notions">Anticipation 3-5 ans<br>Formation · Mobilité</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Marque employeur</div>
+        <div class="case-notions">Attractivité · QVT<br>Fidélisation talents</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="s-title">⚙️ Performance opérationnelle (2 notions)</div>
+    <div class="cases">
+      <div class="case">
+        <div class="case-title">Modes de production</div>
+        <div class="case-notions">Artisanal · Série · Continu<br>Flux poussés / tendus</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Coordination</div>
+        <div class="case-notions">5 mécanismes Mintzberg<br>Ajustement → Standardisation</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DOSSIER 3 -->
+<div class="dossier d3">
+  <div class="d-title">Dossier 3 — RSE & Numérique (6 notions)</div>
+
+  <div class="section">
+    <div class="s-title">💻 Mes outils — Numérique (3 notions)</div>
+    <div class="cases">
+      <div class="case">
+        <div class="case-title">PGI / CRM / RGPD</div>
+        <div class="case-notions">Base unique · Relation client<br>Protection données</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Communication</div>
+        <div class="case-notions">Réseaux · E-commerce<br>Newsletter · Presse</div>
+      </div>
+      <div class="case">
+        <div class="case-title">Identité numérique</div>
+        <div class="case-notions">Maîtrisée / subie<br>E-réputation · Bad buzz</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="s-title">🌿 Mes valeurs — RSE (3 notions)</div>
+    <div class="cases">
+      <div class="case">
+        <div class="case-title">RSE (3 piliers)</div>
+        <div class="case-notions">Économique · Social<br>Environnemental · VOLONTAIRE</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="case">
+        <div class="case-title">Performance globale</div>
+        <div class="case-notions">Pas que financière<br>3 dimensions interdépendantes</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="case">
+        <div class="case-title">Éthique</div>
+        <div class="case-notions">Au-delà de la loi<br>Charte · Commerce équitable</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Révizo · MSGN · Terminale STMG · Fiches mémo · 32 notions en 1 page · sidoshop.github.io/revizo
+</div>
+
+</body>
+</html>
