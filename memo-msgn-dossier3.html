@@ -411,6 +411,37 @@ body {
 .footer-brand { font-family: 'Nunito', sans-serif; font-weight: 900; color: #7a7160; }
 .footer-brand span { color: #1e1c18; }
 
+/* ─── NAV INTER-DOSSIERS ─── */
+.dnav {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+.dnav a {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #a09880;
+  text-decoration: none;
+  padding: 4px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all .15s;
+}
+.dnav a:hover { background: rgba(255,255,255,0.1); color: #fffdf8; }
+.dnav a.on { background: #f5c842; color: #1e1c18; border-color: #f5c842; }
+
+/* ─── ACCORDÉON SECTIONS ─── */
+.section { cursor: pointer; }
+.section .sec-toggle { float: right; font-size: 14px; color: #a09880; transition: transform .2s; margin-top: 4px; }
+.section.collapsed .sec-toggle { transform: rotate(-90deg); }
+.section.collapsed .fiche,
+.section.collapsed .piege,
+.section.collapsed .rse-schema,
+.section.collapsed .synthese-box { display: none; }
+.section.collapsed { padding-bottom: 14px; cursor: pointer; }
+.section.collapsed .sec-head { margin-bottom: 0; }
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 700px) {
   body { padding: 12px; }
@@ -433,6 +464,12 @@ body {
     <div class="badge">Révizo · MSGN · Terminale STMG</div>
     <h1>Mémo Dossier 3 — <span>RSE & Numérique</span></h1>
     <div class="header-sub">8 notions · 3 étapes vers la performance globale · Objectif : tout retenir</div>
+    <div class="dnav">
+      <a href="memo-msgn-dossier1.html">D1 · Stratégie</a>
+      <a href="memo-msgn-dossier2.html">D2 · Finances & GRH</a>
+      <a href="memo-msgn-dossier3.html" class="on">D3 · RSE & Numérique</a>
+      <a href="revizo-msgn.html">← Questions Bac</a>
+    </div>
   </div>
 
   <!-- MANTRA -->
@@ -451,13 +488,14 @@ body {
   <!-- ═══════════════════════════════════════════ -->
   <!-- ÉTAPE 1 — MES OUTILS (NUMÉRIQUE)            -->
   <!-- ═══════════════════════════════════════════ -->
-  <div class="section s1" id="num">
+  <div class="section s1" id="num" onclick="toggleSection(this)">
     <div class="sec-head">
       <div class="sec-icon">💻</div>
       <div>
         <div class="sec-label">Étape 1</div>
         <div class="sec-title">Mes outils — Le numérique au service de la performance</div>
       </div>
+      <span class="sec-toggle">▼</span>
     </div>
 
     <!-- PGI / CRM / RGPD -->
@@ -583,13 +621,14 @@ body {
   <!-- ═══════════════════════════════════════════ -->
   <!-- ÉTAPE 2 — MES VALEURS (RSE)                 -->
   <!-- ═══════════════════════════════════════════ -->
-  <div class="section s2" id="rse">
+  <div class="section s2 collapsed" id="rse" onclick="toggleSection(this)">
     <div class="sec-head">
       <div class="sec-icon">🌿</div>
       <div>
         <div class="sec-label">Étape 2</div>
         <div class="sec-title">Mes valeurs — RSE & performance globale</div>
       </div>
+      <span class="sec-toggle">▼</span>
     </div>
 
     <!-- Schéma 3 piliers RSE -->
@@ -687,13 +726,14 @@ body {
   <!-- ═══════════════════════════════════════════ -->
   <!-- ÉTAPE 3 — LA SYNTHÈSE 15 LIGNES             -->
   <!-- ═══════════════════════════════════════════ -->
-  <div class="section s3" id="syn">
+  <div class="section s3 collapsed" id="syn" onclick="toggleSection(this)">
     <div class="sec-head">
       <div class="sec-icon">✍️</div>
       <div>
         <div class="sec-label">Étape 3</div>
         <div class="sec-title">La synthèse 15 lignes — La question qui rapporte le plus</div>
       </div>
+      <span class="sec-toggle">▼</span>
     </div>
 
     <!-- Méthode -->
@@ -802,6 +842,30 @@ body {
   </div>
 
 </div>
+
+<script>
+function toggleSection(el) {
+  if (event.target.closest('a, .fiche, .piege, .rse-schema, .synthese-box')) return;
+  const wasCollapsed = el.classList.contains('collapsed');
+  document.querySelectorAll('.section').forEach(s => s.classList.add('collapsed'));
+  if (wasCollapsed) {
+    el.classList.remove('collapsed');
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+document.querySelectorAll('.qnav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const id = this.getAttribute('href').replace('#','');
+    const target = document.getElementById(id);
+    if (target) {
+      document.querySelectorAll('.section').forEach(s => s.classList.add('collapsed'));
+      target.classList.remove('collapsed');
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
 
 </body>
 </html>

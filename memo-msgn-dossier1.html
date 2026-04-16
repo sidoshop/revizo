@@ -360,6 +360,36 @@ body {
 .footer-brand { font-family: 'Nunito', sans-serif; font-weight: 900; color: #7a7160; }
 .footer-brand span { color: #1e1c18; }
 
+/* ─── NAV INTER-DOSSIERS ─── */
+.dnav {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+.dnav a {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #a09880;
+  text-decoration: none;
+  padding: 4px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all .15s;
+}
+.dnav a:hover { background: rgba(255,255,255,0.1); color: #fffdf8; }
+.dnav a.on { background: #f5c842; color: #1e1c18; border-color: #f5c842; }
+
+/* ─── ACCORDÉON SECTIONS ─── */
+.section { cursor: pointer; }
+.section .sec-toggle { float: right; font-size: 14px; color: #a09880; transition: transform .2s; margin-top: 4px; }
+.section.collapsed .sec-toggle { transform: rotate(-90deg); }
+.section.collapsed .fiche,
+.section.collapsed .piege,
+.section.collapsed .scp-schema { display: none; }
+.section.collapsed { padding-bottom: 14px; cursor: pointer; }
+.section.collapsed .sec-head { margin-bottom: 0; }
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 700px) {
   body { padding: 12px; }
@@ -382,6 +412,12 @@ body {
     <div class="badge">Révizo · MSGN · Terminale STMG</div>
     <h1>Mémo Dossier 1 — <span>Stratégie</span></h1>
     <div class="header-sub">10 notions · 3 questions à se poser · Objectif : tout retenir</div>
+    <div class="dnav">
+      <a href="memo-msgn-dossier1.html" class="on">D1 · Stratégie</a>
+      <a href="memo-msgn-dossier2.html">D2 · Finances & GRH</a>
+      <a href="memo-msgn-dossier3.html">D3 · RSE & Numérique</a>
+      <a href="revizo-msgn.html">← Questions Bac</a>
+    </div>
   </div>
 
   <!-- MANTRA -->
@@ -400,13 +436,14 @@ body {
   <!-- ═══════════════════════════════════════════ -->
   <!-- QUESTION 1 — OÙ JE SUIS ?                  -->
   <!-- ═══════════════════════════════════════════ -->
-  <div class="section s1" id="q1">
+  <div class="section s1" id="q1" onclick="toggleSection(this)">
     <div class="sec-head">
       <div class="sec-icon">🔍</div>
       <div>
         <div class="sec-label">Question 1</div>
         <div class="sec-title">Où je suis ? — Le diagnostic</div>
       </div>
+      <span class="sec-toggle">▼</span>
     </div>
 
     <!-- Parties prenantes -->
@@ -546,13 +583,14 @@ body {
   <!-- ═══════════════════════════════════════════ -->
   <!-- QUESTION 2 — OÙ VEUX-JE ALLER ?            -->
   <!-- ═══════════════════════════════════════════ -->
-  <div class="section s2" id="q2">
+  <div class="section s2 collapsed" id="q2" onclick="toggleSection(this)">
     <div class="sec-head">
       <div class="sec-icon">🧭</div>
       <div>
         <div class="sec-label">Question 2</div>
         <div class="sec-title">Où veux-je aller ? — La décision stratégique</div>
       </div>
+      <span class="sec-toggle">▼</span>
     </div>
 
     <!-- Stratégie globale -->
@@ -657,13 +695,14 @@ body {
   <!-- ═══════════════════════════════════════════ -->
   <!-- QUESTION 3 — COMMENT J'Y VAIS ?            -->
   <!-- ═══════════════════════════════════════════ -->
-  <div class="section s3" id="q3">
+  <div class="section s3 collapsed" id="q3" onclick="toggleSection(this)">
     <div class="sec-head">
       <div class="sec-icon">🛤️</div>
       <div>
         <div class="sec-label">Question 3</div>
         <div class="sec-title">Comment j'y vais ? — L'action</div>
       </div>
+      <span class="sec-toggle">▼</span>
     </div>
 
     <!-- Schéma SCP + 4P -->
@@ -823,6 +862,34 @@ body {
   </div>
 
 </div>
+
+<script>
+function toggleSection(el) {
+  // Ne pas toggler si on clique sur un lien à l'intérieur
+  if (event.target.closest('a, .fiche, .piege, .scp-schema')) return;
+  const wasCollapsed = el.classList.contains('collapsed');
+  // Fermer toutes les sections
+  document.querySelectorAll('.section').forEach(s => s.classList.add('collapsed'));
+  // Ouvrir celle cliquée (si elle était fermée)
+  if (wasCollapsed) {
+    el.classList.remove('collapsed');
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+// La nav sticky doit aussi piloter l'accordéon
+document.querySelectorAll('.qnav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const id = this.getAttribute('href').replace('#','');
+    const target = document.getElementById(id);
+    if (target) {
+      document.querySelectorAll('.section').forEach(s => s.classList.add('collapsed'));
+      target.classList.remove('collapsed');
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
 
 </body>
 </html>
