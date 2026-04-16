@@ -6,6 +6,8 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>Revizo — MSGN Terminale STMG</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -16,18 +18,11 @@
 }
 body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; }
 
-/* HEADER */
-header { background: #1e1c18; padding: 14px 20px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 50; }
-header h1 { font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 800; color: white; }
-header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
-.header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-.bac-badge { background: var(--accent); color: white; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
-
 /* LAYOUT */
-.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: calc(100vh - 52px); }
+.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: calc(100vh - 84px); margin-top: 84px; }
 
 /* SIDEBAR */
-.sidebar { background: white; border-right: 1px solid var(--bordure); position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto; }
+.sidebar { background: white; border-right: 1px solid var(--bordure); position: sticky; top: 84px; height: calc(100vh - 84px); overflow-y: auto; }
 .sidebar-intro { padding: 14px 16px 8px; font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; }
 
 /* ACCORDION GROUPE */
@@ -175,33 +170,28 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
 }
 </style>
 </head>
-<body>
+<body data-subject="sgdn">
 
-<nav class="nav-epreuve" style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(240,237,230,0.95);backdrop-filter:blur(16px);height:48px;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid rgba(30,28,24,.1);gap:20px;font-family:'Inter',sans-serif">
-  <a href="index.html" style="font-size:0.95rem;font-weight:900;color:#1e1c18;text-decoration:none">Révi<span style="color:#b5415a">zo</span></a>
-  <a href="epreuve-ecodroit.html" style="font-size:0.78rem;font-weight:600;color:#7a6a58;text-decoration:none;padding:4px 12px;border-radius:16px">Éco-Droit</a>
-  <a href="revizo-msgn.html" style="font-size:0.78rem;font-weight:600;background:#1e1c18;color:#f5c842;text-decoration:none;padding:4px 12px;border-radius:16px">SGDN</a>
-  <a href="revizo-philo.html" style="font-size:0.78rem;font-weight:600;color:#7a6a58;text-decoration:none;padding:4px 12px;border-radius:16px">Philo</a>
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+  <a href="revizo-msgn.html" class="epreuve-link active">SGDN</a>
+  <a href="revizo-philo.html" class="epreuve-link">Philo</a>
 </nav>
-<div style="position:fixed;top:48px;left:0;right:0;z-index:999;background:rgba(240,237,230,0.95);backdrop-filter:blur(16px);height:36px;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid rgba(30,28,24,.08);gap:16px;font-family:'Inter',sans-serif">
-  <span style="font-size:0.7rem;font-weight:800;background:#3d1a5c;color:#f5c842;padding:3px 10px;border-radius:12px">SDGN</span>
-  <a href="revizo-msgn.html" style="font-size:0.78rem;font-weight:700;color:#1e1c18;text-decoration:none">Questions Bac</a>
-  <a href="#" onclick="show('synthese',null);return false" style="font-size:0.78rem;font-weight:600;color:#7a6a58;text-decoration:none">Synthèse</a>
-  <a href="memo-msgn-dossier1.html" style="font-size:0.78rem;font-weight:600;color:#7a6a58;text-decoration:none">Fiches mémo</a>
-</div>
-
-<header style="margin-top:84px">
-  <h1><a href="index.html" style="text-decoration:none;color:inherit">Revizo</a></h1>
-  <span class="sub">MSGN · Terminale STMG</span>
-  <div class="header-right">
-    <span class="bac-badge">Annales 2021 – 2025</span>
-  </div>
-</header>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">MSGN</span>
+  <a href="#" class="active" onclick="switchMode('questions');return false">Questions Bac</a>
+  <a href="#" onclick="switchMode('synthese');return false">Synthèse</a>
+  <a href="#" onclick="switchMode('fiches');return false">Fiches mémo</a>
+</nav>
 
 <div class="layout">
 
 <!-- ════════════════ SIDEBAR ════════════════ -->
 <aside class="sidebar">
+
+  <!-- MODE QUESTIONS BAC -->
+  <div id="sidebar-questions">
   <div class="sidebar-intro">Questions du Bac</div>
 
   <!-- DOSSIER 1 — STRATÉGIE -->
@@ -362,6 +352,98 @@ header .sub { color: var(--jaune); font-size: 12px; font-weight: 600; }
     </div>
   </div>
 
+  </div><!-- /sidebar-questions -->
+
+  <!-- MODE SYNTHÈSE -->
+  <div id="sidebar-synthese" style="display:none">
+    <div class="sidebar-intro">Synthèse 15 lignes</div>
+    <div class="q-item" onclick="showSynthMethode(this)">
+      <span class="q-name">📐 Méthode générale</span>
+      <div class="q-meta"><span class="q-time">5 étapes · 4-6 pts</span></div>
+    </div>
+    <div class="dossier-label">Numérique (3 sujets)</div>
+    <div class="q-item" onclick="showSynthSujet(0,this)">
+      <span class="q-name">Sujet 1 · Réo (2021)</span>
+      <div class="q-meta"><span class="q-time">Numérique et performance</span></div>
+    </div>
+    <div class="q-item" onclick="showSynthSujet(2,this)">
+      <span class="q-name">Sujet 3 · Ankama (2023)</span>
+      <div class="q-meta"><span class="q-time">Numérique et identité</span></div>
+    </div>
+    <div class="q-item" onclick="showSynthSujet(6,this)">
+      <span class="q-name">Sujet 7 · Eyecontact (2024)</span>
+      <div class="q-meta"><span class="q-time">Opportunités et risques</span></div>
+    </div>
+    <div class="dossier-label">GRH / QVT (3 sujets)</div>
+    <div class="q-item" onclick="showSynthSujet(1,this)">
+      <span class="q-name">Sujet 2 · Caraïbes Fumés (2022)</span>
+      <div class="q-meta"><span class="q-time">Performance sociale</span></div>
+    </div>
+    <div class="q-item" onclick="showSynthSujet(3,this)">
+      <span class="q-name">Sujet 4 · TPS (2023)</span>
+      <div class="q-meta"><span class="q-time">Marque employeur</span></div>
+    </div>
+    <div class="q-item" onclick="showSynthSujet(5,this)">
+      <span class="q-name">Sujet 6 · Topschuss (2024)</span>
+      <div class="q-meta"><span class="q-time">QVT et performance</span></div>
+    </div>
+    <div class="dossier-label">RSE / Innovation (2 sujets)</div>
+    <div class="q-item" onclick="showSynthSujet(4,this)">
+      <span class="q-name">Sujet 5 · Beyer (2023)</span>
+      <div class="q-meta"><span class="q-time">Innovation et valeur perçue</span></div>
+    </div>
+    <div class="q-item" onclick="showSynthSujet(7,this)">
+      <span class="q-name">Sujet 8 · Renou (2024)</span>
+      <div class="q-meta"><span class="q-time">RSE créatrice de valeur</span></div>
+    </div>
+  </div><!-- /sidebar-synthese -->
+
+  <!-- MODE FICHES MÉMO -->
+  <div id="sidebar-fiches" style="display:none">
+    <div class="sidebar-intro">Fiches mémo</div>
+
+    <div class="dossier-label">Dossier 1 — Stratégie</div>
+    <div class="q-item" onclick="showFiche('d1','q1',this)">
+      <span class="q-name">🔍 Où je suis ?</span>
+      <div class="q-meta"><span class="q-time">4 notions · Analyser</span></div>
+    </div>
+    <div class="q-item" onclick="showFiche('d1','q2',this)">
+      <span class="q-name">🧭 Où veux-je aller ?</span>
+      <div class="q-meta"><span class="q-time">3 notions · Décider</span></div>
+    </div>
+    <div class="q-item" onclick="showFiche('d1','q3',this)">
+      <span class="q-name">🛤️ Comment j'y vais ?</span>
+      <div class="q-meta"><span class="q-time">3 notions · Agir</span></div>
+    </div>
+
+    <div class="dossier-label">Dossier 2 — Finances & GRH</div>
+    <div class="q-item" onclick="showFiche('d2','fin',this)">
+      <span class="q-name">💰 Performance financière</span>
+      <div class="q-meta"><span class="q-time">7 notions · Formules</span></div>
+    </div>
+    <div class="q-item" onclick="showFiche('d2','soc',this)">
+      <span class="q-name">👥 Performance sociale</span>
+      <div class="q-meta"><span class="q-time">5 notions · Théories</span></div>
+    </div>
+    <div class="q-item" onclick="showFiche('d2','ope',this)">
+      <span class="q-name">⚙️ Performance opérationnelle</span>
+      <div class="q-meta"><span class="q-time">2 notions · Flux</span></div>
+    </div>
+
+    <div class="dossier-label">Dossier 3 — RSE & Numérique</div>
+    <div class="q-item" onclick="showFiche('d3','num',this)">
+      <span class="q-name">💻 Mes outils</span>
+      <div class="q-meta"><span class="q-time">3 notions · Numérique</span></div>
+    </div>
+    <div class="q-item" onclick="showFiche('d3','rse',this)">
+      <span class="q-name">🌿 Mes valeurs</span>
+      <div class="q-meta"><span class="q-time">3 notions · RSE</span></div>
+    </div>
+    <div class="q-item" onclick="showFiche('d3','syn',this)">
+      <span class="q-name">✍️ La synthèse</span>
+      <div class="q-meta"><span class="q-time">Méthode + 8 sujets</span></div>
+    </div>
+  </div><!-- /sidebar-fiches -->
 
 </aside>
 
@@ -1111,6 +1193,116 @@ function toggleGroup(header) {
   const arrow = header.querySelector('.group-arrow');
   body.classList.toggle('open');
   arrow.classList.toggle('open');
+}
+
+// ═══════════════ SWITCH MODE (questions / synthèse / fiches) ═══════════════
+function switchMode(mode) {
+  // 1. Mettre à jour le lien actif dans la sous-nav
+  document.querySelectorAll('.nav-rubriques a').forEach(a => a.classList.remove('active'));
+  const links = document.querySelectorAll('.nav-rubriques a');
+  if (mode === 'questions') links[0].classList.add('active');
+  if (mode === 'synthese') links[1].classList.add('active');
+  if (mode === 'fiches') links[2].classList.add('active');
+
+  // 2. Afficher la bonne sidebar
+  document.getElementById('sidebar-questions').style.display = mode === 'questions' ? 'block' : 'none';
+  document.getElementById('sidebar-synthese').style.display = mode === 'synthese' ? 'block' : 'none';
+  document.getElementById('sidebar-fiches').style.display = mode === 'fiches' ? 'block' : 'none';
+
+  // 3. Reset le panneau principal
+  document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('main').innerHTML = `
+    <div class="placeholder">
+      <div class="big">${mode === 'questions' ? '📚' : mode === 'synthese' ? '✍️' : '📝'}</div>
+      <h3>${mode === 'questions' ? 'Choisis une question à gauche' : mode === 'synthese' ? 'Choisis un sujet de synthèse' : 'Choisis un dossier à gauche'}</h3>
+    </div>`;
+}
+
+// ═══════════════ SYNTHÈSE ═══════════════
+const SYNTH = [
+  {titre:"Réo 2021 — Le numérique contribue à la performance", theme:"Numérique",
+   question:"En quoi le numérique peut contribuer à l'amélioration de la performance de la fromagerie Réo ?",
+   notions:"PGI, e-commerce, CRM, performance commerciale, performance opérationnelle",
+   corrige:`<strong>Intro :</strong> Le numérique transforme les modes de production et de commercialisation. Chez Réo, il contribue à la performance sur plusieurs dimensions.<br><br><strong>1. Performance commerciale :</strong> Le site e-commerce permet à Réo de toucher une clientèle nationale au-delà de la Bretagne. Le CRM centralise les données clients pour personnaliser les offres → fidélisation.<br><br><strong>2. Performance opérationnelle :</strong> Le PGI intègre tous les processus (production, stocks, commandes) dans une base unique → réduction des erreurs, gain de temps, traçabilité des produits AOP.<br><br><strong>3. Image et notoriété :</strong> La présence en ligne et les avis clients renforcent l'e-réputation de la fromagerie artisanale → différenciation face aux industriels.<br><br><strong>Conclusion :</strong> Le numérique est un levier de performance globale pour Réo, à condition de maîtriser les risques (RGPD, cybersécurité).`},
+  {titre:"Caraïbes Fumés 2022 — Performance sociale / Numérique", theme:"QVT / Numérique",
+   question:"Montrez que la performance sociale est une préoccupation de Caraïbes Fumés. OU Les outils numériques au service de la performance commerciale.",
+   notions:"QVT, turnover, conditions de travail / CRM, e-commerce, fidélisation",
+   corrige:`<strong>Version performance sociale :</strong><br><br><strong>Intro :</strong> La performance sociale mesure la capacité de l'entreprise à satisfaire ses salariés et à maintenir un climat social positif.<br><br><strong>1. Conditions de travail :</strong> Caraïbes Fumés a modernisé ses ateliers de transformation → amélioration des conditions physiques de travail pour les opérateurs.<br><br><strong>2. Formation :</strong> Plan de formation pour accompagner la montée en gamme → développement des compétences, besoin d'estime (Maslow niveau 4).<br><br><strong>3. Résultats :</strong> Turnover en baisse, absentéisme réduit → la performance sociale renforce la performance économique (productivité, qualité).<br><br><strong>Conclusion :</strong> La performance sociale est un investissement, pas un coût.`},
+  {titre:"Ankama 2023 — Numérique et identité", theme:"Numérique",
+   question:"Montrez que les outils numériques de communication influencent l'identité des organisations.",
+   notions:"identité numérique, réseaux sociaux, communauté, culture organisationnelle",
+   corrige:`<strong>Intro :</strong> L'identité d'une organisation se construit à travers ses valeurs, sa culture et son image. Les outils numériques influencent cette identité de manière croissante.<br><br><strong>1. Construction de l'identité :</strong> Ankama utilise les réseaux sociaux pour diffuser son univers Krosmoz → la communauté de fans devient partie intégrante de l'identité du studio.<br><br><strong>2. Identité maîtrisée vs subie :</strong> Les contenus publiés (site, réseaux officiels) construisent l'identité voulue. Mais les avis, articles et discussions échappent au contrôle → identité subie.<br><br><strong>3. Impact sur la culture :</strong> La communauté en ligne crée un sentiment d'appartenance qui dépasse les murs de l'entreprise → la culture organisationnelle se prolonge dans l'espace numérique.<br><br><strong>Conclusion :</strong> Le numérique est un amplificateur d'identité — positif si maîtrisé, risqué sinon.`},
+  {titre:"TPS 2023 — Marque employeur et performance", theme:"Marque employeur",
+   question:"Montrez que la marque employeur participe à la performance globale de TPS.",
+   notions:"marque employeur, recrutement, fidélisation, performance sociale et économique",
+   corrige:`<strong>Intro :</strong> La marque employeur est l'image d'une organisation en tant qu'employeur. Elle vise à attirer et fidéliser les talents.<br><br><strong>1. Attirer les compétences rares :</strong> TPS souffre d'un manque de notoriété. En développant sa marque employeur (communication RH, présence réseaux), l'entreprise se rend visible auprès des profils qualifiés de perforateurs.<br><br><strong>2. Fidéliser les salariés :</strong> Formations, QVT, management participatif → un salarié valorisé reste plus longtemps → réduction du turnover et des coûts de recrutement.<br><br><strong>3. Performance globale :</strong> Performance sociale (turnover bas) + économique (productivité maintenue) + image (clients perçoivent stabilité et expertise).<br><br><strong>Conclusion :</strong> La marque employeur est un choix stratégique qui renforce la performance sur les 3 dimensions.`},
+  {titre:"Beyer 2023 — Innovation et valeur perçue", theme:"Innovation",
+   question:"Montrez qu'une innovation peut contribuer à améliorer la valeur perçue par le client.",
+   notions:"innovation produit, valeur perçue, différenciation, positionnement",
+   corrige:`<strong>Intro :</strong> La valeur perçue est la différence entre les bénéfices attendus par le client et les sacrifices consentis (prix, effort). L'innovation peut la renforcer.<br><br><strong>1. Innovation produit :</strong> Beyer lance les "Fruits à tartiner", un produit innovant qui se distingue de la confiture classique → nouveau segment, curiosité du consommateur.<br><br><strong>2. Valeur perçue renforcée :</strong> L'innovation crée une perception de qualité supérieure : ingrédients artisanaux, fabrication locale, packaging premium → le client accepte un prix plus élevé.<br><br><strong>3. Différenciation durable :</strong> L'innovation protège des concurrents low-cost car elle crée un positionnement unique difficile à copier → avantage concurrentiel.<br><br><strong>Conclusion :</strong> L'innovation est un levier de valeur perçue qui renforce le positionnement et la compétitivité.`},
+  {titre:"Topschuss 2024 — QVT et performance globale", theme:"QVT",
+   question:"Montrez que la QVT peut contribuer à la performance globale de Topschuss.",
+   notions:"QVT/QVCT, performance sociale, marque employeur, engagement, productivité",
+   corrige:`<strong>Intro :</strong> La QVT désigne les conditions dans lesquelles les salariés exercent leur activité. Elle peut constituer un levier de performance.<br><br><strong>1. Performance sociale :</strong> Topschuss a investi dans un siège pensé pour le bien-être (espaces ouverts, crèche). Ces aménagements réduisent l'absentéisme et le turnover.<br><br><strong>2. Performance économique :</strong> La QVT renforce la marque employeur : Topschuss attire des experts outdoor dans un secteur concurrentiel. La stabilité réduit les coûts de recrutement.<br><br><strong>3. Image :</strong> En communiquant sur sa QVT, Topschuss renforce son image d'employeur responsable, ce qui rejaillit sur la marque commerciale.<br><br><strong>Conclusion :</strong> Performance sociale et économique se renforcent mutuellement.`},
+  {titre:"Eyecontact 2024 — Numérique : opportunités et risques", theme:"Numérique",
+   question:"Montrez que les technologies du numérique sont sources d'opportunités mais aussi de risques.",
+   notions:"numérique, opportunités (productivité, innovation), risques (emploi, données)",
+   corrige:`<strong>Intro :</strong> Les technologies numériques transforment les organisations. Elles sont sources d'opportunités mais présentent aussi des risques.<br><br><strong>1. Opportunités pour l'organisation :</strong> Eyecontact utilise la réalité augmentée et l'IA pour un essayage virtuel de lunettes → avantage concurrentiel majeur (120M d'essayages/an), nouveaux marchés internationaux.<br><br><strong>2. Opportunités pour les salariés :</strong> Le numérique crée de nouveaux métiers (développeurs, data analysts). Chez Eyecontact, 70% des salariés travaillent en R&D → montée en compétences.<br><br><strong>3. Risques :</strong> Dépendance technologique, cybersécurité (RGPD), risques pour l'emploi (automatisation), charge mentale liée au tout-numérique.<br><br><strong>Conclusion :</strong> Le numérique est un levier de croissance à condition d'en maîtriser les risques.`},
+  {titre:"Renou 2024 — RSE créatrice de valeur", theme:"RSE",
+   question:"Montrez que la démarche RSE peut être créatrice de valeur pour Renou Textiles.",
+   notions:"RSE, 3 piliers, performance globale, avantage concurrentiel",
+   corrige:`<strong>Intro :</strong> La RSE est l'engagement volontaire d'une entreprise à intégrer des préoccupations sociales et environnementales au-delà de ses obligations légales.<br><br><strong>1. Pilier économique :</strong> Renou utilise des matériaux recyclés → réduit les coûts de matières premières et attire une clientèle sensible au made in France → hausse du CA.<br><br><strong>2. Pilier social :</strong> L'entreprise maintient son site en Haute-Vienne, créant de l'emploi local. La GPEC anticipe les besoins en compétences → performance sociale.<br><br><strong>3. Pilier environnemental :</strong> Le recyclage de coton réduit l'empreinte écologique. Les labels EPV et OFG renforcent la crédibilité de l'engagement.<br><br><strong>Conclusion :</strong> La RSE de Renou n'est pas un coût mais un avantage concurrentiel qui crée de la valeur sur les 3 dimensions.`}
+];
+
+function showSynthMethode(el) {
+  document.querySelectorAll('#sidebar-synthese .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const q = Q.synthese;
+  document.getElementById('main').innerHTML = `
+    <div class="q-header">
+      <div class="type-tag">SYNTHÈSE · 4-6 PTS · ~20 MIN</div>
+      <h2>Méthode de la synthèse 15 lignes</h2>
+      <div class="freq">${q.freq}</div>
+    </div>
+    <div class="section">
+      <div class="sec-title bleu">⚙️ Méthode en 5 étapes</div>
+      <div class="steps">
+        ${q.methode.map(s => `<div class="step"><div class="step-n">${s.n}</div><div class="step-body"><strong>${s.t}</strong><br><em>${s.d}</em></div></div>`).join('')}
+      </div>
+    </div>
+    <div class="section">
+      <div class="sec-title rouge">⚠️ Erreur classique</div>
+      <div class="alerte"><span class="alerte-i">⚠️</span><span>${q.alerte}</span></div>
+    </div>`;
+}
+
+function showSynthSujet(idx, el) {
+  document.querySelectorAll('#sidebar-synthese .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const s = SYNTH[idx];
+  document.getElementById('main').innerHTML = `
+    <div class="q-header">
+      <div class="type-tag">SYNTHÈSE · ${s.theme}</div>
+      <h2>${s.titre}</h2>
+    </div>
+    <div class="section">
+      <div class="sec-title bleu">📝 Question posée</div>
+      <div class="annale-box"><em>${s.question}</em></div>
+      <div style="margin-top:6px;font-size:12px;color:var(--gris)"><strong>Notions clés :</strong> ${s.notions}</div>
+    </div>
+    <div class="section">
+      <div class="sec-title vert">✅ Corrigé type</div>
+      <div style="font-size:13.5px;line-height:1.7">${s.corrige}</div>
+    </div>`;
+}
+
+// ═══════════════ FICHES MÉMO ═══════════════
+function showFiche(dossier, section, el) {
+  document.querySelectorAll('#sidebar-fiches .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const urls = {d1:'memo-msgn-dossier1.html', d2:'memo-msgn-dossier2.html', d3:'memo-msgn-dossier3.html'};
+  const url = urls[dossier] + (section ? '#' + section : '');
+  document.getElementById('main').innerHTML = `<iframe src="${url}" style="width:100%;height:calc(100vh - 84px);border:none;border-radius:0"></iframe>`;
 }
 
 // Pas d'auto-chargement : le panneau reste vide jusqu'au clic
