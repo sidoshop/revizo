@@ -470,6 +470,9 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
           <span class="q-name">Comment j'y vais ?</span>
           <div class="q-meta"><span class="q-time">3 notions · Agir</span></div>
         </div>
+        <div class="q-item" onclick="showChecklist('d1',this)" style="border-top:1px solid var(--bordure);margin-top:4px">
+          <span class="q-name" style="color:var(--vert)">→ Notions maîtrisées ?</span>
+        </div>
       </div>
     </div>
 
@@ -491,6 +494,9 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
           <span class="q-name">Performance opérationnelle</span>
           <div class="q-meta"><span class="q-time">2 notions · Flux</span></div>
         </div>
+        <div class="q-item" onclick="showChecklist('d2',this)" style="border-top:1px solid var(--bordure);margin-top:4px">
+          <span class="q-name" style="color:var(--vert)">→ Notions maîtrisées ?</span>
+        </div>
       </div>
     </div>
 
@@ -507,6 +513,9 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
         <div class="q-item" onclick="showFiche('d3','rse',this)">
           <span class="q-name">Mes valeurs</span>
           <div class="q-meta"><span class="q-time">3 notions · RSE</span></div>
+        </div>
+        <div class="q-item" onclick="showChecklist('d3',this)" style="border-top:1px solid var(--bordure);margin-top:4px">
+          <span class="q-name" style="color:var(--vert)">→ Notions maîtrisées ?</span>
         </div>
       </div>
     </div>
@@ -1507,6 +1516,60 @@ function showFiche(dossier, section, el) {
     if (n) html += buildFicheCard(n);
   });
   document.getElementById('main').innerHTML = html;
+}
+
+// ═══════════════ CHECKLISTS RÉASSURANCE ═══════════════
+const CHECKLISTS = {
+  d1: [
+    "Distinguer <strong>PP internes / externes</strong> et nommer leurs attentes contradictoires.",
+    "Identifier une <strong>compétence distinctive</strong> avec les 3 critères (rare, imitable, valeur).",
+    "Réaliser un <strong>PESTEL</strong> à 6 dimensions et conclure sur les opportunités/menaces.",
+    "Nommer la <strong>stratégie globale</strong> (spé/diversif) en comptant les DAS.",
+    "Nommer la <strong>stratégie de domaine</strong> (coûts / diff / focalisation) avec preuves.",
+    "Dérouler <strong>SCP + mix 4P</strong> à partir d'un cas concret."
+  ],
+  d2: [
+    "Calculer <strong>VA</strong> et <strong>Rex</strong> puis interpréter l'évolution N / N-1.",
+    "Calculer <strong>FRNG, BFR, TN</strong> et vérifier que TN = FRNG − BFR.",
+    "Calculer un <strong>coût de revient</strong> et un <strong>taux de marge</strong> avec les bonnes formules.",
+    "Identifier le <strong>style de direction</strong> (Likert) avec 2-3 preuves documentaires.",
+    "Relier une pratique RH à <strong>Maslow (niveau)</strong> ou <strong>Herzberg (facteur)</strong>.",
+    "Distinguer <strong>GPEC</strong> (anticipation) et <strong>marque employeur</strong> (attractivité).",
+    "Identifier <strong>flux poussés vs tendus</strong> à partir des docs et justifier la pertinence.",
+    "Expliquer en quoi les 3 leviers convergent vers la <strong>performance globale</strong>."
+  ],
+  d3: [
+    "Expliquer les rôles du <strong>PGI</strong>, <strong>CRM</strong> et <strong>RGPD</strong> avec leur impact sur la performance.",
+    "Relier chaque outil de communication à un <strong>objectif</strong> (notoriété, fidélisation, conversion).",
+    "Définir la RSE comme un engagement <strong>volontaire</strong> et la structurer en <strong>3 piliers</strong>.",
+    "Distinguer <strong>RSE</strong> (volontaire) et <strong>RGPD</strong> (obligatoire).",
+    "Rédiger une <strong>synthèse structurée en 3 parties</strong> avec intro + preuves documentaires.",
+    "Adapter le plan de synthèse au <strong>sujet réel</strong> (pas toujours les 3 piliers RSE)."
+  ]
+};
+
+function showChecklist(dossier, el) {
+  document.querySelectorAll('#sidebar-fiches .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const items = CHECKLISTS[dossier];
+  const titres = {d1:'Dossier 1 — Stratégie', d2:'Dossier 2 — Finances & GRH', d3:'Dossier 3 — RSE & Numérique'};
+  document.getElementById('main').innerHTML = `
+    <div style="padding:8px 0">
+      <div class="fiche-sec-head">
+        <div class="fiche-sec-icon">✨</div>
+        <div>
+          <div class="fiche-sec-label" style="color:var(--vert)">Auto-évaluation</div>
+          <div class="fiche-sec-title">Tu maîtrises ${titres[dossier]} si tu sais…</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+        ${items.map((t,i) => `
+          <div style="background:#f8f5ef;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px">
+            <div style="background:var(--jaune);color:var(--texte);width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0;font-family:'Nunito',sans-serif">${i+1}</div>
+            <div style="font-size:12.5px;font-weight:600;line-height:1.4">${t}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
 }
 
 // Pas d'auto-chargement : le panneau reste vide jusqu'au clic
