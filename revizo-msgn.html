@@ -450,7 +450,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 
   <!-- MODE FICHES MÉMO -->
   <div id="sidebar-fiches" style="display:none">
-    <div class="sidebar-intro">Fiches mémo</div>
+    <div class="sidebar-intro" style="cursor:pointer" onclick="switchMode('fiches')">Fiches mémo</div>
 
     <div class="group">
       <div class="group-header" onclick="toggleGroup(this)">
@@ -1295,6 +1295,10 @@ function switchMode(mode) {
   document.getElementById('sidebar-synthese').style.display = mode === 'synthese' ? 'block' : 'none';
   document.getElementById('sidebar-fiches').style.display = mode === 'fiches' ? 'block' : 'none';
 
+  // 2b. Replier tous les accordéons au changement de mode
+  document.querySelectorAll('.group-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.group-arrow').forEach(a => a.classList.remove('open'));
+
   // 3. Reset le panneau principal
   document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
   if (mode === 'fiches') {
@@ -1309,19 +1313,19 @@ function switchMode(mode) {
             <div onclick="showFiche('d1','q1',document.querySelector('#sidebar-fiches .q-item'))" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
               <div style="font-size:18px;margin-bottom:3px">🔍</div>
               <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où je suis ?</div>
-              <div style="font-size:10px;color:#7a6a58">Analyser</div>
+              <div style="font-size:10px;color:#7a6a58">4 notions · Analyser</div>
             </div>
             <div style="align-self:center;color:#a09880;font-size:16px">→</div>
             <div onclick="showFiche('d1','q2',document.querySelectorAll('#sidebar-fiches .q-item')[1])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
               <div style="font-size:18px;margin-bottom:3px">🧭</div>
               <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où veux-je aller ?</div>
-              <div style="font-size:10px;color:#7a6a58">Décider</div>
+              <div style="font-size:10px;color:#7a6a58">3 notions · Décider</div>
             </div>
             <div style="align-self:center;color:#a09880;font-size:16px">→</div>
             <div onclick="showFiche('d1','q3',document.querySelectorAll('#sidebar-fiches .q-item')[2])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer">
               <div style="font-size:18px;margin-bottom:3px">🛤️</div>
               <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Comment j'y vais ?</div>
-              <div style="font-size:10px;color:#7a6a58">Agir</div>
+              <div style="font-size:10px;color:#7a6a58">3 notions · Agir</div>
             </div>
           </div>
           <div style="font-size:11px;color:#7a6a58">10 notions · Parties prenantes · Compétences · Stratégie · Mercatique</div>
@@ -1446,7 +1450,13 @@ function showSynthSujet(idx, el) {
   document.querySelectorAll('#sidebar-synthese .q-item').forEach(i => i.classList.remove('active'));
   if (el) el.classList.add('active');
   const s = SYNTH[idx];
-  const pills = s.notions.map(n => `<span class="mot">${n}</span>`).join('');
+  // Mapping notions texte → ID dans N pour rendre cliquables
+  const notionMap = {'PGI':'pgi','CRM':'pgi','RGPD':'pgi','e-commerce':'pgi','performance commerciale':'performance','performance opérationnelle':'performance','QVT':'gpec','QVCT':'gpec','turnover':'gpec','conditions de travail':'gpec','fidélisation':'gpec','identité numérique':'identite_num','réseaux sociaux':'communication_n','communauté':'communication_n','culture organisationnelle':'culture','marque employeur':'gpec','recrutement':'gpec','performance sociale':'performance','performance économique':'performance','innovation produit':'modele','valeur perçue':'modele','différenciation':'strategies','positionnement':'mercatique_n','engagement':'motivation','productivité':'production_n','numérique':'pgi','opportunités':'pgi','innovation':'modele','risques':'identite_num','emploi':'gpec','données':'pgi','RSE':'rse','3 piliers':'rse','performance globale':'performance','avantage concurrentiel':'competences'};
+  const pills = s.notions.map(n => {
+    const nid = notionMap[n];
+    if (nid && N[nid]) return `<button class="pill" onclick="openN('${nid}')" style="cursor:pointer"><span class="pill-arrow">→</span>${n}</button>`;
+    return `<span class="mot">${n}</span>`;
+  }).join('');
   document.getElementById('main').innerHTML = `
     <div class="q-header">
       <div class="type-tag">SYNTHÈSE · ${s.theme}</div>
