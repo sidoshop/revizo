@@ -3,10 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Revizo — MSGN Terminale STMG (Expert Mode)</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Revizo — MSGN Terminale STMG</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
 <style>
-/* --- DESIGN SYSTEM (Intégré pour la cohérence) --- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --fond: #f0ede6; --blanc: #fffdf8; --texte: #1e1c18;
@@ -19,41 +21,59 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 /* LAYOUT */
 .layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: calc(100vh - 84px); margin-top: 84px; }
 
-/* NAV */
-.nav-epreuve { position: fixed; top: 0; left: 0; right: 0; height: 48px; background: white; border-bottom: 1px solid var(--bordure); display: flex; align-items: center; padding: 0 20px; z-index: 100; gap: 20px; }
-.logo { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 20px; text-decoration: none; color: var(--texte); }
-.logo span { color: var(--accent); }
-.epreuve-link { text-decoration: none; color: var(--gris); font-size: 14px; font-weight: 600; }
-.epreuve-link.active { color: var(--accent); }
-
-.nav-rubriques { position: fixed; top: 48px; left: 0; right: 0; height: 36px; background: #fffdf8; border-bottom: 1px solid var(--bordure); display: flex; align-items: center; padding: 0 20px; z-index: 99; gap: 15px; }
-.matiere-pill { background: var(--accent); color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; }
-.nav-rubriques a { text-decoration: none; color: var(--gris); font-size: 12px; font-weight: 700; }
-.nav-rubriques a.active { color: var(--texte); border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
-
 /* SIDEBAR */
 .sidebar { background: white; border-right: 1px solid var(--bordure); position: sticky; top: 84px; height: calc(100vh - 84px); overflow-y: auto; }
 .sidebar-intro { padding: 14px 16px 8px; font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; }
 
+/* ACCORDION GROUPE */
 .group { border-bottom: 1px solid var(--bordure); }
 .group-header { padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; user-select: none; }
 .group-header:hover { background: var(--fond); }
+.group-stars { font-size: 12px; font-weight: 800; }
+.stars-5 { color: var(--accent); }
+.stars-4 { color: #c97a30; }
 .group-label { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; flex: 1; }
 .group-arrow { font-size: 10px; color: var(--gris); transition: transform .2s; }
 .group-arrow.open { transform: rotate(90deg); }
 .group-body { display: none; }
 .group-body.open { display: block; }
 
+/* DOSSIER */
 .dossier-label { padding: 6px 16px; font-size: 10px; font-weight: 700; color: #7a5800; letter-spacing: .07em; text-transform: uppercase; background: #fef8e2; border-top: 1px solid #f0dfa0; margin-top: 2px; }
 
+/* QUESTION ITEM */
 .q-item { padding: 10px 16px 10px 20px; cursor: pointer; border-left: 3px solid transparent; display: flex; flex-direction: column; gap: 3px; transition: all .15s; }
 .q-item:hover { background: var(--fond); }
 .q-item.active { background: #fdf5f7; border-left-color: var(--accent); }
 .q-item .q-name { font-size: 13px; font-weight: 600; line-height: 1.3; }
-.q-meta { display: flex; gap: 8px; align-items: center; font-size: 11px; color: var(--gris); }
+.q-item .q-meta { display: flex; gap: 8px; align-items: center; }
+.q-pts { font-size: 11px; font-weight: 700; color: var(--vert); background: #e8f4ee; padding: 2px 7px; border-radius: 10px; border: 1px solid #b8dfc9; }
+.q-time { font-size: 11px; color: var(--gris); }
+
+/* NOTIONS BONUS — groupe de notions rares */
+.group-bonus .group-header { background: #fdf9e8; }
+.group-bonus .group-header:hover { background: #f9f1d0; }
+.group-bonus .group-body { background: #fffdf2; }
+.q-item.q-bonus { border-left-color: #f5c842; }
+.q-item.q-bonus:hover { background: #fdf9e8; }
+.q-item.q-bonus .q-name { color: #7a5d00; }
 
 /* MAIN */
-.main { padding: 24px 28px; max-width: 820px; margin: 0 auto; }
+.main { padding: 24px 28px; max-width: 780px; }
+.q-header { margin-bottom: 20px; }
+.q-header .type-tag { font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 5px; }
+.q-header h2 { font-family: 'Nunito', sans-serif; font-size: 21px; font-weight: 800; margin-bottom: 6px; }
+.q-header .freq { font-size: 13px; color: var(--gris); }
+.q-header .annales-list { margin-top: 6px; font-size: 12px; color: var(--gris); font-style: italic; }
+
+/* BARÈME BANDEAU */
+.bareme-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.bareme-item { display: flex; align-items: center; gap: 6px; background: white; border: 1px solid var(--bordure); border-radius: 8px; padding: 8px 14px; font-size: 13px; }
+.bareme-icon { font-size: 16px; }
+.bareme-val { font-weight: 700; color: var(--texte); }
+.bareme-lab { color: var(--gris); font-size: 12px; }
+
+/* SECTION */
 .section { background: var(--blanc); border: 1px solid var(--bordure); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; }
 .sec-title { font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 7px; }
 .sec-title.rouge { color: var(--accent); }
@@ -63,268 +83,1476 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 
 /* NOTIONS PILLS */
 .pills { display: flex; flex-wrap: wrap; gap: 8px; }
-.pill { background: #fdf5f7; border: 1.5px solid #e8b4bf; color: var(--accent); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all .15s; }
-.pill:hover { background: var(--accent); color: white; }
+.pill { background: #fdf5f7; border: 1.5px solid #e8b4bf; color: var(--accent); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 5px; }
+.pill:hover { background: var(--accent); color: white; border-color: var(--accent); }
+.pill-arrow { font-size: 11px; opacity: .7; }
 
 /* STEPS */
 .steps { display: flex; flex-direction: column; gap: 10px; }
 .step { display: flex; gap: 11px; align-items: flex-start; }
-.step-n { width: 23px; height: 23px; min-width: 23px; background: var(--accent); color: white; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.step-n { width: 23px; height: 23px; min-width: 23px; background: var(--accent); color: white; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
 .step-body { font-size: 14px; line-height: 1.5; }
+.step-body strong { font-weight: 700; }
+.step-body em { color: var(--gris); font-style: normal; font-size: 13px; }
+.mots { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.mot { background: #e8f4ee; color: var(--vert); font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; border: 1px solid #b8dfc9; }
 
-/* TIPS PROF (Nouvelle section) */
-.prof-tip { background: #eef5ff; border: 1px solid #b8d0f0; border-radius: 8px; padding: 14px; margin-top: 14px; display: flex; gap: 12px; }
-.prof-icon { font-size: 24px; }
-.prof-content { font-size: 13.5px; line-height: 1.6; }
-.prof-content strong { color: var(--bleu); }
+/* ANNALE */
+.annale-box { background: #f7f4ee; border-left: 4px solid var(--jaune); padding: 13px 16px; border-radius: 0 8px 8px 0; font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
+.annale-source { font-size: 11px; font-weight: 700; color: var(--gris); display: block; margin-bottom: 5px; font-style: normal; }
+.btn-corr { background: var(--texte); color: white; border: none; padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity .15s; }
+.btn-corr:hover { opacity: .82; }
+.corr-block { display: none; background: #f0f7f3; border: 1px solid #b8dfc9; border-radius: 8px; padding: 16px; margin-top: 12px; font-size: 14px; line-height: 1.7; }
+.corr-block.show { display: block; }
+.corr-title { font-size: 11px; font-weight: 700; color: var(--vert); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+.alerte { display: flex; gap: 9px; background: #fff8e6; border: 1px solid #f0d070; border-radius: 8px; padding: 11px 14px; font-size: 13px; line-height: 1.5; margin-top: 12px; }
+.alerte-i { flex-shrink: 0; }
+.astuce { display: flex; gap: 9px; background: #eef5ff; border: 1px solid #b8d0f0; border-radius: 8px; padding: 11px 14px; font-size: 13px; line-height: 1.5; margin-top: 8px; }
 
-/* ANNALES & MODAL */
-.annale-box { background: #f7f4ee; border-left: 4px solid var(--jaune); padding: 13px 16px; border-radius: 0 8px 8px 0; font-size: 14px; margin-bottom: 12px; }
-.corr-block { background: #f0f7f3; border: 1px solid #b8dfc9; border-radius: 8px; padding: 16px; font-size: 14px; }
-.overlay { display: none; position: fixed; inset: 0; background: rgba(30,28,24,.7); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+/* MODAL */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(30,28,24,.52); z-index: 200; align-items: flex-end; justify-content: center; }
 .overlay.show { display: flex; }
-.modal { background: white; width: 100%; max-width: 600px; border-radius: 12px; padding: 24px; position: relative; max-height: 90vh; overflow-y: auto; }
-.modal-close { position: absolute; top: 15px; right: 15px; border: none; background: none; font-size: 20px; cursor: pointer; }
-.fiche-body { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.fb-label { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--gris); margin-bottom: 4px; }
+.modal { background: white; width: 100%; max-width: 580px; max-height: 82vh; border-radius: 16px 16px 0 0; overflow-y: auto; padding: 22px 22px 30px; position: relative; }
+.modal-handle { width: 38px; height: 4px; background: var(--bordure); border-radius: 2px; margin: 0 auto 18px; }
+.modal-close { position: absolute; top: 18px; right: 18px; background: var(--fond); border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 15px; color: var(--gris); display: flex; align-items: center; justify-content: center; }
+.modal-tag { font-size: 11px; font-weight: 700; color: var(--gris); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
+.modal h3 { font-family: 'Nunito', sans-serif; font-size: 19px; font-weight: 800; margin-bottom: 5px; }
+.freq-pill { display: inline-block; background: #fdf5f7; color: var(--accent); font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 12px; border: 1px solid #e8b4bf; margin-bottom: 14px; }
+.modal-def { font-size: 14px; line-height: 1.7; margin-bottom: 14px; }
+.modal-form { background: #f7f4ee; border-left: 4px solid var(--accent); padding: 11px 14px; border-radius: 0 8px 8px 0; font-family: monospace; font-size: 13px; line-height: 1.8; margin-bottom: 14px; }
+.modal-interp { background: var(--fond); border-radius: 8px; padding: 11px 13px; font-size: 13px; line-height: 1.6; color: var(--gris); margin-bottom: 10px; }
+.modal-interp strong { color: var(--texte); font-weight: 700; display: block; margin-bottom: 4px; }
+.modal-conf { background: #fff8e6; border: 1px solid #f0d070; border-radius: 8px; padding: 11px 13px; font-size: 13px; line-height: 1.5; margin-top: 10px; }
+
+/* PLACEHOLDER */
+.placeholder { text-align: center; padding: 80px 20px; color: var(--gris); }
+.placeholder .big { font-size: 48px; margin-bottom: 12px; }
+.placeholder h3 { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; color: var(--texte); }
+
+/* FICHE MÉMO */
+.fiche { background: #fff; border: 1.5px solid var(--bordure); border-radius: 12px; margin-bottom: 14px; overflow: hidden; }
+.fiche-header { padding: 12px 16px 10px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f0ede6; }
+.fiche-icon { font-size: 20px; flex-shrink: 0; }
+.fiche-title { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; flex: 1; }
+.fiche-freq { font-size: 10px; font-weight: 700; color: var(--gris); white-space: nowrap; }
+.fiche-body { padding: 14px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+.fb { font-size: 12.5px; line-height: 1.5; }
+.fb-label { font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+.fb-def .fb-label { color: var(--accent); }
+.fb-retenir .fb-label { color: var(--bleu); }
+.fb-exemple .fb-label { color: #946e00; }
+.fb-bac .fb-label { color: #1a7a3c; }
+.fb ul { padding-left: 16px; margin: 0; }
+.fb li { margin-bottom: 2px; }
+.fb strong { font-weight: 800; color: var(--texte); }
+.fb-bac-tag { display: inline-block; background: #eaf8ef; border: 1px solid #bce8cd; border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 700; color: #1a5c35; margin-top: 2px; }
+.fb-piege { grid-column: 1 / -1; background: #fdf5f7; border: 1px solid #e8b4bf; border-radius: 7px; padding: 6px 10px; font-size: 11.5px; line-height: 1.45; color: #7a2038; }
+.fb-piege strong { color: var(--accent); font-weight: 800; }
+.tag-bonus { background: #fde8a0; color: #7a5800; font-size: 9px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; }
+.fiche-arrow { font-size: 10px; color: var(--gris); transition: transform .2s; flex-shrink: 0; }
+.fiche-open .fiche-arrow { transform: rotate(90deg); }
+.fiche-body-wrap { display: none; }
+.fiche-open .fiche-body-wrap { display: block; }
+.fiche-sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding: 0 4px; }
+.fiche-sec-icon { font-size: 24px; }
+.fiche-sec-label { font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--gris); }
+.fiche-sec-title { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; line-height: 1.2; }
 
 @media (max-width: 680px) {
   .layout { grid-template-columns: 1fr; }
-  .sidebar { position: static; height: auto; }
+  .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--bordure); }
+  .main { padding: 16px; }
+  .modal { max-height: 90vh; }
+  .bareme-bar { gap: 8px; }
   .fiche-body { grid-template-columns: 1fr; }
 }
 </style>
 </head>
-<body>
+<body data-subject="sgdn">
 
 <nav class="nav-epreuve">
-  <a href="#" class="logo">Révi<span>zo</span></a>
-  <a href="#" class="epreuve-link active">MSGN Expert</a>
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+  <a href="revizo-msgn.html" class="epreuve-link active">SGDN</a>
+  <a href="revizo-philo.html" class="epreuve-link">Philo</a>
 </nav>
 <nav class="nav-rubriques">
-  <span class="matiere-pill">TERMINALE STMG</span>
-  <a href="#" class="active" onclick="switchMode('questions')">Questions du Bac</a>
-  <a href="#" onclick="switchMode('fiches')">Fiches Mémo</a>
+  <span class="matiere-pill">MSGN</span>
+  <a href="#" class="active" onclick="switchMode('fiches');return false">Fiches mémo</a>
+  <a href="#" onclick="switchMode('questions');return false">Questions du Bac</a>
+  <a href="#" onclick="switchMode('synthese');return false">Questions de synthèse</a>
 </nav>
 
 <div class="layout">
+
+<!-- ════════════════ SIDEBAR ════════════════ -->
 <aside class="sidebar">
+
+  <!-- MODE QUESTIONS BAC -->
   <div id="sidebar-questions">
-    <div class="sidebar-intro">Dossier 1 : Stratégie</div>
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-label">Analyser & Décider</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="show('competences', this)">
-          <span class="q-name">Ressources & Compétences</span>
-          <div class="q-meta">★★★★★</div>
-        </div>
-        <div class="q-item" onclick="show('decision', this)">
-          <span class="q-name">Le processus de décision</span>
-          <div class="q-meta">★★★☆☆</div>
-        </div>
-      </div>
-    </div>
+  <div class="sidebar-intro">Questions du Bac</div>
 
-    <div class="sidebar-intro">Dossier 2 : Finances & RH</div>
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-label">Calculer & Gérer</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="show('va', this)">
-          <span class="q-name">VA & Partage de la richesse</span>
-          <div class="q-meta">★★★★★</div>
-        </div>
-        <div class="q-item" onclick="show('frng', this)">
-          <span class="q-name">Équilibre financier (FRNG/BFR)</span>
-          <div class="q-meta">★★★★★</div>
-        </div>
-      </div>
+  <!-- DOSSIER 1 — STRATÉGIE -->
+  <div class="group">
+    <div class="group-header" onclick="toggleGroup(this)">
+      <span class="group-label">Dossier 1 — Stratégie</span>
+      <span class="group-arrow">▶</span>
     </div>
-
-    <div class="sidebar-intro">Dossier 3 : Numérique</div>
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-label">Le SI & La Performance</span>
-        <span class="group-arrow">▶</span>
+    <div class="group-body">
+      <div class="dossier-label">Où je suis ? — Analyser</div>
+      <div class="q-item" onclick="show('parties', this)">
+        <span class="q-name">Identifier les parties prenantes</span>
+        <div class="q-meta"><span class="q-pts">~1-2 pts</span><span class="q-time">≈ 7 min</span><span class="q-time">★★★★☆</span></div>
       </div>
-      <div class="group-body">
-        <div class="q-item" onclick="show('si_fonctions', this)">
-          <span class="q-name">Les 4 fonctions du SI</span>
-          <div class="q-meta">★★★★☆</div>
-        </div>
+      <div class="q-item" onclick="show('competences', this)">
+        <span class="q-name">Identifier les compétences distinctives</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('modele', this)">
+        <span class="q-name">Présenter le modèle économique</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="q-item" onclick="show('diagnostic', this)">
+        <span class="q-name">Réaliser le diagnostic interne / externe</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★☆☆</span></div>
+      </div>
+      <div class="dossier-label">Où veux-je aller ? — Décider</div>
+      <div class="q-item" onclick="show('strategie', this)">
+        <span class="q-name">Caractériser la stratégie</span>
+        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="dossier-label">Comment j'y vais ? — Agir</div>
+      <div class="q-item" onclick="show('mercatique', this)">
+        <span class="q-name">Identifier l'approche mercatique (SCP + 4P)</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
       </div>
     </div>
   </div>
+
+  <!-- DOSSIER 2 — FINANCES -->
+  <div class="group">
+    <div class="group-header" onclick="toggleGroup(this)">
+      <span class="group-label">Dossier 2 — Finances & GRH</span>
+      <span class="group-arrow">▶</span>
+    </div>
+    <div class="group-body">
+      <div class="dossier-label">Performance financière</div>
+      <div class="q-item" onclick="show('va', this)">
+        <span class="q-name">Calculer VA + Résultat d'exploitation</span>
+        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('frng', this)">
+        <span class="q-name">Calculer FRNG / BFR / TN</span>
+        <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('couts', this)">
+        <span class="q-name">Calculer coût de revient + taux de marge</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="q-item" onclick="show('financement', this)">
+        <span class="q-name">Justifier les choix de financement</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="dossier-label">Performance sociale</div>
+      <div class="q-item" onclick="show('direction', this)">
+        <span class="q-name">Identifier le style de direction</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('culture', this)">
+        <span class="q-name">Analyser la culture organisationnelle</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('grh', this)">
+        <span class="q-name">Théories de la motivation (Maslow / Herzberg / McGregor)</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="q-item" onclick="show('marque_employeur', this)">
+        <span class="q-name">Justifier la marque employeur / QVT</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="q-item" onclick="show('gpecq', this)">
+        <span class="q-name">Montrer l'importance de la GPEC</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★☆☆</span></div>
+      </div>
+      <div class="dossier-label">Performance opérationnelle</div>
+      <div class="q-item" onclick="show('production', this)">
+        <span class="q-name">Identifier le mode de production / flux</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOSSIER 3 — RSE & SI -->
+  <div class="group">
+    <div class="group-header" onclick="toggleGroup(this)">
+      <span class="group-label">Dossier 3 — RSE & Numérique</span>
+      <span class="group-arrow">▶</span>
+    </div>
+    <div class="group-body">
+      <div class="dossier-label">Mes outils — Numérique</div>
+      <div class="q-item" onclick="show('numerique', this)">
+        <span class="q-name">Identifier l'intérêt du PGI / CRM / RGPD</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="q-item" onclick="show('communication', this)">
+        <span class="q-name">Analyser la communication / relation client</span>
+        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★☆☆</span></div>
+      </div>
+      <div class="dossier-label">Mes valeurs — RSE</div>
+      <div class="q-item" onclick="show('rse', this)">
+        <span class="q-name">Montrer que X intègre la RSE</span>
+        <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIONS BONUS (rares) -->
+  <div class="group group-bonus">
+    <div class="group-header" onclick="toggleGroup(this)">
+      <span class="group-label">💡 Notions bonus <span style="font-weight:400;font-size:11px;color:#7a6a58">(rares)</span></span>
+      <span class="group-arrow">▶</span>
+    </div>
+    <div class="group-body">
+      <div class="dossier-label">Dossier 1 — Stratégie</div>
+      <div class="q-item q-bonus" onclick="openN('integration')">
+        <span class="q-name">Intégration verticale</span>
+        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
+      </div>
+      <div class="q-item q-bonus" onclick="openN('croissance')">
+        <span class="q-name">Modes de croissance</span>
+        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
+      </div>
+      <div class="q-item q-bonus" onclick="openN('ess')">
+        <span class="q-name">ESS / SCOP</span>
+        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
+      </div>
+      <div class="dossier-label">Dossier 2 — Finances & GRH</div>
+      <div class="q-item q-bonus" onclick="openN('seuil')">
+        <span class="q-name">Seuil de rentabilité</span>
+        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
+      </div>
+      <div class="q-item q-bonus" onclick="openN('caf')">
+        <span class="q-name">CAF — Capacité d'autofinancement</span>
+        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
+      </div>
+      <div class="q-item q-bonus" onclick="openN('mintzberg')">
+        <span class="q-name">Coordination (Mintzberg)</span>
+        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
+      </div>
+      <div class="dossier-label">Dossier 3 — RSE & Numérique</div>
+      <div class="q-item q-bonus" onclick="openN('identite_num')">
+        <span class="q-name">Identité numérique</span>
+        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
+      </div>
+      <div class="q-item q-bonus" onclick="openN('ethique')">
+        <span class="q-name">Éthique des affaires</span>
+        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /sidebar-questions -->
+
+  <!-- MODE SYNTHÈSE -->
+  <div id="sidebar-synthese" style="display:none">
+    <div class="sidebar-intro">Synthèse 15 lignes</div>
+
+    <div class="q-item" onclick="showSynthMethode(this)" style="border-bottom:1px solid var(--bordure)">
+      <span class="q-name">📐 Méthode générale</span>
+      <div class="q-meta"><span class="q-time">5 étapes · 4-6 pts</span></div>
+    </div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-label">Dossier 2 — GRH / QVT (3 sujets)</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showSynthSujet(1,this)">
+          <span class="q-name">Performance sociale</span>
+          <div class="q-meta"><span class="q-time">Caraïbes Fumés · 2022</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(3,this)">
+          <span class="q-name">Marque employeur</span>
+          <div class="q-meta"><span class="q-time">TPS · 2023</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(5,this)">
+          <span class="q-name">QVT et performance</span>
+          <div class="q-meta"><span class="q-time">Topschuss · 2024</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-label">Dossier 3 — Numérique (3 sujets)</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showSynthSujet(0,this)">
+          <span class="q-name">Numérique et performance</span>
+          <div class="q-meta"><span class="q-time">Réo · 2021</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(2,this)">
+          <span class="q-name">Numérique et identité</span>
+          <div class="q-meta"><span class="q-time">Ankama · 2023</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(6,this)">
+          <span class="q-name">Opportunités et risques</span>
+          <div class="q-meta"><span class="q-time">Eyecontact · 2024</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-label">Dossier 3 — RSE / Innovation (2 sujets)</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showSynthSujet(4,this)">
+          <span class="q-name">Innovation et valeur perçue</span>
+          <div class="q-meta"><span class="q-time">Beyer · 2023</span></div>
+        </div>
+        <div class="q-item" onclick="showSynthSujet(7,this)">
+          <span class="q-name">RSE créatrice de valeur</span>
+          <div class="q-meta"><span class="q-time">Renou · 2024</span></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /sidebar-synthese -->
+
+  <!-- MODE FICHES MÉMO -->
+  <div id="sidebar-fiches" style="display:none">
+    <div class="sidebar-intro" style="cursor:pointer" onclick="switchMode('fiches')">Fiches mémo</div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this);showFicheHome()">
+        <span class="group-label">Dossier 1 — Stratégie</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showFiche('d1','q1',this)">
+          <span class="q-name">Où je suis ?</span>
+          <div class="q-meta"><span class="q-time">5 notions · Analyser</span></div>
+        </div>
+        <div class="q-item" onclick="showFiche('d1','q2',this)">
+          <span class="q-name">Où veux-je aller ?</span>
+          <div class="q-meta"><span class="q-time">3 notions · Décider</span></div>
+        </div>
+        <div class="q-item" onclick="showFiche('d1','q3',this)">
+          <span class="q-name">Comment j'y vais ?</span>
+          <div class="q-meta"><span class="q-time">3 notions · Agir</span></div>
+        </div>
+        <div class="q-item" onclick="showChecklist('d1',this)" style="border-top:1px solid var(--bordure);margin-top:4px">
+          <span class="q-name" style="color:var(--vert)">→ Notions maîtrisées ?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this);showFicheHome()">
+        <span class="group-label">Dossier 2 — Finances & GRH</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showFiche('d2','fin',this)">
+          <span class="q-name">Performance financière</span>
+          <div class="q-meta"><span class="q-time">9 notions · Formules</span></div>
+        </div>
+        <div class="q-item" onclick="showFiche('d2','soc',this)">
+          <span class="q-name">Performance sociale</span>
+          <div class="q-meta"><span class="q-time">4 notions · Théories</span></div>
+        </div>
+        <div class="q-item" onclick="showFiche('d2','ope',this)">
+          <span class="q-name">Performance opérationnelle</span>
+          <div class="q-meta"><span class="q-time">2 notions · Flux</span></div>
+        </div>
+        <div class="q-item" onclick="showChecklist('d2',this)" style="border-top:1px solid var(--bordure);margin-top:4px">
+          <span class="q-name" style="color:var(--vert)">→ Notions maîtrisées ?</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this);showFicheHome()">
+        <span class="group-label">Dossier 3 — RSE & Numérique</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showFiche('d3','num',this)">
+          <span class="q-name">Mes outils</span>
+          <div class="q-meta"><span class="q-time">4 notions · Numérique</span></div>
+        </div>
+        <div class="q-item" onclick="showFiche('d3','rse',this)">
+          <span class="q-name">Mes valeurs</span>
+          <div class="q-meta"><span class="q-time">3 notions · RSE</span></div>
+        </div>
+        <div class="q-item" onclick="showChecklist('d3',this)" style="border-top:1px solid var(--bordure);margin-top:4px">
+          <span class="q-name" style="color:var(--vert)">→ Notions maîtrisées ?</span>
+        </div>
+      </div>
+    </div>
+  </div><!-- /sidebar-fiches -->
+
 </aside>
 
+<!-- ════════════════ MAIN ════════════════ -->
 <main class="main" id="main">
-  <div style="text-align: center; padding-top: 100px;">
-    <h2>👨‍🏫 Bienvenue en mode Expert</h2>
-    <p>Sélectionne une notion à gauche pour voir le contenu et les tips de compréhension du prof.</p>
+  <div class="placeholder">
+    <div class="big">📚</div>
+    <h3>Choisis une question à gauche</h3>
+    <p>Clique sur une question dans la sidebar pour commencer à réviser.</p>
   </div>
 </main>
 </div>
 
+<!-- ════════════════ MODAL NOTION ════════════════ -->
 <div class="overlay" id="overlay" onclick="closeIfOut(event)">
   <div class="modal">
+    <div class="modal-handle"></div>
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div id="modal-body"></div>
   </div>
 </div>
 
 <script>
-/* --- BASE DE DONNÉES NOTIONS (Intégrant les Tips) --- */
+// ═══════════════ NOTIONS ═══════════════
 const N = {
+  frng: {
+    tag:"Gestion financière", titre:"FRNG — Fonds de Roulement Net Global", freq:"★★★★★ Constante",
+    def:"Marge de sécurité financière : part des ressources durables (capitaux propres + dettes LT) qui finance le cycle d'exploitation après avoir couvert les immobilisations.",
+    form:"FRNG = Ressources stables − Emplois stables\n\nRessources stables = Capitaux propres + Dettes financières LT\nEmplois stables = Actif immobilisé brut",
+    svg:`<svg viewBox="0 0 500 200" width="100%" style="max-width:480px;font-family:'Inter',sans-serif"><rect x="20" y="10" width="200" height="40" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="120" y="28" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">FRNG</text><text x="120" y="42" text-anchor="middle" font-size="7" fill="#5a5448">Ressources stables − Emplois stables</text><line x1="220" y1="30" x2="240" y2="30" stroke="#a09880" stroke-width="2"/><text x="260" y="26" font-size="10" font-weight="900" fill="#1e1c18">−</text><line x1="280" y1="30" x2="300" y2="30" stroke="#a09880" stroke-width="2"/><rect x="300" y="10" width="180" height="40" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1.5"/><text x="390" y="28" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a">BFR</text><text x="390" y="42" text-anchor="middle" font-size="7" fill="#5a5448">Actif circ. expl. − Passif circ. expl.</text><line x1="250" y1="50" x2="250" y2="80" stroke="#a09880" stroke-width="2"/><text x="250" y="72" text-anchor="middle" font-size="12" font-weight="900" fill="#1e1c18">=</text><rect x="130" y="80" width="240" height="46" rx="10" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/><text x="250" y="100" text-anchor="middle" font-size="11" font-weight="900" fill="#1a7a3c">TRÉSORERIE NETTE</text><text x="250" y="118" text-anchor="middle" font-size="8" fill="#5a5448">TN = FRNG − BFR</text><rect x="50" y="145" width="400" height="36" rx="6" fill="#fef8e2" stroke="#946e00" stroke-width="1" stroke-dasharray="4,2"/><text x="250" y="162" text-anchor="middle" font-size="8" font-weight="700" fill="#946e00">✅ TN > 0 = solvable   ⚠️ TN < 0 = dépend des banques</text><text x="250" y="176" text-anchor="middle" font-size="7" fill="#7a6a58">Toujours : 1) Formule → 2) Calcul → 3) Signe → 4) Contexte entreprise</text></svg>`,
+    interp:"✅ FRNG > 0 : marge de sécurité, ressources durables couvrent les immobilisations\n⚠️ FRNG < 0 : risque potentiel (sauf grande distribution)",
+    ex:"Topschuss (2024) : FRNG positif en forte hausse après augmentation de capital.",
+    conf:"⚠️ FRNG négatif ≠ faillite. Dans la grande distribution, c'est normal (clients paient comptant, fournisseurs réglés à 60 j)."
+  },
+  bfr: {
+    tag:"Gestion financière", titre:"BFR — Besoin en Fonds de Roulement", freq:"★★★★★ Constante",
+    def:"Décalage de trésorerie lié au cycle d'exploitation entre le moment où l'entreprise paie ses fournisseurs et celui où elle encaisse ses clients.",
+    form:"BFR = Actif circulant d'exploitation − Passif circulant d'exploitation\n\nActif circ. = Stocks + Créances clients\nPassif circ. = Dettes fournisseurs + Dettes fiscales/sociales",
+    interp:"✅ BFR < 0 : favorable, fournisseurs financent les stocks\n⚠️ BFR > 0 : besoin de financement (cas général)",
+    ex:"Ankama (2023) : BFR positif lié aux stocks de jeux vidéo et créances distributeurs.",
+    conf:"⚠️ BFR élevé ≠ mauvaise gestion. En forte croissance, le BFR augmente naturellement."
+  },
+  tn: {
+    tag:"Gestion financière", titre:"TN — Trésorerie Nette", freq:"★★★★★ Constante",
+    def:"Résultat de l'équilibre entre FRNG et BFR. Indique si l'entreprise peut faire face à ses obligations immédiates sans recours bancaire.",
+    form:"TN = FRNG − BFR\nou\nTN = Actif de trésorerie − Passif de trésorerie",
+    interp:"✅ TN > 0 : solvabilité à court terme, l'entreprise dispose de liquidités\n⚠️ TN < 0 : dépendance aux concours bancaires courants (découvert)\n👨‍🏫 Tip prof : « concours bancaires courants » est le terme technique attendu au Bac pour désigner le découvert.",
+    ex:"Fromagerie Réo (2021) : TN négative en N-1, positive en N après amélioration du FRNG.",
+    conf:"⚠️ TN négative ≠ faillite immédiate. Analyser la tendance et le contexte sectoriel."
+  },
+  va: {
+    tag:"Gestion financière", titre:"VA — Valeur Ajoutée", freq:"★★★★★ Constante",
+    def:"Richesse créée par l'entreprise elle-même, mesurée par la différence entre sa production et les biens/services achetés à l'extérieur.",
+    form:"VA = Production (ou CA) − Consommations intermédiaires\n\nPartage de la VA entre 5 acteurs :\n→ Salariés (salaires + charges sociales)\n→ État (impôts + taxes)\n→ Banques (intérêts sur emprunts)\n→ Actionnaires (dividendes)\n→ Entreprise (autofinancement / investissements)",
+    interp:"Plus la VA est élevée, plus l'entreprise crée de richesse propre.\n👨‍🏫 Tip prof : au Bac, on demande souvent si le partage est « équitable ». Comparer la part de chaque acteur entre N et N-1 pour voir qui gagne ou perd.",
+    ex:"Caraïbes Fumés (2022) : VA positive et en croissance = transformation locale qui crée de la valeur.",
+    conf:"⚠️ VA ≠ chiffre d'affaires. Deux entreprises avec le même CA peuvent avoir des VA très différentes selon leur degré d'intégration."
+  },
+  rex: {
+    tag:"Gestion financière", titre:"Résultat d'exploitation", freq:"★★★★★ Constante",
+    def:"Mesure la performance de l'activité opérationnelle, indépendamment du financement et de la fiscalité.",
+    form:"Rés. exploit. = VA − Charges de personnel − Dotations aux amortissements\n± Autres charges/produits d'exploitation",
+    interp:"✅ Positif : l'activité principale est rentable\n⚠️ Négatif : l'activité opérationnelle est déficitaire",
+    ex:"OPC (2024) : résultat d'exploitation en hausse = activité outdoor de plus en plus rentable malgré la hausse des matières premières.",
+    conf:"⚠️ Résultat d'exploitation ≠ résultat net. Le résultat net intègre en plus le résultat financier, le résultat exceptionnel et l'impôt."
+  },
+  likert: {
+    tag:"Management RH", titre:"Styles de direction — Grille de Likert", freq:"★★★★★ Constante",
+    def:"Classification des modes d'exercice de l'autorité managériale en 4 styles selon le degré de délégation et de participation des collaborateurs.",
+    svg:`<svg viewBox="0 0 520 120" width="100%" style="max-width:500px;font-family:'Inter',sans-serif"><line x1="30" y1="50" x2="490" y2="50" stroke="#c8c0b4" stroke-width="4" stroke-linecap="round"/><rect x="10" y="25" width="100" height="50" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1.5"/><text x="60" y="46" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a">Autoritaire</text><text x="60" y="60" text-anchor="middle" font-size="6.5" fill="#7a6a58">décide seul</text><rect x="135" y="25" width="100" height="50" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/><text x="185" y="42" text-anchor="middle" font-size="8" font-weight="800" fill="#946e00">Paternaliste</text><text x="185" y="56" text-anchor="middle" font-size="6.5" fill="#7a6a58">bienveillant mais</text><text x="185" y="66" text-anchor="middle" font-size="6.5" fill="#7a6a58">garde la main</text><rect x="260" y="25" width="100" height="50" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="310" y="46" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">Consultatif</text><text x="310" y="60" text-anchor="middle" font-size="6.5" fill="#7a6a58">consulte puis décide</text><rect x="385" y="25" width="110" height="50" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1.5"/><text x="440" y="46" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">Participatif</text><text x="440" y="60" text-anchor="middle" font-size="6.5" fill="#7a6a58">co-décision, délègue</text><text x="30" y="100" font-size="8" fill="#b5415a" font-weight="700">← Centralisé</text><text x="420" y="100" font-size="8" fill="#1a7a3c" font-weight="700">Délégué →</text></svg>`,
+    form:"1. Autoritaire : décisions centralisées, contrôle strict, communication descendante\n2. Bienveillant-autoritaire : autorité avec bienveillance, peu de délégation\n3. Consultatif : avis recueillis, décisions conservées par le manager\n4. Participatif : co-décision, délégation, confiance, communication bidirectionnelle",
+    interp:"Mots-signaux dans les docs :\n'décide seul' → autoritaire\n'consulte avant de décider' → consultatif\n'délègue / équipe autonome' → participatif\n'bienveillant mais garde la main' → bienveillant-autoritaire",
+    ex:"Ankama (2023) : style participatif — équipes créatives autonomes dans leurs choix artistiques.",
+    conf:"⚠️ Style de direction ≠ personnalité du dirigeant. Décrire un mode de relation, pas un caractère."
+  },
+  culture: {
+    tag:"Management RH", titre:"Culture organisationnelle", freq:"★★★★★ Constante",
+    def:"Ensemble de valeurs, croyances, rites, symboles et normes partagés par les membres d'une organisation, créant cohésion et identité collective.",
+    svg:`<svg viewBox="0 0 460 160" width="100%" style="max-width:440px;font-family:'Inter',sans-serif"><rect x="10" y="10" width="100" height="50" rx="8" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1.5"/><text x="60" y="32" text-anchor="middle" font-size="9" font-weight="800" fill="#3d1a5c">Valeurs</text><text x="60" y="48" text-anchor="middle" font-size="7" fill="#7a6a58">ce qu'on croit</text><rect x="120" y="10" width="100" height="50" rx="8" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1.5"/><text x="170" y="32" text-anchor="middle" font-size="9" font-weight="800" fill="#3d1a5c">Rites</text><text x="170" y="48" text-anchor="middle" font-size="7" fill="#7a6a58">pratiques répétées</text><rect x="230" y="10" width="100" height="50" rx="8" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1.5"/><text x="280" y="32" text-anchor="middle" font-size="9" font-weight="800" fill="#3d1a5c">Symboles</text><text x="280" y="48" text-anchor="middle" font-size="7" fill="#7a6a58">logo, tenue, locaux</text><line x1="60" y1="60" x2="60" y2="80" stroke="#a09880" stroke-width="1.5"/><line x1="170" y1="60" x2="170" y2="80" stroke="#a09880" stroke-width="1.5"/><line x1="280" y1="60" x2="280" y2="80" stroke="#a09880" stroke-width="1.5"/><line x1="60" y1="80" x2="280" y2="80" stroke="#a09880" stroke-width="1.5"/><line x1="170" y1="80" x2="170" y2="95" stroke="#a09880" stroke-width="2"/><rect x="100" y="95" width="140" height="40" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/><text x="170" y="114" text-anchor="middle" font-size="10" font-weight="800" fill="#1a7a3c">COHÉSION</text><text x="170" y="128" text-anchor="middle" font-size="8" fill="#5a5448">Identité collective</text><text x="370" y="105" font-size="8" font-weight="700" fill="#946e00">→ Marque employeur</text><text x="370" y="120" font-size="8" font-weight="700" fill="#946e00">→ QVT</text><text x="370" y="135" font-size="8" font-weight="700" fill="#946e00">→ Fidélisation</text></svg>`,
+    form:"3 composantes :\n→ Valeurs : ce en quoi l'organisation croit (excellence, innovation…)\n→ Rites : pratiques répétées qui renforcent l'appartenance\n→ Symboles : éléments visuels qui incarnent les valeurs (logo, tenue, locaux)",
+    interp:"Une culture forte favorise la cohésion, la motivation et la fidélisation.\nElle peut aussi freiner le changement si trop rigide.",
+    ex:"Ankama (2023) : culture forte fondée sur la passion créative, des rituels de co-création et un univers graphique identitaire.",
+    conf:"⚠️ Ne pas confondre culture forte et bonne ambiance. La culture se mesure aux valeurs, rites et symboles identifiables dans les documents."
+  },
   competences: {
-    tag: "Stratégie", 
-    titre: "Ressources & Compétences Distinctives", 
-    freq: "★★★★★",
-    def: "L'entreprise mobilise des **ressources** (tangibles ou intangibles) qu'elle combine pour créer des **compétences**.",
-    form: "1. Ressources (Physiques, Humaines, Financières, Immatérielles).\n2. Compétences (Savoir-faire).\n3. Compétence distinctive = Rare + Inimitable + Valeur.",
-    ex: "Une marque forte (ressource immatérielle) + un savoir-faire artisanal (compétence humaines) = Avantage concurrentiel.",
-    conf: "⚠️ Le correcteur attend que tu classifies d'abord les ressources avant de parler de la compétence."
+    tag:"Stratégie", titre:"Compétences distinctives & Avantage concurrentiel", freq:"★★★★★ Constante",
+    def:"Compétence distinctive : ressource ou savoir-faire rare, difficile à imiter et créateur de valeur.\nAvantage concurrentiel : position supérieure durable face aux concurrents, fondée sur ces compétences.\nUne compétence naît de la COMBINAISON de ressources tangibles et intangibles.",
+    form:"Ressources tangibles : physiques (locaux), financières (trésorerie), humaines (effectifs)\nRessources intangibles : notoriété, image de marque, brevets, savoir-faire\n\nDiagnostic interne → identifier ressources et compétences\n→ Rares ? Difficiles à imiter ? Créatrices de valeur ?\n→ OUI sur les 3 = compétence DISTINCTIVE\n→ Elle fonde l'avantage concurrentiel",
+    svg:`<svg viewBox="0 0 500 220" width="100%" style="max-width:480px;font-family:'Inter',sans-serif"><rect x="10" y="10" width="140" height="60" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="80" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">DIAGNOSTIC INTERNE</text><text x="80" y="52" text-anchor="middle" font-size="8" fill="#5a5448">Forces / Faiblesses</text><line x1="150" y1="40" x2="170" y2="40" stroke="#a09880" stroke-width="2" marker-end="url(#arr)"/><rect x="170" y="10" width="160" height="60" rx="8" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1.5"/><text x="250" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#3d1a5c">COMPÉTENCE DISTINCTIVE</text><text x="250" y="44" text-anchor="middle" font-size="7" fill="#5a5448">Rare ?</text><text x="250" y="55" text-anchor="middle" font-size="7" fill="#5a5448">Difficile à imiter ? Crée de la valeur ?</text><line x1="330" y1="40" x2="350" y2="40" stroke="#a09880" stroke-width="2" marker-end="url(#arr)"/><rect x="350" y="10" width="140" height="60" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="2"/><text x="420" y="32" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">AVANTAGE</text><text x="420" y="48" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">CONCURRENTIEL</text><text x="420" y="62" text-anchor="middle" font-size="7" fill="#5a5448">Position durable</text><rect x="60" y="90" width="380" height="50" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1" stroke-dasharray="4,2"/><text x="250" y="112" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00">3 TESTS : Rare + Difficile à imiter + Crée de la valeur</text><text x="250" y="128" text-anchor="middle" font-size="8" fill="#5a4e00">OUI aux 3 = distinctive → fonde l'avantage concurrentiel</text><defs><marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs></svg>`,
+    interp:"L'avantage concurrentiel peut être un coût plus faible, une offre perçue comme unique, ou une relation client supérieure.",
+    ex:"Topschuss (2024) : expertise conseil outdoor + marque reconnue = compétences distinctives difficiles à imiter par les distributeurs généralistes.",
+    conf:"⚠️ Une simple force (notoriété, bonne localisation) n'est pas une compétence distinctive. Elle doit être RARE et DIFFICILE À IMITER."
+  },
+  das: {
+    tag:"Stratégie", titre:"DAS — Domaine d'Activité Stratégique", freq:"★★★★☆ Récurrente",
+    def:"Sous-ensemble d'activités d'une entreprise partageant les mêmes concurrents, clients et facteurs clés de succès. Chaque DAS dispose d'une stratégie propre.",
+    form:"Portefeuille d'activités = ensemble des DAS de l'entreprise\nStratégie globale : spécialisation (1 DAS) ou diversification (plusieurs DAS)\nStratégie de domaine : comment concurrencer sur chaque DAS\n\nFCS (Facteurs Clés de Succès) :\n= éléments qu'une entreprise DOIT maîtriser pour s'imposer sur son marché\nEx : dans le luxe, les FCS sont l'image de marque + la qualité + la distribution sélective\nChaque DAS a ses propres FCS → les identifier aide à choisir la bonne stratégie",
+    interp:"Identifier un DAS = répondre à : même marché cible ? mêmes concurrents ? mêmes FCS ?\nSi oui → même DAS. Si non → DAS différents.",
+    ex:"Ankama (2023) : 3 DAS — jeux vidéo / BD / animation. Chaque DAS a ses propres concurrents.",
+    conf:"⚠️ Stratégie globale ≠ stratégie de domaine. La première porte sur le portefeuille, la seconde sur comment gagner sur un DAS donné."
+  },
+  strategies: {
+    tag:"Stratégie", titre:"Stratégies globales & de domaine", freq:"★★★★★ Constante",
+    def:"Stratégie globale : choix du portefeuille d'activités (spécialisation ou diversification).\nStratégie de domaine : comment concurrencer sur un DAS (coûts, différenciation, focalisation).",
+    form:"Stratégies globales :\n→ Spécialisation : 1 seul DAS, expertise maximale\n→ Diversification concentrique : développe dans plusieurs DAS qui sont liés entre eux\n→ Diversification conglomérale : développe dans plusieurs DAS qui n'ont pas de lien entre eux\n\nStratégies de domaine :\n→ Domination par les coûts : produire moins cher (volumes, économies d'échelle)\n→ Différenciation par le haut (Sophistication) : offre premium, qualité supérieure\n→ Différenciation par le bas (Épuration) : offre VOLONTAIREMENT simplifiée, moins de services → prix très bas (logique low-cost). ⚠️ ≠ domination par les coûts !\n→ Focalisation / niche : segment précis, clientèle spécifique",
+    svg:`<svg viewBox="0 0 520 340" width="100%" style="max-width:500px;font-family:'Inter',sans-serif"><rect x="150" y="5" width="220" height="36" rx="8" fill="#3d1a5c"/><text x="260" y="28" text-anchor="middle" font-size="11" font-weight="800" fill="#f5c842">CHOIX STRATÉGIQUE</text><line x1="260" y1="41" x2="260" y2="55" stroke="#a09880" stroke-width="2"/><line x1="130" y1="55" x2="390" y2="55" stroke="#a09880" stroke-width="2"/><line x1="130" y1="55" x2="130" y2="70" stroke="#a09880" stroke-width="2"/><line x1="390" y1="55" x2="390" y2="70" stroke="#a09880" stroke-width="2"/><rect x="20" y="70" width="220" height="32" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="130" y="90" text-anchor="middle" font-size="10" font-weight="800" fill="#2a69a8">STRATÉGIE GLOBALE</text><line x1="130" y1="102" x2="130" y2="116" stroke="#a09880" stroke-width="1.5"/><rect x="20" y="116" width="70" height="40" rx="6" fill="#e8f3ff"/><text x="55" y="134" text-anchor="middle" font-size="8" font-weight="700" fill="#2a69a8">Spécialisation</text><text x="55" y="148" text-anchor="middle" font-size="6.5" fill="#7a6a58">1 seul DAS</text><rect x="95" y="116" width="70" height="40" rx="6" fill="#e8f3ff"/><text x="130" y="130" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">Diversif.</text><text x="130" y="142" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">concentrique</text><text x="130" y="153" text-anchor="middle" font-size="6" fill="#7a6a58">DAS liés</text><rect x="170" y="116" width="70" height="40" rx="6" fill="#e8f3ff"/><text x="205" y="130" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">Diversif.</text><text x="205" y="142" text-anchor="middle" font-size="7" font-weight="700" fill="#2a69a8">conglomérale</text><text x="205" y="153" text-anchor="middle" font-size="6" fill="#7a6a58">DAS sans lien</text><rect x="280" y="70" width="220" height="32" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1.5"/><text x="390" y="90" text-anchor="middle" font-size="10" font-weight="800" fill="#b5415a">STRATÉGIE DE DOMAINE</text><line x1="390" y1="102" x2="390" y2="116" stroke="#a09880" stroke-width="1.5"/><rect x="280" y="116" width="55" height="44" rx="6" fill="#fdeef2"/><text x="307" y="132" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">Coûts</text><text x="307" y="146" text-anchor="middle" font-size="6" fill="#7a6a58">produire</text><text x="307" y="155" text-anchor="middle" font-size="6" fill="#7a6a58">moins cher</text><rect x="340" y="116" width="55" height="44" rx="6" fill="#fdeef2"/><text x="367" y="128" text-anchor="middle" font-size="6.5" font-weight="700" fill="#b5415a">Sophistication</text><text x="367" y="142" text-anchor="middle" font-size="6" fill="#7a6a58">diff. par</text><text x="367" y="151" text-anchor="middle" font-size="6" fill="#7a6a58">le haut</text><rect x="400" y="116" width="55" height="44" rx="6" fill="#fdeef2"/><text x="427" y="128" text-anchor="middle" font-size="6.5" font-weight="700" fill="#b5415a">Épuration</text><text x="427" y="142" text-anchor="middle" font-size="6" fill="#7a6a58">diff. par</text><text x="427" y="151" text-anchor="middle" font-size="6" fill="#7a6a58">le bas</text><rect x="460" y="116" width="55" height="44" rx="6" fill="#fdeef2"/><text x="487" y="132" text-anchor="middle" font-size="7" font-weight="700" fill="#b5415a">Niche</text><text x="487" y="146" text-anchor="middle" font-size="6" fill="#7a6a58">segment</text><text x="487" y="155" text-anchor="middle" font-size="6" fill="#7a6a58">précis</text><rect x="100" y="180" width="320" height="28" rx="6" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1"/><text x="260" y="198" text-anchor="middle" font-size="9" font-weight="700" fill="#1a7a3c">MODE DE CROISSANCE : Interne · Externe · Partenariale</text></svg>`,
+    interp:"Au Bac, toujours traiter les 2 niveaux : 1) globale (portefeuille) puis 2) domaine (comment concurrencer).",
+    ex:"Topschuss (2024) : spécialisation (outdoor uniquement) + différenciation par le haut (équipements premium).",
+    conf:"⚠️ Ne jamais confondre les 2 niveaux. Dire 'différenciation' sans préciser si c'est globale ou de domaine = réponse incomplète."
+  },
+  rse: {
+    tag:"RSE", titre:"RSE — Responsabilité Sociétale des Entreprises", freq:"★★★★★ Constante",
+    def:"Engagement VOLONTAIRE d'une organisation à intégrer des préoccupations sociales et environnementales dans ses activités, au-delà de ses obligations légales.",
+    svg:`<svg viewBox="0 0 420 180" width="100%" style="max-width:400px;font-family:'Inter',sans-serif"><rect x="130" y="5" width="160" height="36" rx="8" fill="#3d1a5c"/><text x="210" y="28" text-anchor="middle" font-size="11" font-weight="800" fill="#f5c842">RSE = 3 PILIERS</text><line x1="210" y1="41" x2="210" y2="55" stroke="#a09880" stroke-width="2"/><line x1="70" y1="55" x2="350" y2="55" stroke="#a09880" stroke-width="2"/><line x1="70" y1="55" x2="70" y2="70" stroke="#a09880" stroke-width="1.5"/><line x1="210" y1="55" x2="210" y2="70" stroke="#a09880" stroke-width="1.5"/><line x1="350" y1="55" x2="350" y2="70" stroke="#a09880" stroke-width="1.5"/><rect x="10" y="70" width="120" height="50" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1.5"/><text x="70" y="90" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">Économique</text><text x="70" y="106" text-anchor="middle" font-size="7" fill="#5a5448">CA, résultat, PDM</text><rect x="150" y="70" width="120" height="50" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="210" y="90" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">Social</text><text x="210" y="106" text-anchor="middle" font-size="7" fill="#5a5448">QVT, emploi, diversité</text><rect x="290" y="70" width="120" height="50" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/><text x="350" y="90" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00">Environnemental</text><text x="350" y="106" text-anchor="middle" font-size="7" fill="#5a5448">carbone, déchets</text><rect x="80" y="140" width="260" height="30" rx="8" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1.5"/><text x="210" y="160" text-anchor="middle" font-size="9" font-weight="800" fill="#3d1a5c">→ PERFORMANCE GLOBALE (pas que financière)</text></svg>`,
+    form:"3 piliers (triple bottom line) :\n→ Économique : performance financière, création de valeur\n→ Social : conditions de travail, emploi, diversité, QVT\n→ Environnemental : bilan carbone, déchets, éco-conception",
+    interp:"La RSE est VOLONTAIRE (≠ contrainte légale).\nElle crée de la valeur : différenciation, fidélisation client, attractivité RH, réduction des coûts.",
+    ex:"Bébé Serein (2025) : matériaux certifiés (env.) + QVT renforcée (social) + croissance CA (éco) = RSE comme levier de performance.",
+    conf:"⚠️ La RSE n'est PAS une obligation légale. Le respect du Code du travail ≠ RSE. Toujours présenter la RSE comme source d'avantage, jamais comme contrainte."
+  },
+  performance: {
+    tag:"RSE", titre:"Performance globale", freq:"★★★★★ Constante",
+    def:"Performance mesurée simultanément sur 3 dimensions : économique, sociale et environnementale. Elle dépasse la seule rentabilité financière.",
+    form:"Performance économique : CA, résultat net, parts de marché\nPerformance sociale : taux d'absentéisme, turnover, accidents du travail, satisfaction salariés\nPerformance environnementale : bilan carbone, consommation énergie, taux de recyclage",
+    interp:"Les 3 dimensions sont interdépendantes : mauvaise performance sociale → nuit à terme à la performance économique.",
+    ex:"Topschuss (2024) : CA +18% (éco) + turnover bas (social) + matériaux recyclés 60% (env.) = performance globale positive.",
+    conf:"⚠️ Ne jamais réduire la performance à la rentabilité. 'Analyser la performance' sans les 3 piliers = réponse incomplète au Bac."
+  },
+  modele: {
+    tag:"Stratégie", titre:"Modèle économique (Business Model)", freq:"★★★★☆ Récurrente",
+    def:"Description de la façon dont une organisation crée de la valeur pour ses clients, la délivre et en capte une partie sous forme de revenus.",
+    svg:`<svg viewBox="0 0 480 130" width="100%" style="max-width:460px;font-family:'Inter',sans-serif"><rect x="10" y="10" width="140" height="50" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="80" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#2a69a8">CRÉER la valeur</text><text x="80" y="46" text-anchor="middle" font-size="7" fill="#5a5448">Proposition de valeur</text><text x="80" y="56" text-anchor="middle" font-size="7" fill="#5a5448">+ Ressources clés</text><line x1="150" y1="35" x2="170" y2="35" stroke="#a09880" stroke-width="2" marker-end="url(#a2)"/><rect x="170" y="10" width="140" height="50" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1.5"/><text x="240" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c">DÉLIVRER la valeur</text><text x="240" y="46" text-anchor="middle" font-size="7" fill="#5a5448">Canaux + Partenaires</text><text x="240" y="56" text-anchor="middle" font-size="7" fill="#5a5448">+ Segments clients</text><line x1="310" y1="35" x2="330" y2="35" stroke="#a09880" stroke-width="2" marker-end="url(#a2)"/><rect x="330" y="10" width="140" height="50" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/><text x="400" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#946e00">CAPTURER la valeur</text><text x="400" y="46" text-anchor="middle" font-size="7" fill="#5a5448">Sources de revenus</text><text x="400" y="56" text-anchor="middle" font-size="7" fill="#5a5448">− Structure de coûts</text><rect x="100" y="80" width="280" height="30" rx="6" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1"/><text x="240" y="100" text-anchor="middle" font-size="9" font-weight="700" fill="#3d1a5c">Le BM peut évoluer (pivot) face aux mutations du marché</text><defs><marker id="a2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs></svg>`,
+    form:"Questions clés du BM :\n→ Qui sont les clients (segments) ?\n→ Quelle valeur leur apporte-t-on (proposition de valeur) ?\n→ Comment la délivre-t-on (canaux, activités, ressources) ?\n→ Comment génère-t-on des revenus ?\n→ Quelle est la structure de coûts ?",
+    interp:"Un BM solide = proposition de valeur claire + revenus couvrant les coûts.\nUn BM peut évoluer (pivot) face aux mutations du marché.",
+    ex:"Bébé Serein (2025) : BM initial (vente directe) → pivot vers abonnement mensuel = revenus récurrents et fidélisation.",
+    conf:"⚠️ Modèle économique ≠ stratégie. Le BM décrit COMMENT l'entreprise crée et capte de la valeur. La stratégie décrit COMMENT elle se positionne face à la concurrence."
+  },
+  parties: {
+    tag:"Stratégie", titre:"Parties prenantes & Finalités", freq:"★★★★☆ Récurrente",
+    def:"Partie prenante : tout acteur interne ou externe ayant un intérêt dans les activités de l'organisation.\nFinalité : raison d'être de l'organisation.",
+    svg:`<svg viewBox="0 0 460 160" width="100%" style="max-width:440px;font-family:'Inter',sans-serif"><rect x="140" y="5" width="180" height="36" rx="8" fill="#3d1a5c"/><text x="230" y="28" text-anchor="middle" font-size="10" font-weight="800" fill="#f5c842">ORGANISATION</text><line x1="230" y1="41" x2="230" y2="55" stroke="#a09880" stroke-width="2"/><line x1="115" y1="55" x2="345" y2="55" stroke="#a09880" stroke-width="2"/><line x1="115" y1="55" x2="115" y2="68" stroke="#a09880" stroke-width="1.5"/><line x1="345" y1="55" x2="345" y2="68" stroke="#a09880" stroke-width="1.5"/><rect x="20" y="68" width="190" height="40" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="115" y="86" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">PP INTERNES</text><text x="115" y="100" text-anchor="middle" font-size="7" fill="#5a5448">salariés · dirigeants · actionnaires</text><rect x="250" y="68" width="190" height="40" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/><text x="345" y="86" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00">PP EXTERNES</text><text x="345" y="100" text-anchor="middle" font-size="7" fill="#5a5448">clients · fournisseurs · État</text><rect x="80" y="125" width="300" height="28" rx="6" fill="#fdeef2" stroke="#b5415a" stroke-width="1"/><text x="230" y="143" text-anchor="middle" font-size="8" font-weight="700" fill="#b5415a">⚠ Actionnaires = INTERNES (pas externes)</text></svg>`,
+    form:"Parties prenantes internes : salariés, dirigeants, actionnaires\nParties prenantes externes : clients, fournisseurs, État, société civile\n\nFinalités :\n→ Entreprise privée : lucrative (profit) mais aussi sociale\n→ ESS (associations, SCOP) : non lucrative, intérêt général",
+    interp:"Chaque partie prenante a des attentes spécifiques parfois contradictoires.\nLe rôle du management = concilier ces attentes.",
+    ex:"YBRA (2024) : chauffeurs (conditions de travail), clients (fiabilité), État (conformité sociale) = 3 parties prenantes aux attentes différentes.",
+    conf:"⚠️ Les actionnaires sont des parties prenantes INTERNES (ils apportent le capital). Ne pas les classer comme externes."
+  },
+  gpec: {
+    tag:"GRH", titre:"GPEC / GEPP + Marque employeur + QVT", freq:"★★★★☆ Récurrente",
+    def:"GPEC : anticipation des besoins en compétences sur 3-5 ans.\nMarque employeur : image de l'organisation en tant qu'employeur.\nQVT : conditions dans lesquelles les salariés travaillent.",
+    svg:`<svg viewBox="0 0 480 130" width="100%" style="max-width:460px;font-family:'Inter',sans-serif"><rect x="10" y="10" width="140" height="45" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1.5"/><text x="80" y="28" text-anchor="middle" font-size="8" font-weight="800" fill="#b5415a">GPEC</text><text x="80" y="42" text-anchor="middle" font-size="7" fill="#5a5448">anticiper 3-5 ans</text><text x="80" y="52" text-anchor="middle" font-size="7" fill="#5a5448">identifier les écarts</text><line x1="150" y1="32" x2="168" y2="32" stroke="#a09880" stroke-width="2" marker-end="url(#a4)"/><rect x="168" y="5" width="150" height="24" rx="6" fill="#e8f3ff"/><text x="243" y="22" text-anchor="middle" font-size="8" font-weight="700" fill="#2a69a8">Former</text><rect x="168" y="32" width="150" height="24" rx="6" fill="#e8f3ff"/><text x="243" y="49" text-anchor="middle" font-size="8" font-weight="700" fill="#2a69a8">Recruter</text><rect x="168" y="59" width="150" height="24" rx="6" fill="#e8f3ff"/><text x="243" y="76" text-anchor="middle" font-size="8" font-weight="700" fill="#2a69a8">Mobilité interne</text><line x1="318" y1="45" x2="336" y2="45" stroke="#a09880" stroke-width="2" marker-end="url(#a4)"/><rect x="336" y="15" width="140" height="55" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1.5"/><text x="406" y="35" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c">MARQUE EMPLOYEUR</text><text x="406" y="49" text-anchor="middle" font-size="7" fill="#5a5448">attirer + fidéliser</text><text x="406" y="61" text-anchor="middle" font-size="7" fill="#5a5448">les talents</text><rect x="100" y="100" width="280" height="22" rx="6" fill="#fef8e2" stroke="#946e00" stroke-width="1"/><text x="240" y="115" text-anchor="middle" font-size="8" font-weight="700" fill="#946e00">Bonne QVT → renforce la marque employeur → facilite la GPEC</text><defs><marker id="a4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs></svg>`,
+    form:"GPEC : identifier écarts → former / recruter / mobilité interne\n\nMarque employeur : pratiques RH visibles + culture forte + réputation\n\nQVT/QVCT : conditions physiques + psychologiques + organisationnelles",
+    interp:"Ces 3 notions sont liées : une bonne QVT renforce la marque employeur, qui facilite le recrutement GPEC.\nAu Bac, elles apparaissent souvent ensemble dans un même dossier.",
+    ex:"TPS (2023) : GPEC (plan de formation sur 3 ans) + marque employeur (communication RH) + QVT (horaires flexibles).",
+    conf:"⚠️ GPEC ≠ recrutement ponctuel. C'est une démarche PRÉVISIONNELLE sur plusieurs années."
+  },
+  motivation: {
+    tag:"GRH", titre:"Théories de la motivation", freq:"★★★★☆ Récurrente",
+    def:"Cadres théoriques expliquant ce qui pousse les individus à s'engager dans leur travail.",
+    svg:`<svg viewBox="0 0 520 130" width="100%" style="max-width:500px;font-family:'Inter',sans-serif"><rect x="10" y="10" width="160" height="60" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="90" y="28" text-anchor="middle" font-size="8" font-weight="800" fill="#2a69a8">MASLOW</text><text x="90" y="42" text-anchor="middle" font-size="7" fill="#5a5448">5 niveaux de besoins</text><text x="90" y="54" text-anchor="middle" font-size="7" fill="#5a5448">physiologiques → réalisation</text><text x="90" y="65" text-anchor="middle" font-size="6" fill="#7a6a58" font-style="italic">besoin sup. si inf. satisfait</text><rect x="180" y="10" width="160" height="60" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/><text x="260" y="28" text-anchor="middle" font-size="8" font-weight="800" fill="#946e00">HERZBERG</text><text x="260" y="42" text-anchor="middle" font-size="7" fill="#5a5448">Hygiène = éviter insatisfaction</text><text x="260" y="54" text-anchor="middle" font-size="7" fill="#5a5448">Motivation = créer satisfaction</text><text x="260" y="65" text-anchor="middle" font-size="6" fill="#7a6a58" font-style="italic">salaire ≠ motivation</text><rect x="350" y="10" width="160" height="60" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1.5"/><text x="430" y="28" text-anchor="middle" font-size="8" font-weight="800" fill="#1a7a3c">McGREGOR</text><text x="430" y="42" text-anchor="middle" font-size="7" fill="#5a5448">X = contrôler (paresseux)</text><text x="430" y="54" text-anchor="middle" font-size="7" fill="#5a5448">Y = impliquer (responsable)</text><text x="430" y="65" text-anchor="middle" font-size="6" fill="#7a6a58" font-style="italic">X → autoritaire / Y → participatif</text><rect x="100" y="90" width="320" height="28" rx="6" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1"/><text x="260" y="108" text-anchor="middle" font-size="8" font-weight="700" fill="#3d1a5c">Au Bac : identifier la théorie + lier aux pratiques du doc</text></svg>`,
+    form:"Maslow : 5 niveaux hiérarchiques\n→ Physiologiques → Sécurité → Appartenance → Estime → Réalisation de soi\n(besoin supérieur ne motive que si les inférieurs sont satisfaits)\n\nHerzberg : 2 facteurs\n→ Hygiène (évitent l'insatisfaction) : salaire, conditions\n→ Motivation (créent satisfaction) : responsabilités, reconnaissance\n\nMcGregor :\n→ Théorie X : travailleur paresseux → contrôle\n→ Théorie Y : travailleur responsable → implication",
+    interp:"Au Bac : identifier quelle théorie correspond à la pratique décrite dans le document, puis expliquer le lien.\n👨‍🏫 Tip prof : ne dis pas juste « formation → Maslow ». Dis : « La formation répond au besoin d'ESTIME (niveau 4 de Maslow) car elle valorise le salarié » ou « La formation est un facteur de MOTIVATION chez Herzberg car elle crée de la satisfaction ».",
+    ex:"TPS (2023) : formations internes → besoin d'estime, niveau 4 de Maslow. Primes de résultats → facteur de motivation (Herzberg). Autonomie des équipes → Théorie Y (McGregor).",
+    conf:"⚠️ Améliorer les facteurs d'hygiène (Herzberg) n'augmente pas la motivation, ça évite seulement l'insatisfaction. Le salaire est un facteur d'hygiène, PAS de motivation."
+  },
+  couts: {
+    tag:"Gestion financière", titre:"Coût de revient + Taux de marge / marque", freq:"★★★★☆ Récurrente",
+    def:"Coût de revient : coût total pour produire ET distribuer une unité (production + distribution).\nTaux de marge : rentabilité mesurée sur le coût.\nTaux de marque : part de la marge dans le prix de vente.",
+    svg:`<svg viewBox="0 0 500 120" width="100%" style="max-width:480px;font-family:'Inter',sans-serif"><rect x="10" y="10" width="120" height="45" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="70" y="30" text-anchor="middle" font-size="8" font-weight="800" fill="#2a69a8">Coût de revient</text><text x="70" y="44" text-anchor="middle" font-size="7" fill="#5a5448">prod + distrib</text><line x1="130" y1="32" x2="148" y2="32" stroke="#a09880" stroke-width="2" marker-end="url(#a3)"/><rect x="148" y="10" width="100" height="45" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/><text x="198" y="28" text-anchor="middle" font-size="8" font-weight="800" fill="#946e00">Marge brute</text><text x="198" y="42" text-anchor="middle" font-size="7" fill="#5a5448">PV − coût revient</text><line x1="248" y1="32" x2="266" y2="32" stroke="#a09880" stroke-width="2" marker-end="url(#a3)"/><rect x="266" y="5" width="110" height="24" rx="6" fill="#fdeef2"/><text x="321" y="22" text-anchor="middle" font-size="8" font-weight="700" fill="#b5415a">Taux de marge</text><rect x="266" y="32" width="110" height="24" rx="6" fill="#fdeef2"/><text x="321" y="49" text-anchor="middle" font-size="8" font-weight="700" fill="#b5415a">Taux de marque</text><text x="390" y="22" font-size="7" fill="#7a6a58">marge / coût × 100</text><text x="390" y="49" font-size="7" fill="#7a6a58">marge / PV × 100</text><rect x="100" y="75" width="300" height="28" rx="6" fill="#fdeef2" stroke="#b5415a" stroke-width="1"/><text x="250" y="93" text-anchor="middle" font-size="8" font-weight="700" fill="#b5415a">⚠ Taux de marque TOUJOURS < taux de marge</text><defs><marker id="a3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs></svg>`,
+    form:"Coût de revient unitaire = Total charges (prod + distrib) / Quantité\n\nMarge brute = Prix de vente HT − Coût de revient\n\nTaux de marge = (Marge / Coût de revient) × 100\n\nTaux de marque = (Marge / Prix de vente HT) × 100",
+    interp:"Taux de marque TOUJOURS < taux de marge pour une même marge.\nEx : marge 20€, coût 80€, PV 100€ → taux de marge 25% / taux de marque 20%",
+    ex:"Ankama (2023) : coût de revient BD calculé pour justifier le prix de vente et comparer avec le marché.",
+    conf:"⚠️ Coût de revient ≠ coût de production. Le coût de revient inclut les coûts de DISTRIBUTION en plus."
+  },
+  pgi: {
+    tag:"Numérique", titre:"PGI / CRM / RGPD", freq:"★★★★☆ Récurrente",
+    def:"PGI (ERP) : logiciel intégrant tous les processus de gestion dans une base commune.\nCRM : outil de gestion de la relation client.\nRGPD : règlement européen sur la protection des données personnelles.",
+    svg:`<svg viewBox="0 0 480 150" width="100%" style="max-width:460px;font-family:'Inter',sans-serif"><rect x="160" y="5" width="160" height="36" rx="8" fill="#3d1a5c"/><text x="240" y="28" text-anchor="middle" font-size="10" font-weight="800" fill="#f5c842">SYSTÈME D'INFO</text><line x1="240" y1="41" x2="240" y2="55" stroke="#a09880" stroke-width="2"/><line x1="80" y1="55" x2="400" y2="55" stroke="#a09880" stroke-width="2"/><line x1="80" y1="55" x2="80" y2="68" stroke="#a09880" stroke-width="1.5"/><line x1="240" y1="55" x2="240" y2="68" stroke="#a09880" stroke-width="1.5"/><line x1="400" y1="55" x2="400" y2="68" stroke="#a09880" stroke-width="1.5"/><rect x="10" y="68" width="140" height="45" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="80" y="86" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">PGI / ERP</text><text x="80" y="100" text-anchor="middle" font-size="7" fill="#5a5448">base unique interne</text><text x="80" y="110" text-anchor="middle" font-size="7" fill="#5a5448">cohérence + temps réel</text><rect x="170" y="68" width="140" height="45" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1.5"/><text x="240" y="86" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">CRM</text><text x="240" y="100" text-anchor="middle" font-size="7" fill="#5a5448">relation client</text><text x="240" y="110" text-anchor="middle" font-size="7" fill="#5a5448">personnaliser + fidéliser</text><rect x="330" y="68" width="140" height="45" rx="8" fill="#fdeef2" stroke="#b5415a" stroke-width="1.5"/><text x="400" y="86" text-anchor="middle" font-size="9" font-weight="800" fill="#b5415a">RGPD</text><text x="400" y="100" text-anchor="middle" font-size="7" fill="#5a5448">protection données</text><text x="400" y="110" text-anchor="middle" font-size="7" fill="#5a5448">consentement obligatoire</text><rect x="80" y="125" width="320" height="22" rx="6" fill="#fef8e2" stroke="#946e00" stroke-width="1"/><text x="240" y="140" text-anchor="middle" font-size="7" font-weight="700" fill="#946e00">PGI + CRM = outils (choix) | RGPD = règlement (obligatoire)</text></svg>`,
+    form:"PGI → base de données unique + cohérence de l'information + gains de temps\n\nCRM → centralise interactions clients → personnalisation → fidélisation\n\nRGPD (2018) → consentement + droit d'accès/suppression + sécurité + notification des violations\n\n👨‍🏫 Tip prof — arguments de performance à utiliser :\n→ Fiabilisation de l'information (réduction des erreurs humaines)\n→ Disponibilité en temps réel (meilleure prise de décision)",
+    interp:"Ces 3 outils sont souvent liés : le CRM collecte des données → le RGPD encadre leur usage → le PGI les intègre dans la gestion globale.",
+    ex:"Topschuss (2024) : CRM pour personnaliser les offres + RGPD pour sécuriser les données clients + PGI pour gérer stocks et commandes.",
+    conf:"⚠️ RGPD = règlement (obligatoire). CRM et PGI = outils (choix de l'entreprise). Ne pas mélanger les deux catégories."
+  },
+  si_fonctions: {
+    tag:"Numérique", titre:"Les 4 fonctions du Système d'Information", freq:"★★★★☆ Récurrente",
+    def:"Le SI gère le flux d'informations dans l'organisation pour améliorer la performance et la prise de décision. Il n'est pas que technique : il repose sur des composantes humaines et organisationnelles.",
+    form:"4 fonctions du SI :\n1. Collecter — saisie des données (ventes, commandes, RH)\n2. Stocker — bases de données, cloud, serveurs\n3. Traiter — calculs, tris, analyses (PGI, tableur)\n4. Diffuser — tableaux de bord, mails, rapports\n\nLe PGI assure les 4 fonctions dans un seul outil intégré.\n\n4 composantes du SI :\n→ Matérielles (serveurs, ordinateurs, réseaux)\n→ Logicielles (PGI, CRM, tableurs)\n→ Données (bases de données, fichiers)\n→ Humaines (utilisateurs, administrateurs, décideurs)",
+    interp:"👨‍🏫 Tip prof : ne te limite pas au PGI ou au CRM. Le programme demande de connaître ces 4 étapes. Quand tu justifies un outil, montre QUELLE fonction il assure et LE GAIN de performance associé.",
+    ex:"Le PGI centralise tout : il collecte une vente (saisie), stocke l'info en base, traite le stock automatiquement (recalcul) et diffuse l'alerte de réapprovisionnement au magasinier.",
+    conf:"⚠️ Ne confonds pas SI (l'organisation de l'information : qui a besoin de quoi, quand) et informatique (les outils techniques : serveurs, logiciels, réseaux)."
+  },
+  diagnostic_ext: {
+    tag:"Stratégie", titre:"Diagnostic PESTEL / SWOT", freq:"★★★☆☆ Régulière",
+    def:"Diagnostic externe (PESTEL) : analyse de l'environnement général en 6 dimensions (Politique, Économique, Socioculturel, Technologique, Environnemental, Légal).\nSWOT : synthèse du diagnostic interne (Forces/Faiblesses) et externe (Opportunités/Menaces).",
+    form:"PESTEL → 6 dimensions de l'environnement GÉNÉRAL (macro)\n\n5 (+1) forces de Porter → analyse de la CONCURRENCE (méso) :\n→ 1. Rivalité entre concurrents existants\n→ 2. Menace des nouveaux entrants\n→ 3. Menace des produits de substitution\n→ 4. Pouvoir de négociation des clients\n→ 5. Pouvoir de négociation des fournisseurs\n→ (+1) Rôle de l'État (réglementation, subventions)\n\nSWOT = synthèse interne (Forces/Faiblesses) + externe (Opportunités/Menaces)",
+    interp:"PESTEL = macro (tendances générales). Porter = méso (concurrence directe). Ne pas les mélanger.",
+    ex:"Renou (2024) : facteur socioculturel (engouement made in France) = opportunité. Facteur économique (hausse matières premières) = menace.",
+    conf:"⚠️ Le PESTEL analyse l'environnement GÉNÉRAL. Les 5 forces de Porter analysent la CONCURRENCE. Ce sont deux outils complémentaires, pas interchangeables."
   },
   decision: {
-    tag: "Management",
-    titre: "Processus de décision (I.M.C)",
-    freq: "★★★☆☆",
-    def: "Selon Herbert Simon, décider suit un processus rationnel. On distingue les décisions selon leur niveau hiérarchique.",
-    form: "1. Intelligence (analyse).\n2. Modélisation (choix solutions).\n3. Choix (décision finale).\n\nNiveaux : Stratégique (Direction, LT) vs Opérationnelle (Cadres, CT).",
-    ex: "Lancer un nouveau produit = Décision stratégique (risqué, irréversible).",
-    conf: "💡 Tip : Utilise l'adjectif 'irréversible' pour justifier une décision stratégique."
+    tag:"Stratégie", titre:"Processus de décision (modèle IMC — Simon)", freq:"★★★☆☆ Récurrente",
+    def:"Modèle d'Herbert Simon en 3 phases : Intelligence (identifier le problème), Modélisation (construire des solutions), Choix (sélectionner la meilleure).",
+    form:"I — Intelligence : analyser la situation, repérer le problème ou l'opportunité\nM — Modélisation : imaginer les solutions possibles, évaluer chacune\nC — Choix : décider de la solution retenue\n\nNiveaux de décision :\n→ Stratégique : long terme, direction, engage l'avenir, souvent irréversible\n→ Tactique : moyen terme, encadrement, mise en œuvre de la stratégie\n→ Opérationnelle : court terme, réversible, gestion courante",
+    interp:"Au Bac : justifier POURQUOI une décision est stratégique (engage l'avenir, prise par la direction, difficilement réversible) ou opérationnelle (courante, réversible, court terme).",
+    ex:"L'ouverture d'une usine à l'étranger = décision stratégique (long terme, irréversible, engage des millions). Le réapprovisionnement d'un stock = décision opérationnelle.",
+    conf:"⚠️ Ne pas confondre le NIVEAU de décision (stratégique/opérationnelle) avec le PROCESSUS de décision (IMC). Le processus s'applique à tous les niveaux."
   },
-  va: {
-    tag: "Finance",
-    titre: "Valeur Ajoutée (VA) & Partage",
-    freq: "★★★★★",
-    def: "Richesse créée par l'entreprise (Production - Consommations Intermédiaires).",
-    form: "Partage entre :\n- Salariés (Salaires)\n- État (Impôts)\n- Prêteurs (Intérêts)\n- Actionnaires (Dividendes)\n- Entreprise (Autofinancement).",
-    ex: "Si la part de la VA versée aux salariés baisse alors que le bénéfice monte, il y a un déséquilibre social.",
-    conf: "👨‍🏫 Tip Prof : Au Bac, on te demandera souvent si le partage est 'équitable'."
+  production_n: {
+    tag:"Organisation", titre:"Modes de production et gestion des flux", freq:"★★★★☆ Récurrente",
+    def:"Mode de production : artisanal (petites séries, savoir-faire) ou industriel (grandes séries, machines).\nGestion des flux : poussés (prévisions → stocks) ou tirés/tendus (commande → production, zéro stock).",
+    form:"Flux poussés : production basée sur les PRÉVISIONS → constitution de stocks\n→ Adapté quand la demande est stable et prévisible\n\nFlux tirés (juste-à-temps) : production déclenchée par la COMMANDE\n→ Adapté quand la demande est variable ou les produits sont sur mesure\n\nCertaines entreprises combinent les deux selon les produits",
+    interp:"Dans les docs, chercher : 'sur commande' = flux tirés. 'Prévisions' ou 'stocks' = flux poussés.",
+    ex:"TPS (2023) : flux tirés pour les clients occasionnels (sur mesure) + flux poussés via les matières achetées par les grands comptes.",
+    conf:"⚠️ Flux poussés ≠ mauvaise gestion. C'est le bon choix quand la demande est prévisible (ex : grande distribution)."
   },
-  frng: {
-    tag: "Finance",
-    titre: "FRNG / BFR / TN",
-    freq: "★★★★★",
-    def: "Analyse de l'équilibre financier du bilan fonctionnel.",
-    form: "FRNG = Ressources stables - Emplois stables.\nBFR = Actif circulant - Passif circulant.\nTN = FRNG - BFR.",
-    ex: "TN < 0 signifie que l'entreprise dépend de sa banque (découvert).",
-    conf: "⚠️ N'oublie pas : Un BFR peut être négatif (ex: Grande distribution), c'est une ressource !"
+  communication_n: {
+    tag:"Mercatique", titre:"Communication et relation client", freq:"★★★☆☆ Régulière",
+    def:"Ensemble des actions pour informer, persuader et fidéliser les clients. Inclut : publicité, réseaux sociaux, site web, newsletter, événements, e-commerce.",
+    form:"Modalités de communication :\n→ Publicité (notoriété)\n→ Réseaux sociaux (communauté, engagement)\n→ Site e-commerce (vente directe)\n→ Newsletter / emailing (fidélisation)\n→ Relations presse (crédibilité)\n→ Événements (expérience client)",
+    interp:"Chaque outil doit être relié à un OBJECTIF (notoriété, fidélisation, conversion) et une CIBLE (B2B, B2C).",
+    ex:"Beyer (2023) : site e-commerce (vente nationale) + Facebook (communauté) + avis clients (réassurance) pour le lancement de 'Fruits à tartiner'.",
+    conf:"⚠️ Lister les outils sans justifier leur pertinence par rapport à la stratégie = réponse incomplète."
   },
-  si_fonctions: {
-    tag: "Numérique",
-    titre: "Les 4 fonctions du Système d'Information",
-    freq: "★★★★☆",
-    def: "Le SI gère le flux d'informations pour la performance de l'entreprise.",
-    form: "1. Collecter (saisie).\n2. Stocker (Bdd/Cloud).\n3. Traiter (PGI).\n4. Diffuser (Mails/Tableaux).",
-    ex: "Le PGI centralise tout : il collecte une vente et traite le stock automatiquement.",
-    conf: "💡 Tip : Ne confonds pas SI (organisation) et Informatique (outils techniques)."
+  integration: {
+    tag:"Stratégie", titre:"Intégration verticale", freq:"★★☆☆☆ Rare",
+    def:"L'entreprise prend le contrôle d'activités situées en amont (fournisseurs) ou en aval (distribution) de sa chaîne de valeur.",
+    form:"Intégration en amont : l'entreprise contrôle ses fournisseurs\nIntégration en aval : l'entreprise contrôle sa distribution\nAvantage : maîtrise de la chaîne, réduction des coûts, qualité\nRisque : investissements lourds, perte de flexibilité",
+    interp:"Au Bac, souvent liée à la chaîne de valeur de Porter : l'entreprise décide de maîtriser certaines activités plutôt que de les externaliser.",
+    ex:"Ankama (2023) : intègre production, édition et distribution de ses BD → maîtrise toute la chaîne de valeur.",
+    conf:"⚠️ Intégration verticale ≠ diversification. L'intégration reste dans le MÊME métier (amont/aval). La diversification va vers un AUTRE métier."
+  },
+  croissance: {
+    tag:"Stratégie", titre:"Modes de croissance", freq:"★★☆☆☆ Rare",
+    def:"3 modes de développement : interne (par ses propres ressources), externe (acquisitions, fusions), partenariale (alliances, franchises, coopétition).",
+    form:"Croissance interne : investissements, embauches, autofinancement\nCroissance externe : rachats, fusions-acquisitions\nCroissance partenariale : alliances, joint-ventures, franchises, coopétition",
+    interp:"Chaque mode a ses avantages : interne = autonomie, externe = rapidité, partenariale = partage des risques.",
+    ex:"Eyecontact (2024) : croissance partenariale (partenariats avec Atol, Afflelou) + croissance interne (R&D, 30% du CA réinvesti).",
+    conf:"⚠️ Ne pas confondre mode de croissance (comment se développer) et stratégie de domaine (comment concurrencer)."
+  },
+  mintzberg: {
+    tag:"Organisation", titre:"Mécanismes de coordination (Mintzberg)", freq:"★★☆☆☆ Rare",
+    def:"5 mécanismes pour coordonner le travail dans une organisation.",
+    form:"1. Ajustement mutuel : communication informelle entre opérateurs\n2. Supervision directe : un manager dirige et contrôle\n3. Standardisation des procédés : procédures écrites (ex : ISO)\n4. Standardisation des résultats : objectifs à atteindre\n5. Standardisation des qualifications : formation commune requise",
+    interp:"Plus l'organisation grandit, plus elle passe de l'ajustement mutuel à la standardisation.",
+    ex:"Fromagerie Réo (2021) : standardisation des procédés (démarche qualité AOP) + supervision directe (chef de production).",
+    conf:"⚠️ Un mécanisme n'exclut pas les autres. Une entreprise utilise souvent plusieurs mécanismes simultanément."
+  },
+  seuil: {
+    tag:"Gestion financière", titre:"Seuil de rentabilité", freq:"★★☆☆☆ Rare",
+    def:"Niveau de chiffre d'affaires à partir duquel l'entreprise couvre toutes ses charges (fixes + variables) et commence à générer du bénéfice.",
+    form:"Seuil de rentabilité = Charges fixes / Taux de MSCV\navec MSCV = CA − Charges variables\net Taux MSCV = MSCV / CA × 100\n\nEn dessous du seuil → perte\nAu-dessus → bénéfice",
+    interp:"Le seuil peut s'exprimer en € (CA) ou en jours (point mort = date à laquelle le seuil est atteint dans l'année).",
+    ex:"Permet de répondre à : 'À partir de quel CA l'entreprise est-elle rentable ?'",
+    conf:"⚠️ Charges fixes ≠ charges variables. Fixes = loyer, salaires. Variables = matières premières, commissions."
+  },
+  caf: {
+    tag:"Gestion financière", titre:"CAF — Capacité d'Autofinancement", freq:"★★☆☆☆ Rare",
+    def:"Ressources internes générées par l'activité, disponibles pour financer les investissements, rembourser les dettes ou distribuer des dividendes.",
+    form:"CAF ≈ Résultat net + Dotations aux amortissements − Reprises\n\nCAF élevée = bonne capacité à se financer seul\nCAF faible = dépendance aux financements externes",
+    interp:"La CAF mesure la capacité de l'entreprise à s'autofinancer. Plus elle est élevée, moins l'entreprise a besoin d'emprunter.",
+    ex:"Myfood (2023) : calcul de la CAF pour évaluer la capacité de la start-up à financer sa croissance sans lever de fonds.",
+    conf:"⚠️ CAF ≠ trésorerie. La CAF est un flux potentiel, la trésorerie est le solde réel en banque."
+  },
+  financement: {
+    tag:"Gestion financière", titre:"Choix de financement", freq:"★★★★☆ ~50%",
+    def:"Comment l'entreprise finance ses investissements : ressources internes (autofinancement/CAF) ou externes (emprunt, capital, subventions, crowdfunding).",
+    form:"Autofinancement (CAF) : pas de dette, mais capacité limitée\nEmprunt bancaire : effet de levier, mais charges financières\nAugmentation de capital : renforce fonds propres, mais dilue le pouvoir\nCrowdfunding / subventions : sources complémentaires",
+    interp:"Le choix dépend du contexte : taille du projet, situation financière (FRNG), coût de l'endettement, volonté de garder le contrôle.",
+    ex:"Topschuss (2024) : levée de 10M€ en capital. Cohérent car un emprunt aurait fragilisé la trésorerie en forte croissance.",
+    conf:"⚠️ Ne jamais se limiter à lister les sources. Toujours JUSTIFIER pourquoi ce choix est adapté au contexte de l'entreprise."
+  },
+  identite_num: {
+    tag:"Numérique", titre:"Identité numérique", freq:"★★☆☆☆ Rare",
+    def:"Ensemble des traces et représentations d'une organisation sur internet : site web, réseaux sociaux, avis clients, articles de presse.",
+    form:"Identité maîtrisée : ce que l'entreprise publie (site, réseaux officiels)\nIdentité subie : ce que les autres disent (avis, articles, bad buzz)\n\nRisques : e-réputation négative, bad buzz, données personnelles exposées",
+    interp:"L'identité numérique peut être un avantage (notoriété positive) ou un risque (avis négatifs, bad buzz).",
+    ex:"Fromagerie Réo (2021) : identifier les risques liés à l'identité numérique (avis clients négatifs, gestion de l'e-réputation).",
+    conf:"⚠️ Identité numérique ≠ communication digitale. L'identité inclut ce qu'on NE contrôle PAS (avis, articles tiers)."
+  },
+  ethique: {
+    tag:"RSE", titre:"Éthique des affaires", freq:"★★☆☆☆ Rare",
+    def:"Application de principes moraux dans les décisions et pratiques de l'entreprise, au-delà du respect de la loi.",
+    form:"Exemples de pratiques éthiques :\n→ Refus de la corruption\n→ Transparence envers les parties prenantes\n→ Conditions de travail équitables dans toute la chaîne\n→ Approvisionnement responsable\n→ Respect de l'environnement au-delà des normes",
+    interp:"L'éthique va PLUS LOIN que la loi : une entreprise peut être légale mais non éthique (ex : optimisation fiscale agressive).",
+    ex:"Bébé Serein (2025) : partenariat avec des ESAT (insertion handicap), matériaux sans perturbateurs endocriniens → démarche éthique.",
+    conf:"⚠️ Éthique ≠ RSE. L'éthique est un PRINCIPE (faire le bien). La RSE est une DÉMARCHE (intégrer social + environnement + économie)."
+  },
+  mercatique_n: {
+    tag:"Mercatique", titre:"Démarche mercatique — SCP + 4P", freq:"★★★★☆ Récurrente",
+    def:"Processus allant de l'analyse du marché à l'action commerciale : Segmentation → Ciblage → Positionnement → Mix marketing (4P).",
+    svg:`<svg viewBox="0 0 520 140" width="100%" style="max-width:500px;font-family:'Inter',sans-serif"><rect x="10" y="10" width="100" height="40" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="60" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">Segmentation</text><line x1="110" y1="30" x2="128" y2="30" stroke="#a09880" stroke-width="2" marker-end="url(#am)"/><rect x="128" y="10" width="80" height="40" rx="8" fill="#e8f3ff" stroke="#2a69a8" stroke-width="1.5"/><text x="168" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#2a69a8">Ciblage</text><line x1="208" y1="30" x2="226" y2="30" stroke="#a09880" stroke-width="2" marker-end="url(#am)"/><rect x="226" y="10" width="110" height="40" rx="8" fill="#e6f5ec" stroke="#1a7a3c" stroke-width="1.5"/><text x="281" y="35" text-anchor="middle" font-size="9" font-weight="800" fill="#1a7a3c">Positionnement</text><line x1="336" y1="30" x2="354" y2="30" stroke="#a09880" stroke-width="2" marker-end="url(#am)"/><rect x="354" y="5" width="160" height="50" rx="8" fill="#fef8e2" stroke="#946e00" stroke-width="1.5"/><text x="434" y="22" text-anchor="middle" font-size="9" font-weight="800" fill="#946e00">Mix 4P</text><text x="434" y="36" text-anchor="middle" font-size="7" fill="#5a5448">Produit · Prix</text><text x="434" y="48" text-anchor="middle" font-size="7" fill="#5a5448">Place · Promotion</text><rect x="60" y="70" width="400" height="50" rx="8" fill="#f3eafc" stroke="#3d1a5c" stroke-width="1"/><text x="260" y="88" text-anchor="middle" font-size="8" font-weight="800" fill="#3d1a5c">COMPORTEMENT DU CONSOMMATEUR</text><text x="260" y="102" text-anchor="middle" font-size="7" fill="#5a5448">Motivations (hédonistes, oblatives) · Freins (prix, méfiance)</text><text x="260" y="114" text-anchor="middle" font-size="7" fill="#5a5448">Facteurs internes (attitudes) + externes (groupes, prescripteurs, digital)</text><defs><marker id="am" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#a09880"/></marker></defs></svg>`,
+    form:"Segmentation : découper le marché en groupes homogènes\nCiblage : choisir le(s) segment(s) à viser\nPositionnement : image distinctive vs concurrents\n\nMix 4P :\n→ Produit (gamme, qualité, innovation)\n→ Prix (premium, pénétration, alignement)\n→ Place (distribution : intensif, sélectif, e-commerce)\n→ Promotion (publicité, réseaux sociaux, RP)",
+    interp:"SCP = Segmentation → Ciblage → Positionnement. Les 3 vont toujours ensemble. Le 4P est la mise en œuvre opérationnelle.",
+    ex:"Renou (2024) : segmente B2B/B2C, cible les consommateurs made in France, se positionne premium artisanal. 4P : chaussettes haut de gamme + e-commerce + réseaux sociaux.",
+    conf:"⚠️ Ne jamais présenter la segmentation sans le ciblage et le positionnement. Les 3 forment un tout indissociable."
+  },
+  ess: {
+    tag:"Management", titre:"ESS / SCOP", freq:"★★☆☆☆ Rare",
+    def:"Économie Sociale et Solidaire : organisations à finalité NON lucrative (associations, coopératives, mutuelles, fondations). SCOP = Société Coopérative de Production où les salariés sont associés majoritaires.",
+    form:"ESS : finalité sociale ou solidaire, gouvernance démocratique, bénéfices réinvestis\nSCOP : 1 personne = 1 voix, salariés = associés majoritaires, dirigeant élu par les salariés",
+    interp:"L'ESS montre que la performance n'est pas que financière. Une SCOP privilégie l'intérêt collectif sur le profit individuel.",
+    ex:"Titi Floris (2021) : SCOP de transport adapté. Management coopératif, finalité sociale (insertion des personnes handicapées).",
+    conf:"⚠️ ESS ≠ entreprise caritative. Les organisations de l'ESS ont une activité économique réelle, mais leur finalité première n'est pas le profit."
   }
 };
 
-/* --- BASE DE DONNÉES QUESTIONS --- */
+// ═══════════════ QUESTIONS ═══════════════
 const Q = {
-  competences: {
-    titre: "Identifier l'avantage concurrentiel",
-    dossier: "Stratégie",
-    notions: ['competences'],
-    methode: ["Lister les ressources du document", "Identifier le savoir-faire", "Appliquer les 3 critères (Rare, Inimitable, Valeur)"],
-    profTip: "<strong>Comment gagner des points ?</strong> Ne dis pas juste 'ils sont bons'. Dis : 'L'entreprise mobilise des <strong>ressources immatérielles</strong> (notoriété) couplées à une <strong>compétence humaine</strong> rare. Cette combinaison est <strong>inimitable</strong> à court terme.'",
-    annale: "D'après les documents, identifiez les ressources de l'entreprise et déduisez-en sa compétence distinctive.",
-    corrige: "L'entreprise possède des locaux modernes (matériel) et 50 ingénieurs (humain). Sa capacité à innover plus vite que X est sa compétence distinctive."
+  frng: {
+    dossier:"Dossier 2 — Finances", type:"TYPE 1", titre:"Calculer FRNG / BFR / TN + commenter",
+    freq:"★★★★★ — Tous les sujets depuis 2021", pts:"~4-6 pts", temps:"≈ 22 min",
+    annales:"Bébé Serein (2025) · Topschuss (2024) · OPC (2024) · Myfood (2023) · Caraïbes Fumés (2022) · Fromagerie Réo (2021)",
+    notions:["frng","bfr","tn"],
+    methode:[
+      {n:1, t:"Écrire la formule", d:"Une ligne par indicateur. <em>Ex : FRNG = Ressources stables − Emplois stables</em>"},
+      {n:2, t:"Remplacer par les chiffres du document", d:"Montrer tous les calculs intermédiaires."},
+      {n:3, t:"Donner le résultat avec l'unité (€)", d:"Ne jamais oublier l'unité."},
+      {n:4, t:"Interpréter le signe", d:"Positif = sécurité / Négatif = risque ou secteur particulier."},
+      {n:5, t:"Contextualiser pour l'entreprise", d:"<em>'La TN positive de 45 000€ signifie que Topschuss peut faire face à ses échéances sans recours bancaire.'</em>"}
+    ],
+    mots:["FRNG","BFR","trésorerie nette","ressources stables","emplois stables","cycle d'exploitation"],
+    annale:{src:"Bac STMG MSGN · Métropole 2024", q:"À partir des documents, calculez le FRNG, le BFR et la trésorerie nette de Topschuss pour N et N-1. Vous commenterez les résultats obtenus."},
+    corrige:`<strong>FRNG :</strong><br>FRNG = Ressources stables − Emplois stables<br>N-1 : 320 000 − 295 000 = <strong>25 000 €</strong> | N : 410 000 − 360 000 = <strong>50 000 €</strong><br><br>Le FRNG progresse de 25 000 à 50 000 €. L'augmentation de capital en N a renforcé les ressources stables de Topschuss, offrant une marge de sécurité plus large.<br><br><strong>BFR :</strong><br>BFR = 240 000 − 210 000 = <strong>30 000 €</strong> en N (vs 20 000 en N-1).<br>Le BFR augmente avec la croissance de l'activité et les stocks outdoor plus importants.<br><br><strong>TN = FRNG − BFR :</strong><br>N : 50 000 − 30 000 = <strong>20 000 €</strong> (vs 5 000 en N-1).<br>La trésorerie est positive et en forte amélioration. Topschuss est solvable à court terme.`,
+    alerte:"Le calcul seul = moitié des points. Le commentaire est aussi important. Toujours mentionner l'entreprise dans l'interprétation.",
+    astuce:"Vérification : TN = FRNG − BFR. Si le résultat ne coïncide pas avec Actif tréso − Passif tréso, il y a une erreur."
   },
   va: {
-    titre: "Calculer et analyser la VA",
-    dossier: "Finance",
-    notions: ['va'],
-    methode: ["Calculer VA = CA - CI", "Calculer la part en % pour chaque acteur", "Commenter l'équilibre"],
-    profTip: "<strong>Le secret :</strong> Si on te demande de commenter la 'performance sociale', regarde si la part de la VA destinée aux salariés augmente ou baisse d'une année sur l'autre.",
-    annale: "Calculez la VA et commentez son partage au regard de la situation sociale décrite.",
-    corrige: "VA = 500k€. Les salariés reçoivent 60%, l'État 10%. Le partage est stable par rapport à N-1."
+    dossier:"Dossier 2 — Finances", type:"TYPE 2", titre:"Calculer VA + Résultat d'exploitation",
+    freq:"★★★★★ — ~90% des sujets", pts:"~3-4 pts", temps:"≈ 15 min",
+    annales:"Bébé Serein (2025) · OPC (2024) · Caraïbes Fumés (2022) · Doitrand (2022) · Fromagerie Réo (2021)",
+    notions:["va","rex"],
+    methode:[
+      {n:1, t:"Calculer la VA", d:"VA = Production − Consommations intermédiaires. <em>Préciser l'unité.</em>"},
+      {n:2, t:"Interpréter la VA", d:"Richesse créée par l'entreprise. Comment est-elle répartie ?"},
+      {n:3, t:"Calculer le résultat d'exploitation", d:"VA − Charges de personnel − Dotations ± autres."},
+      {n:4, t:"Comparer N et N-1", d:"Hausse ou baisse ? Quelle en est la cause ?"},
+      {n:5, t:"Contextualiser", d:"<em>'Un résultat d'exploitation positif confirme que l'activité principale de X est rentable.'</em>"}
+    ],
+    mots:["valeur ajoutée","richesse créée","résultat d'exploitation","performance opérationnelle","consommations intermédiaires"],
+    annale:{src:"Bac STMG MSGN · Métropole 2022 (Caraïbes Fumés)", q:"Calculez la valeur ajoutée et le résultat d'exploitation de Caraïbes Fumés pour N et N-1. Analysez leur évolution."},
+    corrige:`<strong>Valeur ajoutée :</strong><br>VA = CA − Consommations intermédiaires<br>N-1 : 850 000 − 420 000 = <strong>430 000 €</strong> | N : 980 000 − 460 000 = <strong>520 000 €</strong><br><br>La VA progresse de 21 %, traduisant une création de richesse en hausse. Caraïbes Fumés valorise davantage sa transformation artisanale locale.<br><br><strong>Résultat d'exploitation :</strong><br>N : 520 000 − 310 000 − 85 000 = <strong>125 000 €</strong><br><br>Le résultat d'exploitation est positif : l'activité de transformation du poisson est rentable. Sa progression reflète la montée en gamme de l'offre.`,
+    alerte:"VA ≠ chiffre d'affaires. Deux entreprises avec le même CA peuvent avoir des VA très différentes.",
+    astuce:"La VA se répartit entre salariés (charges de personnel), État (impôts) et l'entreprise elle-même (autofinancement). Mentionner cette répartition valorise la réponse."
   },
-  si_fonctions: {
-    titre: "L'intérêt du SI pour l'organisation",
-    dossier: "Numérique",
-    notions: ['si_fonctions'],
-    methode: ["Identifier l'outil (PGI, CRM...)", "Expliquer quelle fonction il assure", "Montrer le gain de performance"],
-    profTip: "<strong>Mots magiques :</strong> Parle de <strong>fiabilisation</strong> de l'information (moins d'erreurs) et de <strong>temps réel</strong>. Ce sont les deux grands arguments du SI au Bac.",
-    annale: "Montrez comment la mise en place d'un PGI améliore le traitement de l'information chez X.",
-    corrige: "Le PGI permet de <strong>stocker</strong> les données client en un lieu unique et de les <strong>traiter</strong> immédiatement pour mettre à jour les stocks."
+  direction: {
+    dossier:"Dossier 2 — GRH", type:"TYPE 3", titre:"Identifier et justifier le style de direction",
+    freq:"★★★★★ — ~90% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"OPC (2024) · YBRA (2024) · Ankama (2023) · TPS (2023) · Caraïbes Fumés (2022) · Fromagerie Réo (2021)",
+    notions:["likert"],
+    methode:[
+      {n:1, t:"Nommer UN seul style", d:"Autoritaire / Bienveillant-autoritaire / Consultatif / Participatif."},
+      {n:2, t:"Définir ce style en 1-2 lignes", d:"Caractéristiques principales : délégation, communication, décision."},
+      {n:3, t:"Apporter 2-3 preuves dans les documents", d:"<em>'D'après le doc 3, les équipes proposent elles-mêmes les projets' → style participatif.'</em>"},
+      {n:4, t:"Conclure sur l'effet", d:"En quoi ce style favorise la cohésion ou la performance chez cette entreprise ?"}
+    ],
+    mots:["style de direction","grille de Likert","délégation","centralisation","communication bidirectionnelle"],
+    annale:{src:"Bac STMG MSGN · Métropole 2023 (Ankama)", q:"Identifiez et justifiez le style de direction adopté par le dirigeant d'Ankama. Appuyez-vous sur des éléments précis des documents."},
+    corrige:`Le style de direction est le style <strong>participatif</strong> (grille de Likert).<br><br>Ce style se caractérise par une forte délégation, une co-décision et une communication bidirectionnelle.<br><br>— Doc 2 : les équipes proposent et valident elles-mêmes les projets artistiques.<br>— Doc 4 : le fondateur co-crée les orientations stratégiques avec ses équipes lors de sessions collectives.<br>— Doc 5 : faible turnover → climat de confiance caractéristique du style participatif.<br><br>Ce style favorise la créativité et l'engagement, essentiels dans les secteurs de la création et du jeu vidéo.`,
+    alerte:"Ne jamais nommer deux styles. Un seul, le plus représentatif. Style ≠ personnalité.",
+    astuce:"Chercher dans les docs les mots : 'décide seul', 'consulte', 'délègue', 'équipe autonome'. Ce sont les signaux directs."
+  },
+  culture: {
+    dossier:"Dossier 2 — GRH", type:"TYPE 4", titre:"Analyser la culture organisationnelle",
+    freq:"★★★★★ — ~85% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Ankama (2023) · YBRA (2024) · Caraïbes Fumés (2022) · Fromagerie Réo (2021)",
+    notions:["culture"],
+    methode:[
+      {n:1, t:"Définir la culture (valeurs + rites + symboles)", d:"Les 3 composantes en 1 ligne chacune."},
+      {n:2, t:"Identifier les valeurs dans les docs", d:"Nommer 1-2 valeurs explicites + prouver avec le document."},
+      {n:3, t:"Identifier les rites", d:"Pratiques répétées qui renforcent l'appartenance."},
+      {n:4, t:"Identifier les symboles si présents", d:"Logo, tenue, locaux, langage interne…"},
+      {n:5, t:"Conclure sur la cohésion et la fidélisation", d:"La culture forte retient les talents et donne une identité unique."}
+    ],
+    mots:["culture organisationnelle","valeurs","rites","symboles","cohésion","identité collective"],
+    annale:{src:"Bac STMG MSGN · Métropole 2023 (Ankama)", q:"Montrez qu'Ankama possède une culture organisationnelle forte."},
+    corrige:`La culture organisationnelle regroupe les valeurs, rites et symboles partagés qui créent l'identité collective d'Ankama.<br><br><strong>Valeurs :</strong> Doc 1 → la passion créative et l'originalité sont des valeurs fondatrices. Chaque projet doit "surprendre" le public.<br><br><strong>Rites :</strong> Doc 3 → sessions hebdomadaires de pitching créatif → rituel d'appartenance au studio.<br><br><strong>Symboles :</strong> Doc 2 → l'univers graphique des Krosmoz est présent sur tous les supports (jeux, BD, boutique) → symbole identitaire fort.<br><br>Cette culture forte explique le faible turnover et la capacité d'Ankama à attirer des profils créatifs passionnés.`,
+    alerte:"Lister des caractéristiques sans les rattacher aux 3 composantes (valeurs/rites/symboles) = réponse incomplète.",
+    astuce:"Dans les docs, chercher : 'valeurs', 'philosophie', 'rituel', 'charte', 'logo', 'tenue', 'évènement annuel'."
+  },
+  competences: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 5", titre:"Identifier les compétences distinctives",
+    freq:"★★★★★ — Tous les sujets depuis 2021", pts:"~2-3 pts", temps:"≈ 12 min",
+    annales:"Topschuss (2024) · Ankama (2023) · TPS (2023) · Caraïbes Fumés (2022) · Fromagerie Réo (2021)",
+    notions:["competences"],
+    methode:[
+      {n:1, t:"Définir compétence distinctive en 1 ligne", d:"Rare + difficile à imiter + créatrice de valeur."},
+      {n:2, t:"Identifier 2-3 compétences dans les docs", d:"Chercher ce que les concurrents ne peuvent pas facilement copier."},
+      {n:3, t:"Pour chaque compétence : nommer + prouver + expliquer", d:"<em>Nommer → Doc X confirme → difficile à imiter car…</em>"},
+      {n:4, t:"Conclure sur l'avantage concurrentiel", d:"Ces compétences fondent la supériorité durable de l'entreprise."}
+    ],
+    mots:["compétence distinctive","avantage concurrentiel","difficile à imiter","rare","créateur de valeur"],
+    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Identifiez les compétences distinctives de Topschuss et montrez en quoi elles lui confèrent un avantage concurrentiel durable."},
+    corrige:`Une compétence distinctive est une ressource rare, difficile à imiter et créatrice de valeur.<br><br><strong>Compétence 1 — Expertise conseil outdoor :</strong><br>Doc 2 → Topschuss emploie des sportifs experts qui conseillent les clients en magasin. Cette compétence humaine est difficile à reproduire par les grandes surfaces généralistes.<br><br><strong>Compétence 2 — Marque reconnue sur le segment outdoor :</strong><br>Doc 1 → notoriété construite sur 15 ans, associée à la qualité et à la pratique. Un concurrent ne peut pas acheter cette réputation immédiatement.<br><br>Ces deux compétences fondent l'avantage concurrentiel de Topschuss : une offre premium justifiée par une expertise et une image que les concurrents ne peuvent pas imiter à court terme.`,
+    alerte:"Une simple force (bonne localisation, bon prix) ≠ compétence distinctive. Elle doit être RARE et DIFFICILE À IMITER.",
+    astuce:"Dans les docs, chercher ce que l'entreprise fait mieux que tout le monde et depuis longtemps. C'est souvent lié à un savoir-faire humain ou une histoire de marque."
+  },
+  strategie: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 6", titre:"Caractériser la stratégie (globale + domaine)",
+    freq:"★★★★★ — Tous les sujets depuis 2021", pts:"~3-4 pts", temps:"≈ 15 min",
+    annales:"Topschuss (2024) · Ankama (2023) · Caraïbes Fumés (2022) · Doitrand (2022) · Fromagerie Réo (2021)",
+    notions:["strategies","das","integration","croissance"],
+    methode:[
+      {n:1, t:"Identifier la stratégie globale", d:"Spécialisation (1 DAS) ou diversification (plusieurs DAS, liée ou conglomérale) ?"},
+      {n:2, t:"Identifier la stratégie de domaine", d:"Domination par les coûts / différenciation par le haut / bas / focalisation ?"},
+      {n:3, t:"Prouver avec 2-3 éléments des docs", d:"Citer le document + la donnée précise."},
+      {n:4, t:"Justifier la pertinence", d:"Pourquoi ce choix est adapté au contexte de l'entreprise et du marché ?"}
+    ],
+    mots:["stratégie globale","stratégie de domaine","DAS","spécialisation","diversification","différenciation","domination par les coûts","focalisation"],
+    annale:{src:"Bac STMG MSGN · Métropole 2023 (Ankama)", q:"Caractérisez la stratégie de développement choisie par Ankama et justifiez sa pertinence."},
+    corrige:`<strong>Stratégie globale — Diversification liée :</strong><br>Ankama développe 3 DAS (jeux vidéo, BD, animation) autour d'un univers commun (les Krosmoz). Ces activités partagent des ressources créatives → diversification liée.<br><br><strong>Stratégie de domaine — Différenciation par le haut :</strong><br>Sur chaque DAS, Ankama se positionne sur l'originalité (Doc 1 : 'univers unique, jamais vu') et la qualité artistique. Prix plus élevés que la concurrence généraliste → différenciation par le haut.<br><br><strong>Pertinence :</strong><br>La diversification liée permet des économies de ressources créatives. La différenciation protège des concurrents low-cost car les fans sont prêts à payer pour l'univers Ankama.`,
+    alerte:"Toujours traiter les DEUX niveaux (globale ET domaine). N'en traiter qu'un = réponse incomplète.",
+    astuce:"Commencer par la globale (combien de DAS ?) puis descendre au domaine (comment concurrencer sur chacun)."
+  },
+  rse: {
+    dossier:"Dossier 3 — RSE & synthèse", type:"TYPE 7", titre:"Montrer que X intègre la RSE / performance globale",
+    freq:"★★★★★ — Tous les sujets depuis 2021", pts:"~4-6 pts", temps:"≈ 22 min",
+    annales:"Bébé Serein (2025) · YBRA (2024) · OPC (2024) · Myfood (2023) · Caraïbes Fumés (2022) · Fromagerie Réo (2021)",
+    notions:["rse","performance"],
+    methode:[
+      {n:1, t:"Définir RSE + performance globale (3 piliers)", d:"RSE = VOLONTAIRE, au-delà des obligations légales."},
+      {n:2, t:"Pilier économique", d:"La RSE améliore-t-elle les performances financières ? <em>(différenciation, fidélisation, coûts)</em>"},
+      {n:3, t:"Pilier social", d:"Que fait l'entreprise pour ses salariés ? <em>(QVT, formation, diversité…)</em>"},
+      {n:4, t:"Pilier environnemental", d:"Quels impacts réduits ? <em>(matériaux, bilan carbone, déchets…)</em>"},
+      {n:5, t:"Conclure : RSE = levier d'avantage concurrentiel", d:"La RSE renforce la différenciation et la réputation."}
+    ],
+    mots:["RSE","performance globale","volontaire","au-delà des obligations légales","piliers économique / social / environnemental"],
+    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss, adapté)", q:"Montrez que la politique RSE de Topschuss contribue à sa performance globale."},
+    corrige:`La RSE est un engagement volontaire au-delà des obligations légales. La performance globale intègre 3 piliers : économique, social, environnemental.<br><br><strong>Économique :</strong> Doc 1 → engagement RSE = différenciation. Les clients outdoor privilégient les marques engagées → CA +18%.<br><br><strong>Social :</strong> Doc 3 → télétravail partiel + formations terrain. Turnover inférieur à la moyenne du secteur = performance sociale positive.<br><br><strong>Environnemental :</strong> Doc 2 → 60% de matières recyclées d'ici 2026 + emballages plastique −30%.<br><br>La RSE de Topschuss est un levier de différenciation durable, pas une contrainte.`,
+    alerte:"RSE ≠ obligation légale. Structurer obligatoirement en 3 piliers. Réponse sans les 3 dimensions = incomplète.",
+    astuce:"3 paragraphes = 3 piliers. C'est la structure que les correcteurs attendent pour la question de synthèse."
+  },
+  modele: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 8", titre:"Présenter le modèle économique",
+    freq:"★★★★☆ — ~70% des sujets depuis 2022", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Bébé Serein (2025) · Myfood (2023) · Caraïbes Fumés (2022)",
+    notions:["modele"],
+    methode:[
+      {n:1, t:"Identifier la proposition de valeur", d:"Que propose l'entreprise ? Pour qui ? Pourquoi c'est utile ?"},
+      {n:2, t:"Identifier les segments clients", d:"À qui s'adresse l'offre ? (particuliers, B2B, niche…)"},
+      {n:3, t:"Identifier les sources de revenus", d:"Comment l'entreprise gagne-t-elle de l'argent ? (vente, abonnement, service…)"},
+      {n:4, t:"Si évolution du BM : montrer le pivot", d:"Qu'est-ce qui a changé et pourquoi ?"}
+    ],
+    mots:["modèle économique","proposition de valeur","segments clients","sources de revenus","création de valeur"],
+    annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"Présentez le modèle économique de Bébé Serein et montrez en quoi il évolue."},
+    corrige:`Le modèle économique de Bébé Serein repose sur :<br><br><strong>Proposition de valeur :</strong> des couches écologiques et du lait infantile sans perturbateurs endocriniens, pour les parents soucieux de la santé de leur enfant.<br><br><strong>Clients :</strong> parents de jeunes enfants (0-3 ans), CSP+, sensibles à l'écologie.<br><br><strong>Sources de revenus :</strong> initialement vente unitaire en pharmacies → évolution vers un abonnement mensuel (fidélisation + revenus récurrents).<br><br><strong>Évolution :</strong> le pivot vers l'abonnement réduit la dépendance aux distributeurs et crée une relation directe avec le client.`,
+    alerte:"Modèle économique ≠ stratégie concurrentielle. Le BM répond à 'comment on crée et capte de la valeur', pas à 'comment on bat la concurrence'.",
+    astuce:"Les 3 éléments clés à toujours avoir : proposition de valeur + clients + revenus. Même si le sujet ne les demande pas tous explicitement."
+  },
+  parties: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 9", titre:"Identifier les parties prenantes et leurs attentes",
+    freq:"★★★★☆ — ~65% des sujets", pts:"~1-2 pts", temps:"≈ 7 min",
+    annales:"YBRA (2024) · Myfood (2023) · Caraïbes Fumés (2022) · Titi Floris (2021)",
+    notions:["parties"],
+    methode:[
+      {n:1, t:"Distinguer parties prenantes internes et externes", d:"Internes : salariés, dirigeants, actionnaires. Externes : clients, fournisseurs, État…"},
+      {n:2, t:"Pour chaque PP : nommer + attentes", d:"<em>'Les salariés (PP interne) attendent de bonnes conditions de travail et une rémunération équitable.'</em>"},
+      {n:3, t:"Montrer les tensions possibles", d:"Certaines attentes sont contradictoires → rôle du management = concilier."}
+    ],
+    mots:["parties prenantes","internes","externes","attentes","gouvernance","intérêts"],
+    annale:{src:"Bac STMG MSGN · Remplacement 2024 (YBRA)", q:"Identifiez les parties prenantes de YBRA et présentez leurs attentes respectives."},
+    corrige:`<strong>Parties prenantes internes :</strong><br>— Salariés (chauffeurs) : sécurité, rémunération équitable, conditions de travail décentes.<br>— Dirigeants : rentabilité, développement de l'activité, pérennité.<br><br><strong>Parties prenantes externes :</strong><br>— Clients (entreprises, particuliers) : fiabilité des livraisons, tarifs compétitifs, qualité de service.<br>— État / collectivités : respect du droit du travail, normes environnementales, emploi local.<br>— Fournisseurs : paiement dans les délais, volume de commandes.<br><br>Tension principale : les attentes des salariés (meilleures conditions) et des clients (tarifs bas) peuvent être contradictoires.`,
+    alerte:"Les actionnaires sont des PP INTERNES (ils apportent le capital), pas externes.",
+    astuce:"Cette question est souvent en introduction du dossier 1. Répondre vite (5-7 min max) pour préserver du temps pour les questions à plus fort barème."
+  },
+  grh: {
+    dossier:"Dossier 2 — GRH", type:"TYPE 10", titre:"Analyser les pratiques GRH (motivation, GPEC, marque employeur)",
+    freq:"★★★★☆ — ~75% des sujets", pts:"~2-3 pts", temps:"≈ 12 min",
+    annales:"TPS (2023) · Topschuss (2024) · Caraïbes Fumés (2022) · Fromagerie Réo (2021)",
+    notions:["gpec","motivation"],
+    methode:[
+      {n:1, t:"Identifier 2-3 pratiques GRH dans les docs", d:"Formation, rémunération, QVT, recrutement, GPEC, marque employeur…"},
+      {n:2, t:"Pour chaque pratique : relier à une théorie", d:"<em>'Formation interne → besoin d'estime (Maslow niveau 4) / facteur de motivation (Herzberg)'</em>"},
+      {n:3, t:"Lier à la marque employeur ou GPEC si mentionné", d:"Ces pratiques constituent la marque employeur ou font partie d'une démarche GPEC."},
+      {n:4, t:"Conclure sur la performance sociale", d:"Ces pratiques renforcent l'engagement et réduisent le turnover."}
+    ],
+    mots:["GPEC","marque employeur","QVT","motivation","Maslow","Herzberg","performance sociale"],
+    annale:{src:"Bac STMG MSGN · Asie 2023 (TPS)", q:"Montrez que TPS met en place des pratiques GRH favorisant la motivation et la fidélisation de ses salariés."},
+    corrige:`<strong>Formation interne :</strong><br>Doc 3 → plan de formation sur 3 ans pour tous les opérateurs. Selon Maslow, répond au besoin d'estime (niveau 4). Selon Herzberg, c'est un facteur de motivation (responsabilités accrues).<br><br><strong>Rémunération variable :</strong><br>Doc 4 → primes liées aux résultats. Facteur de motivation (Herzberg) et réponse au besoin d'estime.<br><br><strong>Marque employeur :</strong><br>Ces pratiques construisent la marque employeur de TPS : l'entreprise devient attractive pour les profils qualifiés dans un secteur en tension.<br><br>Résultat : turnover réduit de 12% à 8% en 2 ans → performance sociale en amélioration.`,
+    alerte:"Citer Maslow sans préciser à quel niveau de besoin correspond la pratique = réponse incomplète.",
+    astuce:"Lier chaque pratique RH à un niveau de Maslow ou un facteur de Herzberg. C'est le critère de différenciation entre une copie moyenne et une bonne copie."
+  },
+  couts: {
+    dossier:"Dossier 2 — Finances", type:"TYPE 11", titre:"Calculer coût de revient + taux de marge",
+    freq:"★★★★☆ — ~60% des sujets", pts:"~2-3 pts", temps:"≈ 12 min",
+    annales:"Ankama (2023) · Fromagerie Réo (2021) · Caraïbes Fumés (2022)",
+    notions:["couts","seuil","caf"],
+    methode:[
+      {n:1, t:"Additionner toutes les charges du tableau", d:"Production + distribution. Ne pas oublier les coûts de distribution."},
+      {n:2, t:"Diviser par la quantité → coût de revient unitaire", d:"Unité : €/unité."},
+      {n:3, t:"Calculer la marge brute", d:"Marge = Prix de vente HT − Coût de revient."},
+      {n:4, t:"Calculer le taux de marge", d:"(Marge / Coût de revient) × 100."},
+      {n:5, t:"Commenter et comparer", d:"Ce taux est-il satisfaisant ? Y a-t-il un levier d'amélioration ?"}
+    ],
+    mots:["coût de revient","marge brute","taux de marge","taux de marque","charges fixes","charges variables"],
+    annale:{src:"Bac STMG MSGN · Métropole 2023 (Ankama)", q:"Calculez le coût de revient unitaire d'un album BD d'Ankama. Calculez le taux de marge correspondant."},
+    corrige:`<strong>Coût de revient unitaire :</strong><br>D'après le tableau doc 5 :<br>Coûts de production : 8,50 € | Coûts de distribution : 2,20 €<br>Coût de revient = 8,50 + 2,20 = <strong>10,70 €</strong><br><br><strong>Marge brute :</strong><br>PV HT = 14,90 € | Marge = 14,90 − 10,70 = <strong>4,20 €</strong><br><br><strong>Taux de marge :</strong><br>(4,20 / 10,70) × 100 = <strong>39,25 %</strong><br><br>Ce taux est satisfaisant pour le secteur éditorial. Ankama peut améliorer sa marge en réduisant les coûts de distribution grâce à la vente directe en ligne.`,
+    alerte:"Coût de revient ≠ coût de production. Oublier les coûts de distribution = erreur classique.",
+    astuce:"Taux de marque TOUJOURS < taux de marge. Si ton résultat donne le contraire, il y a une erreur."
+  },
+  numerique: {
+    dossier:"Dossier 3 — Numérique", type:"TYPE 12", titre:"Identifier l'intérêt du PGI / CRM / RGPD",
+    freq:"★★★★☆ — ~80% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Topschuss (2024) · Myfood (2023) · Fromagerie Réo (2021) · Agesys (2022)",
+    notions:["pgi","identite_num"],
+    methode:[
+      {n:1, t:"Identifier l'outil numérique dans les docs", d:"PGI / CRM / e-commerce / RGPD / Big Data ?"},
+      {n:2, t:"Définir l'outil en 1 ligne", d:"Sa fonction principale."},
+      {n:3, t:"Montrer 2-3 bénéfices concrets avec preuves", d:"Lier chaque bénéfice à un doc précis."},
+      {n:4, t:"Si RGPD : identifier obligations + risques", d:"Consentement, droit d'accès, sécurité, notification des violations."}
+    ],
+    mots:["PGI","ERP","CRM","RGPD","données personnelles","e-commerce","base de données","fidélisation"],
+    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Montrez que les technologies numériques permettent à Topschuss d'améliorer sa performance commerciale et opérationnelle."},
+    corrige:`<strong>CRM :</strong><br>Doc 4 → Topschuss utilise un CRM pour centraliser l'historique d'achat de ses clients. Cela permet des offres personnalisées → fidélisation + hausse du panier moyen.<br><br><strong>E-commerce :</strong><br>Doc 3 → site marchand 24h/24 = 28% du CA en N. Réduit la dépendance aux magasins physiques et touche une clientèle nationale.<br><br><strong>RGPD :</strong><br>Doc 5 → Topschuss collecte des données clients (CRM, commandes). Obligations : recueil du consentement explicite, politique de confidentialité, sécurisation des données.<br><br>Ces outils numériques renforcent la performance commerciale (CRM, e-commerce) tout en nécessitant une gestion responsable des données (RGPD).`,
+    alerte:"Décrire l'outil sans montrer son impact sur la performance = réponse incomplète.",
+    astuce:"PGI + CRM + RGPD apparaissent souvent dans le même dossier. Traiter les 3 si les docs le permettent."
+  },
+  diagnostic: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 13", titre:"Réaliser le diagnostic interne / externe",
+    freq:"★★★☆☆ — ~40% des sujets", pts:"~2-3 pts", temps:"≈ 12 min",
+    annales:"Renou Textiles (2024) · TPS (2023) · Caraïbes Fumés (2022)",
+    notions:["diagnostic_ext","competences"],
+    methode:[
+      {n:1, t:"Diagnostic interne : forces et faiblesses", d:"Ressources humaines, financières, technologiques, immatérielles (marque, savoir-faire)."},
+      {n:2, t:"Identifier les compétences distinctives", d:"Rares ? Difficiles à imiter ? Créatrices de valeur ?"},
+      {n:3, t:"Diagnostic externe : opportunités et menaces", d:"PESTEL (macro) et/ou 5 forces de Porter (concurrence)."},
+      {n:4, t:"Synthétiser en SWOT si demandé", d:"Forces/Faiblesses (interne) + Opportunités/Menaces (externe)."}
+    ],
+    mots:["diagnostic interne","diagnostic externe","SWOT","PESTEL","forces","faiblesses","opportunités","menaces"],
+    annale:{src:"Bac STMG MSGN · Polynésie 2024 (Renou Textiles)", q:"Réaliser le diagnostic externe de Renou Textiles et en déduire les facteurs clés de succès."},
+    corrige:`<strong>Diagnostic externe (PESTEL) :</strong><br>— Économique : hausse des coûts des matières premières → menace pour les marges<br>— Socioculturel : engouement pour le made in France → opportunité<br>— Environnemental : sensibilité croissante à l'éco-responsabilité → opportunité<br>— Technologique : e-commerce en forte croissance → opportunité<br><br><strong>Facteurs clés de succès :</strong><br>Qualité (labels EPV, OFG) + fabrication française + innovation (matériaux recyclés) + présence en ligne`,
+    alerte:"PESTEL = environnement GÉNÉRAL (macro). 5 forces Porter = environnement CONCURRENTIEL. Ne pas les confondre.",
+    astuce:"Si la question demande 'diagnostic externe', commencer par le PESTEL. Si elle demande 'pression concurrentielle', utiliser Porter."
+  },
+  financement: {
+    dossier:"Dossier 2 — Finances", type:"TYPE 14", titre:"Justifier les choix de financement",
+    freq:"★★★★☆ — ~50% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Topschuss (2024) · Eyecontact (2024) · Renou (2024) · Caraïbes Fumés (2022)",
+    notions:["financement","frng"],
+    methode:[
+      {n:1, t:"Identifier les sources de financement dans les docs", d:"Autofinancement, emprunt bancaire, augmentation de capital, financement participatif, subventions."},
+      {n:2, t:"Pour chaque source : avantages et inconvénients", d:"Autofinancement = pas de dette MAIS limite la capacité. Emprunt = effet de levier MAIS charges financières."},
+      {n:3, t:"Justifier la pertinence par rapport au projet", d:"Relier le choix de financement au contexte de l'entreprise (taille du projet, situation financière, FRNG)."},
+      {n:4, t:"Proposer des alternatives si demandé", d:"Toujours proposer au moins 2 sources complémentaires."}
+    ],
+    mots:["autofinancement","emprunt","augmentation de capital","CAF","financement participatif","crowdfunding"],
+    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Repérer et justifier la pertinence du choix de financement de Topschuss pour son développement."},
+    corrige:`<strong>Augmentation de capital (10M€) :</strong><br>Doc 9 → Topschuss a levé 10 millions d'euros auprès d'investisseurs. Ce mode de financement renforce les capitaux propres sans créer de dette. Il améliore le FRNG et la capacité d'emprunt future.<br><br><strong>Pertinence :</strong> Un emprunt bancaire de ce montant aurait alourdi les charges financières et fragilisé la trésorerie dans un contexte de forte croissance (CA visé de 100M€). L'augmentation de capital est cohérente avec un projet de développement ambitieux.`,
+    alerte:"Ne jamais se limiter à lister les sources. Toujours JUSTIFIER pourquoi ce choix est adapté au contexte.",
+    astuce:"Relier le financement au FRNG : si l'augmentation de capital augmente les ressources stables → le FRNG s'améliore → plus de marge de sécurité."
+  },
+  production: {
+    dossier:"Dossier 2 — GRH", type:"TYPE 15", titre:"Identifier le mode de production / flux",
+    freq:"★★★★☆ — ~50% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Ankama (2023) · TPS (2023) · Beyer (2023) · Fromagerie Réo (2021)",
+    notions:["production_n"],
+    methode:[
+      {n:1, t:"Identifier le mode de production", d:"Artisanal / en série / en continu. Justifier avec les docs."},
+      {n:2, t:"Identifier le mode de gestion des flux", d:"Flux poussés (prévisions → stocks) ou flux tirés/tendus (commande → production)."},
+      {n:3, t:"Justifier la pertinence du choix", d:"Lier au type de produit, au marché, aux contraintes de l'entreprise."},
+      {n:4, t:"Comparer si 2 modes coexistent", d:"Certaines entreprises combinent flux poussés ET flux tirés selon les produits."}
+    ],
+    mots:["flux poussés","flux tirés","juste-à-temps","mode de production","artisanal","en série","stocks"],
+    annale:{src:"Bac STMG MSGN · Asie 2023 (TPS)", q:"Identifier le mode de gestion des stocks pour les matières premières destinées à la fabrication des commandes des clients occasionnels et préciser son intérêt."},
+    corrige:`TPS utilise un mode de gestion en <strong>flux tirés</strong> (juste-à-temps) pour les commandes occasionnelles :<br><br>— La production est déclenchée par la commande du client (pas de stock de produits finis)<br>— Intérêt : réduction des coûts de stockage, adaptation à la demande spécifique de chaque client<br>— Pertinence pour TPS : les commandes occasionnelles portent sur des produits sur mesure (dimensions spécifiques) → impossible de stocker à l'avance<br><br>En revanche, pour les clients grands comptes, TPS utilise des <strong>flux poussés</strong> : les matières premières sont achetées par le client lui-même, ce qui réduit le BFR de TPS.`,
+    alerte:"Flux poussés ≠ mauvaise gestion. C'est adapté quand la demande est prévisible (ex : grande distribution). Flux tirés = adapté quand la demande est variable ou sur mesure.",
+    astuce:"Chercher dans les docs : 'sur commande' = flux tirés. 'Prévisions de vente' ou 'stocks' = flux poussés."
+  },
+  gpecq: {
+    dossier:"Dossier 2 — GRH", type:"TYPE 16", titre:"Montrer l'importance de la GPEC",
+    freq:"★★★☆☆ — ~40% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Renou Textiles (2024) · TPS (2023) · Beyer (2023)",
+    notions:["gpec"],
+    methode:[
+      {n:1, t:"Définir la GPEC en 1 ligne", d:"Démarche d'anticipation des besoins en emplois et compétences sur 3-5 ans."},
+      {n:2, t:"Identifier le problème RH dans les docs", d:"Pénurie de compétences ? Nouvelles technologies ? Départs en retraite ? Croissance ?"},
+      {n:3, t:"Présenter les actions GPEC", d:"Formation interne, recrutement, mobilité, reconversion, partenariats écoles."},
+      {n:4, t:"Lier à la performance", d:"La GPEC anticipe → réduit le turnover → maintient les compétences clés → performance durable."}
+    ],
+    mots:["GPEC","GEPP","anticipation","formation","recrutement","mobilité interne","compétences"],
+    annale:{src:"Bac STMG MSGN · Asie 2023 (TPS)", q:"Recenser les principales causes du problème de recrutement des perforateurs et montrer l'importance pour TPS de mettre en place une GPEC."},
+    corrige:`<strong>Causes du problème :</strong><br>— Métier de perforateur peu connu → manque d'attractivité<br>— Compétences rares sur le marché du travail<br>— Départs en retraite anticipés<br><br><strong>Importance de la GPEC :</strong><br>— Anticiper les besoins : identifier les postes critiques à 3-5 ans<br>— Former en interne : transmission du savoir-faire par les seniors aux juniors<br>— Recruter en amont : partenariats avec des écoles techniques<br>— Mobilité interne : reconvertir des salariés vers le métier de perforateur<br><br>Sans GPEC, TPS risque de perdre son savoir-faire unique (compétence distinctive) et donc son avantage concurrentiel.`,
+    alerte:"GPEC ≠ simple recrutement. C'est une démarche PRÉVISIONNELLE sur plusieurs années, pas un recrutement ponctuel.",
+    astuce:"Relier la GPEC aux compétences distinctives : si les compétences clés partent sans être transmises → l'avantage concurrentiel disparaît."
+  },
+  marque_employeur: {
+    dossier:"Dossier 2 — GRH", type:"TYPE 18", titre:"Justifier la marque employeur / QVT",
+    freq:"★★★★☆ — ~40% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Topschuss (2024) · TPS (2023) · Eyecontact (2024)",
+    notions:["motivation"],
+    methode:[
+      {n:1, t:"Définir marque employeur et QVT", d:"Marque employeur = image en tant qu'employeur. QVT = conditions physiques, psychologiques, organisationnelles du travail."},
+      {n:2, t:"Identifier les actions concrètes dans les docs", d:"Formations, locaux, horaires flexibles, télétravail, événements, avantages sociaux..."},
+      {n:3, t:"Lier à l'attractivité et la fidélisation", d:"Ces actions attirent les talents (recrutement) et réduisent le turnover (fidélisation)."},
+      {n:4, t:"Conclure sur la performance globale", d:"Marque employeur forte → meilleure productivité, moins de coûts de recrutement, image positive."}
+    ],
+    mots:["marque employeur","QVT","QVCT","attractivité","fidélisation","turnover","bien-être au travail","engagement"],
+    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Justifier l'intérêt de la marque employeur pour répondre aux besoins de recrutement de Topschuss."},
+    corrige:`La <strong>marque employeur</strong> est l'image d'une organisation en tant qu'employeur, construite à travers ses pratiques RH et sa culture.<br><br><strong>Chez Topschuss :</strong><br>— Doc 7 (site de recrutement) : Topschuss met en avant ses valeurs (passion outdoor, esprit d'équipe) et ses avantages (locaux modernes, crèche, salle de sport) pour attirer des candidats.<br>— Doc 6 : le nouveau siège social à Annecy est conçu pour le bien-être → QVT renforcée.<br><br><strong>Intérêt :</strong><br>Dans un secteur concurrentiel où les profils experts outdoor sont rares, la marque employeur permet de se différencier des autres recruteurs. Elle attire des profils qualifiés qui partagent les valeurs de l'entreprise → meilleure adéquation poste/candidat → réduction du turnover → économies sur les coûts de recrutement.`,
+    alerte:"Marque employeur ≠ communication externe vers les clients. C'est l'image auprès des CANDIDATS et des SALARIÉS.",
+    astuce:"Lier toujours marque employeur + QVT + GPEC : ce sont les 3 leviers RH qui se renforcent mutuellement."
+  },
+  mercatique: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 19", titre:"Identifier l'approche mercatique (SCP + 4P)",
+    freq:"★★★★☆ — ~50% des sujets", pts:"~2-3 pts", temps:"≈ 12 min",
+    annales:"Eyecontact (2024) · Renou (2024) · Beyer (2023) · Fromagerie Réo (2021)",
+    notions:["mercatique_n"],
+    methode:[
+      {n:1, t:"Identifier la segmentation", d:"Comment l'entreprise découpe son marché ? Critères : géographiques, socio-démo, comportementaux."},
+      {n:2, t:"Identifier le ciblage", d:"Quel(s) segment(s) l'entreprise vise ? B2B, B2C, niche, masse ?"},
+      {n:3, t:"Identifier le positionnement", d:"Comment l'entreprise veut être perçue par rapport aux concurrents ? Premium, accessible, artisanal, innovant ?"},
+      {n:4, t:"Si demandé : présenter le mix 4P", d:"Produit (gamme, qualité) · Prix (premium/pénétration) · Place (distribution) · Promotion (communication)."},
+      {n:5, t:"Lier au comportement consommateur si demandé", d:"Freins (prix, méfiance), motivations (santé, éco-responsabilité), attitudes."}
+    ],
+    mots:["segmentation","ciblage","positionnement","mix marketing","4P","comportement consommateur","freins","motivations"],
+    annale:{src:"Bac STMG MSGN · Polynésie 2024 (Renou Textiles)", q:"Identifier l'approche mercatique choisie par l'entreprise Renou Textiles pour leur marque Maison Renou et justifier votre réponse."},
+    corrige:`<strong>Segmentation :</strong><br>Renou Textiles segmente son marché en 2 catégories : les professionnels du textile (B2B, 95% du CA) et les particuliers (B2C, via la marque Maison Renou).<br><br><strong>Ciblage :</strong><br>Pour Maison Renou, l'entreprise cible les particuliers sensibles au made in France, à la qualité artisanale et à l'éco-responsabilité (matériaux recyclés).<br><br><strong>Positionnement :</strong><br>Positionnement premium artisanal : "la chaussette 100% made in France, fabriquée en Haute-Vienne depuis 1938". Les labels EPV et Origine France Garantie renforcent ce positionnement de qualité et d'authenticité.<br><br><strong>Mix marketing :</strong><br>— Produit : chaussettes haut de gamme, coton recyclé, design tendance<br>— Prix : premium (justifié par la fabrication française)<br>— Place : e-commerce (vente en ligne nationale) + boutiques locales<br>— Promotion : réseaux sociaux, storytelling familial`,
+    alerte:"SCP = Segmentation → Ciblage → Positionnement. Les 3 vont TOUJOURS ensemble. Ne jamais présenter l'un sans les autres.",
+    astuce:"Chercher dans les docs : 'nos clients sont...' = ciblage. 'Nous nous positionnons comme...' = positionnement. 'Notre gamme...' = produit (4P)."
+  },
+  communication: {
+    dossier:"Dossier 3 — RSE & SI", type:"TYPE 17", titre:"Analyser la communication / relation client",
+    freq:"★★★☆☆ — ~25% des sujets", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"Beyer (2023) · Fromagerie Réo (2021)",
+    notions:["communication_n","pgi"],
+    methode:[
+      {n:1, t:"Identifier les modalités de communication utilisées", d:"Publicité, réseaux sociaux, site web, newsletter, relations presse, événements."},
+      {n:2, t:"Pour chaque modalité : objectif + cible", d:"Notoriété ? Fidélisation ? Acquisition ? Vers les clients B2B ou B2C ?"},
+      {n:3, t:"Justifier la pertinence", d:"Pourquoi ce mix de communication est adapté au positionnement et à la cible de l'entreprise."},
+      {n:4, t:"Lier au numérique si pertinent", d:"E-commerce, CRM, réseaux sociaux = outils de relation client."}
+    ],
+    mots:["communication","relation client","réseaux sociaux","e-commerce","fidélisation","notoriété","CRM"],
+    annale:{src:"Bac STMG MSGN · Liban 2023 (Beyer)", q:"Repérer les différentes modalités de communication mobilisées par l'entreprise Beyer et justifier la pertinence de chacune d'entre elles pour soutenir le lancement de la nouvelle gamme."},
+    corrige:`<strong>Site e-commerce :</strong> vente en ligne directe → touche une clientèle nationale au-delà de la zone de distribution traditionnelle. Pertinent pour une PME alsacienne qui veut élargir sa couverture géographique.<br><br><strong>Page Facebook :</strong> publications régulières sur les produits et l'histoire familiale → crée une communauté, humanise la marque. Pertinent pour le positionnement artisanal et authentique de Beyer.<br><br><strong>Avis clients :</strong> Doc 8 et 12 → témoignages positifs visibles en ligne → crédibilité et réassurance pour les nouveaux clients. Pertinent car les "Fruits à tartiner" sont un produit innovant que les consommateurs ne connaissent pas encore.`,
+    alerte:"Lister les outils sans justifier leur pertinence par rapport à la stratégie = réponse incomplète.",
+    astuce:"Chaque outil de communication doit être relié à un OBJECTIF (notoriété, fidélisation, conversion) et une CIBLE (B2B, B2C, prescripteurs)."
+  },
+  synthese: {
+    dossier:"Transversal", type:"SYNTHÈSE", titre:"Rédiger la synthèse (~15 lignes)",
+    freq:"★★★★★ — Présente dans TOUS les sujets (8/8)", pts:"~4-6 pts", temps:"≈ 20 min",
+    annales:"TOUS les sujets depuis 2021. Sujets variés : RSE (2x), numérique (3x), marque employeur (1x), QVT (1x), innovation (1x), performance sociale (1x)",
+    notions:["rse","performance","pgi","gpec"],
+    methode:[
+      {n:1, t:"Lire la question : identifier les 2-3 thèmes demandés", d:"⚠️ Ce n'est PAS toujours la RSE ! Ça peut être : numérique, QVT, marque employeur, innovation..."},
+      {n:2, t:"Faire un plan en 3 parties", d:"Si RSE → 3 piliers (éco/social/enviro). Si numérique → 3 impacts. Si QVT → 3 dimensions."},
+      {n:3, t:"Rédiger une intro de 2 lignes", d:"Reformuler la question + annoncer le plan."},
+      {n:4, t:"Développer chaque partie : Argument → Preuve → Lien performance", d:"👨‍🏫 Méthode attendue : 1) un ARGUMENT (idée), 2) une PREUVE (« d'après le document n°X... »), 3) un LIEN avec la performance (économique, sociale ou environnementale). Pas de liste à puces — des phrases rédigées."},
+      {n:5, t:"Conclure en 2 lignes : synthèse + ouverture", d:"Montrer que les éléments se renforcent mutuellement."}
+    ],
+    mots:["performance globale","RSE","valeur perçue","marque employeur","QVT","innovation","numérique","avantage concurrentiel"],
+    annale:{src:"Les 8 sujets de synthèse tombés au Bac (2021-2025)", q:`<div style="font-size:12px;line-height:1.8;margin-top:8px">
+<strong style="color:#b5415a">① Réo 2021 (D3) :</strong> En quoi le numérique peut contribuer à l'amélioration de la performance<br>
+<span style="color:#7a6a58;font-size:11px">→ Notions clés : PGI, e-commerce, CRM, performance commerciale, performance opérationnelle</span><br>
+<strong style="color:#b5415a">② Caraïbes 2022 (D2) :</strong> La performance sociale est une préoccupation OU Les outils numériques au service de la performance commerciale<br>
+<span style="color:#7a6a58;font-size:11px">→ Notions clés : QVT, turnover, conditions de travail, performance sociale / OU CRM, e-commerce, fidélisation</span><br>
+<strong style="color:#b5415a">③ Ankama 2023 (D3) :</strong> Les outils numériques de communication influencent l'identité des organisations<br>
+<span style="color:#7a6a58;font-size:11px">→ Notions clés : identité numérique, réseaux sociaux, communauté, culture organisationnelle, marque</span><br>
+<strong style="color:#b5415a">④ TPS 2023 (D2) :</strong> La marque employeur participe à la performance globale<br>
+<span style="color:#7a6a58;font-size:11px">→ Notions clés : marque employeur, recrutement, fidélisation salariés, performance sociale, performance économique</span><br>
+<strong style="color:#b5415a">⑤ Beyer 2023 (D2) :</strong> Une innovation peut contribuer à améliorer la valeur perçue<br>
+<span style="color:#7a6a58;font-size:11px">→ Notions clés : innovation produit, valeur perçue, différenciation, avantage concurrentiel, positionnement</span><br>
+<strong style="color:#b5415a">⑥ Topschuss 2024 (D2) :</strong> La QVT peut contribuer à la performance globale<br>
+<span style="color:#7a6a58;font-size:11px">→ Notions clés : QVT/QVCT, performance sociale, marque employeur, engagement, productivité</span><br>
+<strong style="color:#b5415a">⑦ Eyecontact 2024 (D3) :</strong> Les technologies du numérique sont sources d'opportunités mais aussi de risques<br>
+<span style="color:#7a6a58;font-size:11px">→ Notions clés : numérique, opportunités (productivité, innovation), risques (emploi, données, dépendance)</span><br>
+<strong style="color:#b5415a">⑧ Renou 2024 (D2) :</strong> La démarche RSE peut être créatrice de valeur<br>
+<span style="color:#7a6a58;font-size:11px">→ Notions clés : RSE, 3 piliers, performance globale, avantage concurrentiel, fidélisation, image</span>
+</div>`},
+    corrige:`<div style="border-bottom:2px solid #ddd8cc;padding-bottom:16px;margin-bottom:16px"><strong style="color:#b5415a">EXEMPLE 1 — Topschuss 2024 : La QVT contribue à la performance globale</strong><br><br><strong>Intro :</strong> La QVT désigne les conditions dans lesquelles les salariés exercent leur activité. Elle peut constituer un levier de performance.<br><br><strong>1. Performance sociale :</strong> Topschuss a investi dans un siège pensé pour le bien-être (espaces ouverts, crèche). Ces aménagements réduisent l'absentéisme et le turnover.<br><br><strong>2. Performance économique :</strong> La QVT renforce la marque employeur : Topschuss attire des experts outdoor dans un secteur concurrentiel. La stabilité réduit les coûts de recrutement.<br><br><strong>3. Image :</strong> En communiquant sur sa QVT, Topschuss renforce son image d'employeur responsable, ce qui rejaillit sur la marque commerciale.<br><br><strong>Conclusion :</strong> Performance sociale et économique se renforcent mutuellement.</div>
+
+<div style="border-bottom:2px solid #ddd8cc;padding-bottom:16px;margin-bottom:16px"><strong style="color:#b5415a">EXEMPLE 2 — Renou 2024 : La RSE peut être créatrice de valeur</strong><br><br><strong>Intro :</strong> La RSE est l'engagement volontaire d'une entreprise à intégrer des préoccupations sociales et environnementales au-delà de ses obligations légales.<br><br><strong>1. Pilier économique :</strong> Renou Textiles utilise des matériaux recyclés, ce qui réduit les coûts de matières premières et attire une clientèle sensible au made in France → hausse du CA.<br><br><strong>2. Pilier social :</strong> L'entreprise familiale maintient son site de production en Haute-Vienne, créant de l'emploi local. La GPEC anticipe les besoins en compétences → performance sociale.<br><br><strong>3. Pilier environnemental :</strong> Le recyclage de coton pour fabriquer des chaussettes réduit l'empreinte écologique. Les labels EPV et OFG renforcent la crédibilité de l'engagement.<br><br><strong>Conclusion :</strong> La RSE de Renou n'est pas un coût mais un avantage concurrentiel qui crée de la valeur sur les 3 dimensions.</div>
+
+<div style="border-bottom:2px solid #ddd8cc;padding-bottom:16px;margin-bottom:16px"><strong style="color:#b5415a">EXEMPLE 3 — Eyecontact 2024 : Le numérique = opportunités ET risques</strong><br><br><strong>Intro :</strong> Les technologies numériques transforment les organisations. Elles sont sources d'opportunités mais présentent aussi des risques qu'il faut anticiper.<br><br><strong>1. Opportunités pour l'organisation :</strong> Eyecontact utilise la réalité augmentée et l'IA pour proposer un essayage virtuel de lunettes. Cette innovation crée un avantage concurrentiel majeur (120M d'essayages/an) et ouvre de nouveaux marchés à l'international.<br><br><strong>2. Opportunités pour les salariés :</strong> Le numérique crée de nouveaux métiers (développeurs, data analysts). Chez Eyecontact, 70% des salariés travaillent en R&D → montée en compétences et employabilité renforcée.<br><br><strong>3. Risques :</strong> Dépendance technologique (obsolescence rapide des technologies), cybersécurité (protection des données clients → RGPD), et risques pour l'emploi (automatisation de certaines tâches). Pour les salariés : charge mentale liée au tout-numérique, droit à la déconnexion.<br><br><strong>Conclusion :</strong> Le numérique est un levier de croissance à condition d'en maîtriser les risques par une gestion responsable et anticipatrice.</div>
+
+<div><strong style="color:#b5415a">EXEMPLE 4 — TPS 2023 : La marque employeur participe à la performance globale</strong><br><br><strong>Intro :</strong> La marque employeur est l'image d'une organisation en tant qu'employeur. Elle vise à attirer et fidéliser les talents dans un marché du travail tendu.<br><br><strong>1. Attirer les compétences rares :</strong> TPS souffre d'un manque de notoriété sur le marché du travail. En développant sa marque employeur (communication RH, présence sur les réseaux), l'entreprise se rend visible auprès des profils qualifiés de perforateurs, compétences rares et difficiles à trouver.<br><br><strong>2. Fidéliser les salariés :</strong> La marque employeur se construit aussi en interne : formations, QVT, management participatif (style de direction de M. Prissette). Un salarié qui se sent valorisé reste plus longtemps → réduction du turnover et des coûts de recrutement.<br><br><strong>3. Impact sur la performance globale :</strong> Performance sociale (turnover bas, engagement élevé) + Performance économique (productivité maintenue, transmission du savoir-faire) + Image de marque (les clients perçoivent une entreprise stable et experte).<br><br><strong>Conclusion :</strong> La marque employeur de TPS montre que l'investissement RH est un choix stratégique qui renforce la performance globale sur les 3 dimensions.</div>`,
+    alerte:"Répondre en liste à puces = perte de points. C'est une RÉDACTION : phrases complètes, connecteurs logiques, intro et conclusion obligatoires. Le sujet de synthèse n'est PAS toujours sur la RSE — il peut porter sur le numérique, la QVT, l'innovation ou la marque employeur.",
+    astuce:"Structure gagnante : 1 intro (2 lignes) + 3 paragraphes développés + 1 conclusion (2 lignes) = 15 lignes. Chaque paragraphe = 1 argument + 1 preuve tirée des docs + 1 lien avec la performance. Les 8 sujets tombés montrent 3 grands thèmes récurrents : RSE/performance (2x), numérique/opportunités-risques (3x), GRH/marque employeur/QVT (3x)."
   }
 };
 
-/* --- LOGIQUE DE RENDU --- */
+// ═══════════════ RENDER ═══════════════
 function show(id, el) {
-  const q = Q[id];
   document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
-  el.classList.add('active');
-
+  if (el) el.classList.add('active');
+  const q = Q[id];
   document.getElementById('main').innerHTML = `
-    <div class="section">
-      <div class="sec-title rouge">${q.dossier}</div>
+    <div class="q-header">
+      <div class="type-tag">${q.dossier} · ${q.type}</div>
       <h2>${q.titre}</h2>
+      <div class="freq">${q.freq}</div>
     </div>
 
     <div class="section">
-      <div class="sec-title bleu">📚 Notions Clés</div>
+      <div class="sec-title rouge">📚 Notions à connaître</div>
       <div class="pills">
-        ${q.notions.map(nid => `<div class="pill" onclick="openN('${nid}')">${N[nid].titre}</div>`).join('')}
+        ${q.notions.map(nid => `<button class="pill" onclick="openN('${nid}')"><span class="pill-arrow">→</span>${N[nid].titre.split('—')[0].split('+')[0].trim()}</button>`).join('')}
       </div>
     </div>
 
     <div class="section">
-      <div class="sec-title rouge">📐 Méthode du prof</div>
+      <div class="sec-title bleu">⚙️ Méthode attendue</div>
       <div class="steps">
-        ${q.methode.map((m, i) => `<div class="step"><div class="step-n">${i+1}</div><div class="step-body">${m}</div></div>`).join('')}
+        ${q.methode.map(s => `<div class="step"><span style="color:var(--accent);font-weight:800;font-size:13px;margin-top:2px;flex-shrink:0">—</span><div class="step-body"><strong>${s.t}</strong><br><em>${s.d}</em></div></div>`).join('')}
       </div>
-      <div class="prof-tip">
-        <div class="prof-icon">👨‍🏫</div>
-        <div class="prof-content">${q.profTip}</div>
-      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--gris)"><strong>Mots-clés :</strong> ${q.mots.join(' · ')}</div>
     </div>
 
     <div class="section">
-      <div class="sec-title vert">✏️ Application (Annale)</div>
-      <div class="annale-box">${q.annale}</div>
-      <div class="corr-block"><strong>Proposition de correction :</strong><br>${q.corrige}</div>
+      <div class="sec-title vert">✏️ S'entraîner — Question d'annale</div>
+      <div class="annale-box"><span class="annale-source">${q.annale.src}</span>${q.annale.q}</div>
+      <div class="corr-block show">
+        <div class="corr-title">✅ Corrigé</div>
+        ${q.corrige}
+      </div>
+      <div class="alerte"><span class="alerte-i">⚠️</span><span>${q.alerte}</span></div>
+      <div class="astuce"><span class="alerte-i">💡</span><span>${q.astuce}</span></div>
     </div>
   `;
 }
+
+
+
+// Notions financières qui gardent le SVG
+const FINANCE_IDS = ['frng','bfr','tn','va','rex','couts','seuil','caf','financement'];
 
 function openN(id) {
   const n = N[id];
+  const isFinance = FINANCE_IDS.includes(id);
+  const svgHtml = (isFinance && n.svg) ? `<div style="text-align:center;margin-top:12px">${n.svg}</div>` : '';
   document.getElementById('modal-body').innerHTML = `
-    <h3 style="margin-bottom:10px">${n.titre}</h3>
-    <div class="fiche-body">
-      <div>
-        <div class="fb-label">Définition</div>
-        <p style="font-size:14px">${n.def}</p>
+    <div class="modal-tag">${n.tag}</div>
+    <h3>${n.titre}</h3>
+    <div class="freq-pill">${n.freq}</div>
+    <div class="fiche-body" style="margin-top:14px">
+      <div class="fb fb-def">
+        <div class="fb-label">📖 Définition</div>
+        ${n.def}
       </div>
-      <div>
-        <div class="fb-label">À retenir</div>
-        <p style="font-size:13px; white-space:pre-line">${n.form}</p>
+      <div class="fb fb-retenir">
+        <div class="fb-label">📋 À retenir</div>
+        ${n.form.replace(/\n/g,'<br>')}
+      </div>
+      <div class="fb fb-exemple">
+        <div class="fb-label">💡 Exemple bac</div>
+        ${n.ex}
+      </div>
+      <div class="fb fb-piege">
+        <div class="fb-label">⚠ Piège</div>
+        ${n.conf}
       </div>
     </div>
-    <div style="margin-top:20px; padding:10px; background:#f7f4ee; border-radius:8px; font-size:13px">
-      <strong>⚠️ Point de vigilance :</strong> ${n.conf}
-    </div>
+    ${svgHtml}
   `;
   document.getElementById('overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
 }
 
-function closeModal() { document.getElementById('overlay').classList.remove('show'); }
-function toggleGroup(el) { 
-  el.nextElementSibling.classList.toggle('open'); 
-  el.querySelector('.group-arrow').classList.toggle('open');
+function closeModal() {
+  document.getElementById('overlay').classList.remove('show');
+  document.body.style.overflow = '';
 }
-function switchMode(mode) { alert("Le mode " + mode + " est activé dans la sidebar."); }
-function closeIfOut(e) { if(e.target.id === 'overlay') closeModal(); }
+
+function closeIfOut(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
+
+function toggleGroup(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.group-arrow');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+// ═══════════════ SWITCH MODE (questions / synthèse / fiches) ═══════════════
+function switchMode(mode) {
+  // 1. Mettre à jour le lien actif dans la sous-nav
+  document.querySelectorAll('.nav-rubriques a').forEach(a => a.classList.remove('active'));
+  const links = document.querySelectorAll('.nav-rubriques a');
+  if (mode === 'fiches') links[0].classList.add('active');
+  if (mode === 'questions') links[1].classList.add('active');
+  if (mode === 'synthese') links[2].classList.add('active');
+
+  // 2. Afficher la bonne sidebar
+  document.getElementById('sidebar-questions').style.display = mode === 'questions' ? 'block' : 'none';
+  document.getElementById('sidebar-synthese').style.display = mode === 'synthese' ? 'block' : 'none';
+  document.getElementById('sidebar-fiches').style.display = mode === 'fiches' ? 'block' : 'none';
+
+  // 2b. Replier tous les accordéons au changement de mode
+  document.querySelectorAll('.group-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.group-arrow').forEach(a => a.classList.remove('open'));
+
+  // 3. Reset le panneau principal
+  document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
+  if (mode === 'fiches') {
+    showFicheHome();
+  } else {
+    document.getElementById('main').innerHTML = `
+      <div class="placeholder">
+        <div class="big">${mode === 'questions' ? '📚' : '✍️'}</div>
+        <h3>${mode === 'questions' ? 'Choisis une question à gauche' : 'Choisis un sujet de synthèse'}</h3>
+      </div>`;
+  }
+}
+
+function showFicheHome() {
+  document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('main').innerHTML = `
+    <div style="padding:40px 28px;max-width:700px">
+      <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px">📝 Fiches mémo MSGN</h2>
+      <p style="color:var(--gris);font-size:13px;margin-bottom:24px">3 dossiers · 33 notions · Tout retenir pour le Bac · <a href="print-fiches-memo.html" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none">🖨️ Version imprimable</a></p>
+      <div style="background:#fdeef1;border-left:5px solid #e8526b;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
+        <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 1 — Stratégie</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <div onclick="showFiche('d1','q1',document.querySelector('#sidebar-fiches .q-item'))" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🔍</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où je suis ?</div><div style="font-size:10px;color:#7a6a58">5 notions · Analyser</div></div>
+          <div style="align-self:center;color:#a09880;font-size:16px">→</div>
+          <div onclick="showFiche('d1','q2',document.querySelectorAll('#sidebar-fiches .q-item')[1])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🧭</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où veux-je aller ?</div><div style="font-size:10px;color:#7a6a58">3 notions · Décider</div></div>
+          <div style="align-self:center;color:#a09880;font-size:16px">→</div>
+          <div onclick="showFiche('d1','q3',document.querySelectorAll('#sidebar-fiches .q-item')[2])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🛤️</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Comment j'y vais ?</div><div style="font-size:10px;color:#7a6a58">3 notions · Agir</div></div>
+        </div>
+        <div style="font-size:11px;color:#7a6a58">11 notions · Parties prenantes · Compétences · Stratégie · Mercatique</div>
+      </div>
+      <div style="background:#e8f3ff;border-left:5px solid #3a82c8;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
+        <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 2 — Finances & GRH</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <div onclick="showFiche('d2','fin',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">💰</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance financière</div><div style="font-size:10px;color:#7a6a58">7 notions</div></div>
+          <div onclick="showFiche('d2','soc',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">👥</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance sociale</div><div style="font-size:10px;color:#7a6a58">5 notions</div></div>
+          <div onclick="showFiche('d2','ope',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">⚙️</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance opérationnelle</div><div style="font-size:10px;color:#7a6a58">2 notions</div></div>
+        </div>
+        <div style="font-size:11px;color:#7a6a58">15 notions · VA · FRNG · Likert · Maslow · GPEC · Flux</div>
+      </div>
+      <div style="background:#eaf8ef;border-left:5px solid #1a7a3c;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
+        <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 3 — RSE & Numérique</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <div onclick="showFiche('d3','num',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">💻</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes outils</div><div style="font-size:10px;color:#7a6a58">4 notions · Numérique</div></div>
+          <div style="align-self:center;color:#a09880;font-size:16px">→</div>
+          <div onclick="showFiche('d3','rse',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🌿</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes valeurs</div><div style="font-size:10px;color:#7a6a58">3 notions · RSE</div></div>
+        </div>
+        <div style="font-size:11px;color:#7a6a58">7 notions · PGI · CRM · RGPD · RSE · 3 piliers</div>
+      </div>
+    </div>`;
+}
+
+// ═══════════════ SYNTHÈSE ═══════════════
+const SYNTH = [
+  {titre:"Numérique et performance · Réo (2021)", theme:"Numérique",
+   question:"En quoi le numérique peut contribuer à l'amélioration de la performance de la fromagerie Réo ?",
+   attendu:"Performance = résultats mesurables. Montrer comment chaque outil numérique améliore un indicateur concret.",
+   notions:["PGI","e-commerce","CRM","performance commerciale","performance opérationnelle"],
+   corrige:`<strong>Intro :</strong> Le numérique transforme les modes de production et de commercialisation. Chez Réo, il contribue à la performance sur plusieurs dimensions.<br><br><strong>1. Performance commerciale :</strong> Le site e-commerce permet à Réo de toucher une clientèle nationale au-delà de la Bretagne. Le CRM centralise les données clients pour personnaliser les offres → fidélisation.<br><br><strong>2. Performance opérationnelle :</strong> Le PGI intègre tous les processus (production, stocks, commandes) dans une base unique → réduction des erreurs, gain de temps, traçabilité des produits AOP.<br><br><strong>3. Image et notoriété :</strong> La présence en ligne et les avis clients renforcent l'e-réputation de la fromagerie artisanale → différenciation face aux industriels.<br><br><strong>Conclusion :</strong> Le numérique est un levier de performance globale pour Réo, à condition de maîtriser les risques (RGPD, cybersécurité).`},
+  {titre:"Performance sociale · Caraïbes Fumés (2022)", theme:"QVT / Numérique",
+   question:"Montrez que la performance sociale est une préoccupation de Caraïbes Fumés. OU Les outils numériques au service de la performance commerciale.",
+   attendu:"Performance sociale = bien-être des salariés mesurable (turnover, absentéisme, conditions). Montrer les actions concrètes ET leurs résultats.",
+   notions:["QVT","turnover","conditions de travail","CRM","e-commerce","fidélisation"],
+   corrige:`<strong>Version performance sociale :</strong><br><br><strong>Intro :</strong> La performance sociale mesure la capacité de l'entreprise à satisfaire ses salariés et à maintenir un climat social positif.<br><br><strong>1. Conditions de travail :</strong> Caraïbes Fumés a modernisé ses ateliers de transformation → amélioration des conditions physiques de travail pour les opérateurs.<br><br><strong>2. Formation :</strong> Plan de formation pour accompagner la montée en gamme → développement des compétences, besoin d'estime (Maslow niveau 4).<br><br><strong>3. Résultats :</strong> Turnover en baisse, absentéisme réduit → la performance sociale renforce la performance économique (productivité, qualité).<br><br><strong>Conclusion :</strong> La performance sociale est un investissement, pas un coût.`},
+  {titre:"Numérique et identité · Ankama (2023)", theme:"Numérique",
+   question:"Montrez que les outils numériques de communication influencent l'identité des organisations.",
+   attendu:"Identité = image perçue + culture + valeurs. Distinguer identité maîtrisée (ce qu'on publie) et identité subie (ce que les autres disent).",
+   notions:["identité numérique","réseaux sociaux","communauté","culture organisationnelle"],
+   corrige:`<strong>Intro :</strong> L'identité d'une organisation se construit à travers ses valeurs, sa culture et son image. Les outils numériques influencent cette identité de manière croissante.<br><br><strong>1. Construction de l'identité :</strong> Ankama utilise les réseaux sociaux pour diffuser son univers Krosmoz → la communauté de fans devient partie intégrante de l'identité du studio.<br><br><strong>2. Identité maîtrisée vs subie :</strong> Les contenus publiés (site, réseaux officiels) construisent l'identité voulue. Mais les avis, articles et discussions échappent au contrôle → identité subie.<br><br><strong>3. Impact sur la culture :</strong> La communauté en ligne crée un sentiment d'appartenance qui dépasse les murs de l'entreprise → la culture organisationnelle se prolonge dans l'espace numérique.<br><br><strong>Conclusion :</strong> Le numérique est un amplificateur d'identité — positif si maîtrisé, risqué sinon.`},
+  {titre:"Marque employeur · TPS (2023)", theme:"Marque employeur",
+   question:"Montrez que la marque employeur participe à la performance globale de TPS.",
+   attendu:"Marque employeur = image auprès des candidats ET salariés. Montrer comment elle attire (recrutement) et garde (fidélisation) → impact sur la performance globale.",
+   notions:["marque employeur","recrutement","fidélisation","performance sociale","performance économique"],
+   corrige:`<strong>Intro :</strong> La marque employeur est l'image d'une organisation en tant qu'employeur. Elle vise à attirer et fidéliser les talents.<br><br><strong>1. Attirer les compétences rares :</strong> TPS souffre d'un manque de notoriété. En développant sa marque employeur (communication RH, présence réseaux), l'entreprise se rend visible auprès des profils qualifiés de perforateurs.<br><br><strong>2. Fidéliser les salariés :</strong> Formations, QVT, management participatif → un salarié valorisé reste plus longtemps → réduction du turnover et des coûts de recrutement.<br><br><strong>3. Performance globale :</strong> Performance sociale (turnover bas) + économique (productivité maintenue) + image (clients perçoivent stabilité et expertise).<br><br><strong>Conclusion :</strong> La marque employeur est un choix stratégique qui renforce la performance sur les 3 dimensions.`},
+  {titre:"Innovation et valeur perçue · Beyer (2023)", theme:"Innovation",
+   question:"Montrez qu'une innovation peut contribuer à améliorer la valeur perçue par le client.",
+   attendu:"Valeur perçue = bénéfices attendus − sacrifices consentis (prix, effort). Montrer comment l'innovation augmente les bénéfices perçus.",
+   notions:["innovation produit","valeur perçue","différenciation","positionnement"],
+   corrige:`<strong>Intro :</strong> La valeur perçue est la différence entre les bénéfices attendus par le client et les sacrifices consentis (prix, effort). L'innovation peut la renforcer.<br><br><strong>1. Innovation produit :</strong> Beyer lance les "Fruits à tartiner", un produit innovant qui se distingue de la confiture classique → nouveau segment, curiosité du consommateur.<br><br><strong>2. Valeur perçue renforcée :</strong> L'innovation crée une perception de qualité supérieure : ingrédients artisanaux, fabrication locale, packaging premium → le client accepte un prix plus élevé.<br><br><strong>3. Différenciation durable :</strong> L'innovation protège des concurrents low-cost car elle crée un positionnement unique difficile à copier → avantage concurrentiel.<br><br><strong>Conclusion :</strong> L'innovation est un levier de valeur perçue qui renforce le positionnement et la compétitivité.`},
+  {titre:"QVT et performance · Topschuss (2024)", theme:"QVT",
+   question:"Montrez que la QVT peut contribuer à la performance globale de Topschuss.",
+   attendu:"QVT = conditions physiques, psychologiques, organisationnelles du travail. Performance globale = 3 piliers (éco/social/enviro). Lier les deux.",
+   notions:["QVT","QVCT","performance sociale","marque employeur","engagement","productivité"],
+   corrige:`<strong>Intro :</strong> La QVT désigne les conditions dans lesquelles les salariés exercent leur activité. Elle peut constituer un levier de performance.<br><br><strong>1. Performance sociale :</strong> Topschuss a investi dans un siège pensé pour le bien-être (espaces ouverts, crèche). Ces aménagements réduisent l'absentéisme et le turnover.<br><br><strong>2. Performance économique :</strong> La QVT renforce la marque employeur : Topschuss attire des experts outdoor dans un secteur concurrentiel. La stabilité réduit les coûts de recrutement.<br><br><strong>3. Image :</strong> En communiquant sur sa QVT, Topschuss renforce son image d'employeur responsable, ce qui rejaillit sur la marque commerciale.<br><br><strong>Conclusion :</strong> Performance sociale et économique se renforcent mutuellement.`},
+  {titre:"Opportunités et risques · Eyecontact (2024)", theme:"Numérique",
+   question:"Montrez que les technologies du numérique sont sources d'opportunités mais aussi de risques.",
+   attendu:"Le sujet attend les DEUX faces : opportunités (productivité, innovation, nouveaux marchés) ET risques (emploi, données, dépendance). Ne traiter qu'un seul côté = incomplet.",
+   notions:["numérique","opportunités","productivité","innovation","risques","emploi","données"],
+   corrige:`<strong>Intro :</strong> Les technologies numériques transforment les organisations. Elles sont sources d'opportunités mais présentent aussi des risques.<br><br><strong>1. Opportunités pour l'organisation :</strong> Eyecontact utilise la réalité augmentée et l'IA pour un essayage virtuel de lunettes → avantage concurrentiel majeur (120M d'essayages/an), nouveaux marchés internationaux.<br><br><strong>2. Opportunités pour les salariés :</strong> Le numérique crée de nouveaux métiers (développeurs, data analysts). Chez Eyecontact, 70% des salariés travaillent en R&D → montée en compétences.<br><br><strong>3. Risques :</strong> Dépendance technologique, cybersécurité (RGPD), risques pour l'emploi (automatisation), charge mentale liée au tout-numérique.<br><br><strong>Conclusion :</strong> Le numérique est un levier de croissance à condition d'en maîtriser les risques.`},
+  {titre:"RSE créatrice de valeur · Renou (2024)", theme:"RSE",
+   question:"Montrez que la démarche RSE peut être créatrice de valeur pour Renou Textiles.",
+   attendu:"RSE = volontaire, au-delà de la loi. Valeur = pas seulement financière. Structurer en 3 piliers (éco/social/enviro) et montrer que chacun crée de la valeur.",
+   notions:["RSE","3 piliers","performance globale","avantage concurrentiel","fidélisation"],
+   corrige:`<strong>Intro :</strong> La RSE est l'engagement volontaire d'une entreprise à intégrer des préoccupations sociales et environnementales au-delà de ses obligations légales.<br><br><strong>1. Pilier économique :</strong> Renou utilise des matériaux recyclés → réduit les coûts de matières premières et attire une clientèle sensible au made in France → hausse du CA.<br><br><strong>2. Pilier social :</strong> L'entreprise maintient son site en Haute-Vienne, créant de l'emploi local. La GPEC anticipe les besoins en compétences → performance sociale.<br><br><strong>3. Pilier environnemental :</strong> Le recyclage de coton réduit l'empreinte écologique. Les labels EPV et OFG renforcent la crédibilité de l'engagement.<br><br><strong>Conclusion :</strong> La RSE de Renou n'est pas un coût mais un avantage concurrentiel qui crée de la valeur sur les 3 dimensions.`}
+];
+
+function showSynthMethode(el) {
+  document.querySelectorAll('#sidebar-synthese .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const q = Q.synthese;
+  document.getElementById('main').innerHTML = `
+    <div class="q-header">
+      <div class="type-tag">SYNTHÈSE · 4-6 PTS · ~20 MIN</div>
+      <h2>Méthode de la synthèse 15 lignes</h2>
+      <div class="freq">${q.freq}</div>
+    </div>
+    <div class="section">
+      <div class="sec-title bleu">⚙️ Méthode en 5 étapes</div>
+      <div class="steps">
+        ${q.methode.map(s => `<div class="step"><div class="step-n">${s.n}</div><div class="step-body"><strong>${s.t}</strong><br><em>${s.d}</em></div></div>`).join('')}
+      </div>
+    </div>
+    <div class="section">
+      <div class="sec-title rouge">⚠️ Erreur classique</div>
+      <div class="alerte"><span class="alerte-i">⚠️</span><span>${q.alerte}</span></div>
+    </div>`;
+}
+
+function showSynthSujet(idx, el) {
+  document.querySelectorAll('#sidebar-synthese .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const s = SYNTH[idx];
+  // Mapping notions texte → ID dans N pour rendre cliquables
+  const notionMap = {'PGI':'pgi','CRM':'pgi','RGPD':'pgi','e-commerce':'pgi','performance commerciale':'performance','performance opérationnelle':'performance','QVT':'gpec','QVCT':'gpec','turnover':'gpec','conditions de travail':'gpec','fidélisation':'gpec','identité numérique':'identite_num','réseaux sociaux':'communication_n','communauté':'communication_n','culture organisationnelle':'culture','marque employeur':'gpec','recrutement':'gpec','performance sociale':'performance','performance économique':'performance','innovation produit':'modele','valeur perçue':'modele','différenciation':'strategies','positionnement':'mercatique_n','engagement':'motivation','productivité':'production_n','numérique':'pgi','opportunités':'pgi','innovation':'modele','risques':'identite_num','emploi':'gpec','données':'pgi','RSE':'rse','3 piliers':'rse','performance globale':'performance','avantage concurrentiel':'competences'};
+  const pills = s.notions.map(n => {
+    const nid = notionMap[n];
+    if (nid && N[nid]) return `<button class="pill" onclick="openN('${nid}')" style="cursor:pointer"><span class="pill-arrow">→</span>${n}</button>`;
+    return `<span class="mot">${n}</span>`;
+  }).join('');
+  document.getElementById('main').innerHTML = `
+    <div class="q-header">
+      <div class="type-tag">SYNTHÈSE · ${s.theme}</div>
+      <h2>${s.titre}</h2>
+    </div>
+    <div class="section">
+      <div class="sec-title bleu">📝 Question posée</div>
+      <div class="annale-box"><em>${s.question}</em></div>
+      <div style="margin-top:12px;background:#fef8e2;border:1px solid #f0d070;border-radius:8px;padding:10px 14px;font-size:13px;line-height:1.5">
+        <strong style="color:#946e00">🎯 Ce qu'on attend :</strong> ${s.attendu}
+      </div>
+      <div style="margin-top:12px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px">📚 Notions clés</div>
+        <div class="mots">${pills}</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="sec-title vert">✅ Corrigé type</div>
+      <div style="font-size:13.5px;line-height:1.7">${s.corrige}</div>
+    </div>`;
+}
+
+// ═══════════════ FICHES MÉMO ═══════════════
+const FICHES = {
+  'd1-q1': {icon:'🔍', label:'Question 1', title:'Où je suis ? — Le diagnostic', color:'#b5415a', notions:['parties','modele','competences','diagnostic_ext','decision']},
+  'd1-q2': {icon:'🧭', label:'Question 2', title:'Où veux-je aller ? — La décision', color:'#2a69a8', notions:['strategies','das','ess']},
+  'd1-q3': {icon:'🛤️', label:'Question 3', title:"Comment j'y vais ? — L'action", color:'#1a7a3c', notions:['mercatique_n','croissance','integration']},
+  'd2-fin': {icon:'💰', label:'Levier 1', title:'Performance financière — L\'entreprise est-elle solide ?', color:'#2a69a8', notions:['va','rex','couts','frng','bfr','tn','financement','caf','seuil']},
+  'd2-soc': {icon:'👥', label:'Levier 2', title:'Performance sociale — Les équipes sont-elles engagées ?', color:'#b5415a', notions:['likert','culture','motivation','gpec']},
+  'd2-ope': {icon:'⚙️', label:'Levier 3', title:'Performance opérationnelle — La production est-elle efficace ?', color:'#946e00', notions:['production_n','mintzberg']},
+  'd3-num': {icon:'💻', label:'Étape 1', title:'Mes outils — Le numérique au service de la performance', color:'#2a69a8', notions:['si_fonctions','pgi','communication_n','identite_num']},
+  'd3-rse': {icon:'🌿', label:'Étape 2', title:'Mes valeurs — RSE & performance globale', color:'#1a7a3c', notions:['rse','performance','ethique']}
+};
+
+function buildFicheCard(n) {
+  const freq = n.freq || '';
+  return `<div class="fiche">
+    <div class="fiche-header" onclick="this.parentElement.classList.toggle('fiche-open')" style="cursor:pointer">
+      <span class="fiche-title">${n.titre}</span>
+      <span class="fiche-freq">${freq}</span>
+      <span class="fiche-arrow">▶</span>
+    </div>
+    <div class="fiche-body-wrap">
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          ${n.def}
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          ${n.form.replace(/\n/g,'<br>')}
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          ${n.ex}
+        </div>
+        <div class="fb fb-piege">
+          <div class="fb-label">⚠ Piège</div>
+          ${n.conf}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+const DOSSIER_COLORS = {d1:{bg:'#fdeef1',border:'#e8526b'}, d2:{bg:'#e8f3ff',border:'#3a82c8'}, d3:{bg:'#eaf8ef',border:'#1a7a3c'}};
+
+function showFiche(dossier, section, el) {
+  document.querySelectorAll('#sidebar-fiches .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const sec = FICHES[dossier + '-' + section];
+  if (!sec) return;
+  const dc = DOSSIER_COLORS[dossier];
+  let html = `<div style="border-left:5px solid ${dc.border};background:${dc.bg};border-radius:0 12px 12px 0;padding:16px 20px;margin-bottom:18px">
+    <div class="fiche-sec-head" style="margin-bottom:0">
+      <div class="fiche-sec-icon">${sec.icon}</div>
+      <div>
+        <div class="fiche-sec-label" style="color:${dc.border}">${sec.label}</div>
+        <div class="fiche-sec-title">${sec.title}</div>
+      </div>
+    </div>
+  </div>`;
+  sec.notions.forEach(nid => {
+    const n = N[nid];
+    if (n) html += buildFicheCard(n);
+  });
+  document.getElementById('main').innerHTML = html;
+}
+
+// ═══════════════ CHECKLISTS RÉASSURANCE ═══════════════
+const CHECKLISTS = {
+  d1: [
+    "Distinguer <strong>PP internes / externes</strong> et nommer leurs attentes contradictoires.",
+    "Identifier une <strong>compétence distinctive</strong> avec les 3 critères (rare, imitable, valeur).",
+    "Réaliser un <strong>PESTEL</strong> à 6 dimensions et conclure sur les opportunités/menaces.",
+    "Nommer la <strong>stratégie globale</strong> (spé/diversif) en comptant les DAS.",
+    "Nommer la <strong>stratégie de domaine</strong> (coûts / diff / focalisation) avec preuves.",
+    "Dérouler <strong>SCP + mix 4P</strong> à partir d'un cas concret."
+  ],
+  d2: [
+    "Calculer <strong>VA</strong> et <strong>Rex</strong> puis interpréter l'évolution N / N-1.",
+    "Calculer <strong>FRNG, BFR, TN</strong> et vérifier que TN = FRNG − BFR.",
+    "Calculer un <strong>coût de revient</strong> et un <strong>taux de marge</strong> avec les bonnes formules.",
+    "Identifier le <strong>style de direction</strong> (Likert) avec 2-3 preuves documentaires.",
+    "Relier une pratique RH à <strong>Maslow (niveau)</strong> ou <strong>Herzberg (facteur)</strong>.",
+    "Distinguer <strong>GPEC</strong> (anticipation) et <strong>marque employeur</strong> (attractivité).",
+    "Identifier <strong>flux poussés vs tendus</strong> à partir des docs et justifier la pertinence.",
+    "Expliquer en quoi les 3 leviers convergent vers la <strong>performance globale</strong>."
+  ],
+  d3: [
+    "Expliquer les rôles du <strong>PGI</strong>, <strong>CRM</strong> et <strong>RGPD</strong> avec leur impact sur la performance.",
+    "Relier chaque outil de communication à un <strong>objectif</strong> (notoriété, fidélisation, conversion).",
+    "Définir la RSE comme un engagement <strong>volontaire</strong> et la structurer en <strong>3 piliers</strong>.",
+    "Distinguer <strong>RSE</strong> (volontaire) et <strong>RGPD</strong> (obligatoire).",
+    "Rédiger une <strong>synthèse structurée en 3 parties</strong> avec intro + preuves documentaires.",
+    "Adapter le plan de synthèse au <strong>sujet réel</strong> (pas toujours les 3 piliers RSE)."
+  ]
+};
+
+function showChecklist(dossier, el) {
+  document.querySelectorAll('#sidebar-fiches .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const items = CHECKLISTS[dossier];
+  const titres = {d1:'Dossier 1 — Stratégie', d2:'Dossier 2 — Finances & GRH', d3:'Dossier 3 — RSE & Numérique'};
+  document.getElementById('main').innerHTML = `
+    <div style="padding:8px 0">
+      <div class="fiche-sec-head">
+        <div class="fiche-sec-icon">✨</div>
+        <div>
+          <div class="fiche-sec-label" style="color:var(--vert)">Auto-évaluation</div>
+          <div class="fiche-sec-title">Tu maîtrises ${titres[dossier]} si tu sais…</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+        ${items.map((t,i) => `
+          <div style="background:#f8f5ef;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px">
+            <div style="background:var(--jaune);color:var(--texte);width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0;font-family:'Nunito',sans-serif">${i+1}</div>
+            <div style="font-size:12.5px;font-weight:600;line-height:1.4">${t}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+// Charger Fiches mémo par défaut au démarrage
+switchMode('fiches');
 </script>
-
 </body>
 </html>
