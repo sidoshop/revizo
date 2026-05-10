@@ -240,11 +240,12 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
     <div class="inode inode-root">
       <div class="inode-label">Indicateurs <span class="freq">★★★★☆</span></div>
       <div class="inode-h">Mesurer l'emploi et le chômage</div>
-      <div class="inode-def">La <strong>population active</strong> = ceux qui travaillent + ceux qui cherchent. Le <strong>taux de chômage</strong> = (chômeurs / pop. active) × 100 — attention au dénominateur, c'est la pop. ACTIVE, pas totale. Le <strong>taux d'emploi</strong> mesure la part des 15-64 ans qui travaillent effectivement. Le <strong>taux de variation</strong> sert à commenter les évolutions.</div>
+      <div class="inode-def">La <strong>population active</strong> = ceux qui travaillent + ceux qui cherchent. Le <strong>taux de chômage</strong> = (chômeurs / pop. active) × 100 — attention au dénominateur, c'est la pop. ACTIVE, pas totale. Le <strong>taux d'emploi</strong> mesure la part des 15-64 ans qui travaillent effectivement. Mais ces chiffres ne disent PAS tout : le <strong>halo du chômage</strong> compte les personnes qui VOUDRAIENT travailler mais ne sont pas comptées comme chômeurs (découragées, ou non disponibles immédiatement).</div>
       <div class="tree-sub" style="justify-content:center">
         <span class="tree-chip chip-rose" data-tip="pop_active">Population active</span>
         <span class="tree-chip chip-rose" data-tip="taux_chomage">Taux de chômage</span>
         <span class="tree-chip chip-rose" data-tip="taux_emploi">Taux d'emploi</span>
+        <span class="tree-chip chip-violet" data-tip="halo_chomage">Halo du chômage</span>
         <span class="tree-chip chip-gris" data-tip="taux_variation_t7">Taux de variation</span>
       </div>
     </div>
@@ -283,6 +284,17 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
           <span class="tree-chip chip-violet" data-tip="conjoncturel">Conjoncturel</span>
           <span class="tree-chip chip-violet" data-tip="structurel">Structurel</span>
           <span class="tree-chip chip-violet" data-tip="frictionnel">Frictionnel</span>
+        </div>
+
+        <!-- Enfant : Transformations de l'emploi -->
+        <div class="inode-child">
+          <div class="inode-label">Transformations structurelles <span class="freq">★★★☆☆</span></div>
+          <div class="inode-h">Numérique & mondialisation</div>
+          <div class="inode-def">Deux forces bousculent l'emploi aujourd'hui. Le <strong>numérique</strong> (IA, robotisation) DÉTRUIT des emplois peu qualifiés mais en CRÉE d'autres (data, cybersécurité). La <strong>mondialisation</strong> délocalise la production industrielle mais renforce les emplois qualifiés (ingénierie, R&D).</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-violet" data-tip="numerique_emploi">Numérique</span>
+            <span class="tree-chip chip-violet" data-tip="mondialisation_emploi">Mondialisation</span>
+          </div>
         </div>
       </div>
     </div>
@@ -354,6 +366,10 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
     <div class="confuse-row">
       <span class="confuse-icon">⚠️</span>
       <span class="confuse-text"><strong>Taux de chômage</strong> = chômeurs / pop. ACTIVE (pas pop. totale)</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Chômeur (BIT)</strong> = sans emploi + recherche active ≠ <strong>Halo du chômage</strong> = veut travailler mais ne cherche plus (découragement)</span>
     </div>
   </div>
 
@@ -470,6 +486,24 @@ const TIPS = {
     def: "Formule : (Actifs occupés / Population en âge de travailler) × 100. Mesure la proportion de personnes en âge de travailler qui ont effectivement un emploi. Complémentaire du taux de chômage.",
     ex: "Un taux d'emploi de 68% signifie que 68% des 15-64 ans ont un emploi. Les 32% restants incluent les chômeurs, les étudiants, les retraités anticipés, etc.",
     bac: "★★★☆☆"
+  },
+  halo_chomage: {
+    term: "Halo du chômage",
+    def: "Personnes qui SOUHAITERAIENT travailler mais qui ne sont PAS comptées comme chômeurs au sens du BIT. Elles ne cherchent pas activement (découragement) ou ne sont pas disponibles immédiatement (formation, problème de santé). Le taux de chômage officiel sous-estime donc le vrai 'sous-emploi'.",
+    ex: "Une mère de famille qui voudrait travailler mais a arrêté de chercher par découragement après 2 ans de refus = halo. Elle n'apparaît pas dans le taux de chômage, mais elle est bien dans le halo. En France, le halo représente environ 2 millions de personnes.",
+    bac: "★★★☆☆ — Notion BONUS sur une copie : montre que tu nuances la mesure du chômage"
+  },
+  numerique_emploi: {
+    term: "Numérique et emploi",
+    def: "Le numérique (IA, robotisation, automatisation) transforme profondément l'emploi. Il DÉTRUIT des emplois routiniers et peu qualifiés (caissiers, opérateurs). Il CRÉE des emplois qualifiés (développeurs, data scientists, cybersécurité). Résultat : polarisation du marché du travail (emplois très qualifiés + emplois de service peu qualifiés, milieu qui disparaît).",
+    ex: "Les caisses automatiques en supermarché remplacent les caissières. Mais Amazon recrute massivement des ingénieurs logistique et des data scientists. Le CAP comptabilité perd son sens — les logiciels font le travail.",
+    bac: "★★★☆☆ — Mobilisé dans les sujets d'argumentation sur les politiques d'emploi"
+  },
+  mondialisation_emploi: {
+    term: "Mondialisation et emploi",
+    def: "La mondialisation a un effet AMBIGU sur l'emploi. D'un côté : délocalisations qui détruisent des emplois industriels dans les pays développés (textile, sidérurgie). De l'autre : renforcement des emplois qualifiés (R&D, marketing, finance) et création d'emplois à l'exportation (Airbus, LVMH).",
+    ex: "La France a perdu 2 millions d'emplois industriels depuis 1980, en partie à cause des délocalisations. Mais Airbus emploie 130 000 personnes en France grâce aux exportations mondiales.",
+    bac: "★★★☆☆ — Pont avec le Thème 8 (commerce international) — à mobiliser en argumentation"
   },
   conjoncturel: {
     term: "Chômage conjoncturel",

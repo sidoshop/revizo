@@ -396,6 +396,7 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
         <span class="tree-chip chip-violet" data-tip="bienpublic">Biens publics</span>
         <span class="tree-chip chip-violet" data-tip="biencommun">Biens communs</span>
         <span class="tree-chip chip-violet" data-tip="concurrence">Concurrence imparfaite</span>
+        <span class="tree-chip chip-violet" data-tip="politique_concurrence">Politique de la concurrence</span>
       </div>
     </div>
   </div>
@@ -457,9 +458,10 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
         <div class="inode-child">
           <div class="inode-label">Financement <span class="freq">★★★★☆</span></div>
           <div class="inode-h">Dépenses → Recettes → Déficit → Dette</div>
-          <div class="inode-def">Financé par les <strong>prélèvements obligatoires</strong> (impôts + cotisations, ~45% du PIB). Si dépenses > recettes = <strong>déficit public</strong> (flux annuel). Accumulation des déficits = <strong>dette publique</strong> (stock).</div>
+          <div class="inode-def">Financé par les <strong>prélèvements obligatoires</strong> (impôts + cotisations, ~45% du PIB). Les <strong>dépenses publiques</strong> financent AUSSI l'investissement (infrastructures, recherche, éducation), pas que les prestations sociales. Si dépenses > recettes = <strong>déficit public</strong> (flux annuel). Accumulation des déficits = <strong>dette publique</strong> (stock).</div>
           <div class="tree-sub">
             <span class="tree-chip chip-jaune" data-tip="po">Prélèvements obligatoires</span>
+            <span class="tree-chip chip-jaune" data-tip="depenses_publiques">Dépenses publiques</span>
             <span class="tree-chip chip-jaune" data-tip="deficit">Déficit public</span>
             <span class="tree-chip chip-jaune" data-tip="dette">Dette publique</span>
           </div>
@@ -554,6 +556,10 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
     <div class="confuse-row">
       <span class="confuse-icon">⚠️</span>
       <span class="confuse-text"><strong>Politique de demande</strong> = relancer la conso ≠ <strong>Politique d'offre</strong> = aider les entreprises</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Dépenses publiques</strong> ≠ prestations sociales uniquement — elles financent AUSSI l'investissement (infrastructures, recherche)</span>
     </div>
   </div>
 
@@ -681,6 +687,18 @@ const TIPS = {
     def: "Situation où les conditions de la concurrence parfaite ne sont pas réunies : un ou quelques acteurs dominent le marché (monopole, oligopole), faussant les prix et les quantités.",
     ex: "Un monopole : la SNCF sur le réseau ferré français (avant l'ouverture à la concurrence). Un oligopole : les 4 opérateurs téléphoniques en France.",
     bac: "★☆☆☆☆ — Rarement testé seul, mais utile pour justifier l'intervention de l'État"
+  },
+  politique_concurrence: {
+    term: "Politique de la concurrence",
+    def: "L'État n'intervient pas que par le budget : il surveille aussi le bon fonctionnement des marchés via des autorités indépendantes. En France, l'Autorité de la concurrence sanctionne les ENTENTES (accords secrets entre entreprises pour fixer les prix) et les ABUS DE POSITION DOMINANTE (quand une entreprise puissante écrase ses concurrents). C'est le complément direct à la notion de 'concurrence imparfaite'.",
+    ex: "En 2020, Apple a été condamné à 1,1 milliard d'euros par l'Autorité de la concurrence française pour entente sur les prix avec ses distributeurs. Google a été sanctionné plusieurs fois par la Commission européenne pour abus de position dominante.",
+    bac: "★★☆☆☆ — Point souvent oublié : élargit la notion 'intervention de l'État' au-delà du budget"
+  },
+  depenses_publiques: {
+    term: "Dépenses publiques",
+    def: "Ensemble des dépenses de l'État et des administrations publiques. ATTENTION : elles ne se limitent PAS aux prestations sociales (retraites, santé, RSA). Elles financent aussi l'INVESTISSEMENT public : infrastructures (routes, hôpitaux, écoles), recherche, défense, éducation. Cet investissement public soutient la croissance à long terme.",
+    ex: "Le plan France 2030 (54 milliards EUR) finance la recherche, l'hydrogène vert, le nucléaire. Ce sont des dépenses publiques d'investissement — pas des aides sociales, mais un pari sur la croissance future.",
+    bac: "★★★☆☆ — Nuance attendue dans les copies : dépenses ≠ redistribution uniquement"
   },
   po: {
     term: "Prélèvements obligatoires",

@@ -1122,10 +1122,19 @@ body {
 
 <script>
 if (window.location.search.includes('embed=1')) {
-  document.querySelectorAll('.nav1,.nav2').forEach(n => n.style.display='none');
+  document.querySelectorAll('.nav1,.nav2,.mantra,.qnav,.checklist,.footer').forEach(n => n.style.display='none');
   document.querySelector('.page').style.marginTop='0';
   document.querySelector('.page').style.borderRadius='0';
   document.querySelector('.page').style.boxShadow='none';
+  const hash = window.location.hash.replace('#','');
+  if (hash) {
+    document.querySelectorAll('.section').forEach(s => s.classList.add('collapsed'));
+    const target = document.getElementById(hash);
+    if (target) {
+      target.classList.remove('collapsed');
+      setTimeout(() => target.scrollIntoView({block:'start'}), 100);
+    }
+  }
 }
 function toggleSection(el) {
   if (event.target.closest('a, .fiche, .piege')) return;

@@ -227,6 +227,7 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
         <span class="tree-chip chip-jaune" data-tip="internationalisation">Internationalisation</span>
         <span class="tree-chip chip-jaune" data-tip="fmn">FMN</span>
         <span class="tree-chip chip-jaune" data-tip="dit">DIT</span>
+        <span class="tree-chip chip-jaune" data-tip="dipp">DIPP</span>
       </div>
     </div>
   </div>
@@ -281,6 +282,17 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
           <span class="tree-chip chip-vert" data-tip="avantage_comparatif">Avantage comparatif</span>
         </div>
         <div class="inode-ex">Ex. : le marché unique européen — 0 droits de douane entre 27 pays</div>
+
+        <!-- Enfant : Compétitivité (concept pivot) -->
+        <div class="inode-child">
+          <div class="inode-label">Concept pivot <span class="freq">★★★★☆</span></div>
+          <div class="inode-h">La compétitivité</div>
+          <div class="inode-def">Pour survivre dans le libre-échange, une entreprise ou un pays doit être <strong>compétitif</strong>. Deux leviers : la <strong>compétitivité-prix</strong> (produire MOINS CHER — baisse des coûts salariaux, productivité) et la <strong>compétitivité hors-prix</strong> (produire MIEUX — qualité, innovation, image de marque, design). Un sujet sur le libre-échange mobilise PRESQUE TOUJOURS ces deux notions.</div>
+          <div class="tree-sub">
+            <span class="tree-chip chip-vert" data-tip="competitivite_prix">Compétitivité-prix</span>
+            <span class="tree-chip chip-vert" data-tip="competitivite_horsprix">Compétitivité hors-prix</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -363,6 +375,14 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
     <div class="confuse-row">
       <span class="confuse-icon">⚠️</span>
       <span class="confuse-text"><strong>Balance excédentaire</strong> = on EXPORTE plus ≠ <strong>Balance déficitaire</strong> = on IMPORTE plus</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>DIT</strong> = un PAYS se spécialise dans un PRODUIT ≠ <strong>DIPP</strong> = chaque ÉTAPE d'un produit se fait dans un pays différent</span>
+    </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">⚠️</span>
+      <span class="confuse-text"><strong>Compétitivité-prix</strong> = vendre moins cher (coûts) ≠ <strong>Compétitivité hors-prix</strong> = vendre même plus cher (qualité, marque, innovation)</span>
     </div>
   </div>
 
@@ -461,6 +481,24 @@ const TIPS = {
     def: "Répartition de la production entre les pays selon leurs avantages : chaque pays se spécialise dans ce qu'il produit le mieux (ou le moins mal). C'est la base théorique du libre-échange.",
     ex: "La Chine se spécialise dans l'assemblage électronique (main-d'œuvre abondante), l'Allemagne dans les machines-outils (haute technologie), le Brésil dans l'agriculture (terres fertiles).",
     bac: "★★☆☆☆"
+  },
+  dipp: {
+    term: "DIPP (Décomposition Internationale des Processus de Production)",
+    def: "Évolution récente de la DIT : ce n'est plus un PAYS qui se spécialise dans un PRODUIT, mais chaque ÉTAPE de production d'un produit qui se fait dans un pays différent. Un même produit est fabriqué dans 5, 10, 20 pays. C'est la réalité des chaînes de valeur mondiales.",
+    ex: "Un iPhone : design aux USA, puces en Corée du Sud et Taïwan, écran au Japon, assemblage en Chine, logistique aux Pays-Bas. Une voiture Renault Clio : moteur en Espagne, boîte de vitesses en Roumanie, assemblage final en Turquie.",
+    bac: "★★★☆☆ — Notion TENDANCE dans les sujets récents — distingue bien un pays (DIT) d'un produit (DIPP)"
+  },
+  competitivite_prix: {
+    term: "Compétitivité-prix",
+    def: "Capacité à vendre à un PRIX plus bas que les concurrents. Les leviers : baisse des coûts (salariaux, énergétiques), gains de productivité, allègements de charges, taux de change favorable. C'est la forme la plus visible de la compétitivité.",
+    ex: "Les produits chinois inondent le marché mondial grâce à des coûts salariaux très bas. L'Allemagne a regagné en compétitivité-prix dans les années 2000 grâce aux réformes Hartz (modération salariale).",
+    bac: "★★★★☆ — Toujours à distinguer de la compétitivité hors-prix dans une argumentation"
+  },
+  competitivite_horsprix: {
+    term: "Compétitivité hors-prix",
+    def: "Capacité à vendre MÊME si ton prix est plus élevé, grâce à des atouts non-monétaires : qualité, innovation, design, image de marque, fiabilité, service après-vente, délais. C'est la stratégie des pays/entreprises qui ne peuvent pas gagner la guerre des prix.",
+    ex: "Une voiture allemande (BMW, Mercedes) coûte plus cher qu'une voiture coréenne, mais se vend bien grâce à l'image de qualité. Le luxe français (LVMH, Chanel) : on ne vend pas par le prix, on vend par la marque. Airbus : avions compétitifs par l'innovation technique.",
+    bac: "★★★★☆ — Argument clé pour un pays développé : on ne peut PAS gagner sur les prix face à la Chine, donc on mise sur le hors-prix"
   },
   libre_echange: {
     term: "Libre-échange",

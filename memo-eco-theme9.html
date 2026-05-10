@@ -226,6 +226,7 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
         <span class="tree-chip chip-vert" data-tip="croissance">Croissance économique</span>
         <span class="tree-chip chip-vert" data-tip="pib">PIB</span>
         <span class="tree-chip chip-vert" data-tip="limites_pib">Limites du PIB</span>
+        <span class="tree-chip chip-bleu" data-tip="idh">IDH (alternative)</span>
         <span class="tree-chip chip-jaune" data-tip="taux_variation_t9">Taux de variation</span>
       </div>
     </div>
@@ -238,11 +239,12 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
     <div class="inode inode-root">
       <div class="inode-label">Le problème <span class="freq">★★☆☆☆</span></div>
       <div class="inode-h">Croissance vs Environnement</div>
-      <div class="inode-def">La croissance crée des <strong>externalités négatives</strong> environnementales (pollution, CO2, épuisement des ressources — le marché n'intègre pas ces coûts). Elle consomme le <strong>capital naturel</strong> (eau, forêts, biodiversité). La question : peut-on concilier performance économique et préservation de la planète ? C'est l'enjeu de la <strong>transition écologique</strong>.</div>
+      <div class="inode-def">La croissance crée des <strong>externalités négatives</strong> environnementales (pollution, CO2, épuisement des ressources — le marché n'intègre pas ces coûts). Elle consomme le <strong>capital naturel</strong> (eau, forêts, biodiversité). La question : peut-on concilier performance économique et préservation de la planète ? C'est l'enjeu de la <strong>transition écologique</strong>, que l'État pilote avec trois outils : <strong>taxes</strong>, <strong>normes</strong> et <strong>incitations</strong> (bonus/malus).</div>
       <div class="tree-sub" style="justify-content:center">
         <span class="tree-chip chip-rose" data-tip="externalites_neg">Externalités négatives</span>
         <span class="tree-chip chip-rose" data-tip="capital_naturel">Capital naturel</span>
         <span class="tree-chip chip-rose" data-tip="transition">Transition écologique</span>
+        <span class="tree-chip chip-vert" data-tip="bonus_malus">Bonus/malus</span>
       </div>
     </div>
   </div>
@@ -322,6 +324,10 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
       <span class="confuse-icon">&#9888;&#65039;</span>
       <span class="confuse-text"><strong>Soutenabilité faible</strong> (optimiste : la techno compensera) &#8800; <strong>Soutenabilité forte</strong> (prudent : certaines ressources sont irremplaçables)</span>
     </div>
+    <div class="confuse-row">
+      <span class="confuse-icon">&#9888;&#65039;</span>
+      <span class="confuse-text"><strong>PIB</strong> = mesure QUANTITATIVE (richesse produite) &#8800; <strong>IDH</strong> = mesure QUALITATIVE (santé + éducation + revenu)</span>
+    </div>
   </div>
 
   <!-- Moyens mnémotechniques -->
@@ -382,6 +388,18 @@ const TIPS = {
     def: "Le PIB ne mesure pas : les in\u00e9galit\u00e9s (un pays peut \u00eatre riche en moyenne mais tr\u00e8s in\u00e9gal), le bien-\u00eatre (stress, pollution), l'\u00e9conomie informelle (travail au noir, b\u00e9n\u00e9volat), les d\u00e9g\u00e2ts environnementaux. Il peut m\u00eame augmenter gr\u00e2ce \u00e0 des activit\u00e9s n\u00e9gatives (reconstruction apr\u00e8s une catastrophe).",
     ex: "Un accident de voiture fait monter le PIB (r\u00e9parations, soins m\u00e9dicaux, assurance), mais personne ne dirait que c'est positif pour la soci\u00e9t\u00e9.",
     bac: "\u2605\u2605\u2734\u2734\u2734 \u2014 Sujet d'argumentation possible : 'Le PIB permet-il de mesurer la richesse ?' (2022 M\u00e9tropole)"
+  },
+  idh: {
+    term: "IDH (Indicateur de D\u00e9veloppement Humain)",
+    def: "Alternative au PIB cr\u00e9\u00e9e par le PNUD (ONU) en 1990. Combine TROIS dimensions pour mesurer le d\u00e9veloppement d'un pays : 1. SANT\u00c9 (esp\u00e9rance de vie \u00e0 la naissance), 2. \u00c9DUCATION (dur\u00e9e de scolarisation), 3. REVENU (RNB par habitant). R\u00e9sultat entre 0 et 1. C'est LA r\u00e9ponse standard attendue au Bac quand on te demande une alternative au PIB.",
+    ex: "La Norv\u00e8ge a un IDH de 0,96 (tr\u00e8s \u00e9lev\u00e9) : pays riche + tr\u00e8s bonne sant\u00e9 + tr\u00e8s bonne \u00e9ducation. Un pays du Golfe peut avoir un PIB par habitant tr\u00e8s \u00e9lev\u00e9 mais un IDH plus faible si la scolarisation des femmes est limit\u00e9e.",
+    bac: "\u2605\u2605\u2605\u2734\u2734 \u2014 IMP\u00c9RATIF \u00e0 citer si tu critiques le PIB : sinon ta critique reste incompl\u00e8te"
+  },
+  bonus_malus: {
+    term: "Bonus/malus \u00e9cologique (incitations)",
+    def: "Outil de politique environnementale qui agit sur les prix pour INCITER sans interdire. Le BONUS est une prime versée pour un comportement vertueux (achat d'une voiture électrique). Le MALUS est une surtaxe pour un comportement polluant (achat d'une voiture à forte émission CO2). Compl\u00e9ment aux taxes (fiscalit\u00e9 \u00e9cologique) et aux normes (interdictions).",
+    ex: "En France, acheter une voiture \u00e9lectrique donne un bonus \u00e9cologique jusqu'\u00e0 7 000 EUR. Acheter un SUV tr\u00e8s \u00e9mettant d\u00e9clenche un malus pouvant d\u00e9passer 60 000 EUR. But : orienter les comportements SANS interdire le produit.",
+    bac: "\u2605\u2605\u2734\u2734\u2734 \u2014 Compl\u00e8te la bo\u00eete \u00e0 outils de la transition (taxes + normes + incitations)"
   },
   taux_variation_t9: {
     term: "Taux de variation (rappel 1\u00e8re)",

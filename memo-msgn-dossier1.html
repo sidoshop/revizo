@@ -920,12 +920,22 @@ body {
 </div>
 
 <script>
-// Si embed → cacher nav et ajuster le layout
+// Si embed → cacher nav, ajuster layout, ouvrir la section du hash
 if (window.location.search.includes('embed=1')) {
-  document.querySelectorAll('.nav1,.nav2').forEach(n => n.style.display='none');
+  document.querySelectorAll('.nav1,.nav2,.mantra,.qnav,.checklist,.footer').forEach(n => n.style.display='none');
   document.querySelector('.page').style.marginTop='0';
   document.querySelector('.page').style.borderRadius='0';
   document.querySelector('.page').style.boxShadow='none';
+  // Ouvrir la section ciblée par le hash, fermer les autres
+  const hash = window.location.hash.replace('#','');
+  if (hash) {
+    document.querySelectorAll('.section').forEach(s => s.classList.add('collapsed'));
+    const target = document.getElementById(hash);
+    if (target) {
+      target.classList.remove('collapsed');
+      setTimeout(() => target.scrollIntoView({block:'start'}), 100);
+    }
+  }
 }
 function toggleSection(el) {
   // Ne pas toggler si on clique sur un lien à l'intérieur
