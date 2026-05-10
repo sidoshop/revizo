@@ -181,6 +181,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
   <a href="#" class="active" onclick="switchMode('fiches');return false">Fiches mémo</a>
   <a href="#" onclick="switchMode('questions');return false">Questions du Bac</a>
   <a href="#" onclick="switchMode('synthese');return false">Questions de synthèse</a>
+  <a href="#" onclick="switchMode('decodage');return false">🔑 Décodage</a>
 </nav>
 
 <div class="layout">
@@ -494,6 +495,100 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
       </div>
     </div>
   </div><!-- /sidebar-fiches -->
+
+  <!-- MODE DÉCODAGE -->
+  <div id="sidebar-decodage" style="display:none">
+    <div class="sidebar-intro" style="cursor:pointer" onclick="switchMode('decodage')">🔑 Décodage des verbes</div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this);showDecodageHome()">
+        <span class="group-label" style="color:#2563a8">🔵 Repérage</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showVerb('presenter',this)">
+          <span class="q-name">Présenter / Identifier</span>
+          <div class="q-meta"><span class="q-time">★★★★★ · Court</span></div>
+        </div>
+        <div class="q-item" onclick="showVerb('reperer',this)">
+          <span class="q-name">Repérer</span>
+          <div class="q-meta"><span class="q-time">★★★★☆ · Court</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this);showDecodageHome()">
+        <span class="group-label" style="color:#8a6d00">🟡 Description</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showVerb('caracteriser',this)">
+          <span class="q-name">Caractériser</span>
+          <div class="q-meta"><span class="q-time">★★★★☆ · Moyen</span></div>
+        </div>
+        <div class="q-item" onclick="showVerb('determiner',this)">
+          <span class="q-name">Déterminer</span>
+          <div class="q-meta"><span class="q-time">★★★☆☆ · Moyen</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this);showDecodageHome()">
+        <span class="group-label" style="color:#c45c2e">🟠 Analyse</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showVerb('analyser',this)">
+          <span class="q-name">Analyser</span>
+          <div class="q-meta"><span class="q-time">★★★★★ · Long</span></div>
+        </div>
+        <div class="q-item" onclick="showVerb('expliquer',this)">
+          <span class="q-name">Expliquer</span>
+          <div class="q-meta"><span class="q-time">★★★★☆ · Moyen</span></div>
+        </div>
+        <div class="q-item" onclick="showVerb('montrer',this)">
+          <span class="q-name">Montrer que</span>
+          <div class="q-meta"><span class="q-time">★★★★★ · Long</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this);showDecodageHome()">
+        <span class="group-label" style="color:#b5415a">🔴 Jugement</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showVerb('justifier',this)">
+          <span class="q-name">Justifier</span>
+          <div class="q-meta"><span class="q-time">★★★★★ · Moyen</span></div>
+        </div>
+        <div class="q-item" onclick="showVerb('apprecier',this)">
+          <span class="q-name">Apprécier</span>
+          <div class="q-meta"><span class="q-time">★★★★☆ · Moyen</span></div>
+        </div>
+        <div class="q-item" onclick="showVerb('proposer',this)">
+          <span class="q-name">Proposer</span>
+          <div class="q-meta"><span class="q-time">★★★☆☆ · Moyen</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this);showDecodageHome()">
+        <span class="group-label" style="color:#6d3a8e">🟣 Rédaction 15 lignes</span>
+        <span class="group-arrow">▶</span>
+      </div>
+      <div class="group-body">
+        <div class="q-item" onclick="showVerb('quinzelignes',this)">
+          <span class="q-name">En ~15 lignes, montrer que…</span>
+          <div class="q-meta"><span class="q-time">★★★★★ · Composition</span></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /sidebar-decodage -->
 
 </aside>
 
@@ -1262,7 +1357,7 @@ function toggleGroup(header) {
   arrow.classList.toggle('open');
 }
 
-// ═══════════════ SWITCH MODE (questions / synthèse / fiches) ═══════════════
+// ═══════════════ SWITCH MODE (questions / synthèse / fiches / decodage) ═══════════════
 function switchMode(mode) {
   // 1. Mettre à jour le lien actif dans la sous-nav
   document.querySelectorAll('.nav-rubriques a').forEach(a => a.classList.remove('active'));
@@ -1270,11 +1365,13 @@ function switchMode(mode) {
   if (mode === 'fiches') links[0].classList.add('active');
   if (mode === 'questions') links[1].classList.add('active');
   if (mode === 'synthese') links[2].classList.add('active');
+  if (mode === 'decodage') links[3].classList.add('active');
 
   // 2. Afficher la bonne sidebar
   document.getElementById('sidebar-questions').style.display = mode === 'questions' ? 'block' : 'none';
   document.getElementById('sidebar-synthese').style.display = mode === 'synthese' ? 'block' : 'none';
   document.getElementById('sidebar-fiches').style.display = mode === 'fiches' ? 'block' : 'none';
+  document.getElementById('sidebar-decodage').style.display = mode === 'decodage' ? 'block' : 'none';
 
   // 2b. Replier tous les accordéons au changement de mode
   document.querySelectorAll('.group-body').forEach(b => b.classList.remove('open'));
@@ -1284,6 +1381,8 @@ function switchMode(mode) {
   document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
   if (mode === 'fiches') {
     showFicheHome();
+  } else if (mode === 'decodage') {
+    showDecodageHome();
   } else {
     document.getElementById('main').innerHTML = `
       <div class="placeholder">
@@ -1291,6 +1390,186 @@ function switchMode(mode) {
         <h3>${mode === 'questions' ? 'Choisis une question à gauche' : 'Choisis un sujet de synthèse'}</h3>
       </div>`;
   }
+}
+
+// ═══════════════ DÉCODAGE — DATA + FONCTIONS ═══════════════
+const VERBS = {
+  presenter: {
+    cat:"🔵 Repérage", color:"#2563a8", freq:"★★★★★",
+    nom:"PRÉSENTER / IDENTIFIER",
+    attendu:"Une simple énumération depuis les documents. Pas d'argumentation.",
+    format:"Liste à puces ou tableau, vocabulaire technique précis.",
+    piege:"Ne pas rédiger un paragraphe argumenté → trop, hors-sujet.",
+    ex_src:"Bac 2025 · Bébé Serein · Q 1.1",
+    ex:"« Présenter les finalités » → 3-4 finalités (économique, sociale, sociétale, environnementale) avec une preuve docu pour chacune."
+  },
+  reperer: {
+    cat:"🔵 Repérage", color:"#2563a8", freq:"★★★★☆",
+    nom:"REPÉRER",
+    attendu:"Trouver dans les docs des éléments qui correspondent à une notion donnée.",
+    format:"Citation/preuve + nom de la notion.",
+    piege:"Confondre avec \"Analyser\" → ne pas commenter, juste pointer.",
+    ex_src:"Bac 2025 · Bébé Serein · Q 1.2",
+    ex:"« Repérer les facteurs explicatifs du comportement consommateur » → tu listes besoins / motivations / freins / attitudes en citant les docs, sans interprétation."
+  },
+  caracteriser: {
+    cat:"🟡 Description", color:"#8a6d00", freq:"★★★★☆",
+    nom:"CARACTÉRISER",
+    attendu:"Nommer une notion + donner ses critères distinctifs.",
+    format:"Notion + 2-3 caractéristiques + exemple tiré du doc.",
+    piege:"Juste nommer sans justifier les critères = points perdus.",
+    ex_src:"Bac 2025 · GSP · Q 3.1",
+    ex:"« Caractériser le style de management » → \"Style participatif (Likert) car : 1) délégation, 2) confiance, 3) communication horizontale\" + preuves docs."
+  },
+  determiner: {
+    cat:"🟡 Description", color:"#8a6d00", freq:"★★★☆☆",
+    nom:"DÉTERMINER",
+    attendu:"Faire un choix entre plusieurs options et le motiver.",
+    format:"Option retenue + 2-3 raisons.",
+    piege:"Présenter plusieurs options sans en retenir une = pas de choix.",
+    ex_src:"Bac 2025 · La Dorure · Q 1.4",
+    ex:"« Déterminer l'approche marketing » → tu choisis l'approche (relationnelle, transactionnelle, mercatique mix…) et tu justifies."
+  },
+  analyser: {
+    cat:"🟠 Analyse", color:"#c45c2e", freq:"★★★★★",
+    nom:"ANALYSER",
+    attendu:"Décomposer une situation et relier cause → conséquence.",
+    format:"Plusieurs paragraphes, connecteurs logiques (donc, par conséquent, en effet).",
+    piege:"Énumérer sans relier = pas une analyse.",
+    ex_src:"Bac 2025 · Bébé Serein · Q 2.1",
+    ex:"« Analyser l'équilibre financier » → calcul FRNG/BFR/TN PUIS interprétation contextualisée obligatoire."
+  },
+  expliquer: {
+    cat:"🟠 Analyse", color:"#c45c2e", freq:"★★★★☆",
+    nom:"EXPLIQUER",
+    attendu:"Montrer le mécanisme, le \"comment ça marche\".",
+    format:"Démonstration en étapes (1, 2, 3…).",
+    piege:"Décrire sans montrer la chaîne causale.",
+    ex_src:"Bac 2025 · Clima&Co · Q 1.3",
+    ex:"« Expliquer en quoi B Corp est un avantage concurrentiel » → mécanisme : B Corp → confiance → différenciation → fidélisation → ↑ CA."
+  },
+  montrer: {
+    cat:"🟠 Analyse", color:"#c45c2e", freq:"★★★★★",
+    nom:"MONTRER QUE",
+    attendu:"La conclusion est imposée par l'énoncé, tu dois la prouver.",
+    format:"3-4 arguments enchaînés vers la conclusion attendue.",
+    piege:"Remettre en question la thèse de l'énoncé = catastrophe.",
+    ex_src:"Bac 2025 · Bébé Serein · Q 3.1",
+    ex:"« Montrer que Bébé Serein est engagée dans une démarche éthique » → tu CHERCHES les preuves, tu ne discutes pas la thèse."
+  },
+  justifier: {
+    cat:"🔴 Jugement", color:"#b5415a", freq:"★★★★★",
+    nom:"JUSTIFIER",
+    attendu:"Affirmation + preuves issues des documents.",
+    format:"\"X parce que… ce qui se voit dans le document Y qui dit Z.\"",
+    piege:"Affirmer sans citer les documents.",
+    ex_src:"Bac 2025 · Bébé Serein · Q 2.3",
+    ex:"« Justifier la décision de se positionner sur le lait bio » → décision + preuves financières des questions précédentes."
+  },
+  apprecier: {
+    cat:"🔴 Jugement", color:"#b5415a", freq:"★★★★☆",
+    nom:"APPRÉCIER",
+    attendu:"Évaluer = porter un jugement nuancé (positif ET négatif).",
+    format:"Constat + verdict argumenté (pertinent / partiellement / pas pertinent).",
+    piege:"Juste décrire sans porter de jugement = hors-sujet.",
+    ex_src:"Bac 2025 · La Dorure · Q 3.2",
+    ex:"« Apprécier la pertinence des actions QVT » → \"Pertinentes car… mais limitées car…\""
+  },
+  proposer: {
+    cat:"🔴 Jugement", color:"#b5415a", freq:"★★★☆☆",
+    nom:"PROPOSER",
+    attendu:"Sortir du document, formuler une recommandation argumentée.",
+    format:"Proposition + justification + effet attendu.",
+    piege:"Proposer du flou non chiffré, non actionnable.",
+    ex_src:"Bac 2025 · GSP · Q 2.2",
+    ex:"« Proposer des solutions pour diminuer le BFR » → 2-3 actions concrètes avec leur effet sur le BFR."
+  },
+  quinzelignes: {
+    cat:"🟣 Rédaction 15 lignes", color:"#6d3a8e", freq:"★★★★★",
+    nom:"EN ~15 LIGNES, MONTRER QUE…",
+    attendu:"Composition structurée avec exemples d'<strong>autres organisations</strong>, pas seulement celle du sujet.",
+    format:"• Intro : définition de la notion (2 lignes)<br>• 2 ou 3 axes argumentés avec un exemple d'organisation pour chacun<br>• Conclusion : reprise de la thèse + ouverture",
+    piege:"<strong>Piège 1</strong> : ne pas définir la notion en intro = -2 pts d'office.<br><strong>Piège 2</strong> : utiliser SEULEMENT l'entreprise du sujet = points perdus, le corrigé demande explicitement d'autres organisations.",
+    ex_src:"Orgas à connaître par cœur",
+    ex:"Patagonia, Yuka, Innocent, Décathlon, Carrefour, Veja, MAIF, Michelin, Le Slip Français, Picard, Biocoop."
+  }
+};
+
+function showVerb(id, el) {
+  document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const v = VERBS[id];
+  document.getElementById('main').innerHTML = `
+    <div class="q-header">
+      <div class="type-tag" style="color:${v.color}">${v.cat} · Verbe de consigne</div>
+      <h2>${v.nom}</h2>
+      <div class="freq">${v.freq}</div>
+    </div>
+
+    <div class="section" style="border-left:5px solid ${v.color}">
+      <div class="sec-title" style="color:${v.color}">🎯 Ce qu'on attend vraiment</div>
+      <div style="font-size:14px;line-height:1.6">${v.attendu}</div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title bleu">📝 Format de réponse</div>
+      <div style="font-size:14px;line-height:1.6">${v.format}</div>
+    </div>
+
+    <div class="section" style="background:#fdeef1;border-color:#e8b4bf">
+      <div class="sec-title rouge">⚠️ Piège classique</div>
+      <div style="font-size:14px;line-height:1.6">${v.piege}</div>
+    </div>
+
+    <div class="section" style="background:#f0f7f2;border-color:#b8dfc9">
+      <div class="sec-title vert">📌 Exemple bac</div>
+      <div style="font-size:12px;color:var(--gris);font-weight:700;margin-bottom:6px">${v.ex_src}</div>
+      <div style="font-size:14px;line-height:1.6">${v.ex}</div>
+    </div>
+  `;
+}
+
+function showDecodageHome() {
+  document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('main').innerHTML = `
+    <div style="padding:24px 28px;max-width:780px">
+      <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px;color:#3d1a5c">🔑 Décoder les verbes de consigne</h2>
+      <p style="color:var(--gris);font-size:13px;margin-bottom:18px">Lire la question avant d'y répondre. 70 % du hors-sujet vient d'un verbe mal compris.</p>
+
+      <div style="background:#fef8e2;border-left:4px solid #f5c842;padding:14px 18px;border-radius:8px;margin-bottom:20px;font-family:'Nunito',sans-serif;font-weight:700;color:#7a5800;font-size:14px;line-height:1.55">
+        💡 <strong style="color:#b5415a">Avant chaque question</strong>, fais 3 choses dans cet ordre :<br>
+        1. Repère le verbe de consigne — 2. Identifie la notion à mobiliser — 3. Choisis le bon format.<br>
+        Si tu sautes l'étape 1, tu écris parfaitement… une réponse à côté.
+      </div>
+
+      <h3 style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;margin:18px 0 10px;color:#3d1a5c">📊 Tableau express — repère le verbe en 5 secondes</h3>
+      <div style="background:white;border-radius:10px;overflow:hidden;border:1px solid var(--bordure);font-size:13px;margin-bottom:18px">
+        <table style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr style="background:#3d1a5c;color:white">
+              <th style="padding:8px 12px;text-align:left;font-family:'Nunito',sans-serif;font-size:12px">Si tu lis…</th>
+              <th style="padding:8px 12px;text-align:left;font-family:'Nunito',sans-serif;font-size:12px">Tu dois…</th>
+              <th style="padding:8px 12px;text-align:left;font-family:'Nunito',sans-serif;font-size:12px">Volume</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Présenter / Identifier</td><td style="padding:7px 12px">Énumérer depuis les docs</td><td style="padding:7px 12px;color:#2d7a4f;font-weight:600">Court</td></tr>
+            <tr style="background:#faf7f0"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Repérer</td><td style="padding:7px 12px">Pointer + nommer</td><td style="padding:7px 12px;color:#2d7a4f;font-weight:600">Court</td></tr>
+            <tr><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Caractériser</td><td style="padding:7px 12px">Nommer + critères distinctifs</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
+            <tr style="background:#faf7f0"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Déterminer</td><td style="padding:7px 12px">Choisir + motiver</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
+            <tr><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Analyser</td><td style="padding:7px 12px">Décomposer + relier cause/effet</td><td style="padding:7px 12px;color:#b5415a;font-weight:600">Long</td></tr>
+            <tr style="background:#faf7f0"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Expliquer</td><td style="padding:7px 12px">Démontrer le mécanisme</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
+            <tr><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Montrer que</td><td style="padding:7px 12px">Prouver la thèse donnée</td><td style="padding:7px 12px;color:#b5415a;font-weight:600">Long</td></tr>
+            <tr style="background:#faf7f0"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Justifier</td><td style="padding:7px 12px">Affirmer + preuves doc</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
+            <tr><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Apprécier</td><td style="padding:7px 12px">Évaluer (+ et –)</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
+            <tr style="background:#faf7f0"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Proposer</td><td style="padding:7px 12px">Recommander</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
+            <tr><td style="padding:7px 12px;font-weight:700;color:#6d3a8e">~15 lignes</td><td style="padding:7px 12px">Composition + exemples ext.</td><td style="padding:7px 12px;color:#b5415a;font-weight:600">Long imposé</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="color:var(--gris);font-size:13px;margin-top:14px"><em>👉 Clique sur un verbe à gauche pour voir le détail : attendu, format, piège et exemple bac 2025.</em></p>
+    </div>`;
 }
 
 function showFicheHome() {
