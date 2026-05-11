@@ -483,11 +483,11 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
       <div class="group-body">
         <div class="q-item" onclick="showFiche('d3','num',this)">
           <span class="q-name">Mes outils</span>
-          <div class="q-meta"><span class="q-time">6 notions · Numérique</span></div>
+          <div class="q-meta"><span class="q-time">7 notions · Numérique</span></div>
         </div>
         <div class="q-item" onclick="showFiche('d3','rse',this)">
           <span class="q-name">Mes valeurs</span>
-          <div class="q-meta"><span class="q-time">3 notions · RSE</span></div>
+          <div class="q-meta"><span class="q-time">5 notions · RSE</span></div>
         </div>
         <div class="q-item" onclick="showChecklist('d3',this)" style="border-top:1px solid var(--bordure);margin-top:4px">
           <span class="q-name" style="color:var(--vert)">→ Notions maîtrisées ?</span>
@@ -954,6 +954,30 @@ const N = {
     interp:"Au Bac, montrer comment l'IA répond à un BESOIN PRÉCIS de l'entreprise (gain de temps, personnalisation, prévision). Toujours conclure par 1-2 limites éthiques pour montrer l'esprit critique.",
     ex:"Nouvelle-Calédonie 2025 (GSP) : l'entreprise Medical Tech utilise l'IA pour analyser les besoins des clients du cluster industriel et proposer des solutions personnalisées plus rapidement que la concurrence.",
     conf:"⚠️ L'IA ne remplace pas la décision humaine, elle l'AIDE. Au Bac, ne pas dire 'l'IA décide à la place du dirigeant' — dire plutôt 'l'IA donne au dirigeant des informations plus précises pour décider'."
+  },
+  ecommerce: {
+    tag:"Numérique", titre:"E-commerce", freq:"★★★☆☆ Récurrente",
+    def:"Vente de biens ou services réalisée via Internet (site marchand, application mobile, marketplace). Modèles : B2C (entreprise → particulier), B2B (entre entreprises), C2C (entre particuliers).",
+    form:"📦 LES AVANTAGES :\n→ Disponibilité 24h/24, 7j/7\n→ Audience élargie (national, international)\n→ Coûts de distribution réduits (pas de boutique physique)\n→ Données clients riches (parcours, panier, comportements)\n→ Personnalisation des offres (recommandations)\n→ Mesure précise de la performance (taux de conversion, etc.)\n\n⚠️ LES LIMITES :\n→ Concurrence directe et féroce (comparateurs de prix)\n→ Logistique complexe (livraison, retours)\n→ Cybersécurité et risque RGPD (données clients)\n→ Pas de contact physique (méfiance pour certains produits)\n→ Dépendance technique (site en panne = pertes immédiates)\n→ Impact environnemental (livraisons, emballages, data centers)",
+    interp:"Au Bac, ne jamais opposer e-commerce et boutique physique. Les entreprises adoptent souvent une stratégie OMNICANALE (combinaison des deux). Toujours conclure sur 1-2 limites pour éviter le hors-sujet trop enthousiaste.",
+    ex:"Topschuss (2024) : 28% du CA réalisé en e-commerce. Permet de toucher la clientèle nationale sans multiplier les magasins physiques.",
+    conf:"⚠️ E-commerce ≠ simple site web. Un site vitrine n'est PAS de l'e-commerce. L'e-commerce implique une transaction (achat en ligne)."
+  },
+  valeurs: {
+    tag:"RSE", titre:"Les 5 types de valeurs créées", freq:"★★★★☆ Récurrente",
+    def:"Une organisation peut créer plusieurs FORMES de valeur, pas seulement de l'argent. Au Bac, on attend les 5 dimensions ci-dessous, surtout dans les questions de synthèse 15 lignes.",
+    form:"📋 LES 5 TYPES DE VALEURS :\n\n1️⃣ VALEUR FINANCIÈRE\n→ Profit, dividendes, patrimoine\n→ Indicateur : résultat net, capitalisation\n→ Bénéficiaires : actionnaires, dirigeants\n\n2️⃣ VALEUR AJOUTÉE (VA)\n→ Richesse créée = CA − consommations intermédiaires\n→ Partagée entre 5 acteurs : salariés, État, banques, actionnaires, entreprise\n→ Indicateur central de l'INSEE\n\n3️⃣ VALEUR PERÇUE\n→ Image, notoriété, satisfaction client\n→ Mesurée par : NPS, avis clients, labels obtenus\n→ Crée la différenciation et la fidélité\n\n4️⃣ VALEUR SOCIALE\n→ Bien-être des salariés, conditions de travail, emploi local\n→ Mesurée par : turnover, taux d'absentéisme, climat social\n→ Au-delà : impact sociétal (inclusion, formation, insertion)\n\n5️⃣ VALEUR PARTENARIALE\n→ Richesse créée par la COOPÉRATION (avec fournisseurs, partenaires, associations)\n→ Mesurée par : durée des partenariats, projets communs\n→ Caractéristique de l'économie collaborative et de la RSE",
+    interp:"Au Bac (question 15 lignes), MENTIONNER les 5 types explicitement = la moitié des points est sécurisée. Ensuite, lier chaque type à un exemple d'organisation différente.",
+    ex:"Bébé Serein 2025 (Q3.3, 15 pts) : la démarche RSE crée de la valeur perçue (label bio), financière (croissance du CA), sociale (semaine de bureau nomade), partenariale (ESAT, reforestation française).",
+    conf:"⚠️ Ne PAS confondre 'valeur ajoutée' (un indicateur précis = CA − consommations) avec 'créer de la valeur' (notion large incluant les 5 types). Au Bac, utiliser 'valeur ajoutée' uniquement pour parler du calcul comptable."
+  },
+  communication_ext: {
+    tag:"RSE", titre:"Communication externe (corporate)", freq:"★★★☆☆ Récurrente",
+    def:"Ensemble des messages qu'une organisation adresse à ses parties prenantes EXTERNES autres que les clients : médias, opinion publique, autorités, partenaires, candidats au recrutement. À distinguer de la communication commerciale (relation client) et de la communication interne (salariés).",
+    form:"📦 LES MODALITÉS :\n→ Communication corporate : site institutionnel, rapport d'activité, communiqué de presse\n→ Relations publiques (RP) : presse, journalistes, influenceurs\n→ Mécénat & sponsoring : association culturelle, sportive, humanitaire\n→ Partenariats événementiels : salons, conférences, événements sportifs\n→ Communication d'engagement : rapport RSE, charte éthique, engagements environnementaux\n→ Communication de crise : gestion des bad buzz, des incidents\n→ Marque employeur : attractivité pour les candidats\n\n🎯 OBJECTIFS :\n→ Construire l'image et la notoriété\n→ Rassurer les parties prenantes (clients, État, banques)\n→ Attirer les talents (marque employeur)\n→ Légitimer les engagements RSE\n→ Anticiper / gérer les crises",
+    interp:"Au Bac, distinguer les 3 communications : INTERNE (salariés), COMMERCIALE (clients), EXTERNE / CORPORATE (autres parties prenantes). Toujours préciser à qui s'adresse le message.",
+    ex:"GSP 2025 : partenariat officiel avec la Global Race (course nautique) + salon Bât expo de Nouville → communication externe qui consolide l'image d'entreprise calédonienne ancrée dans son territoire.",
+    conf:"⚠️ Ne pas confondre communication externe (corporate) et communication commerciale (relation client). Le mécénat de Décathlon avec un club de quartier = corporate. Une promo Décathlon sur les VTT = commerciale."
   }
 };
 
@@ -1680,11 +1704,11 @@ function showFicheHome() {
       <div style="background:#eaf8ef;border-left:5px solid #1a7a3c;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
         <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 3 — RSE & Numérique</div>
         <div style="display:flex;gap:8px;margin-bottom:8px">
-          <div onclick="showFiche('d3','num',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">💻</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes outils</div><div style="font-size:10px;color:#7a6a58">6 notions · Numérique</div></div>
+          <div onclick="showFiche('d3','num',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">💻</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes outils</div><div style="font-size:10px;color:#7a6a58">7 notions · Numérique</div></div>
           <div style="align-self:center;color:#a09880;font-size:16px">→</div>
-          <div onclick="showFiche('d3','rse',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🌿</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes valeurs</div><div style="font-size:10px;color:#7a6a58">3 notions · RSE</div></div>
+          <div onclick="showFiche('d3','rse',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🌿</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes valeurs</div><div style="font-size:10px;color:#7a6a58">5 notions · RSE</div></div>
         </div>
-        <div style="font-size:11px;color:#7a6a58">9 notions · PGI · CRM · RGPD · Blockchain · IA · RSE · 3 piliers</div>
+        <div style="font-size:11px;color:#7a6a58">12 notions · PGI · E-commerce · RGPD · Blockchain · IA · RSE · 5 valeurs</div>
       </div>
     </div>`;
 }
@@ -1796,8 +1820,8 @@ const FICHES = {
   'd2-fin': {icon:'💰', label:'Levier 1', title:'Performance financière & commerciale — L\'entreprise est-elle solide ?', color:'#2a69a8', notions:['va','rex','perf_co','couts','frng','bfr','tn','financement','caf','seuil']},
   'd2-soc': {icon:'👥', label:'Levier 2', title:'Performance sociale — Les équipes sont-elles engagées ?', color:'#b5415a', notions:['likert','culture','motivation','gpec','risques_pro']},
   'd2-ope': {icon:'⚙️', label:'Levier 3', title:'Performance opérationnelle — La production est-elle efficace ?', color:'#946e00', notions:['production_n','mintzberg','processus']},
-  'd3-num': {icon:'💻', label:'Étape 1', title:'Mes outils — Le numérique au service de la performance', color:'#2a69a8', notions:['si_fonctions','pgi','communication_n','identite_num','blockchain','ia']},
-  'd3-rse': {icon:'🌿', label:'Étape 2', title:'Mes valeurs — RSE & performance globale', color:'#1a7a3c', notions:['rse','performance','ethique']}
+  'd3-num': {icon:'💻', label:'Étape 1', title:'Mes outils — Le numérique au service de la performance', color:'#2a69a8', notions:['si_fonctions','pgi','communication_n','ecommerce','identite_num','blockchain','ia']},
+  'd3-rse': {icon:'🌿', label:'Étape 2', title:'Mes valeurs — RSE & performance globale', color:'#1a7a3c', notions:['rse','performance','valeurs','communication_ext','ethique']}
 };
 
 function buildFicheCard(n) {
