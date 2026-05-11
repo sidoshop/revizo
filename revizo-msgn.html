@@ -458,16 +458,16 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
       </div>
       <div class="group-body">
         <div class="q-item" onclick="showFiche('d2','fin',this)">
-          <span class="q-name">Performance financière</span>
-          <div class="q-meta"><span class="q-time">9 notions · Formules</span></div>
+          <span class="q-name">Performance financière & commerciale</span>
+          <div class="q-meta"><span class="q-time">10 notions · Formules</span></div>
         </div>
         <div class="q-item" onclick="showFiche('d2','soc',this)">
           <span class="q-name">Performance sociale</span>
-          <div class="q-meta"><span class="q-time">4 notions · Théories</span></div>
+          <div class="q-meta"><span class="q-time">5 notions · Théories</span></div>
         </div>
         <div class="q-item" onclick="showFiche('d2','ope',this)">
           <span class="q-name">Performance opérationnelle</span>
-          <div class="q-meta"><span class="q-time">2 notions · Flux</span></div>
+          <div class="q-meta"><span class="q-time">3 notions · Flux & processus</span></div>
         </div>
         <div class="q-item" onclick="showChecklist('d2',this)" style="border-top:1px solid var(--bordure);margin-top:4px">
           <span class="q-name" style="color:var(--vert)">→ Notions maîtrisées ?</span>
@@ -914,6 +914,30 @@ const N = {
     interp:"Au Bac, montrer que le label est un avantage concurrentiel DURABLE (contrôle par un tiers indépendant). Citer le nom exact du label dans la copie.",
     ex:"Clima&Co 2025 : la certification B Corp atteste d'engagements sociaux et environnementaux vérifiés → différenciation forte sur un marché alimentaire saturé.",
     conf:"⚠️ Un label ne suffit pas à créer un avantage. Il faut qu'il soit VISIBLE pour le client cible et COHÉRENT avec le positionnement de l'entreprise."
+  },
+  perf_co: {
+    tag:"Gestion financière", titre:"Performance commerciale", freq:"★★★★☆ ~55%",
+    def:"Capacité de l'entreprise à atteindre ses objectifs commerciaux : conquérir, fidéliser et satisfaire ses clients. Distincte de la performance financière (qui mesure la rentabilité).",
+    form:"Principaux indicateurs :\n→ Chiffre d'affaires (CA) et son taux d'évolution\n→ Part de marché : CA entreprise / CA total du marché × 100\n→ Taux de fidélisation : % de clients qui rachètent\n→ Taux de transformation : prospects convertis / prospects contactés\n→ Panier moyen : CA / nombre de clients\n→ Satisfaction client (NPS, avis)\n\nFormule du taux d'évolution :\n((Valeur N − Valeur N-1) / Valeur N-1) × 100",
+    interp:"Au Bac, on demande souvent de CALCULER le taux d'évolution du CA puis de COMMENTER. Le calcul ne suffit jamais — le commentaire contextualisé vaut la moitié des points.",
+    ex:"Bébé Serein 2025 : CA en hausse de + 123,79 % entre 2021 et 2023, bénéfice doublé. La performance commerciale est excellente, l'entreprise s'est imposée sur un marché concurrentiel.",
+    conf:"⚠️ Ne pas confondre performance commerciale (CA, parts de marché) et performance financière (résultat net, marges, FRNG). Une entreprise peut avoir une bonne perf commerciale (CA en hausse) ET une perf financière dégradée si les charges augmentent plus vite."
+  },
+  risques_pro: {
+    tag:"Management RH", titre:"Risques professionnels & TMS", freq:"★★★☆☆ ~30%",
+    def:"Tout danger pour la santé ou la sécurité des salariés au travail. Les TMS (Troubles Musculo-Squelettiques) sont les plus fréquents : affections des muscles, tendons, nerfs liées à des gestes répétés, postures ou manutention.",
+    form:"Types de risques pro :\n→ Physiques (TMS, bruit, vibrations)\n→ Psychosociaux (stress, harcèlement, burn-out)\n→ Chimiques / biologiques\n→ Liés à l'environnement de travail (température, éclairage)\n\nConséquences sur la performance sociale :\n→ Arrêts maladie + absentéisme\n→ Baisse de productivité\n→ Dégradation du climat social\n→ Turnover (départs) + difficulté à recruter\n→ Coût direct pour l'entreprise (cotisation AT/MP, indemnités)\n\nLeviers de prévention :\n→ Ergonomie des postes (matériel adapté)\n→ Formation aux bons gestes\n→ Rotation des postes\n→ Recours à un ergothérapeute / médecin du travail\n→ Réduction du rythme de travail",
+    interp:"Au Bac, montrer le lien CAUSE-CONSÉQUENCE : risque pro → arrêt maladie → ↓ productivité → ↓ performance sociale ET financière. Toujours conclure sur l'impact économique pour l'entreprise.",
+    ex:"La Dorure 2025 : travail manuel répétitif (reliure, restauration) → TMS chez les anciens salariés. M. Bonna investit dans du matériel ergonomique recommandé par un ergothérapeute.",
+    conf:"⚠️ La prévention ≠ le curatif. Acheter du matériel ergonomique après l'apparition des TMS est utile mais arrive trop tard. La vraie prévention agit AVANT (formation, rotation, ergonomie dès la conception du poste)."
+  },
+  processus: {
+    tag:"Organisation", titre:"Schématisation de processus de gestion", freq:"★★★☆☆ ~30%",
+    def:"Représentation graphique d'un processus de gestion : succession d'étapes (tâches) déclenchées par un événement, mobilisant des acteurs, jusqu'à un résultat.",
+    form:"4 éléments d'un schéma de processus :\n→ Événements déclencheurs (point de départ)\n→ Tâches (actions à exécuter)\n→ Acteurs (qui fait quoi : services, partenaires externes)\n→ Enchaînements (ordre logique, conditions)\n\nAvantages de schématiser :\n→ Formalisation : éviter les oublis, les zones d'ombre\n→ Identification des intervenants : clarté des responsabilités\n→ Automatisation : déclenchement programmé, fiabilité\n→ Documentation : transmission du savoir-faire, audits\n→ Optimisation : repérer les étapes inutiles ou en doublon\n\nOutils : BPMN (norme internationale), logigramme, diagramme de flux.",
+    interp:"Au Bac, on demande souvent de 'montrer les avantages de schématiser le processus de X'. Lister les 4-5 avantages + préciser le rôle de chaque acteur (interne / externe).",
+    ex:"Saveurs & Nature 2023 : schématisation du processus de renouvellement de la certification « épi barré » (gluten). Acteurs : service qualité (audit interne), laboratoire indépendant (test), association AFDIAG (validation).",
+    conf:"⚠️ Schématiser un processus ≠ automatiser. La schématisation permet la formalisation ; l'automatisation est une étape suivante, qui repose sur le schéma. Au Bac, ne pas confondre 'schématiser' et 'numériser'."
   }
 };
 
@@ -1631,11 +1655,11 @@ function showFicheHome() {
       <div style="background:#e8f3ff;border-left:5px solid #3a82c8;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
         <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 2 — Finances & GRH</div>
         <div style="display:flex;gap:8px;margin-bottom:8px">
-          <div onclick="showFiche('d2','fin',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">💰</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance financière</div><div style="font-size:10px;color:#7a6a58">7 notions</div></div>
+          <div onclick="showFiche('d2','fin',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">💰</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Perf. financière & co.</div><div style="font-size:10px;color:#7a6a58">10 notions</div></div>
           <div onclick="showFiche('d2','soc',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">👥</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance sociale</div><div style="font-size:10px;color:#7a6a58">5 notions</div></div>
-          <div onclick="showFiche('d2','ope',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">⚙️</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance opérationnelle</div><div style="font-size:10px;color:#7a6a58">2 notions</div></div>
+          <div onclick="showFiche('d2','ope',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">⚙️</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance opérationnelle</div><div style="font-size:10px;color:#7a6a58">3 notions</div></div>
         </div>
-        <div style="font-size:11px;color:#7a6a58">15 notions · VA · FRNG · Likert · Maslow · GPEC · Flux</div>
+        <div style="font-size:11px;color:#7a6a58">18 notions · VA · FRNG · Likert · Maslow · GPEC · Flux · CA · TMS · Processus</div>
       </div>
       <div style="background:#eaf8ef;border-left:5px solid #1a7a3c;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
         <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 3 — RSE & Numérique</div>
@@ -1753,9 +1777,9 @@ const FICHES = {
   'd1-q1': {icon:'🔍', label:'Question 1', title:'Où je suis ? — Le diagnostic', color:'#b5415a', notions:['parties','modele','competences','diagnostic_ext','marche']},
   'd1-q2': {icon:'🧭', label:'Question 2', title:'Où veux-je aller ? — La décision', color:'#2a69a8', notions:['strategies','das','decision','ess']},
   'd1-q3': {icon:'🛤️', label:'Question 3', title:"Comment j'y vais ? — L'action", color:'#1a7a3c', notions:['mercatique_n','comportement','labels','croissance','integration']},
-  'd2-fin': {icon:'💰', label:'Levier 1', title:'Performance financière — L\'entreprise est-elle solide ?', color:'#2a69a8', notions:['va','rex','couts','frng','bfr','tn','financement','caf','seuil']},
-  'd2-soc': {icon:'👥', label:'Levier 2', title:'Performance sociale — Les équipes sont-elles engagées ?', color:'#b5415a', notions:['likert','culture','motivation','gpec']},
-  'd2-ope': {icon:'⚙️', label:'Levier 3', title:'Performance opérationnelle — La production est-elle efficace ?', color:'#946e00', notions:['production_n','mintzberg']},
+  'd2-fin': {icon:'💰', label:'Levier 1', title:'Performance financière & commerciale — L\'entreprise est-elle solide ?', color:'#2a69a8', notions:['va','rex','perf_co','couts','frng','bfr','tn','financement','caf','seuil']},
+  'd2-soc': {icon:'👥', label:'Levier 2', title:'Performance sociale — Les équipes sont-elles engagées ?', color:'#b5415a', notions:['likert','culture','motivation','gpec','risques_pro']},
+  'd2-ope': {icon:'⚙️', label:'Levier 3', title:'Performance opérationnelle — La production est-elle efficace ?', color:'#946e00', notions:['production_n','mintzberg','processus']},
   'd3-num': {icon:'💻', label:'Étape 1', title:'Mes outils — Le numérique au service de la performance', color:'#2a69a8', notions:['si_fonctions','pgi','communication_n','identite_num']},
   'd3-rse': {icon:'🌿', label:'Étape 2', title:'Mes valeurs — RSE & performance globale', color:'#1a7a3c', notions:['rse','performance','ethique']}
 };
