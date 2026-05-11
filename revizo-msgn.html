@@ -439,11 +439,11 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
         </div>
         <div class="q-item" onclick="showFiche('d1','q2',this)">
           <span class="q-name">Où veux-je aller ?</span>
-          <div class="q-meta"><span class="q-time">3 notions · Décider</span></div>
+          <div class="q-meta"><span class="q-time">4 notions · Décider</span></div>
         </div>
         <div class="q-item" onclick="showFiche('d1','q3',this)">
           <span class="q-name">Comment j'y vais ?</span>
-          <div class="q-meta"><span class="q-time">3 notions · Agir</span></div>
+          <div class="q-meta"><span class="q-time">5 notions · Agir</span></div>
         </div>
         <div class="q-item" onclick="showChecklist('d1',this)" style="border-top:1px solid var(--bordure);margin-top:4px">
           <span class="q-name" style="color:var(--vert)">→ Notions maîtrisées ?</span>
@@ -787,12 +787,12 @@ const N = {
     conf:"⚠️ Le PESTEL analyse l'environnement GÉNÉRAL. Les 5 forces de Porter analysent la CONCURRENCE. Ce sont deux outils complémentaires, pas interchangeables."
   },
   decision: {
-    tag:"Stratégie", titre:"Processus de décision (modèle IMC — Simon)", freq:"★★★☆☆ Récurrente",
-    def:"Modèle d'Herbert Simon en 3 phases : Intelligence (identifier le problème), Modélisation (construire des solutions), Choix (sélectionner la meilleure).",
-    form:"I — Intelligence : analyser la situation, repérer le problème ou l'opportunité\nM — Modélisation : imaginer les solutions possibles, évaluer chacune\nC — Choix : décider de la solution retenue\n\nNiveaux de décision :\n→ Stratégique : long terme, direction, engage l'avenir, souvent irréversible\n→ Tactique : moyen terme, encadrement, mise en œuvre de la stratégie\n→ Opérationnelle : court terme, réversible, gestion courante",
-    interp:"Au Bac : justifier POURQUOI une décision est stratégique (engage l'avenir, prise par la direction, difficilement réversible) ou opérationnelle (courante, réversible, court terme).",
-    ex:"L'ouverture d'une usine à l'étranger = décision stratégique (long terme, irréversible, engage des millions). Le réapprovisionnement d'un stock = décision opérationnelle.",
-    conf:"⚠️ Ne pas confondre le NIVEAU de décision (stratégique/opérationnelle) avec le PROCESSUS de décision (IMC). Le processus s'applique à tous les niveaux."
+    tag:"Stratégie", titre:"Décision stratégique vs opérationnelle", freq:"★★★★☆ ~50%",
+    def:"Identifier la NATURE d'une décision à partir de ses critères. Une décision stratégique engage le long terme et la pérennité de l'entreprise.",
+    form:"Les 5 critères du STRATÉGIQUE :\n→ QUI : prise par le dirigeant (pas par un chef de service)\n→ HORIZON : long terme (3 à 5 ans+)\n→ RESSOURCES : mobilise des moyens lourds (financiers, humains)\n→ RÉVERSIBILITÉ : difficilement réversible, l'échec menace l'entreprise\n→ PORTÉE : concerne le positionnement (cœur de métier, marchés, modèle)\n\nÀ l'opposé : décision OPÉRATIONNELLE = court terme, réversible, ressources limitées, exécutée par les équipes.\n\nNiveau intermédiaire : décision TACTIQUE = moyen terme, manager intermédiaire, mise en œuvre de la stratégie.\n\nNote : le processus de décision (modèle IMC de H. Simon : Intelligence → Modélisation → Choix) s'applique à tous les niveaux.",
+    interp:"Au Bac, lister les critères qui rendent la décision stratégique et apporter une preuve doc pour chacun. La réversibilité est le critère le plus discriminant.",
+    ex:"Bébé Serein 2025 : lancer le lait bio = décision stratégique (dirigeants, long terme, ressources importantes, irréversible). À l'inverse, choisir le packaging du mois = opérationnelle.",
+    conf:"⚠️ Une décision n'est pas stratégique parce qu'elle est importante. Le bon critère est la réversibilité et l'engagement de ressources lourdes. Une grosse campagne pub coûteuse mais ponctuelle reste opérationnelle."
   },
   production_n: {
     tag:"Organisation", titre:"Modes de production et gestion des flux", freq:"★★★★☆ Récurrente",
@@ -890,6 +890,30 @@ const N = {
     interp:"L'ESS montre que la performance n'est pas que financière. Une SCOP privilégie l'intérêt collectif sur le profit individuel.",
     ex:"Titi Floris (2021) : SCOP de transport adapté. Management coopératif, finalité sociale (insertion des personnes handicapées).",
     conf:"⚠️ ESS ≠ entreprise caritative. Les organisations de l'ESS ont une activité économique réelle, mais leur finalité première n'est pas le profit."
+  },
+  marche: {
+    tag:"Stratégie", titre:"Caractéristiques d'un marché", freq:"★★★☆☆ ~35%",
+    def:"Décrire un marché = répondre à : quelle taille ? quels acteurs ? quelle dynamique ?",
+    form:"Les 6 critères pour caractériser un marché :\n→ Taille : CA total du secteur (en €)\n→ Structure : atomisé (beaucoup d'acteurs) ou concentré (oligopole)\n→ Croissance : en hausse / stagnation / déclin\n→ Segments : types de clients (B2B / B2C, niches)\n→ Maturité : émergent / mature / saturé\n→ Acteurs : concurrents, fournisseurs, distributeurs",
+    interp:"Au Bac, on demande souvent de 'présenter les caractéristiques du marché' avant d'analyser la stratégie. C'est une étape descriptive distincte du diagnostic externe (qui évalue).",
+    ex:"La Dorure 2025 : marché de niche (~10 M€/an), atomisé mais dominé par 2 acteurs, stable, B2B institutionnel (collectivités).",
+    conf:"⚠️ Ne pas confondre caractéristiques du marché (description) et diagnostic externe (opportunités/menaces). Le premier décrit, le second évalue."
+  },
+  comportement: {
+    tag:"Mercatique", titre:"Comportement du consommateur", freq:"★★★★★ ~65%",
+    def:"Processus de décision d'achat structuré par 4 facteurs explicatifs au programme : besoins, motivations, freins, attitude.",
+    form:"Les 4 facteurs explicatifs :\n→ BESOINS : manque ressenti (Maslow : physio, sécurité, appartenance, estime, accomplissement)\n→ MOTIVATIONS : pulsions positives — hédoniste (plaisir), oblative (pour les autres), auto-expression (pour soi)\n→ FREINS : obstacles (prix, doute, peur, complexité)\n→ ATTITUDE : prédisposition stable, 3 composantes — cognitif (je sais), affectif (je ressens), conatif (je fais)",
+    interp:"Au Bac, présenter clairement les 4 catégories. Pour l'attitude, citer les 3 composantes même si le corrigé ne les exige pas explicitement.",
+    ex:"Bébé Serein 2025 : besoin de sécurité (couches sans perturbateurs), motivation d'auto-expression écologique, frein du prix, attitude conative (clients ambassadeurs).",
+    conf:"⚠️ Ne pas confondre besoin (générique, existe avant l'achat) et motivation (raison d'acheter ce produit-là). Le besoin de sécurité est universel, la motivation auto-expressive est propre à un produit donné."
+  },
+  labels: {
+    tag:"Stratégie", titre:"Labels & certifications", freq:"★★★★☆ ~50%",
+    def:"Signe distinctif attribué par un organisme indépendant qui atteste d'engagements vérifiés (qualité, éthique, environnement).",
+    form:"Effets stratégiques :\n→ Différenciation visible et difficile à imiter\n→ Valeur perçue ↑ : confiance + qualité reconnue\n→ Accès à de nouveaux marchés (marchés publics, distribution sélective)\n→ Avantage concurrentiel durable car contrôlé par un tiers\n\nLimites : coût (audit annuel), contraintes (cahier des charges), risque de greenwashing si trop de labels.\n\nExemples : Bio (AB), Commerce équitable (Max Havelaar), EPV (Entreprise du Patrimoine Vivant), Origine France Garantie, B Corp, ISO 9001/14001, Ecolabel, FSC.",
+    interp:"Au Bac, montrer que le label est un avantage concurrentiel DURABLE (contrôle par un tiers indépendant). Citer le nom exact du label dans la copie.",
+    ex:"Clima&Co 2025 : la certification B Corp atteste d'engagements sociaux et environnementaux vérifiés → différenciation forte sur un marché alimentaire saturé.",
+    conf:"⚠️ Un label ne suffit pas à créer un avantage. Il faut qu'il soit VISIBLE pour le client cible et COHÉRENT avec le positionnement de l'entreprise."
   }
 };
 
@@ -1598,11 +1622,11 @@ function showFicheHome() {
         <div style="display:flex;gap:8px;margin-bottom:8px">
           <div onclick="showFiche('d1','q1',document.querySelector('#sidebar-fiches .q-item'))" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🔍</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où je suis ?</div><div style="font-size:10px;color:#7a6a58">5 notions · Analyser</div></div>
           <div style="align-self:center;color:#a09880;font-size:16px">→</div>
-          <div onclick="showFiche('d1','q2',document.querySelectorAll('#sidebar-fiches .q-item')[1])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🧭</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où veux-je aller ?</div><div style="font-size:10px;color:#7a6a58">3 notions · Décider</div></div>
+          <div onclick="showFiche('d1','q2',document.querySelectorAll('#sidebar-fiches .q-item')[1])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🧭</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où veux-je aller ?</div><div style="font-size:10px;color:#7a6a58">4 notions · Décider</div></div>
           <div style="align-self:center;color:#a09880;font-size:16px">→</div>
-          <div onclick="showFiche('d1','q3',document.querySelectorAll('#sidebar-fiches .q-item')[2])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🛤️</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Comment j'y vais ?</div><div style="font-size:10px;color:#7a6a58">3 notions · Agir</div></div>
+          <div onclick="showFiche('d1','q3',document.querySelectorAll('#sidebar-fiches .q-item')[2])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🛤️</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Comment j'y vais ?</div><div style="font-size:10px;color:#7a6a58">5 notions · Agir</div></div>
         </div>
-        <div style="font-size:11px;color:#7a6a58">11 notions · Parties prenantes · Compétences · Stratégie · Mercatique</div>
+        <div style="font-size:11px;color:#7a6a58">14 notions · Parties prenantes · Marché · Décision · Comportement conso · Labels</div>
       </div>
       <div style="background:#e8f3ff;border-left:5px solid #3a82c8;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
         <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 2 — Finances & GRH</div>
@@ -1726,9 +1750,9 @@ function showSynthSujet(idx, el) {
 
 // ═══════════════ FICHES MÉMO ═══════════════
 const FICHES = {
-  'd1-q1': {icon:'🔍', label:'Question 1', title:'Où je suis ? — Le diagnostic', color:'#b5415a', notions:['parties','modele','competences','diagnostic_ext','decision']},
-  'd1-q2': {icon:'🧭', label:'Question 2', title:'Où veux-je aller ? — La décision', color:'#2a69a8', notions:['strategies','das','ess']},
-  'd1-q3': {icon:'🛤️', label:'Question 3', title:"Comment j'y vais ? — L'action", color:'#1a7a3c', notions:['mercatique_n','croissance','integration']},
+  'd1-q1': {icon:'🔍', label:'Question 1', title:'Où je suis ? — Le diagnostic', color:'#b5415a', notions:['parties','modele','competences','diagnostic_ext','marche']},
+  'd1-q2': {icon:'🧭', label:'Question 2', title:'Où veux-je aller ? — La décision', color:'#2a69a8', notions:['strategies','das','decision','ess']},
+  'd1-q3': {icon:'🛤️', label:'Question 3', title:"Comment j'y vais ? — L'action", color:'#1a7a3c', notions:['mercatique_n','comportement','labels','croissance','integration']},
   'd2-fin': {icon:'💰', label:'Levier 1', title:'Performance financière — L\'entreprise est-elle solide ?', color:'#2a69a8', notions:['va','rex','couts','frng','bfr','tn','financement','caf','seuil']},
   'd2-soc': {icon:'👥', label:'Levier 2', title:'Performance sociale — Les équipes sont-elles engagées ?', color:'#b5415a', notions:['likert','culture','motivation','gpec']},
   'd2-ope': {icon:'⚙️', label:'Levier 3', title:'Performance opérationnelle — La production est-elle efficace ?', color:'#946e00', notions:['production_n','mintzberg']},
