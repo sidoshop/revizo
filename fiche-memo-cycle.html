@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Révizo MSGN — Fiche mémo cycle d'entreprise</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@page { size: A4 landscape; margin: 8mm 8mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; color: #1e1c18; background: #f0ede6; padding: 14px; }
+
+/* ─── HEADER ─── */
+.header { text-align: center; margin-bottom: 10px; }
+.title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px; font-weight: 900;
+}
+.subtitle {
+  font-size: 11px; color: #7a6a58; margin-top: 3px;
+}
+.subtitle strong { color: #b5415a; }
+
+/* ─── GRID 4 PHASES ─── */
+.cycle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+/* ─── GRAND BLOC PHASE ─── */
+.phase {
+  border-radius: 14px;
+  padding: 10px 11px 11px;
+  border-left: 6px solid;
+  position: relative;
+}
+.phase-head {
+  display: flex; align-items: baseline; gap: 6px;
+  margin-bottom: 9px;
+}
+.phase-num {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 900;
+  background: white;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.phase-name {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px; font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.phase-q {
+  font-size: 10.5px;
+  font-style: italic;
+  color: rgba(0,0,0,0.55);
+  margin-left: auto;
+}
+
+/* ─── SOUS-BLOC FAMILLE ─── */
+.fam-grid { display: grid; gap: 7px; }
+.fam-grid.two { grid-template-columns: 1fr 1fr; }
+.fam-grid.one { grid-template-columns: 1fr; }
+
+.family {
+  background: white;
+  border-radius: 10px;
+  padding: 8px 10px 9px;
+  border: 1.5px solid;
+}
+.fam-head {
+  display: flex; align-items: baseline; gap: 5px;
+  margin-bottom: 5px;
+  padding-bottom: 4px;
+  border-bottom: 1px dashed rgba(0,0,0,0.10);
+}
+.fam-icon { font-size: 13px; }
+.fam-name {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11.5px; font-weight: 800;
+  flex: 1;
+}
+.fam-count {
+  font-size: 9px; font-weight: 700;
+  background: rgba(0,0,0,0.08);
+  padding: 1px 6px; border-radius: 8px;
+  color: rgba(0,0,0,0.55);
+}
+.fam-q {
+  font-size: 9.5px; color: rgba(0,0,0,0.55);
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+/* ─── CASE NOTION ─── */
+.case {
+  font-size: 10.5px;
+  padding: 3px 6px;
+  margin-bottom: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: background .12s;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.case:last-child { margin-bottom: 0; }
+.case:hover { background: rgba(0,0,0,0.06); }
+.case .c-arrow { opacity: 0; font-size: 9px; }
+.case:hover .c-arrow { opacity: 0.5; }
+.transverse {
+  font-size: 9.5px; margin-left: 3px; opacity: .65;
+}
+
+/* ─── TOOLTIP AU SURVOL (niveau 1 — mots-clés) ─── */
+.case[data-keywords]:hover::after {
+  content: attr(data-keywords);
+  position: absolute;
+  left: 50%; top: 100%;
+  transform: translateX(-50%);
+  margin-top: 4px;
+  background: #1e1c18;
+  color: #fffdf8;
+  padding: 6px 11px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 50;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.30);
+  pointer-events: none;
+}
+.case[data-keywords]:hover::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 100%;
+  transform: translateX(-50%);
+  margin-top: -1px;
+  border: 5px solid transparent;
+  border-bottom-color: #1e1c18;
+  z-index: 50;
+}
+
+/* ─── COULEURS PAR PHASE ─── */
+/* Phase 1 — Bleu (Stratégie) */
+.phase-1 { background: #e8f3ff; border-left-color: #2563a8; }
+.phase-1 .phase-num { color: #2563a8; }
+.phase-1 .phase-name { color: #1a3d5c; }
+.phase-1 .family { border-color: #b8d4ec; }
+.phase-1 .fam-name { color: #1a3d5c; }
+
+/* Phase 2 — Orange (Mise en œuvre) */
+.phase-2 { background: #fef3ec; border-left-color: #c45c2e; }
+.phase-2 .phase-num { color: #c45c2e; }
+.phase-2 .phase-name { color: #6e3818; }
+.phase-2 .family { border-color: #f5c8a9; }
+.phase-2 .fam-name { color: #6e3818; }
+
+/* Phase 3 — Vert (Pilotage) */
+.phase-3 { background: #e6f5ec; border-left-color: #1a7a3c; }
+.phase-3 .phase-num { color: #1a7a3c; }
+.phase-3 .phase-name { color: #0f4a25; }
+.phase-3 .family { border-color: #b6dfc5; }
+.phase-3 .fam-name { color: #0f4a25; }
+
+/* Phase 4 — Violet (Vision) */
+.phase-4 { background: #f3eafc; border-left-color: #6d3a8e; }
+.phase-4 .phase-num { color: #6d3a8e; }
+.phase-4 .phase-name { color: #3d1a5c; }
+.phase-4 .family { border-color: #d6bbed; }
+.phase-4 .fam-name { color: #3d1a5c; }
+
+/* ─── FOOTER ─── */
+.footer {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 9.5px;
+  color: #7a6a58;
+}
+.footer strong { color: #1e1c18; }
+.footer a { color: #b5415a; text-decoration: none; font-weight: 700; }
+
+/* ─── MODALE (niveau 2 — repris IDENTIQUE de la SPA revizo-msgn) ─── */
+:root {
+  --accent: #b5415a;
+  --bleu: #2563a8;
+  --gris: #8a8478;
+  --bordure: #ddd8cc;
+  --texte: #1e1c18;
+}
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 100;
+}
+.overlay.show { display: flex; }
+.modal {
+  background: #fffdf8;
+  border-radius: 14px;
+  max-width: 780px;
+  width: 92%;
+  max-height: 86vh;
+  overflow-y: auto;
+  padding: 0;
+  position: relative;
+  box-shadow: 0 14px 60px rgba(0,0,0,0.30);
+}
+.modal .close {
+  position: absolute;
+  top: 10px; right: 14px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #a09880;
+  background: none; border: none;
+  line-height: 1;
+  z-index: 5;
+}
+.modal .close:hover { color: var(--texte); }
+
+/* Style EXACT des fiches de la SPA — classes identiques */
+.fiche {
+  background: #fff;
+  border: 1.5px solid var(--bordure);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.fiche-header {
+  padding: 14px 18px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #f0ede6;
+}
+.fiche-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  flex: 1;
+  color: var(--texte);
+}
+.fiche-freq {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gris);
+  white-space: nowrap;
+}
+.fiche-arrow {
+  font-size: 10px;
+  color: var(--gris);
+  flex-shrink: 0;
+  transform: rotate(90deg);
+}
+.fiche-body {
+  padding: 16px 18px 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 22px;
+}
+.fb { font-size: 13px; line-height: 1.5; }
+.fb-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.fb-def .fb-label { color: var(--accent); }
+.fb-retenir .fb-label { color: var(--bleu); }
+.fb-exemple .fb-label { color: #946e00; }
+.fb ul { padding-left: 16px; margin: 0; }
+.fb li { margin-bottom: 2px; }
+.fb strong { font-weight: 800; color: var(--texte); }
+.fb-exemple { grid-column: 1 / -1; }
+.fb-piege {
+  grid-column: 1 / -1;
+  background: #fdf5f7;
+  border: 1px solid #e8b4bf;
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #7a2038;
+  margin-top: 2px;
+}
+.fb-piege .fb-label { color: var(--accent); margin-bottom: 2px; }
+.fb-piege strong { color: var(--accent); font-weight: 800; }
+
+.fb-transversal {
+  grid-column: 1 / -1;
+  background: #f3eafc;
+  border: 1px solid #d6bbed;
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #5a2d75;
+  margin-top: 2px;
+}
+
+.modal-footer {
+  padding: 10px 18px 14px;
+  border-top: 1px solid #f0ede6;
+  text-align: right;
+}
+.m-bac-link {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  font-size: 12px;
+  text-decoration: none;
+  padding: 7px 16px;
+  border-radius: 18px;
+}
+.m-bac-link:hover { background: #8d2f44; }
+
+@media (max-width: 640px) {
+  .fiche-body { grid-template-columns: 1fr; }
+}
+
+@media print {
+  body { background: white; padding: 0; }
+  .overlay { display: none !important; }
+  .case[data-keywords]:hover::after, .case[data-keywords]:hover::before { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="title">📝 Révizo MSGN — Le cycle de vie d'une entreprise</div>
+  <div class="subtitle">
+    43 notions · 7 familles · 4 phases · <strong>Survol</strong> = mots-clés · <strong>Clic</strong> = fiche entière · <strong>🔄</strong> = notion transversale
+  </div>
+</div>
+
+<!-- GRID 4 PHASES (2×2) -->
+<div class="cycle">
+
+  <!-- ═════════ PHASE 1 — STRATÉGIE ═════════ -->
+  <div class="phase phase-1">
+    <div class="phase-head">
+      <div class="phase-num">1</div>
+      <div class="phase-name">Stratégie</div>
+      <div class="phase-q">Où je suis ? · Où veux-je aller ?</div>
+    </div>
+    <div class="fam-grid two">
+
+      <!-- 1. DIAGNOSTIQUER -->
+      <div class="family">
+        <div class="fam-head">
+          <span class="fam-icon">🔍</span>
+          <span class="fam-name">Diagnostiquer</span>
+          <span class="fam-count">5</span>
+        </div>
+        <div class="fam-q">Où en est l'entreprise ?</div>
+        <div class="case" onclick="openN('parties')" data-keywords="Internes / externes · Attentes contradictoires"><span>Parties prenantes & finalités</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('modele')" data-keywords="Créer · Délivrer · Capter de la valeur"><span>Modèle économique</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('competences')" data-keywords="Rare · Imitable · Créatrice de valeur"><span>Compétences distinctives</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('diagnostic')" data-keywords="PESTEL · Porter · Marché · FCS"><span>Diagnostic externe & marché</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('comportement')" data-keywords="Besoins · Motivations · Freins · Attitude"><span>Comportement consommateur</span><span class="c-arrow">▸</span></div>
+      </div>
+
+      <!-- 2. DÉCIDER -->
+      <div class="family">
+        <div class="fam-head">
+          <span class="fam-icon">🧭</span>
+          <span class="fam-name">Décider</span>
+          <span class="fam-count">6</span>
+        </div>
+        <div class="fam-q">Où veux-je aller ?</div>
+        <div class="case" onclick="openN('strategies')" data-keywords="Globale (DAS) + Domaine (coûts/différ.)"><span>Stratégies (globale + domaine)</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('das')" data-keywords="Mêmes concurrents / clients / FCS"><span>DAS</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('decision')" data-keywords="Long terme · Irréversible · Dirigeant · Ressources"><span>Décision stratégique vs op.</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('croissance')" data-keywords="Interne · Externe · Partenariale"><span>Modes de croissance</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('integration')" data-keywords="Amont (fournisseurs) · Aval (distribution)"><span>Intégration verticale</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('ess')" data-keywords="1 personne = 1 voix · Finalité sociale"><span>ESS / SCOP</span><span class="c-arrow">▸</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═════════ PHASE 2 — MISE EN ŒUVRE ═════════ -->
+  <div class="phase phase-2">
+    <div class="phase-head">
+      <div class="phase-num">2</div>
+      <div class="phase-name">Mise en œuvre</div>
+      <div class="phase-q">Comment j'agis ? · Avec quels outils ?</div>
+    </div>
+    <div class="fam-grid two">
+
+      <!-- 3. AGIR -->
+      <div class="family">
+        <div class="fam-head">
+          <span class="fam-icon">🛤️</span>
+          <span class="fam-name">Agir</span>
+          <span class="fam-count">7</span>
+        </div>
+        <div class="fam-q">Comment je mets en œuvre ?</div>
+        <div class="case" onclick="openN('mercatique')" data-keywords="Segmentation → Ciblage → Positionnement + 4P"><span>Mercatique SCP + 4P</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('labels')" data-keywords="Tiers indépendant · Bio · B Corp · EPV"><span>Labels & certifications</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('production')" data-keywords="Artisanal / Série · Flux poussés / tirés"><span>Modes de production / flux</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('mintzberg')" data-keywords="5 mécanismes : ajustement → standardisation"><span>Coordination (Mintzberg)</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('processus')" data-keywords="Événements · Tâches · Acteurs · BPMN"><span>Schématisation de processus</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('communication_n')" data-keywords="Pub · Réseaux · Site · Newsletter"><span>Communication & relation client <span class="transverse">🔄</span></span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('communication_ext')" data-keywords="RP · Mécénat · Marque employeur"><span>Communication externe (corporate) <span class="transverse">🔄</span></span><span class="c-arrow">▸</span></div>
+      </div>
+
+      <!-- 4. OUTILS NUMÉRIQUES -->
+      <div class="family">
+        <div class="fam-head">
+          <span class="fam-icon">💻</span>
+          <span class="fam-name">Outils numériques</span>
+          <span class="fam-count">6</span>
+        </div>
+        <div class="fam-q">Avec quels outils ?</div>
+        <div class="case" onclick="openN('si_fonctions')" data-keywords="Collecter · Stocker · Traiter · Diffuser"><span>4 fonctions du SI</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('pgi')" data-keywords="PGI (intégration) · CRM (client) · RGPD (données)"><span>PGI / CRM / RGPD</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('ecommerce')" data-keywords="Vente en ligne · 24/7 · B2C/B2B/C2C"><span>E-commerce</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('blockchain')" data-keywords="Distribuée · Infalsifiable · Traçabilité"><span>Blockchain</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('ia')" data-keywords="Aide décision · Personnalisation · Automatisation"><span>Intelligence Artificielle</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('identite_num')" data-keywords="E-réputation · Maîtrisée / subie · Bad buzz"><span>Identité numérique <span class="transverse">🔄</span></span><span class="c-arrow">▸</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═════════ PHASE 3 — PILOTAGE ═════════ -->
+  <div class="phase phase-3">
+    <div class="phase-head">
+      <div class="phase-num">3</div>
+      <div class="phase-name">Pilotage</div>
+      <div class="phase-q">Suis-je rentable ? · Équipes engagées ?</div>
+    </div>
+    <div class="fam-grid two">
+
+      <!-- 5. MESURER CHIFFRES -->
+      <div class="family">
+        <div class="fam-head">
+          <span class="fam-icon">💰</span>
+          <span class="fam-name">Mesurer chiffres</span>
+          <span class="fam-count">10</span>
+        </div>
+        <div class="fam-q">Suis-je rentable ?</div>
+        <div class="case" onclick="openN('va')" data-keywords="Production − CI · Partage 5 acteurs"><span>VA (Valeur Ajoutée)</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('rex')" data-keywords="VA − charges · Rentabilité de l'activité"><span>Résultat d'exploitation</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('couts')" data-keywords="Coût de revient · Taux marge / marque"><span>Coûts + marges</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('frng')" data-keywords="Ressources stables − Emplois stables"><span>FRNG</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('bfr')" data-keywords="Actif circ. − Passif circ. · Besoin cycle"><span>BFR</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('tn')" data-keywords="FRNG − BFR · Solvabilité court terme"><span>Trésorerie nette (TN)</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('caf')" data-keywords="Résultat + Dotations · Autofinancement"><span>CAF</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('seuil')" data-keywords="Charges fixes / Taux MSCV"><span>Seuil de rentabilité</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('financement')" data-keywords="Autofin · Emprunt · Capital · Crowdfunding"><span>Sources de financement</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('perf_co')" data-keywords="CA · Part de marché · Taux d'évolution"><span>Performance commerciale</span><span class="c-arrow">▸</span></div>
+      </div>
+
+      <!-- 6. MESURER HUMAIN -->
+      <div class="family">
+        <div class="fam-head">
+          <span class="fam-icon">👥</span>
+          <span class="fam-name">Mesurer humain</span>
+          <span class="fam-count">5</span>
+        </div>
+        <div class="fam-q">Équipes engagées ?</div>
+        <div class="case" onclick="openN('likert')" data-keywords="4 styles : autoritaire → participatif"><span>Style de direction (Likert)</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('culture')" data-keywords="Valeurs · Rites · Symboles"><span>Culture organisationnelle</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('motivation')" data-keywords="Maslow · Herzberg · McGregor"><span>Théories de motivation</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('gpec')" data-keywords="Anticipation 3-5 ans · Formation · Mobilité"><span>GPEC</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('risques_pro')" data-keywords="TMS · Stress · Ergonomie · Prévention"><span>Risques pro & TMS</span><span class="c-arrow">▸</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═════════ PHASE 4 — VISION ═════════ -->
+  <div class="phase phase-4">
+    <div class="phase-head">
+      <div class="phase-num">4</div>
+      <div class="phase-name">Vision</div>
+      <div class="phase-q">Quel impact sur le monde ?</div>
+    </div>
+    <div class="fam-grid one">
+
+      <!-- 7. ENGAGER -->
+      <div class="family">
+        <div class="fam-head">
+          <span class="fam-icon">🌿</span>
+          <span class="fam-name">Engager</span>
+          <span class="fam-count">4</span>
+        </div>
+        <div class="fam-q">Quel impact sur le monde ?</div>
+        <div class="case" onclick="openN('rse')" data-keywords="3 piliers (éco · social · env.) · Volontaire"><span>RSE (3 piliers)</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('performance')" data-keywords="3 dimensions interdépendantes"><span>Performance globale</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('valeurs')" data-keywords="Financière · Ajoutée · Perçue · Sociale · Partenariale"><span>5 types de valeurs créées</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('ethique')" data-keywords="Au-delà de la loi · Transparence · Anticorruption"><span>Éthique des affaires</span><span class="c-arrow">▸</span></div>
+      </div>
+
+      <!-- Petit encart Mode d'emploi sous la famille Engager -->
+      <div style="background:#fef8e2;border:1px dashed #f5c842;border-radius:10px;padding:9px 12px;font-size:10.5px;line-height:1.5;color:#5a4e00;margin-top:7px">
+        <strong style="color:#7a5800;font-family:'Nunito',sans-serif">🎯 Comment réviser</strong><br>
+        1. <strong>Balaye chaque case</strong> — demande-toi : « est-ce que je sais ? »<br>
+        2. <strong>Survole</strong> si tu hésites — voir les mots-clés<br>
+        3. <strong>Clique</strong> pour la fiche entière (définition + à retenir + exemple + piège)<br>
+        <span style="font-size:9.5px;color:#7a6a58">Stats bac 2022-2025 : 💰 24 % · 🔍 17 % · 👥 16 % · 🧭 13 % · 🛤️ 12 % · 💻 10 % · 🌿 7 %</span>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>Révizo MSGN</strong> · Construit sur <strong>128 questions</strong> · <strong>11 sujets bac 2022-2025</strong> · <a href="revizo-msgn.html">sidoshop.github.io/revizo</a>
+</div>
+
+<!-- MODALE (niveau 2) -->
+<div class="overlay" id="overlay" onclick="closeIfOut(event)">
+  <div class="modal">
+    <button class="close" onclick="closeModal()">×</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- Source unique des notions (partagée avec revizo-msgn.html) -->
+<script src="notions-msgn.js"></script>
+<script>
+// N est chargé depuis notions-msgn.js (source unique partagée avec revizo-msgn.html)
+
+// Messages pour les 3 notions transversales (info absente de N)
+const TRANSV = {
+  communication_n: '🔄 Aussi mobilisée en OUTILS NUMÉRIQUES (réseaux sociaux, site web, CRM).',
+  communication_ext: '🔄 Aussi mobilisée en ENGAGER (image RSE, communication d\'engagement).',
+  identite_num: '🔄 Aussi mobilisée en ENGAGER (e-réputation, image, bad buzz).'
+};
+
+// Mapping ID maquette → ID dans N (pour les renommages / fusion diagnostic)
+const MAP = {
+  diagnostic:'diagnostic_ext',
+  mercatique:'mercatique_n',
+  production:'production_n'
+};
+
+// ═══════════════ RENDU MODALE (utilise N de notions-msgn.js) ═══════════════
+function openN(id) {
+  // Mapping pour les IDs renommés / fusionnés
+  const realId = MAP[id] || id;
+  const n = N[realId];
+  if (!n) { console.warn('Notion introuvable :', id, '→', realId); return; }
+
+  // Conversion des \n en <br> pour le champ "form" (À retenir)
+  const formHtml = (n.form || '').replace(/\n/g, '<br>');
+  const piege = n.conf ? `
+      <div class="fb fb-piege">
+        <div class="fb-label">⚠ Piège</div>
+        ${n.conf}
+      </div>` : '';
+  const transv = TRANSV[id] ? `
+      <div class="fb fb-transversal">
+        ${TRANSV[id]}
+      </div>` : '';
+
+  document.getElementById('modal-body').innerHTML = `
+    <div class="fiche">
+      <div class="fiche-header">
+        <span class="fiche-title">${n.titre}</span>
+        <span class="fiche-freq">${n.freq || ''}</span>
+        <span class="fiche-arrow">▶</span>
+      </div>
+      <div class="fiche-body">
+        <div class="fb fb-def">
+          <div class="fb-label">📖 Définition</div>
+          ${n.def}
+        </div>
+        <div class="fb fb-retenir">
+          <div class="fb-label">📋 À retenir</div>
+          ${formHtml}
+        </div>
+        <div class="fb fb-exemple">
+          <div class="fb-label">💡 Exemple bac</div>
+          ${n.ex}
+        </div>
+        ${piege}
+        ${transv}
+      </div>
+    </div>
+  `;
+  document.getElementById('overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function closeIfOut(e) {
+  if (e.target === document.getElementById('overlay')) closeModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+
+</body>
+</html>
