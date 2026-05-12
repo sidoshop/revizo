@@ -98,21 +98,84 @@ body { font-family: 'Inter', sans-serif; color: #1e1c18; background: #f0ede6; pa
 /* ─── CASE NOTION ─── */
 .case {
   font-size: 10.5px;
-  padding: 3px 6px;
+  padding: 4px 6px;
   margin-bottom: 2px;
   border-radius: 4px;
   cursor: pointer;
   position: relative;
   transition: background .12s;
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex; align-items: flex-start; gap: 6px;
 }
 .case:last-child { margin-bottom: 0; }
 .case:hover { background: rgba(0,0,0,0.06); }
-.case .c-arrow { opacity: 0; font-size: 9px; }
+.case .c-arrow { opacity: 0; font-size: 9px; align-self: center; margin-left: auto; }
 .case:hover .c-arrow { opacity: 0.5; }
 .transverse {
   font-size: 9.5px; margin-left: 3px; opacity: .65;
 }
+
+/* Bullet d'auto-évaluation */
+.bullet {
+  width: 11px; height: 11px;
+  border: 1.5px solid rgba(0,0,0,0.30);
+  border-radius: 50%;
+  background: white;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+  transition: all .12s;
+}
+.bullet:hover { transform: scale(1.2); border-color: rgba(0,0,0,0.55); }
+.bullet.state-review {
+  background: #e88e3e;
+  border-color: #c45c2e;
+}
+.bullet.state-know {
+  background: #2db35a;
+  border-color: #1a7a3c;
+}
+
+/* Contenu de la case (nom + sous-titre question type) */
+.c-body { flex: 1; min-width: 0; }
+.c-name { display: block; font-weight: 600; line-height: 1.25; }
+.c-sub {
+  display: block;
+  font-size: 9px;
+  color: rgba(0,0,0,0.50);
+  font-style: italic;
+  line-height: 1.25;
+  margin-top: 1px;
+}
+
+/* Toggle "afficher les questions" */
+.toggle-q {
+  display: inline-block;
+  font-size: 10px;
+  background: #fffdf8;
+  border: 1px solid #ddd8cc;
+  padding: 3px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #5a4e3e;
+  font-weight: 600;
+  margin-left: 8px;
+}
+.toggle-q:hover { background: #f5f0e3; }
+body.hide-questions .c-sub { display: none; }
+
+/* Légende des bullets dans la subtitle */
+.legend {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin: 0 4px;
+}
+.legend-dot {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,0.30);
+}
+.legend-dot.lg-review { background: #e88e3e; border-color: #c45c2e; }
+.legend-dot.lg-know { background: #2db35a; border-color: #1a7a3c; }
 
 /* ─── TOOLTIP AU SURVOL (niveau 1 — mots-clés) ─── */
 .case[data-keywords]:hover::after {
@@ -339,7 +402,11 @@ body { font-family: 'Inter', sans-serif; color: #1e1c18; background: #f0ede6; pa
 <div class="header">
   <div class="title">📝 Révizo MSGN — Le cycle de vie d'une entreprise</div>
   <div class="subtitle">
-    43 notions · 7 familles · 4 phases · <strong>Survol</strong> = mots-clés · <strong>Clic</strong> = fiche entière · <strong>🔄</strong> = notion transversale
+    43 notions · 7 familles · 4 phases · <strong>Survol</strong> = mots-clés · <strong>Clic case</strong> = fiche entière · <strong>Clic bullet</strong> :
+    <span class="legend"><span class="legend-dot"></span> à apprendre</span>
+    <span class="legend"><span class="legend-dot lg-review"></span> à revoir</span>
+    <span class="legend"><span class="legend-dot lg-know"></span> su</span>
+    <span class="toggle-q" onclick="toggleQuestions()">📝 Afficher les questions type</span>
   </div>
 </div>
 
@@ -549,6 +616,127 @@ const MAP = {
   mercatique:'mercatique_n',
   production:'production_n'
 };
+
+// Question type illustrant chaque notion (sous-titre discret)
+const QUESTIONS = {
+  parties:"Qui sont mes acteurs ? Pour qui j'existe ?",
+  modele:"Comment je crée et capte de la valeur aujourd'hui ?",
+  competences:"Quelles sont mes forces ?",
+  diagnostic:"Quelles opportunités et menaces ? Quel marché ?",
+  comportement:"Mes clients : besoins, motivations, freins, attitudes ?",
+  strategies:"Spécialisation/diversification ? Coût/différenciation ?",
+  das:"Combien de métiers ?",
+  decision:"Cette décision engage-t-elle l'avenir ?",
+  croissance:"Interne, externe ou partenariale ?",
+  integration:"Contrôler amont/aval de la chaîne ?",
+  ess:"Statut juridique à finalité non lucrative ?",
+  mercatique:"Segmentation, Ciblage, Positionnement + Mix 4P",
+  labels:"Un tiers indépendant atteste de mes engagements",
+  production:"Artisanal/série, flux poussés/tirés",
+  mintzberg:"Comment je coordonne mes équipes ?",
+  processus:"Formaliser pour fiabiliser",
+  communication_n:"Pub, réseaux sociaux, newsletter",
+  communication_ext:"RP, mécénat, marque employeur",
+  si_fonctions:"Collecter, stocker, traiter, diffuser",
+  pgi:"Logiciels intégrés et protection des données",
+  ecommerce:"Vente en ligne",
+  blockchain:"Traçabilité infalsifiable",
+  ia:"Aide à la décision automatisée",
+  identite_num:"Image numérique (e-réputation, bad buzz)",
+  va:"Richesse créée",
+  rex:"Rentabilité de l'activité",
+  couts:"Coût de revient, taux de marge/marque",
+  frng:"Marge de sécurité financière",
+  bfr:"Besoin de financement du cycle",
+  tn:"Solvabilité court terme",
+  caf:"Capacité d'autofinancement",
+  seuil:"À partir de quel CA on gagne ?",
+  financement:"Autofinancement, emprunt, capital",
+  perf_co:"CA, parts de marché, taux d'évolution",
+  likert:"Autoritaire → Participatif",
+  culture:"Valeurs, rites, symboles",
+  motivation:"Maslow, Herzberg, McGregor",
+  gpec:"Gestion prévisionnelle des emplois",
+  risques_pro:"Santé et sécurité au travail",
+  rse:"Économique + Social + Environnemental",
+  performance:"Au-delà du seul résultat financier",
+  valeurs:"Financière, ajoutée, perçue, sociale, partenariale",
+  ethique:"Engagement au-delà de la loi"
+};
+
+// État d'apprentissage par notion (3 états cyclés : unknown → review → know → unknown)
+const STATES = JSON.parse(localStorage.getItem('msgn-states') || '{}');
+const STATE_CYCLE = { unknown:'review', review:'know', know:'unknown' };
+
+function getId(caseEl) {
+  // Extrait l'ID de la notion depuis l'attribut onclick="openN('xxx')"
+  const m = caseEl.getAttribute('onclick').match(/openN\(['"]([^'"]+)['"]\)/);
+  return m ? m[1] : null;
+}
+
+function cycleState(bullet, id) {
+  const current = STATES[id] || 'unknown';
+  const next = STATE_CYCLE[current];
+  STATES[id] = next;
+  localStorage.setItem('msgn-states', JSON.stringify(STATES));
+  bullet.classList.remove('state-review','state-know');
+  if (next !== 'unknown') bullet.classList.add('state-' + next);
+}
+
+function toggleQuestions() {
+  document.body.classList.toggle('hide-questions');
+  const btn = document.querySelector('.toggle-q');
+  if (btn) btn.textContent = document.body.classList.contains('hide-questions')
+    ? '📝 Afficher les questions type'
+    : '📝 Masquer les questions type';
+}
+
+// Init : ajouter bullet + sous-titre à chaque case + restaurer état
+window.addEventListener('DOMContentLoaded', () => {
+  // Par défaut : masquer les questions type (mode quizz)
+  document.body.classList.add('hide-questions');
+
+  document.querySelectorAll('.case').forEach(caseEl => {
+    const id = getId(caseEl);
+    if (!id) return;
+
+    // Contenu existant = juste le nom (un span ou texte) + .c-arrow
+    // On enveloppe le nom dans un .c-body et on ajoute la question type
+    const arrow = caseEl.querySelector('.c-arrow');
+    const nameSpan = caseEl.firstElementChild;
+
+    // Crée le bullet à gauche
+    const bullet = document.createElement('span');
+    bullet.className = 'bullet';
+    const state = STATES[id] || 'unknown';
+    if (state !== 'unknown') bullet.classList.add('state-' + state);
+    bullet.title = 'Clic : à apprendre → à revoir → su';
+    bullet.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cycleState(bullet, id);
+    });
+
+    // Crée le body (nom + sous-titre question)
+    const body = document.createElement('span');
+    body.className = 'c-body';
+    const name = document.createElement('span');
+    name.className = 'c-name';
+    name.innerHTML = nameSpan.innerHTML;
+    body.appendChild(name);
+    if (QUESTIONS[id]) {
+      const sub = document.createElement('span');
+      sub.className = 'c-sub';
+      sub.textContent = QUESTIONS[id];
+      body.appendChild(sub);
+    }
+
+    // Reconstruit la case : bullet + body + arrow
+    caseEl.innerHTML = '';
+    caseEl.appendChild(bullet);
+    caseEl.appendChild(body);
+    if (arrow) caseEl.appendChild(arrow);
+  });
+});
 
 // ═══════════════ RENDU MODALE (utilise N de notions-msgn.js) ═══════════════
 function openN(id) {
