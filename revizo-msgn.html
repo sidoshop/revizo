@@ -222,10 +222,18 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
         <span class="q-name">Caractériser la stratégie</span>
         <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
       </div>
+      <div class="q-item" onclick="show('decision_q', this)">
+        <span class="q-name">🆕 Décision stratégique vs opérationnelle</span>
+        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
       <div class="dossier-label">Comment j'y vais ? — Agir</div>
       <div class="q-item" onclick="show('mercatique', this)">
         <span class="q-name">Identifier l'approche mercatique (SCP + 4P)</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
+      </div>
+      <div class="q-item" onclick="show('comportement_q', this)">
+        <span class="q-name">🆕 Facteurs du comportement consommateur</span>
+        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★★</span></div>
       </div>
     </div>
   </div>
@@ -254,6 +262,10 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
         <span class="q-name">Justifier les choix de financement</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
       </div>
+      <div class="q-item" onclick="show('evolution_q', this)">
+        <span class="q-name">🆕 Calculer un taux d'évolution + commenter</span>
+        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 8 min</span><span class="q-time">★★★★★</span></div>
+      </div>
       <div class="dossier-label">Performance sociale</div>
       <div class="q-item" onclick="show('direction', this)">
         <span class="q-name">Identifier le style de direction</span>
@@ -280,6 +292,10 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
         <span class="q-name">Identifier le mode de production / flux</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
       </div>
+      <div class="q-item" onclick="show('processus_q', this)">
+        <span class="q-name">🆕 Schématiser un processus de gestion</span>
+        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★☆☆</span></div>
+      </div>
     </div>
   </div>
 
@@ -299,10 +315,18 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
         <span class="q-name">Analyser la communication / relation client</span>
         <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★☆☆</span></div>
       </div>
+      <div class="q-item" onclick="show('techno_q', this)">
+        <span class="q-name">🆕 Apprécier une techno nouvelle (Blockchain · IA · QR)</span>
+        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★☆☆</span></div>
+      </div>
       <div class="dossier-label">Mes valeurs — RSE</div>
       <div class="q-item" onclick="show('rse', this)">
         <span class="q-name">Montrer que X intègre la RSE</span>
         <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
+      </div>
+      <div class="q-item" onclick="show('valeurs_q', this)">
+        <span class="q-name">🆕 Identifier les types de valeurs créées (15 lignes)</span>
+        <div class="q-meta"><span class="q-pts">~10-15 pts</span><span class="q-time">≈ 25 min</span><span class="q-time">★★★★★</span></div>
       </div>
     </div>
   </div>
@@ -1351,6 +1375,111 @@ const Q = {
 <div><strong style="color:#b5415a">EXEMPLE 4 — TPS 2023 : La marque employeur participe à la performance globale</strong><br><br><strong>Intro :</strong> La marque employeur est l'image d'une organisation en tant qu'employeur. Elle vise à attirer et fidéliser les talents dans un marché du travail tendu.<br><br><strong>1. Attirer les compétences rares :</strong> TPS souffre d'un manque de notoriété sur le marché du travail. En développant sa marque employeur (communication RH, présence sur les réseaux), l'entreprise se rend visible auprès des profils qualifiés de perforateurs, compétences rares et difficiles à trouver.<br><br><strong>2. Fidéliser les salariés :</strong> La marque employeur se construit aussi en interne : formations, QVT, management participatif (style de direction de M. Prissette). Un salarié qui se sent valorisé reste plus longtemps → réduction du turnover et des coûts de recrutement.<br><br><strong>3. Impact sur la performance globale :</strong> Performance sociale (turnover bas, engagement élevé) + Performance économique (productivité maintenue, transmission du savoir-faire) + Image de marque (les clients perçoivent une entreprise stable et experte).<br><br><strong>Conclusion :</strong> La marque employeur de TPS montre que l'investissement RH est un choix stratégique qui renforce la performance globale sur les 3 dimensions.</div>`,
     alerte:"Répondre en liste à puces = perte de points. C'est une RÉDACTION : phrases complètes, connecteurs logiques, intro et conclusion obligatoires. Le sujet de synthèse n'est PAS toujours sur la RSE — il peut porter sur le numérique, la QVT, l'innovation ou la marque employeur.",
     astuce:"Structure gagnante : 1 intro (2 lignes) + 3 paragraphes développés + 1 conclusion (2 lignes) = 15 lignes. Chaque paragraphe = 1 argument + 1 preuve tirée des docs + 1 lien avec la performance. Les 8 sujets tombés montrent 3 grands thèmes récurrents : RSE/performance (2x), numérique/opportunités-risques (3x), GRH/marque employeur/QVT (3x)."
+  },
+  comportement_q: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 20 · Mercatique", titre:"Identifier les facteurs du comportement consommateur",
+    freq:"★★★★★ — Tombé 2x en 2025", pts:"~3-4 pts", temps:"≈ 12 min",
+    annales:"Bébé Serein (2025 Métropole) · Clima&Co (2025 Polynésie)",
+    notions:["comportement","mercatique_n"],
+    methode:[
+      {n:1, t:"Présenter les 4 facteurs au programme", d:"Besoins, motivations, freins, attitude. <em>Pas de hors-programme.</em>"},
+      {n:2, t:"Besoins", d:"Manque ressenti. Peut s'appuyer sur Maslow (physio, sécurité, appartenance, estime, accomplissement)."},
+      {n:3, t:"Motivations", d:"Hédoniste (plaisir), oblative (pour les autres), auto-expression (pour soi)."},
+      {n:4, t:"Freins", d:"Obstacles : prix, doute, peur, complexité, contraintes d'usage."},
+      {n:5, t:"Attitude", d:"3 composantes : cognitive (je sais), affective (je ressens), conative (je fais)."},
+      {n:6, t:"Conclure sur le lien stratégique", d:"Comment l'entreprise répond à ces facteurs (offre, prix, communication)."}
+    ],
+    mots:["besoins","motivations","freins","attitude","cognitif","affectif","conatif","comportement consommateur"],
+    annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"Repérer les différents facteurs explicatifs du comportement des consommateurs (freins, motivations, attitude et besoins) de l'entreprise Bébé Serein."},
+    corrige:`<strong>Besoins :</strong> qualité, sécurité, produits écologiques sans perturbateurs endocriniens.<br><br><strong>Motivations :</strong> auto-expression (afficher un engagement écologique et parental), gain de temps grâce à l'abonnement.<br><br><strong>Freins :</strong> prix des couches, nécessité d'avoir Internet, sentiment de pollution liée aux livraisons.<br><br><strong>Attitude :</strong> cognitive (attention à la qualité et à la capacité d'absorption), affective (sentiment de confiance, attachement à la marque), conative (clients ambassadeurs, recommandation).<br><br>Ces 4 facteurs montrent que Bébé Serein répond précisément à des attentes de consommateurs conscients et engagés, ce qui légitime un positionnement premium.`,
+    alerte:"Confondre besoin (générique) et motivation (raison d'acheter ce produit). Le besoin de sécurité est universel ; la motivation auto-expressive est propre à un produit donné.",
+    astuce:"Au Bac, présenter les 4 catégories EXPLICITEMENT, même si le corrigé ne les liste pas toujours. Le vocabulaire (cognitif / affectif / conatif) marque les bons élèves."
+  },
+  decision_q: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 21 · Management", titre:"Distinguer décision stratégique vs opérationnelle",
+    freq:"★★★★☆ — Tombé en 2025", pts:"~3-4 pts", temps:"≈ 10 min",
+    annales:"Bébé Serein (2025 Métropole, Q 2.4)",
+    notions:["decision"],
+    methode:[
+      {n:1, t:"Repérer la décision dans le sujet", d:"Identifier l'action concrète décidée (lancer un produit, racheter, investir...)."},
+      {n:2, t:"Appliquer les 5 critères du stratégique", d:"Qui ? Horizon ? Ressources ? Réversibilité ? Portée ?"},
+      {n:3, t:"Pour chaque critère : apporter une preuve doc", d:"Citation, chiffre, fait dans le sujet."},
+      {n:4, t:"Conclure : stratégique / tactique / opérationnelle", d:"Si 4 ou 5 critères du stratégique sont remplis → stratégique."}
+    ],
+    mots:["décision stratégique","long terme","irréversible","dirigeant","ressources","positionnement"],
+    annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"Montrer que cette décision (se positionner sur le marché du lait bio pour bébé) relève du management stratégique."},
+    corrige:`La décision de lancer le lait bio pour bébé relève du <strong>management stratégique</strong> car elle remplit les 5 critères :<br><br>— <strong>Qui :</strong> prise par les fondateurs Mathieu Frondeur et Johan Chapot (les dirigeants).<br>— <strong>Horizon :</strong> engage l'entreprise sur le long terme (nouveau marché à conquérir).<br>— <strong>Ressources :</strong> nécessite des investissements financiers et humains conséquents.<br>— <strong>Réversibilité :</strong> difficilement réversible ; un échec menacerait l'activité initiale des couches.<br>— <strong>Portée :</strong> concerne le positionnement et le périmètre d'activité (élargissement du modèle économique).<br><br>Les 5 critères sont réunis : décision stratégique.`,
+    alerte:"Une décision n'est pas stratégique parce qu'elle est importante. Le bon critère est la réversibilité et l'engagement de ressources lourdes. Une grosse campagne pub ponctuelle reste opérationnelle.",
+    astuce:"Toujours présenter les 5 critères en liste, même si un seul suffirait. Cela rassure le correcteur sur ta maîtrise du programme."
+  },
+  processus_q: {
+    dossier:"Dossier 2 — Production", type:"TYPE 22 · Organisation", titre:"Schématiser un processus de gestion",
+    freq:"★★★☆☆ — Tombé en 2023 (Polynésie)", pts:"~3-4 pts", temps:"≈ 12 min",
+    annales:"Saveurs & Nature (2023 Polynésie, Q 2.2)",
+    notions:["processus"],
+    methode:[
+      {n:1, t:"Identifier les 4 éléments du processus", d:"Événements déclencheurs · Tâches · Acteurs · Enchaînements."},
+      {n:2, t:"Lister les avantages de schématiser", d:"Formalisation, identification des intervenants, automatisation, documentation, optimisation."},
+      {n:3, t:"Préciser le rôle de chaque partie prenante", d:"Service interne vs partenaires externes : qui fait quoi ?"},
+      {n:4, t:"Lier à la fiabilité du processus", d:"Schématisation = réduction du risque d'erreur, transmission du savoir-faire."}
+    ],
+    mots:["processus","schématisation","BPMN","événement","tâche","acteurs","automatisation","formalisation"],
+    annale:{src:"Bac STMG MSGN · Polynésie 2023 (Saveurs & Nature)", q:"Montrer les avantages attendus pour l'entreprise de schématiser le processus de renouvellement de la certification « épi barré » et préciser le rôle des parties prenantes impliquées."},
+    corrige:`<strong>Avantages de la schématisation :</strong><br>— <strong>Formalisation :</strong> détailler les étapes pour éviter oublis et confusions.<br>— <strong>Identification des intervenants :</strong> clarté des responsabilités.<br>— <strong>Automatisation du déclenchement :</strong> assure le démarrage du processus à temps (lève les angoisses du service qualité).<br>— <strong>Rapidité :</strong> l'enchaînement des tâches est clairement défini.<br><br><strong>Rôle des parties prenantes :</strong><br>— <strong>Service qualité (interne) :</strong> contrôler la teneur en gluten, réaliser un audit, constituer le dossier de renouvellement.<br>— <strong>Laboratoire indépendant (externe) :</strong> réaliser le test demandé.<br>— <strong>Association AFDIAG (externe) :</strong> étudier le dossier et porter un avis.`,
+    alerte:"Schématiser ≠ automatiser. La schématisation permet la formalisation ; l'automatisation est une étape suivante qui repose sur le schéma.",
+    astuce:"Toujours nommer chaque acteur ET préciser s'il est interne ou externe. Au Bac, c'est ce qui distingue une bonne copie d'une excellente."
+  },
+  techno_q: {
+    dossier:"Dossier 3 — Numérique", type:"TYPE 23 · Technologies", titre:"Apprécier l'apport d'une technologie nouvelle (Blockchain · IA · QR)",
+    freq:"★★★☆☆ — Apparu en 2025", pts:"~3-4 pts", temps:"≈ 12 min",
+    annales:"Clima&Co (2025 Polynésie, blockchain) · GSP (2025 Nouvelle-Calédonie, IA)",
+    notions:["blockchain","ia","ecommerce"],
+    methode:[
+      {n:1, t:"Définir la technologie en 1 phrase", d:"Montrer que tu connais l'outil sans paraphraser le doc."},
+      {n:2, t:"Lister 3-4 apports concrets pour l'entreprise", d:"Traçabilité, gain de temps, fiabilité, expérience client..."},
+      {n:3, t:"Évoquer 1-2 limites", d:"Coût, formation, dépendance, enjeux éthiques. Indispensable pour montrer l'esprit critique."},
+      {n:4, t:"Conclure sur l'adéquation avec la stratégie", d:"Pourquoi cette techno-là pour cette entreprise précisément ?"}
+    ],
+    mots:["blockchain","IA","intelligence artificielle","traçabilité","automatisation","transparence","éthique"],
+    annale:{src:"Bac STMG MSGN · Polynésie 2025 (Clima&Co)", q:"Montrer l'intérêt d'utiliser la technologie « chaînes de blocs » (blockchain) afin d'assurer la traçabilité des produits alimentaires proposés par Clima&Co."},
+    corrige:`La blockchain est un registre distribué et infalsifiable de données.<br><br><strong>Pour Clima&Co, elle permet :</strong><br>— <strong>Traçabilité totale</strong> du producteur jusqu'au consommateur (parcours vérifiable).<br>— <strong>Transparence</strong> vérifiable par le client (scan du QR code).<br>— <strong>Authentification</strong> des engagements pris (origine, conditions de production).<br>— <strong>Renforcement de la confiance</strong> et différenciation forte sur le marché alimentaire saturé.<br><br><strong>Limites :</strong> coût d'implémentation élevé, complexité technique, nécessité de former les producteurs partenaires.`,
+    alerte:"Ne pas faire de la techno-évangélisation. Toujours nuancer avec une limite à la fin. Et ne pas confondre blockchain et Bitcoin (Bitcoin = une application de la blockchain, pas la blockchain elle-même).",
+    astuce:"Mémoriser une analogie simple pour la blockchain : le 'grand cahier partagé entre 100 personnes' (cf. fiche). Cela rassure le correcteur sur ta compréhension."
+  },
+  valeurs_q: {
+    dossier:"Dossier 3 — RSE", type:"TYPE 24 · Performance", titre:"Identifier les types de valeurs créées",
+    freq:"★★★★★ — Question 15 lignes en 2025 (15 pts !)", pts:"~10-15 pts", temps:"≈ 25 min",
+    annales:"Bébé Serein (2025 Métropole, Q 3.3)",
+    notions:["valeurs","rse","performance"],
+    methode:[
+      {n:1, t:"Définir la création de valeur en intro", d:"Une entreprise crée plusieurs FORMES de valeur, pas seulement de l'argent."},
+      {n:2, t:"Présenter les 5 types", d:"Financière · Ajoutée · Perçue · Sociale · Partenariale. (Donner une définition courte pour chaque.)"},
+      {n:3, t:"Lier la démarche du sujet aux 5 types", d:"Pour chaque type : un exemple tiré de l'entreprise du sujet."},
+      {n:4, t:"Compléter par des exemples d'autres organisations", d:"Pour les 15 lignes, c'est OBLIGATOIRE (Patagonia, Innocent, MAIF...)."},
+      {n:5, t:"Conclure sur la performance globale", d:"Les 5 types se renforcent mutuellement = performance durable."}
+    ],
+    mots:["valeur financière","valeur ajoutée","valeur perçue","valeur sociale","valeur partenariale","performance globale"],
+    annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"En une quinzaine de lignes, montrer que la mise en place d'une démarche RSE est créatrice de valeurs (15 pts)."},
+    corrige:`<strong>Intro</strong> — La RSE intègre les enjeux sociaux et environnementaux dans la stratégie. Elle permet de créer plusieurs types de valeur : financière, ajoutée, perçue, sociale et partenariale.<br><br><strong>Axe 1 — Valeur perçue et financière</strong> : les certifications RSE renforcent la confiance et différencient. Le label bio de Bébé Serein attire les parents engagés. Patagonia communique sur sa fabrication responsable → fidélisation + premium tarifaire → ↑ CA.<br><br><strong>Axe 2 — Valeur sociale et partenariale</strong> : la RSE renforce le sentiment d'appartenance. Innocent (smoothies) collabore avec l'association « Petits frères des pauvres » chaque hiver → cohésion d'équipe + valeur partenariale.<br><br><strong>Conclusion</strong> — La RSE produit une performance globale durable, supérieure au seul résultat financier. C'est un véritable choix stratégique de long terme.`,
+    alerte:"Mentionner moins de 5 types de valeurs = -50% sur la question. Ne pas inclure d'exemple d'organisation EXTERNE = -25%. Lire 2 fois la consigne avant de répondre.",
+    astuce:"Mémoriser une mini-liste d'exemples par type de valeur : Patagonia (perçue), Innocent (partenariale), MAIF (sociale), Le Slip Français (financière), Biocoop (ajoutée)."
+  },
+  evolution_q: {
+    dossier:"Dossier 2 — Finances", type:"TYPE 25 · Calcul", titre:"Calculer un taux d'évolution + commenter",
+    freq:"★★★★★ — Présent dans 4 sessions 2025", pts:"~3-4 pts", temps:"≈ 8 min",
+    annales:"Bébé Serein (Métropole) · Polynésie · Nouvelle-Calédonie · Saveurs & Nature (2023)",
+    notions:["perf_co"],
+    methode:[
+      {n:1, t:"Écrire la formule", d:"Taux d'évolution = ((Valeur N − Valeur N-1) / Valeur N-1) × 100. <em>Toujours diviser par l'ANCIENNE valeur.</em>"},
+      {n:2, t:"Appliquer aux chiffres du doc", d:"Faire le calcul intermédiaire visible. Ne pas sauter d'étape."},
+      {n:3, t:"Donner le résultat en %", d:"Avec 1 ou 2 décimales selon les consignes."},
+      {n:4, t:"Commenter le résultat", d:"Hausse/baisse, contextualiser (croissance commerciale, dégradation financière...). Lier aux autres indicateurs si pertinent. <strong>Le commentaire vaut 50% des points !</strong>"}
+    ],
+    mots:["taux d'évolution","variation","croissance","comparaison N / N-1","performance commerciale"],
+    annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"Calculer les taux d'évolution du chiffre d'affaires et du bénéfice de l'entreprise Bébé Serein entre 2021 et 2023. Commenter les résultats."},
+    corrige:`<strong>Taux d'évolution du CA :</strong><br>((CA 2023 − CA 2021) / CA 2021) × 100 = + <strong>123,79 %</strong><br><br><strong>Taux d'évolution du bénéfice :</strong><br>((Bénéfice 2023 − Bénéfice 2021) / Bénéfice 2021) × 100 = + <strong>102,77 %</strong><br><br><strong>Commentaire :</strong><br>L'entreprise voit son CA et son bénéfice plus que doubler entre 2021 et 2023. Cela montre qu'elle a réussi à se faire une place sur un marché fortement concurrentiel. La performance commerciale et financière s'améliorent simultanément, ce qui traduit un modèle économique solide et une croissance maîtrisée.`,
+    alerte:"Erreur classique : diviser par la nouvelle valeur (N) au lieu de l'ancienne (N-1). Le calcul donne un résultat erroné. Toujours vérifier le dénominateur.",
+    astuce:"Si l'énoncé dit 'calculer et commenter', le calcul vaut 50% des points et le commentaire 50%. Ne jamais omettre le commentaire."
   }
 };
 
