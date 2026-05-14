@@ -7,10 +7,10 @@
 <style>
 @page { size: A4 landscape; margin: 8mm 8mm; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', sans-serif; color: #1e1c18; background: #f0ede6; padding: 14px; }
+body { font-family: 'Inter', sans-serif; color: #1e1c18; background: #f0ede6; padding: 6px 14px 14px; }
 
 /* ─── HEADER ─── */
-.header { text-align: center; margin-bottom: 10px; }
+.header { text-align: center; margin-bottom: 6px; }
 .title {
   font-family: 'Nunito', sans-serif;
   font-size: 20px; font-weight: 900;
@@ -105,11 +105,111 @@ body { font-family: 'Inter', sans-serif; color: #1e1c18; background: #f0ede6; pa
   position: relative;
   transition: background .12s;
   display: flex; align-items: flex-start; gap: 6px;
+  /* Empêche le caret de texte qui clignote au clic + bloque la sélection involontaire */
+  user-select: none;
+  -webkit-user-select: none;
 }
 .case:last-child { margin-bottom: 0; }
 .case:hover { background: rgba(0,0,0,0.06); }
 .case .c-arrow { opacity: 0; font-size: 9px; align-self: center; margin-left: auto; }
 .case:hover .c-arrow { opacity: 0.5; }
+
+/* ─── SURLIGNAGE QUESTION DU BAC ───
+   Quand la carte est appelée avec ?p=X&s=Y,Z, on met la notion-clé en
+   jaune VIF (avec animation pulse 1×) et les secondaires en jaune PÂLE. */
+.case.highlight-primary {
+  background: #fff170 !important;
+  outline: 2px solid #f5c842;
+  outline-offset: -1px;
+  animation: pulse-bac 1.4s ease-out 1;
+}
+.case.highlight-secondary {
+  background: #fff8d6 !important;
+}
+@keyframes pulse-bac {
+  0%   { box-shadow: 0 0 0 0   rgba(245,200,66,0.9); }
+  70%  { box-shadow: 0 0 0 16px rgba(245,200,66,0);   }
+  100% { box-shadow: 0 0 0 0   rgba(245,200,66,0);   }
+}
+
+/* ─── POPUP "QUESTION DU BAC" ───
+   Bandeau jaune compact : 3 lignes (label / libellé / meta) à gauche,
+   bouton "Réponse attendue" à droite. Les notions ne sont plus listées ici
+   car elles sont déjà surlignées et cliquables directement sur la carte. */
+.bac-popup {
+  background: linear-gradient(to right, #fef8e2, #fdf2c8);
+  border: 1px solid #f0dfa0;
+  border-radius: 10px;
+  padding: 8px 32px 10px 14px;
+  margin: 0 6px 8px;
+  position: relative;
+  font-size: 12.5px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.bac-popup-text {
+  flex: 1;
+  min-width: 0;
+}
+.bac-popup-label {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  color: #7a5800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  margin-bottom: 2px;
+}
+.bac-popup-libelle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e1c18;
+  margin-bottom: 2px;
+}
+.bac-popup-meta {
+  color: #7a5800;
+  font-size: 11.5px;
+}
+.bac-popup-close {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: #7a5800;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  padding: 2px 6px;
+}
+.bac-popup-close:hover { color: #b5415a; }
+.bac-popup-method-btn {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  background: #b5415a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .02em;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.bac-popup-method-btn:hover { background: #962f48; }
+/* Variante désactivée : pour les questions de synthèse dont le corrigé
+   n'a pas encore été rédigé. Le bouton reste visible (pour signaler que
+   l'info existera) mais ne déclenche aucune action. */
+.bac-popup-method-btn.bac-popup-method-btn-disabled {
+  background: #d4cabf;
+  color: #5a5448;
+  cursor: not-allowed;
+}
+.bac-popup-method-btn.bac-popup-method-btn-disabled:hover { background: #d4cabf; }
 .transverse {
   font-size: 9.5px; margin-left: 3px; opacity: .65;
 }
@@ -398,11 +498,24 @@ body.hide-questions .c-sub { display: none; }
 </head>
 <body>
 
+<!-- POPUP QUESTION DU BAC (caché par défaut, activé via ?p=...&qid=... dans l'URL) -->
+<div class="bac-popup" id="bac-popup" style="display:none">
+  <button class="bac-popup-close" onclick="closeBacPopup()" title="Fermer">×</button>
+  <div class="bac-popup-text">
+    <div class="bac-popup-label">📋 Question du Bac</div>
+    <div class="bac-popup-libelle" id="bac-libelle">—</div>
+    <div class="bac-popup-meta" id="bac-meta">—</div>
+  </div>
+  <button class="bac-popup-method-btn" id="bac-method-btn" style="display:none" onclick="openMethodFromBac()">
+    📖 Réponse attendue
+  </button>
+</div>
+
 <!-- HEADER -->
 <div class="header">
   <div class="title">📝 Révizo MSGN — Le cycle de vie d'une entreprise</div>
   <div class="subtitle">
-    43 notions · 7 familles · 4 phases · <strong>Survol</strong> = mots-clés · <strong>Clic case</strong> = fiche entière · <strong>Clic bullet</strong> :
+    46 notions · 7 familles · 4 phases · <strong>Survol</strong> = mots-clés · <strong>Clic case</strong> = fiche entière · <strong>Clic bullet</strong> :
     <span class="legend"><span class="legend-dot"></span> à apprendre</span>
     <span class="legend"><span class="legend-dot lg-review"></span> à revoir</span>
     <span class="legend"><span class="legend-dot lg-know"></span> su</span>
@@ -427,13 +540,16 @@ body.hide-questions .c-sub { display: none; }
         <div class="fam-head">
           <span class="fam-icon">🔍</span>
           <span class="fam-name">Diagnostiquer</span>
-          <span class="fam-count">5</span>
+          <span class="fam-count">8</span>
         </div>
         <div class="fam-q">Où en est l'entreprise ?</div>
-        <div class="case" onclick="openN('parties')" data-keywords="Internes / externes · Attentes contradictoires"><span>Parties prenantes & finalités</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('finalites')" data-keywords="Économique · Sociale · Sociétale · Environnementale"><span>Finalités de l'entreprise</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('parties')" data-keywords="Internes / externes · Attentes contradictoires"><span>Parties prenantes</span><span class="c-arrow">▸</span></div>
         <div class="case" onclick="openN('modele')" data-keywords="Créer · Délivrer · Capter de la valeur"><span>Modèle économique</span><span class="c-arrow">▸</span></div>
         <div class="case" onclick="openN('competences')" data-keywords="Rare · Imitable · Créatrice de valeur"><span>Compétences distinctives</span><span class="c-arrow">▸</span></div>
-        <div class="case" onclick="openN('diagnostic')" data-keywords="PESTEL · Porter · Marché · FCS"><span>Diagnostic externe & marché</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('fcs')" data-keywords="Externes · Propres au marché · ≠ Compétences"><span>FCS — Facteurs Clés de Succès</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('diagnostic')" data-keywords="PESTEL · SWOT externe · Porter"><span>Diagnostic externe (PESTEL/SWOT)</span><span class="c-arrow">▸</span></div>
+        <div class="case" onclick="openN('marche')" data-keywords="Taille · Structure · Segments · Croissance"><span>Caractéristiques du marché</span><span class="c-arrow">▸</span></div>
         <div class="case" onclick="openN('comportement')" data-keywords="Besoins · Motivations · Freins · Attitude"><span>Comportement consommateur</span><span class="c-arrow">▸</span></div>
       </div>
 
@@ -600,6 +716,9 @@ body.hide-questions .c-sub { display: none; }
 
 <!-- Source unique des notions (partagée avec revizo-msgn.html) -->
 <script src="notions-msgn.js"></script>
+<!-- questions-bac.js sert au mode "Question du Bac" (lecture des params d'URL).
+     Optionnel : si non chargé, la carte fonctionne normalement (sans popup). -->
+<script src="questions-bac.js"></script>
 <script>
 // N est chargé depuis notions-msgn.js (source unique partagée avec revizo-msgn.html)
 
@@ -619,10 +738,13 @@ const MAP = {
 
 // Question type illustrant chaque notion (sous-titre discret)
 const QUESTIONS = {
-  parties:"Qui sont mes acteurs ? Pour qui j'existe ?",
+  finalites:"Pourquoi mon entreprise existe ? Quelle est sa raison d'être ?",
+  parties:"Qui sont mes acteurs ? Quelles attentes ?",
   modele:"Comment je crée et capte de la valeur aujourd'hui ?",
-  competences:"Quelles sont mes forces ?",
-  diagnostic:"Quelles opportunités et menaces ? Quel marché ?",
+  competences:"Quelles sont mes forces internes distinctives ?",
+  fcs:"Que faut-il maîtriser pour réussir sur ce marché ?",
+  diagnostic:"Quelles opportunités et menaces du macro-environnement ?",
+  marche:"Taille, structure, segments, croissance du marché ?",
   comportement:"Mes clients : besoins, motivations, freins, attitudes ?",
   strategies:"Spécialisation/diversification ? Coût/différenciation ?",
   das:"Combien de métiers ?",
@@ -798,6 +920,144 @@ function closeIfOut(e) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
 });
+
+// ═══════════════ MODE "QUESTION DU BAC" ═══════════════
+// Quand la carte est appelée avec des paramètres d'URL (depuis l'onglet
+// 📋 Questions du Bac de la SPA), on active 3 choses :
+//   ?p=<id>      → la notion-clé : case en jaune VIF + animation pulse
+//   ?s=<id,id>   → les notions secondaires : cases en jaune PÂLE
+//   ?qid=<id>    → la question du Bac : popup avec libellé + sujet + notions cliquables
+function applyBacHighlight() {
+  const params = new URLSearchParams(window.location.search);
+  const p   = params.get('p');
+  const s   = params.get('s');
+  const qid = params.get('qid');
+
+  if (!p && !s && !qid) return; // mode autonome normal
+
+  // Helper : retrouve la case sur la carte à partir d'un ID de notion.
+  // On utilise MAP pour gérer les alias (diagnostic ↔ diagnostic_ext, etc.).
+  function findCase(id) {
+    // On essaie l'id tel quel, puis son alias inverse
+    let el = document.querySelector(`.case[onclick="openN('${id}')"]`);
+    if (el) return el;
+    // Inverse de MAP : si id = 'diagnostic_ext', chercher 'diagnostic'
+    for (const [short, full] of Object.entries(MAP)) {
+      if (full === id) {
+        el = document.querySelector(`.case[onclick="openN('${short}')"]`);
+        if (el) return el;
+      }
+    }
+    return null;
+  }
+
+  // 1. Surligner la notion-clé en jaune vif
+  if (p) {
+    const el = findCase(p);
+    if (el) {
+      el.classList.add('highlight-primary');
+      setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
+    }
+  }
+
+  // 2. Surligner les secondaires en jaune pâle
+  if (s) {
+    for (const sid of s.split(',')) {
+      const el = findCase(sid.trim());
+      if (el) el.classList.add('highlight-secondary');
+    }
+  }
+
+  // 3. Remplir et afficher la popup "Question du Bac"
+  if (qid && typeof getQuestionBac === 'function') {
+    const q = getQuestionBac(qid);
+    if (q) {
+      // Récupère le titre lisible d'une notion (en gérant les alias MAP)
+      function notionTitle(id) {
+        const real = MAP[id] || id;
+        return (N[real] || {}).titre || id;
+      }
+
+      document.getElementById('bac-libelle').textContent = '« ' + q.libelle + ' »';
+
+      const badges = [];
+      if (q.synthese) badges.push('<strong>✍️ 15 lignes</strong>');
+      if (q.choix)    badges.push('🔀 au choix');
+      document.getElementById('bac-meta').innerHTML =
+        `${q.fam} <strong>${q.sujet}</strong> ${q.annee} · Q ${q.num}` +
+        (badges.length ? ' · ' + badges.join(' · ') : '');
+
+      // (les notions ne sont plus listées dans la popup : elles sont déjà
+      // surlignées sur la carte et cliquables directement là-bas.)
+
+      // Configure le bouton selon le contexte :
+      //  - Question de synthèse (✍️) AVEC corrigé rédigé (synthIndex) → "📖 Réponse attendue" (action: synth)
+      //  - Question de synthèse SANS corrigé rédigé              → "⏳ Corrigé en attente" (désactivé)
+      //  - Question normale AVEC TYPE méthodologique             → "📖 Réponse attendue" (action: type)
+      //  - Question normale SANS TYPE                            → bouton caché
+      const methodBtn = document.getElementById('bac-method-btn');
+      if (methodBtn) {
+        methodBtn.classList.remove('bac-popup-method-btn-disabled');
+        methodBtn.dataset.qid = q.id;
+        methodBtn.dataset.action = '';
+        methodBtn.dataset.target = '';
+
+        if (q.synthese && q.synthIndex !== undefined) {
+          methodBtn.textContent = '📖 Réponse attendue';
+          methodBtn.dataset.action = 'synth';
+          methodBtn.dataset.target = String(q.synthIndex);
+          methodBtn.style.display = 'inline-block';
+        } else if (q.synthese) {
+          methodBtn.textContent = '⏳ Corrigé en attente';
+          methodBtn.classList.add('bac-popup-method-btn-disabled');
+          methodBtn.style.display = 'inline-block';
+        } else {
+          const typeKey = (typeof getTypeKeyForQuestion === 'function')
+            ? getTypeKeyForQuestion(q) : null;
+          if (typeKey) {
+            methodBtn.textContent = '📖 Réponse attendue';
+            methodBtn.dataset.action = 'type';
+            methodBtn.dataset.target = typeKey;
+            methodBtn.style.display = 'inline-block';
+          } else {
+            methodBtn.style.display = 'none';
+          }
+        }
+      }
+
+      document.getElementById('bac-popup').style.display = 'flex';
+    }
+  }
+}
+
+// Quand l'utilisateur clique sur "Réponse attendue", on envoie un message
+// au parent (SPA revizo-msgn.html) qui affichera la modale appropriée :
+//  - action 'show-synth' → modale avec la synthèse rédigée (objet SYNTH[index])
+//  - action 'show-type'  → modale avec le TYPE méthodologique (objet Q[typeKey])
+// Si le bouton est désactivé ("Corrigé en attente"), on ne fait rien.
+function openMethodFromBac() {
+  const btn = document.getElementById('bac-method-btn');
+  if (!btn || btn.classList.contains('bac-popup-method-btn-disabled')) return;
+  const action = btn.dataset.action;
+  const target = btn.dataset.target;
+  if (!action || !target) return;
+  window.parent.postMessage({
+    source: 'revizo-carte',
+    action: action === 'synth' ? 'show-synth' : 'show-type',
+    target: target,
+    qid: btn.dataset.qid
+  }, '*');
+}
+
+// Ferme la popup et retire les surlignages
+function closeBacPopup() {
+  document.getElementById('bac-popup').style.display = 'none';
+  document.querySelectorAll('.case.highlight-primary, .case.highlight-secondary')
+    .forEach(el => el.classList.remove('highlight-primary', 'highlight-secondary'));
+}
+
+// Lance l'application après le chargement complet (les cases doivent exister).
+window.addEventListener('load', applyBacHighlight);
 </script>
 
 </body>

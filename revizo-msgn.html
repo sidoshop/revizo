@@ -19,7 +19,112 @@
 body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; }
 
 /* LAYOUT */
-.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: calc(100vh - 84px); margin-top: 84px; }
+.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: calc(100vh - 84px); margin-top: 35px; }
+
+/* PANNEAU LATÉRAL "Carte sur Question du Bac" — slide-in depuis la droite,
+   laisse la sidebar gauche visible pour pouvoir cliquer sur une autre Q. */
+#carte-overlay {
+  position: fixed;
+  top: 84px;
+  right: 0;
+  bottom: 0;
+  width: 65%;
+  max-width: 960px;
+  background: var(--fond);
+  box-shadow: -8px 0 28px rgba(0,0,0,0.18);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  animation: slide-in-right 0.25s ease-out;
+}
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+.carte-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: white;
+  border-bottom: 1px solid var(--bordure);
+  flex-shrink: 0;
+}
+.carte-overlay-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--accent);
+}
+.carte-overlay-close {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--gris);
+  line-height: 1;
+  padding: 2px 10px;
+  border-radius: 6px;
+  transition: background .15s, color .15s;
+}
+.carte-overlay-close:hover {
+  background: var(--fond);
+  color: var(--accent);
+}
+#carte-overlay-iframe {
+  flex: 1;
+  border: none;
+  width: 100%;
+  display: block;
+}
+
+/* MODALE "MÉTHODE COMPLÈTE" (TYPE) — s'ouvre par-dessus le panneau Carte
+   lors du clic sur "Voir la méthode complète" dans la popup bac. */
+#type-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 28, 24, 0.55);
+  z-index: 200;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 16px;
+  overflow-y: auto;
+}
+#type-modal.show { display: flex; }
+.type-modal-content {
+  background: white;
+  width: 100%;
+  max-width: 820px;
+  border-radius: 14px;
+  padding: 24px 28px 30px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.type-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  color: var(--gris);
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: background .15s, color .15s;
+}
+.type-modal-close:hover { background: var(--fond); color: var(--accent); }
+
+/* Lignes de la liste "Questions du Bac" — hover et état actif gérés en CSS
+   pour que la ligne sélectionnée reste surlignée tant que le panneau est ouvert. */
+.bac-line:hover { background: #fef8e2; }
+.bac-line.bac-line-active {
+  background: #fdf0b8;
+  box-shadow: inset 4px 0 0 #f5c842;
+}
+.bac-line.bac-line-active:hover { background: #fce9a5; }
 
 /* SIDEBAR */
 .sidebar { background: white; border-right: 1px solid var(--bordure); position: sticky; top: 84px; height: calc(100vh - 84px); overflow-y: auto; }
@@ -110,7 +215,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 .astuce { display: flex; gap: 9px; background: #eef5ff; border: 1px solid #b8d0f0; border-radius: 8px; padding: 11px 14px; font-size: 13px; line-height: 1.5; margin-top: 8px; }
 
 /* MODAL */
-.overlay { display: none; position: fixed; inset: 0; background: rgba(30,28,24,.52); z-index: 200; align-items: flex-end; justify-content: center; }
+.overlay { display: none; position: fixed; inset: 0; background: rgba(30,28,24,.52); z-index: 300; align-items: flex-end; justify-content: center; }
 .overlay.show { display: flex; }
 .modal { background: white; width: 100%; max-width: 580px; max-height: 82vh; border-radius: 16px 16px 0 0; overflow-y: auto; padding: 22px 22px 30px; position: relative; }
 .modal-handle { width: 38px; height: 4px; background: var(--bordure); border-radius: 2px; margin: 0 auto 18px; }
@@ -178,7 +283,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 </nav>
 <nav class="nav-rubriques">
   <span class="matiere-pill">MSGN</span>
-  <a href="#" class="active" onclick="switchMode('fiches');return false">Fiches mémo</a>
+  <a href="#" class="active" onclick="switchMode('fiches');return false">🗺️ La Carte</a>
   <a href="#" onclick="switchMode('questions');return false">Questions du Bac</a>
   <a href="#" onclick="switchMode('synthese');return false">Questions de synthèse</a>
   <a href="#" onclick="switchMode('decodage');return false">🔑 Décodage</a>
@@ -189,263 +294,12 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 <!-- ════════════════ SIDEBAR ════════════════ -->
 <aside class="sidebar">
 
-  <!-- MODE QUESTIONS BAC -->
-  <div id="sidebar-questions">
-  <div class="sidebar-intro">Questions du Bac</div>
-
-  <!-- DOSSIER 1 — STRATÉGIE -->
-  <div class="group">
-    <div class="group-header" onclick="toggleGroup(this)">
-      <span class="group-label">Dossier 1 — Stratégie</span>
-      <span class="group-arrow">▶</span>
-    </div>
-    <div class="group-body">
-      <div class="dossier-label">Où je suis ? — Analyser</div>
-      <div class="q-item" onclick="show('parties', this)">
-        <span class="q-name">Identifier les parties prenantes</span>
-        <div class="q-meta"><span class="q-pts">~1-2 pts</span><span class="q-time">≈ 7 min</span><span class="q-time">★★★★☆</span></div>
-      </div>
-      <div class="q-item" onclick="show('competences', this)">
-        <span class="q-name">Identifier les compétences distinctives</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★★</span></div>
-      </div>
-      <div class="q-item" onclick="show('modele', this)">
-        <span class="q-name">Présenter le modèle économique</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
-      </div>
-      <div class="q-item" onclick="show('diagnostic', this)">
-        <span class="q-name">Réaliser le diagnostic interne / externe</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★☆☆</span></div>
-      </div>
-      <div class="dossier-label">Où veux-je aller ? — Décider</div>
-      <div class="q-item" onclick="show('strategie', this)">
-        <span class="q-name">Caractériser la stratégie</span>
-        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
-      </div>
-      <div class="q-item" onclick="show('decision_q', this)">
-        <span class="q-name">🆕 Décision stratégique vs opérationnelle</span>
-        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
-      </div>
-      <div class="dossier-label">Comment j'y vais ? — Agir</div>
-      <div class="q-item" onclick="show('mercatique', this)">
-        <span class="q-name">Identifier l'approche mercatique (SCP + 4P)</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
-      </div>
-      <div class="q-item" onclick="show('comportement_q', this)">
-        <span class="q-name">🆕 Facteurs du comportement consommateur</span>
-        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★★</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DOSSIER 2 — FINANCES -->
-  <div class="group">
-    <div class="group-header" onclick="toggleGroup(this)">
-      <span class="group-label">Dossier 2 — Finances & GRH</span>
-      <span class="group-arrow">▶</span>
-    </div>
-    <div class="group-body">
-      <div class="dossier-label">Performance financière</div>
-      <div class="q-item" onclick="show('va', this)">
-        <span class="q-name">Calculer VA + Résultat d'exploitation</span>
-        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 15 min</span><span class="q-time">★★★★★</span></div>
-      </div>
-      <div class="q-item" onclick="show('frng', this)">
-        <span class="q-name">Calculer FRNG / BFR / TN</span>
-        <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
-      </div>
-      <div class="q-item" onclick="show('couts', this)">
-        <span class="q-name">Calculer coût de revient + taux de marge</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
-      </div>
-      <div class="q-item" onclick="show('financement', this)">
-        <span class="q-name">Justifier les choix de financement</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
-      </div>
-      <div class="q-item" onclick="show('evolution_q', this)">
-        <span class="q-name">🆕 Calculer un taux d'évolution + commenter</span>
-        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 8 min</span><span class="q-time">★★★★★</span></div>
-      </div>
-      <div class="dossier-label">Performance sociale</div>
-      <div class="q-item" onclick="show('direction', this)">
-        <span class="q-name">Identifier le style de direction</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★★</span></div>
-      </div>
-      <div class="q-item" onclick="show('culture', this)">
-        <span class="q-name">Analyser la culture organisationnelle</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★★</span></div>
-      </div>
-      <div class="q-item" onclick="show('grh', this)">
-        <span class="q-name">Théories de la motivation (Maslow / Herzberg / McGregor)</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★★☆</span></div>
-      </div>
-      <div class="q-item" onclick="show('marque_employeur', this)">
-        <span class="q-name">Justifier la marque employeur / QVT</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
-      </div>
-      <div class="q-item" onclick="show('gpecq', this)">
-        <span class="q-name">Montrer l'importance de la GPEC</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★☆☆</span></div>
-      </div>
-      <div class="dossier-label">Performance opérationnelle</div>
-      <div class="q-item" onclick="show('production', this)">
-        <span class="q-name">Identifier le mode de production / flux</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
-      </div>
-      <div class="q-item" onclick="show('processus_q', this)">
-        <span class="q-name">🆕 Schématiser un processus de gestion</span>
-        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★☆☆</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DOSSIER 3 — RSE & SI -->
-  <div class="group">
-    <div class="group-header" onclick="toggleGroup(this)">
-      <span class="group-label">Dossier 3 — RSE & Numérique</span>
-      <span class="group-arrow">▶</span>
-    </div>
-    <div class="group-body">
-      <div class="dossier-label">Mes outils — Numérique</div>
-      <div class="q-item" onclick="show('numerique', this)">
-        <span class="q-name">Identifier l'intérêt du PGI / CRM / RGPD</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★★☆</span></div>
-      </div>
-      <div class="q-item" onclick="show('communication', this)">
-        <span class="q-name">Analyser la communication / relation client</span>
-        <div class="q-meta"><span class="q-pts">~2-3 pts</span><span class="q-time">≈ 10 min</span><span class="q-time">★★★☆☆</span></div>
-      </div>
-      <div class="q-item" onclick="show('techno_q', this)">
-        <span class="q-name">🆕 Apprécier une techno nouvelle (Blockchain · IA · QR)</span>
-        <div class="q-meta"><span class="q-pts">~3-4 pts</span><span class="q-time">≈ 12 min</span><span class="q-time">★★★☆☆</span></div>
-      </div>
-      <div class="dossier-label">Mes valeurs — RSE</div>
-      <div class="q-item" onclick="show('rse', this)">
-        <span class="q-name">Montrer que X intègre la RSE</span>
-        <div class="q-meta"><span class="q-pts">~4-6 pts</span><span class="q-time">≈ 22 min</span><span class="q-time">★★★★★</span></div>
-      </div>
-      <div class="q-item" onclick="show('valeurs_q', this)">
-        <span class="q-name">🆕 Identifier les types de valeurs créées (15 lignes)</span>
-        <div class="q-meta"><span class="q-pts">~10-15 pts</span><span class="q-time">≈ 25 min</span><span class="q-time">★★★★★</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- NOTIONS BONUS (rares) -->
-  <div class="group group-bonus">
-    <div class="group-header" onclick="toggleGroup(this)">
-      <span class="group-label">💡 Notions bonus <span style="font-weight:400;font-size:11px;color:#7a6a58">(rares)</span></span>
-      <span class="group-arrow">▶</span>
-    </div>
-    <div class="group-body">
-      <div class="dossier-label">Dossier 1 — Stratégie</div>
-      <div class="q-item q-bonus" onclick="openN('integration')">
-        <span class="q-name">Intégration verticale</span>
-        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
-      </div>
-      <div class="q-item q-bonus" onclick="openN('croissance')">
-        <span class="q-name">Modes de croissance</span>
-        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
-      </div>
-      <div class="q-item q-bonus" onclick="openN('ess')">
-        <span class="q-name">ESS / SCOP</span>
-        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
-      </div>
-      <div class="dossier-label">Dossier 2 — Finances & GRH</div>
-      <div class="q-item q-bonus" onclick="openN('seuil')">
-        <span class="q-name">Seuil de rentabilité</span>
-        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
-      </div>
-      <div class="q-item q-bonus" onclick="openN('caf')">
-        <span class="q-name">CAF — Capacité d'autofinancement</span>
-        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
-      </div>
-      <div class="q-item q-bonus" onclick="openN('mintzberg')">
-        <span class="q-name">Coordination (Mintzberg)</span>
-        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
-      </div>
-      <div class="dossier-label">Dossier 3 — RSE & Numérique</div>
-      <div class="q-item q-bonus" onclick="openN('identite_num')">
-        <span class="q-name">Identité numérique</span>
-        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
-      </div>
-      <div class="q-item q-bonus" onclick="openN('ethique')">
-        <span class="q-name">Éthique des affaires</span>
-        <div class="q-meta"><span class="q-time">★★☆☆☆</span></div>
-      </div>
-    </div>
-  </div>
-
-  </div><!-- /sidebar-questions -->
+  <!-- MODE QUESTIONS BAC — contenu généré dynamiquement par buildSidebarQuestions() -->
+  <div id="sidebar-questions"></div>
 
   <!-- MODE SYNTHÈSE -->
-  <div id="sidebar-synthese" style="display:none">
-    <div class="sidebar-intro">Synthèse 15 lignes</div>
-
-    <div class="q-item" onclick="showSynthMethode(this)" style="border-bottom:1px solid var(--bordure)">
-      <span class="q-name">📐 Méthode générale</span>
-      <div class="q-meta"><span class="q-time">5 étapes · 4-6 pts</span></div>
-    </div>
-
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-label">Dossier 2 — GRH / QVT (3 sujets)</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="showSynthSujet(1,this)">
-          <span class="q-name">Performance sociale</span>
-          <div class="q-meta"><span class="q-time">Caraïbes Fumés · 2022</span></div>
-        </div>
-        <div class="q-item" onclick="showSynthSujet(3,this)">
-          <span class="q-name">Marque employeur</span>
-          <div class="q-meta"><span class="q-time">TPS · 2023</span></div>
-        </div>
-        <div class="q-item" onclick="showSynthSujet(5,this)">
-          <span class="q-name">QVT et performance</span>
-          <div class="q-meta"><span class="q-time">Topschuss · 2024</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-label">Dossier 3 — Numérique (3 sujets)</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="showSynthSujet(0,this)">
-          <span class="q-name">Numérique et performance</span>
-          <div class="q-meta"><span class="q-time">Réo · 2021</span></div>
-        </div>
-        <div class="q-item" onclick="showSynthSujet(2,this)">
-          <span class="q-name">Numérique et identité</span>
-          <div class="q-meta"><span class="q-time">Ankama · 2023</span></div>
-        </div>
-        <div class="q-item" onclick="showSynthSujet(6,this)">
-          <span class="q-name">Opportunités et risques</span>
-          <div class="q-meta"><span class="q-time">Eyecontact · 2024</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-label">Dossier 3 — RSE / Innovation (2 sujets)</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="showSynthSujet(4,this)">
-          <span class="q-name">Innovation et valeur perçue</span>
-          <div class="q-meta"><span class="q-time">Beyer · 2023</span></div>
-        </div>
-        <div class="q-item" onclick="showSynthSujet(7,this)">
-          <span class="q-name">RSE créatrice de valeur</span>
-          <div class="q-meta"><span class="q-time">Renou · 2024</span></div>
-        </div>
-      </div>
-    </div>
-  </div><!-- /sidebar-synthese -->
+  <!-- MODE QUESTIONS DE SYNTHÈSE — contenu généré dynamiquement par buildSidebarSynthese() -->
+  <div id="sidebar-synthese" style="display:none"></div>
 
   <!-- MODE FICHES MÉMO -->
   <div id="sidebar-fiches" style="display:none">
@@ -521,96 +375,16 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
   </div><!-- /sidebar-fiches -->
 
   <!-- MODE DÉCODAGE -->
+  <!-- MODE DÉCODAGE — version compacte : 2 entrées (méthode + carte) -->
   <div id="sidebar-decodage" style="display:none">
-    <div class="sidebar-intro" style="cursor:pointer" onclick="switchMode('decodage')">🔑 Décodage des verbes</div>
-
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this);showDecodageHome()">
-        <span class="group-label" style="color:#2563a8">🔵 Repérage</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="showVerb('presenter',this)">
-          <span class="q-name">Présenter / Identifier</span>
-          <div class="q-meta"><span class="q-time">★★★★★ · Court</span></div>
-        </div>
-        <div class="q-item" onclick="showVerb('reperer',this)">
-          <span class="q-name">Repérer</span>
-          <div class="q-meta"><span class="q-time">★★★★☆ · Court</span></div>
-        </div>
-      </div>
+    <div class="sidebar-intro">🔑 Décodage des verbes</div>
+    <div class="q-item" onclick="showDecodageMethode(this)">
+      <span class="q-name" style="font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--accent)">📐 Méthode générale</span>
+      <div class="q-meta"><span class="q-time">3 étapes · avant chaque question</span></div>
     </div>
-
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this);showDecodageHome()">
-        <span class="group-label" style="color:#8a6d00">🟡 Description</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="showVerb('caracteriser',this)">
-          <span class="q-name">Caractériser</span>
-          <div class="q-meta"><span class="q-time">★★★★☆ · Moyen</span></div>
-        </div>
-        <div class="q-item" onclick="showVerb('determiner',this)">
-          <span class="q-name">Déterminer</span>
-          <div class="q-meta"><span class="q-time">★★★☆☆ · Moyen</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this);showDecodageHome()">
-        <span class="group-label" style="color:#c45c2e">🟠 Analyse</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="showVerb('analyser',this)">
-          <span class="q-name">Analyser</span>
-          <div class="q-meta"><span class="q-time">★★★★★ · Long</span></div>
-        </div>
-        <div class="q-item" onclick="showVerb('expliquer',this)">
-          <span class="q-name">Expliquer</span>
-          <div class="q-meta"><span class="q-time">★★★★☆ · Moyen</span></div>
-        </div>
-        <div class="q-item" onclick="showVerb('montrer',this)">
-          <span class="q-name">Montrer que</span>
-          <div class="q-meta"><span class="q-time">★★★★★ · Long</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this);showDecodageHome()">
-        <span class="group-label" style="color:#b5415a">🔴 Jugement</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="showVerb('justifier',this)">
-          <span class="q-name">Justifier</span>
-          <div class="q-meta"><span class="q-time">★★★★★ · Moyen</span></div>
-        </div>
-        <div class="q-item" onclick="showVerb('apprecier',this)">
-          <span class="q-name">Apprécier</span>
-          <div class="q-meta"><span class="q-time">★★★★☆ · Moyen</span></div>
-        </div>
-        <div class="q-item" onclick="showVerb('proposer',this)">
-          <span class="q-name">Proposer</span>
-          <div class="q-meta"><span class="q-time">★★★☆☆ · Moyen</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this);showDecodageHome()">
-        <span class="group-label" style="color:#6d3a8e">🟣 Rédaction 15 lignes</span>
-        <span class="group-arrow">▶</span>
-      </div>
-      <div class="group-body">
-        <div class="q-item" onclick="showVerb('quinzelignes',this)">
-          <span class="q-name">En ~15 lignes, montrer que…</span>
-          <div class="q-meta"><span class="q-time">★★★★★ · Composition</span></div>
-        </div>
-      </div>
+    <div class="q-item active" onclick="showDecodageHome(this)">
+      <span class="q-name" style="font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--bleu)">🗺️ Carte des verbes</span>
+      <div class="q-meta"><span class="q-time">26 verbes · 5 familles</span></div>
     </div>
   </div><!-- /sidebar-decodage -->
 
@@ -636,6 +410,7 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 </div>
 
 <script src="notions-msgn.js"></script>
+<script src="questions-bac.js"></script>
 <script>
 // N est chargé depuis notions-msgn.js
 
@@ -1114,6 +889,86 @@ const Q = {
     corrige:`<strong>Taux d'évolution du CA :</strong><br>((CA 2023 − CA 2021) / CA 2021) × 100 = + <strong>123,79 %</strong><br><br><strong>Taux d'évolution du bénéfice :</strong><br>((Bénéfice 2023 − Bénéfice 2021) / Bénéfice 2021) × 100 = + <strong>102,77 %</strong><br><br><strong>Commentaire :</strong><br>L'entreprise voit son CA et son bénéfice plus que doubler entre 2021 et 2023. Cela montre qu'elle a réussi à se faire une place sur un marché fortement concurrentiel. La performance commerciale et financière s'améliorent simultanément, ce qui traduit un modèle économique solide et une croissance maîtrisée.`,
     alerte:"Erreur classique : diviser par la nouvelle valeur (N) au lieu de l'ancienne (N-1). Le calcul donne un résultat erroné. Toujours vérifier le dénominateur.",
     astuce:"Si l'énoncé dit 'calculer et commenter', le calcul vaut 50% des points et le commentaire 50%. Ne jamais omettre le commentaire."
+  },
+
+  // ─────────────────────────────────────────────────────────────────
+  // TYPES ajoutés à partir des corrigés officiels 2022-2025
+  // (pour couvrir les 7 questions sans TYPE associé jusqu'ici)
+  // ─────────────────────────────────────────────────────────────────
+
+  croissance: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 26", titre:"Caractériser les modalités de croissance et de développement",
+    freq:"★★★★☆ — Constante depuis 2021", pts:"~6-10 pts", temps:"≈ 15 min",
+    annales:"Saveurs & Nature (2023) · GSP (2025) · Caraïbes Fumés (2022) · Renou Textiles (2024)",
+    notions:["croissance","strategies"],
+    methode:[
+      {n:1, t:"Identifier le mode de croissance", d:"<em>Interne</em> (avec ses propres ressources) / <em>Externe</em> (acquisition d'une autre entreprise) / <em>Partenariale</em> (alliance, franchise, joint-venture)."},
+      {n:2, t:"Identifier la modalité de développement", d:"<em>Spécialisation</em> (1 seul DAS) / <em>Diversification</em> (plusieurs DAS) / <em>Internationalisation</em> (nouveaux marchés géographiques)."},
+      {n:3, t:"Justifier le choix au regard du contexte", d:"Saisir une opportunité ? Répondre à une menace ? Saturation du marché ? Cohérence avec la finalité ?"},
+      {n:4, t:"Citer des éléments concrets du dossier", d:"<em>'Création de nouvelles lignes de moulage' = croissance interne. 'Implantation en Martinique' = développement géographique.'</em>"},
+      {n:5, t:"Conclure sur la pertinence", d:"En quoi ce choix renforce-t-il la position concurrentielle ou la performance ?"}
+    ],
+    mots:["mode de croissance","croissance interne","croissance externe","croissance partenariale","internationalisation","diversification","spécialisation"],
+    annale:{src:"Bac STMG MSGN · Polynésie 2023 (Saveurs & Nature)", q:"Repérer et caractériser les modalités de développement de Saveurs & Nature."},
+    corrige:`<strong>Internationalisation :</strong> Le développement des ventes à l'étranger a permis de soutenir la croissance, avec <strong>20 % du CA réalisé à l'export</strong>. Cette modalité ouvre de nouveaux marchés géographiques et réduit la dépendance au marché national.<br><br><strong>Croissance interne :</strong> Augmentation de la surface du site de production par la création de nouvelles lignes de moulage et de dosage afin d'accroître les capacités de production, de stockage, et la zone de préparation des commandes. L'activité de torréfaction a été intégrée.<br><br>Saveurs & Nature combine donc deux modalités complémentaires : un développement géographique (internationalisation) et un renforcement productif (croissance interne avec intégration verticale).`,
+    alerte:"Ne pas confondre croissance interne (l'entreprise grandit avec ses propres moyens) et croissance externe (acquisition d'une autre entreprise). Une création de site = interne. Un rachat = externe.",
+    astuce:"Si le sujet parle de 'développement', traiter à la fois le mode de croissance ET la modalité (internationale, sectorielle…). Le bac évalue la capacité à distinguer les deux niveaux."
+  },
+
+  integration: {
+    dossier:"Dossier 1 — Stratégie", type:"TYPE 27", titre:"Présenter les intérêts et limites de l'intégration verticale",
+    freq:"★★★☆☆ — Récurrente", pts:"~6-8 pts", temps:"≈ 12 min",
+    annales:"Ankama (2023) · Renou Textiles (2024)",
+    notions:["integration","strategies"],
+    methode:[
+      {n:1, t:"Identifier le sens de l'intégration", d:"<em>Amont</em> : contrôler ses fournisseurs / <em>Aval</em> : contrôler sa distribution. Préciser dans quel sens va l'entreprise."},
+      {n:2, t:"Lister les intérêts (4-5)", d:"Maîtrise de la qualité, contrôle des coûts, indépendance vis-à-vis des sous-traitants, captation de valeur, coordination des activités, maîtrise du savoir-faire, contact direct avec le consommateur final."},
+      {n:3, t:"Lister les limites (3-4)", d:"Investissement initial important, perte de flexibilité, nécessité de maîtriser de nouvelles compétences, complexité de gestion."},
+      {n:4, t:"Conclure sur la pertinence", d:"Pour cette entreprise précisément, les intérêts l'emportent-ils sur les limites ?"}
+    ],
+    mots:["intégration verticale","amont","aval","chaîne de valeur","sous-traitance","externalisation","maîtrise"],
+    annale:{src:"Bac STMG MSGN · Métropole 2023 (Ankama)", q:"Présenter les intérêts et les limites pour Ankama de ne pas externaliser certaines de ses activités."},
+    corrige:`<strong>Intérêts de ne pas externaliser :</strong><br>• Maîtrise de l'ensemble des activités de la chaîne de valeur<br>• Maîtrise de la qualité<br>• Pas de dépendance vis-à-vis d'un sous-traitant<br>• Créer de la valeur sur chacune des activités<br>• Meilleure coordination des activités<br>• Réalisation d'économies sur certains coûts<br>• Maîtriser l'ensemble des savoir-faire<br><br><strong>Limites de ne pas externaliser :</strong><br>• Moins de flexibilité<br>• Nécessité de maîtriser l'ensemble des compétences tout au long de la chaîne de valeur<br>• Nécessité d'importants investissements`,
+    alerte:"Ne pas confondre intégration verticale (maîtriser la chaîne de valeur) avec intégration horizontale (rachat de concurrents) ou avec un simple partenariat. L'intégration verticale implique de RÉALISER soi-même une activité auparavant externalisée.",
+    astuce:"Structurer en deux blocs intérêts/limites permet de gagner du temps et des points. Le correcteur valorise la clarté de présentation."
+  },
+
+  ecommerce: {
+    dossier:"Dossier 2 — Mercatique", type:"TYPE 28", titre:"Montrer que la vente en ligne améliore la performance commerciale",
+    freq:"★★★★☆ — En forte hausse 2023-2025", pts:"~6-8 pts", temps:"≈ 12 min",
+    annales:"Renou Textiles (2024) · Clima&Co (2025) · Eyecontact (2024)",
+    notions:["ecommerce","perf_co","communication_n"],
+    methode:[
+      {n:1, t:"Définir l'e-commerce dans ce contexte", d:"Vente sur site propre / places de marché (Amazon, eBay…) / réseaux sociaux. Identifier le canal utilisé par l'entreprise."},
+      {n:2, t:"Lister les effets sur la performance commerciale", d:"<em>CA</em> : nouveaux marchés, hausse des ventes. <em>Visibilité</em> : touche plus de clients. <em>Part de marché</em> : visible sur les plateformes."},
+      {n:3, t:"Citer des chiffres du dossier ou du marché", d:"<em>Ex : e-commerce français +15,27 % en 2021. Habillement-Mode +6 %.</em> Toujours valoriser les % et chiffres concrets."},
+      {n:4, t:"Montrer les effets sur la relation client", d:"Lien direct avec les consommateurs finaux, meilleure connaissance des attentes, personnalisation, fidélisation."},
+      {n:5, t:"Conclure", d:"L'e-commerce est-il un complément ou un canal principal ? Quels effets globaux sur la performance ?"}
+    ],
+    mots:["e-commerce","vente en ligne","place de marché","performance commerciale","CA","fidélisation","relation client"],
+    annale:{src:"Bac STMG MSGN · Polynésie 2024 (Renou Textiles)", q:"Montrer que le choix de vendre les produits Maison Renou en ligne peut améliorer sa performance commerciale."},
+    corrige:`Le choix de vendre les produits Maison Renou en ligne peut améliorer sa performance commerciale, c'est-à-dire les principaux indicateurs commerciaux tels que le chiffre d'affaires, la part de marché et la fidélité.<br><br><strong>1. Augmentation de la visibilité :</strong> La présence sur des places de marché comme Amazon doit permettre à l'entreprise d'être plus visible, donc d'augmenter ses ventes.<br><br><strong>2. Profiter d'un marché en croissance :</strong> Les ventes sur le e-commerce français ont augmenté de <strong>15,27 %</strong> en 2021 (129,1 Md€ contre 112 Md€ en 2020). L'Habillement-Mode est une des catégories qui a le plus augmenté avec <strong>+ 6 %</strong>. Maison Renou peut profiter de cette évolution pour augmenter son CA.<br><br><strong>3. Lien direct avec les consommateurs :</strong> Ce mode de distribution permet à l'entreprise d'avoir un lien plus direct avec les consommateurs finaux et une meilleure connaissance de leurs attentes. L'entreprise peut ainsi adapter son offre pour améliorer la satisfaction et la fidélité.`,
+    alerte:"Ne pas confondre e-commerce (vente en ligne génératrice de CA direct) et présence sur les réseaux sociaux (communication, gestion de la relation client). Les deux sont complémentaires mais distincts.",
+    astuce:"Toujours citer 1 chiffre du marché global de l'e-commerce + 1 chiffre du dossier. Le correcteur valorise la mobilisation de connaissances externes."
+  },
+
+  ethique: {
+    dossier:"Dossier 3 — RSE & engagement", type:"TYPE 29", titre:"Montrer qu'une entreprise est engagée dans une démarche éthique",
+    freq:"★★★☆☆ — Récurrente depuis 2023", pts:"~8-10 pts", temps:"≈ 12 min",
+    annales:"Bébé Serein (2025) · Caraïbes Fumés (2022)",
+    notions:["ethique","rse","parties"],
+    methode:[
+      {n:1, t:"Définir l'éthique", d:"Engagement <em>volontaire</em> au-delà des obligations légales. Ne pas confondre avec la morale (jugement individuel) ou la simple conformité à la loi."},
+      {n:2, t:"Identifier 4-5 pratiques concrètes", d:"Production locale, partenariats équitables (ESAT, fournisseurs locaux), labels et certifications indépendantes, transparence et traçabilité, équité salariale, communication honnête."},
+      {n:3, t:"Pour chaque pratique : citer une preuve du document", d:"<em>'Bébé Serein utilise des matières premières locales et participe à la reforestation de cellulose en France.'</em>"},
+      {n:4, t:"Faire le lien avec les parties prenantes", d:"Quelles attentes l'entreprise satisfait-elle ? Salariés, clients, société, fournisseurs."},
+      {n:5, t:"Conclure sur l'impact", d:"L'éthique renforce l'image de marque, fidélise les clients sensibles à l'engagement, attire les talents, contribue à la performance globale."}
+    ],
+    mots:["éthique","démarche éthique","engagement volontaire","au-delà de la loi","transparence","équité","parties prenantes","labels"],
+    annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"Montrer que l'entreprise Bébé Serein est engagée dans une démarche éthique."},
+    corrige:`L'entreprise Bébé Serein est clairement engagée dans une démarche éthique, comme le montrent plusieurs aspects :<br><br><strong>1. Production locale et circuits courts :</strong> Les couches et le lait infantile sont fabriqués en France, limitant l'empreinte carbone liée au transport. L'entreprise privilégie les matières premières locales (cellulose) et participe à des projets de reforestation en France.<br><br><strong>2. Partenariats avec des ESAT :</strong> Bébé Serein collabore avec des Établissements et Services d'Aide par le Travail, employant des personnes en situation de handicap pour préparer les kits d'essai. Engagement fort en faveur de l'inclusion sociale.<br><br><strong>3. Labels et certifications :</strong> Produits certifiés FSC, TCF et Ecolabel — labels indépendants qui garantissent une fabrication responsable. Label « Quelle Couche® » qui valorise les produits français en circuit court.<br><br><strong>4. Transparence et sécurité :</strong> Analyses régulières par des laboratoires externes pour vérifier l'absence de contaminants, assurant la sécurité des bébés.<br><br><strong>5. Engagement environnemental :</strong> Organisation du « Green Friday » pour financer des projets écologiques, en opposition au « Black Friday ».<br><br>Ces éléments montrent une intégration de pratiques éthiques dans toutes les opérations, de la production locale et durable à l'inclusion sociale et à la transparence.`,
+    alerte:"Éthique ≠ obligation légale. Une entreprise qui respecte simplement la loi n'est PAS particulièrement éthique : l'éthique implique un engagement VOLONTAIRE au-delà des obligations.",
+    astuce:"Structurer en 4-5 pratiques distinctes avec un titre court pour chacune. Citer des éléments TRÈS CONCRETS du document (noms de labels, partenaires spécifiques, actions précises) pour éviter le hors-sujet."
   }
 };
 
@@ -1209,7 +1064,15 @@ function toggleGroup(header) {
 }
 
 // ═══════════════ SWITCH MODE (questions / synthèse / fiches / decodage) ═══════════════
-function switchMode(mode) {
+// Le 2e paramètre (qid) n'est utilisé qu'en mode 'fiches' : il indique à La Carte
+// quelle question du Bac surligner (cf showFicheHome ci-dessous).
+function switchMode(mode, qid) {
+  // 0. Si le panneau "Carte sur Question" est ouvert, on le ferme : on change
+  // de contexte, il n'a plus de sens.
+  const overlay = document.getElementById('carte-overlay');
+  if (overlay && overlay.style.display !== 'none' &&
+      typeof closeCartePanel === 'function') closeCartePanel();
+
   // 1. Mettre à jour le lien actif dans la sous-nav
   document.querySelectorAll('.nav-rubriques a').forEach(a => a.classList.remove('active'));
   const links = document.querySelectorAll('.nav-rubriques a');
@@ -1218,11 +1081,24 @@ function switchMode(mode) {
   if (mode === 'synthese') links[2].classList.add('active');
   if (mode === 'decodage') links[3].classList.add('active');
 
-  // 2. Afficher la bonne sidebar
+  // 2. Afficher la bonne sidebar (aucune en mode Carte → iframe pleine largeur)
   document.getElementById('sidebar-questions').style.display = mode === 'questions' ? 'block' : 'none';
   document.getElementById('sidebar-synthese').style.display = mode === 'synthese' ? 'block' : 'none';
-  document.getElementById('sidebar-fiches').style.display = mode === 'fiches' ? 'block' : 'none';
+  document.getElementById('sidebar-fiches').style.display = 'none';
   document.getElementById('sidebar-decodage').style.display = mode === 'decodage' ? 'block' : 'none';
+
+  // 2a. En mode Carte : masquer la sidebar, réduire la grille à 1 colonne,
+  // et retirer le max-width + padding du .main pour que l'iframe occupe vraiment toute la largeur.
+  const aside = document.querySelector('.sidebar');
+  const layout = document.querySelector('.layout');
+  const main = document.getElementById('main');
+  const isCarte = (mode === 'fiches');
+  if (aside) aside.style.display = isCarte ? 'none' : '';
+  if (layout) layout.style.gridTemplateColumns = isCarte ? '1fr' : '';
+  if (main) {
+    main.style.maxWidth = isCarte ? 'none' : '';
+    main.style.padding = isCarte ? '0' : '';
+  }
 
   // 2b. Replier tous les accordéons au changement de mode
   document.querySelectorAll('.group-body').forEach(b => b.classList.remove('open'));
@@ -1231,7 +1107,7 @@ function switchMode(mode) {
   // 3. Reset le panneau principal
   document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
   if (mode === 'fiches') {
-    showFicheHome();
+    showFicheHome(qid);
   } else if (mode === 'decodage') {
     showDecodageHome();
   } else {
@@ -1345,6 +1221,167 @@ const VERBS = {
     ex:"« Proposer des solutions pour diminuer le BFR » → 2-3 actions concrètes avec leur effet sur le BFR.",
     reponse:"Pour diminuer le BFR, GSP peut mettre en place 3 actions :<br><strong>1. Réduire les stocks</strong> : passer en gestion flux tirés (juste-à-temps) ou négocier des livraisons fournisseurs plus fréquentes → ↓ stocks → ↓ BFR.<br><strong>2. Accélérer les encaissements clients</strong> : escompte pour paiement comptant, réduction des délais accordés → ↓ créances clients → ↓ BFR.<br><strong>3. Allonger les délais fournisseurs</strong> : renégocier les conditions de règlement (de 30 à 60 jours) → ↑ dettes fournisseurs → ↓ BFR.<br>Effet global : libération de trésorerie et baisse du besoin de financement court terme."
   },
+
+  // ──────── 🔵 REPÉRAGE (suite) ────────
+  identifier: {
+    cat:"🔵 Repérage", color:"#2563a8", freq:"★★★★★",
+    nom:"IDENTIFIER",
+    attendu:"Reconnaître et nommer des éléments précis dans les documents (finalités, acteurs, choix, ressources…).",
+    format:"Liste avec un terme technique précis par élément + 1 ligne de description / preuve.",
+    piege:"Confondre avec Caractériser (qui demande en plus des critères distinctifs). Identifier = lister + nommer, pas justifier.",
+    ex_src:"Bac 2024 · Renou Textiles · Q 1.1",
+    ex:"« Identifier les finalités de Renou Textiles » → 4 finalités, chacune avec une preuve doc.",
+    reponse:"Renou Textiles dispose :<br>• d'une <strong>finalité économique</strong> car elle recherche la réalisation de profit (CA ~5 M€) pour assurer sa pérennité ;<br>• d'une <strong>finalité sociale</strong> à travers la mise en place de conditions de travail favorables (douches, salle de repos, jardin) et de nombreuses formations ;<br>• d'une <strong>finalité environnementale</strong> car elle cherche à réduire son impact via la fabrication de chaussettes recyclées ;<br>• d'une <strong>finalité sociétale</strong> car elle contribue à la valorisation de l'économie locale."
+  },
+  relever: {
+    cat:"🔵 Repérage", color:"#2563a8", freq:"★★★★☆",
+    nom:"RELEVER",
+    attendu:"Extraire des éléments précis du document, sans interprétation.",
+    format:"Liste à puces avec citation/synthèse + référence au document (n° ou contexte).",
+    piege:"Reformuler ou commenter : Relever = prélever tel quel, pas analyser.",
+    ex_src:"Bac 2023 · Saveurs & Nature · Q 3.1",
+    ex:"« Relever les éléments justifiant les prix élevés » → liste des arguments présents dans les docs.",
+    reponse:"Plusieurs éléments permettent à Saveurs & Nature d'avoir une politique de prix élevés :<br>• L'entreprise est <strong>spécialisée sur un segment haut de gamme</strong>.<br>• Elle a une <strong>valeur perçue élevée</strong>, notamment grâce à des produits 100 % bio.<br>• La <strong>qualité des produits</strong> est certaine, par des matières premières sélectionnées avec soin.<br>• Les <strong>certifications</strong> sont un gage de qualité et de confiance pour le consommateur."
+  },
+  lister: {
+    cat:"🔵 Repérage", color:"#2563a8", freq:"★★★☆☆",
+    nom:"LISTER",
+    attendu:"Énumérer plusieurs éléments d'un même type, sans hiérarchie ni justification poussée.",
+    format:"Liste à puces courtes, sans phrase introductive longue.",
+    piege:"Vouloir trop développer : Lister = inventaire rapide.",
+    ex_src:"Bac 2025 · Clima&Co · Q 2.1",
+    ex:"« Lister les avantages d'un QR Code sur les produits » → 4-5 avantages courts.",
+    reponse:"Les avantages d'un QR Code pour Clima&Co :<br>• <strong>Traçabilité</strong> : le client accède à toute l'histoire du produit.<br>• <strong>Différenciation</strong> face aux concurrents.<br>• <strong>Réassurance</strong> du consommateur sensible à l'origine.<br>• <strong>Économie de packaging</strong> : moins d'informations imprimées.<br>• <strong>Communication ciblée</strong> : possibilité de pousser des contenus personnalisés."
+  },
+
+  // ──────── 🟡 DESCRIPTION (suite) ────────
+  decrire: {
+    cat:"🟡 Description", color:"#8a6d00", freq:"★★★☆☆",
+    nom:"DÉCRIRE",
+    attendu:"Détailler systématiquement les caractéristiques d'un objet, d'un outil ou d'une situation.",
+    format:"Paragraphe ou liste avec 4-5 caractéristiques + 1 fonction de chacune.",
+    piege:"Décrire ≠ analyser ou évaluer. Reste neutre et factuel.",
+    ex_src:"Bac 2023 · TPS · Q 3.4",
+    ex:"« Décrire les apports du PGI Sylob 9 dans les relations avec les parties prenantes » → 4-5 apports concrets.",
+    reponse:"Le PGI Sylob 9 apporte à TPS :<br>• <strong>Centralisation des données</strong> : tous les services partagent la même base (production, stocks, achats, ventes) → cohérence des décisions.<br>• <strong>Suivi commandes clients</strong> en temps réel → meilleure réactivité dans la relation client.<br>• <strong>Communication automatisée avec les fournisseurs</strong> (commandes, livraisons) → réduction des erreurs.<br>• <strong>Traçabilité</strong> : historique de chaque pièce → conformité qualité demandée par les grands comptes.<br>• <strong>Reporting consolidé</strong> pour la direction → pilotage stratégique facilité."
+  },
+  preciser: {
+    cat:"🟡 Description", color:"#8a6d00", freq:"★★★☆☆",
+    nom:"PRÉCISER",
+    attendu:"Apporter les détails manquants à une notion ou à une situation déjà énoncée.",
+    format:"Pour chaque élément : nom + rôle/fonction concrète.",
+    piege:"Rester trop vague. Préciser = donner du grain, du détail technique.",
+    ex_src:"Bac 2024 · Topschuss · Q 3.3",
+    ex:"« Préciser le rôle des acteurs dans le processus de préparation des commandes » → distinguer interne/externe.",
+    reponse:"<strong>Acteurs internes :</strong><br>• Service achats : passe les commandes fournisseurs en amont.<br>• Magasiniers : préparent physiquement les colis dans l'entrepôt.<br>• Service expédition : édite les bons de livraison.<br><br><strong>Acteurs externes :</strong><br>• Fournisseurs : livrent les produits selon les délais convenus.<br>• Transporteurs : assurent la livraison finale au client.<br>• Client : valide la réception."
+  },
+
+  // ──────── 🟠 ANALYSE (suite) ────────
+  demontrer: {
+    cat:"🟠 Analyse", color:"#c45c2e", freq:"★★★★☆",
+    nom:"DÉMONTRER",
+    attendu:"Établir une vérité par un raisonnement progressif, en s'appuyant sur les documents.",
+    format:"Affirmation → preuve doc → conséquence (en 2-3 étapes).",
+    piege:"Sauter les étapes intermédiaires. Démontrer = enchaîner les arguments.",
+    ex_src:"Bac 2023 · Ankama · Q 1.1",
+    ex:"« Démontrer l'intérêt d'avoir opté pour différents DAS » → intérêts en cascade.",
+    reponse:"Les DAS d'Ankama sont les jeux vidéo, les BD, les séries/films d'animation et les jeux de société. Le choix de plusieurs DAS présente plusieurs intérêts :<br><strong>1. Synergies</strong> : développer les contenus pour plusieurs supports renforce l'univers Krosmoz et fidélise les fans.<br><strong>2. Répartition des risques</strong> : si un DAS baisse, les autres compensent. Ankama ne dépend pas d'un seul marché.<br><strong>3. Amélioration de la rentabilité</strong> : exploitation de mêmes ressources créatives sur plusieurs DAS = économies d'échelle.<br><strong>4. Acquisition de compétences</strong> : chaque DAS pousse l'entreprise à se renouveler et à exploiter de nouvelles opportunités."
+  },
+  comparer: {
+    cat:"🟠 Analyse", color:"#c45c2e", freq:"★★★☆☆",
+    nom:"COMPARER",
+    attendu:"Mettre en parallèle deux situations / chiffres / périodes + en tirer une conclusion.",
+    format:"Tableau ou paragraphe avec les 2 termes confrontés + verdict argumenté.",
+    piege:"Lister sans conclure. Comparer = mettre en regard ET trancher.",
+    ex_src:"Bac 2023 · Ankama · Q 2.3",
+    ex:"« Comparer le coût de revient unitaire d'une BD pour 3 000 vs 100 unités » → écart + sens.",
+    reponse:"Le coût de revient unitaire d'une BD :<br>• Pour un lot de 3 000 : <strong>10,34 €</strong><br>• Pour un lot de 100 : <strong>11,17 €</strong><br><br>Écart : 0,83 € de moins par unité dans le grand lot.<br><br><strong>Verdict :</strong> Le mode de production en grande série est pertinent. Les coûts d'impression et de distribution étant dégressifs, il est plus avantageux de produire en grande quantité. Ankama est certaine d'écouler les 3 000 exemplaires (notoriété forte), ce qui rend ce choix rationnel."
+  },
+  commenter: {
+    cat:"🟠 Analyse", color:"#c45c2e", freq:"★★★★☆",
+    nom:"COMMENTER",
+    attendu:"Interpréter un résultat chiffré ou un fait. Donner du sens, contextualiser, relier.",
+    format:"Constat du chiffre + interprétation (hausse/baisse, sens, cause) + impact pour l'entreprise.",
+    piege:"Répéter le calcul. Commenter = aller au-delà du chiffre brut.",
+    ex_src:"Bac 2024 · OPC · Q 2.2",
+    ex:"« Commenter ce résultat » (après calcul d'évolution du résultat d'exploitation).",
+    reponse:"Le résultat d'exploitation d'OPC <strong>diminue de X %</strong> entre 2021 et 2022.<br><br><strong>Interprétation :</strong> les charges d'exploitation ont augmenté plus vite que la valeur ajoutée. Cela peut s'expliquer par la hausse des matières premières, des investissements en R&D ou des frais marketing liés au lancement des innovations.<br><br><strong>Impact :</strong> la rentabilité opérationnelle se dégrade, ce qui peut peser sur la capacité d'investissement future. Toutefois, si la baisse est temporaire (effet de lancement), elle est acceptable. Une vigilance est requise sur l'évolution N+1."
+  },
+  conclure: {
+    cat:"🟠 Analyse", color:"#c45c2e", freq:"★★★☆☆",
+    nom:"CONCLURE",
+    attendu:"Synthétiser plusieurs éléments précédents en un verdict global tranché.",
+    format:"Rappel court des éléments + verdict (oui/non/partiellement) + ouverture éventuelle.",
+    piege:"Rester descriptif. Conclure = trancher.",
+    ex_src:"Bac 2023 · Saveurs & Nature · Q 3.4",
+    ex:"« Conclure sur la capacité de l'entreprise à concilier performance commerciale et financière ».",
+    reponse:"La performance commerciale demeure correcte (+5,53 % de CA en 2021). Mais la performance financière s'est fortement dégradée : le résultat net diminue de 45,84 %.<br><br><strong>Verdict :</strong> à court terme, Saveurs & Nature rencontre des difficultés pour concilier les deux. L'entreprise pourrait diminuer sa marge pour rester commercialement attractive, mais au risque de dégrader encore davantage sa performance financière.<br><br><strong>Ouverture :</strong> la conciliation passe par une optimisation des coûts (matières premières, production) sans toucher au prix de vente, afin de préserver à la fois le CA et la marge."
+  },
+
+  // ──────── 🔴 JUGEMENT (suite) ────────
+  choisir: {
+    cat:"🔴 Jugement", color:"#b5415a", freq:"★★★☆☆",
+    nom:"CHOISIR",
+    attendu:"Sélectionner une option parmi plusieurs + motiver le choix.",
+    format:"Option retenue + 2-3 arguments + écarter brièvement les autres.",
+    piege:"Donner plusieurs choix possibles sans trancher.",
+    ex_src:"Bac 2025 · La Dorure · Q 2.4",
+    ex:"« Choisir les modalités de financement » → 1 ou 2 options justifiées.",
+    reponse:"Pour financer son développement, La Dorure peut retenir :<br><strong>1. L'emprunt bancaire</strong> : adapté à son niveau d'activité, permet de conserver l'indépendance capitalistique. Les taux restent acceptables et l'entreprise dégage déjà un résultat suffisant pour couvrir les annuités.<br><strong>2. L'autofinancement</strong> (CAF) : pour la part disponible. Évite les frais financiers mais limite la capacité d'investissement.<br><br>Le crowdfunding est écarté (montants trop faibles pour le besoin) et l'augmentation de capital aussi (dilution non souhaitée par le dirigeant)."
+  },
+  expliciter: {
+    cat:"🔴 Jugement", color:"#b5415a", freq:"★★★☆☆",
+    nom:"EXPLICITER",
+    attendu:"Formuler clairement ce qui est implicite, présenter de façon détaillée.",
+    format:"Affirmation directe + développement des différentes options/aspects.",
+    piege:"Rester allusif. Expliciter = rendre explicite, mettre des mots clairs.",
+    ex_src:"Bac 2024 · Renou Textiles · Q 1.5",
+    ex:"« Expliciter les choix commerciaux envisageables face à la hausse des coûts MP » → dilemme + options.",
+    reponse:"Pour faire face à la hausse des coûts des matières premières, Renou Textiles devra :<br><strong>Option 1 :</strong> maintenir sa marge et donc augmenter son prix de vente. Cela pourrait avoir pour effet une perte de clientèle.<br><strong>Option 2 :</strong> maintenir son prix de vente et réduire sa marge, ce qui dégradera son résultat.<br><br>L'entreprise fait donc face à un <strong>dilemme</strong> : maintenir son revenu OU fidéliser sa clientèle. Un compromis intermédiaire (hausse partielle du prix + baisse partielle de la marge) reste possible."
+  },
+
+  // ──────── 🟢 CALCUL / SCHÉMA ────────
+  calculer: {
+    cat:"🟢 Calcul / Schéma", color:"#1a7a3c", freq:"★★★★★",
+    nom:"CALCULER",
+    attendu:"Effectuer un calcul exact + présenter le résultat avec son unité.",
+    format:"1. Formule · 2. Application chiffrée détaillée · 3. Résultat avec unité (€, %, unités).",
+    piege:"Sauter les étapes intermédiaires ou oublier l'unité = pénalité.",
+    ex_src:"Bac 2025 · Bébé Serein · Q 2.2",
+    ex:"« Calculer les taux d'évolution du CA et du bénéfice entre 2021 et 2023 ».",
+    reponse:"<strong>Taux d'évolution du CA :</strong><br>((CA 2023 − CA 2021) / CA 2021) × 100 = <strong>+ 123,79 %</strong><br><br><strong>Taux d'évolution du bénéfice :</strong><br>((Bénéfice 2023 − Bénéfice 2021) / Bénéfice 2021) × 100 = <strong>+ 102,77 %</strong><br><br>L'entreprise voit son CA et son bénéfice plus que doubler entre 2021 et 2023, ce qui traduit une croissance rapide et maîtrisée."
+  },
+  retrouver: {
+    cat:"🟢 Calcul / Schéma", color:"#1a7a3c", freq:"★★★☆☆",
+    nom:"RETROUVER",
+    attendu:"Recomposer un résultat à partir des éléments fournis (charges, prix unitaires…).",
+    format:"Tableau ou suite d'opérations détaillées + total final.",
+    piege:"Oublier une charge ou se tromper de base de calcul.",
+    ex_src:"Bac 2023 · Ankama · Q 2.2",
+    ex:"« Retrouver, par le calcul, le coût de revient d'une BD lorsque l'entreprise en produit 3 000 unités ».",
+    reponse:"<strong>Charges directes par unité :</strong><br>• Papier = 667/100 × 0,1 = 0,67 €<br>• Illustration = 6 000/3 000 = 2,00 €<br>• Correcteur = 11,07/60/2 = 0,09 €<br>• Impression (3 000 ex.) = 1,80 €<br>• Distribution = 12 % × 17,56 = 2,10 €<br>Sous-total direct = <strong>6,66 €</strong><br><br><strong>Charges indirectes :</strong><br>• Approvisionnement = 0,06 × (667/100) = 0,40 €<br>• Production = 190,8/60/2 = 1,59 €<br>• Distribution = 1,69 €<br>Sous-total indirect = <strong>3,68 €</strong><br><br><strong>Coût de revient unitaire = 10,34 €</strong>"
+  },
+  schematiser: {
+    cat:"🟢 Calcul / Schéma", color:"#1a7a3c", freq:"★★★☆☆",
+    nom:"SCHÉMATISER",
+    attendu:"Représenter un processus par un schéma logique : étapes, acteurs, événements (BPMN simplifié).",
+    format:"Schéma avec début (événement déclencheur) → tâches → acteurs → fin. À tracer sur la copie.",
+    piege:"Faire un dessin esthétique mais sans logique. Schématiser = formaliser une séquence.",
+    ex_src:"Bac 2023 · Saveurs & Nature · Q 2.2",
+    ex:"« Schématiser le processus de renouvellement de la certification « épi barré » + préciser le rôle des parties prenantes ».",
+    reponse:"<strong>Avantages de la schématisation :</strong><br>• <strong>Formalisation</strong> : détailler les étapes pour éviter oublis et confusions.<br>• <strong>Identification des intervenants</strong> : clarté des responsabilités.<br>• <strong>Automatisation du déclenchement</strong> : assure le démarrage à temps.<br>• <strong>Rapidité</strong> : enchaînement clairement défini.<br><br><strong>Rôle des parties prenantes :</strong><br>• <strong>Service qualité</strong> (interne) : contrôle de la teneur en gluten, audit, dossier de renouvellement.<br>• <strong>Laboratoire indépendant</strong> (externe) : test demandé par le service qualité.<br>• <strong>AFDIAG</strong> (association externe) : étudie le dossier et porte un avis."
+  },
+  realiser: {
+    cat:"🟢 Calcul / Schéma", color:"#1a7a3c", freq:"★★★★☆",
+    nom:"RÉALISER",
+    attendu:"Appliquer une méthode connue (PESTEL, SWOT, diagnostic interne/externe…) à l'entreprise du sujet.",
+    format:"Structure standard de la méthode (tableau / piliers) avec exemples tirés des docs.",
+    piege:"Citer la méthode sans l'appliquer aux documents. Réaliser = mettre en œuvre.",
+    ex_src:"Bac 2024 · Renou Textiles · Q 1.2",
+    ex:"« Réaliser le diagnostic externe de Renou Textiles et en déduire les FCS ».",
+    reponse:"<strong>Opportunités :</strong><br>• Volonté politique de relancer l'industrie française<br>• Fort intérêt des consommateurs pour le <em>made in France</em> (36 % des achats)<br>• Subventions de l'État<br><br><strong>Menaces :</strong><br>• Hausse du prix des matières premières et de l'énergie (+20 %)<br>• Marché du textile en crise<br>• Concurrence asiatique forte<br><br><strong>FCS déduits :</strong><br>• <em>Made in France</em> pour attirer national et international<br>• Capacité à répondre à la demande sur les places de marché<br>• Aspect environnemental (produits recyclés) et sociétal (emplois locaux)"
+  },
+
   quinzelignes: {
     cat:"🟣 Rédaction 15 lignes", color:"#6d3a8e", freq:"★★★★★",
     nom:"EN ~15 LIGNES, MONTRER QUE…",
@@ -1395,85 +1432,142 @@ function showVerb(id, el) {
   `;
 }
 
-function showDecodageHome() {
-  document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
+// Affiche la "Carte des verbes" — 5 familles colorées de cases cliquables,
+// dans le même esprit visuel que la Carte des notions MSGN.
+function showDecodageHome(el) {
+  // Active la ligne sidebar cliquée
+  document.querySelectorAll('#sidebar-decodage .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  // Familles avec leurs verbes (ordre : du repérage à la création)
+  const familles = [
+    { nom:"🔵 Repérage",          color:"#2563a8", bg:"#e8f3ff", question:"Que dois-je extraire des docs ?",
+      verbes:[ ['presenter','Présenter / Identifier','★★★★★'], ['identifier','Identifier','★★★★★'], ['reperer','Repérer','★★★★☆'], ['relever','Relever','★★★★☆'], ['lister','Lister','★★★☆☆'] ] },
+    { nom:"🟡 Description",       color:"#8a6d00", bg:"#fef8e2", question:"Comment je décris précisément ?",
+      verbes:[ ['caracteriser','Caractériser','★★★★☆'], ['determiner','Déterminer','★★★☆☆'], ['decrire','Décrire','★★★☆☆'], ['preciser','Préciser','★★★☆☆'] ] },
+    { nom:"🟠 Analyse",           color:"#c45c2e", bg:"#fef3ec", question:"Comment j'interprète et je relie ?",
+      verbes:[ ['analyser','Analyser','★★★★★'], ['expliquer','Expliquer','★★★★☆'], ['montrer','Montrer que…','★★★★★'], ['demontrer','Démontrer','★★★★☆'], ['comparer','Comparer','★★★☆☆'], ['commenter','Commenter','★★★★☆'], ['conclure','Conclure','★★★☆☆'] ] },
+    { nom:"🔴 Jugement",          color:"#b5415a", bg:"#fdeef1", question:"Comment je tranche et je recommande ?",
+      verbes:[ ['justifier','Justifier','★★★★★'], ['apprecier','Apprécier','★★★★☆'], ['proposer','Proposer','★★★☆☆'], ['choisir','Choisir','★★★☆☆'], ['expliciter','Expliciter','★★★☆☆'] ] },
+    { nom:"🟢 Calcul / Schéma",   color:"#1a7a3c", bg:"#e6f5ec", question:"Quelle action concrète j'effectue ?",
+      verbes:[ ['calculer','Calculer','★★★★★'], ['retrouver','Retrouver','★★★☆☆'], ['schematiser','Schématiser','★★★☆☆'], ['realiser','Réaliser','★★★★☆'] ] }
+  ];
+
+  let cards = '';
+  for (const f of familles) {
+    let cases = '';
+    for (const [id, label, freq] of f.verbes) {
+      cases += `
+        <div class="verb-case" onclick="showVerb('${id}')" style="background:white;border:1px solid ${f.color}40;border-left:3px solid ${f.color};border-radius:6px;padding:8px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;transition:background .12s,transform .08s"
+             onmouseover="this.style.background='${f.bg}';this.style.transform='translateX(2px)'"
+             onmouseout="this.style.background='white';this.style.transform='translateX(0)'">
+          <span style="font-family:'Nunito',sans-serif;font-weight:700;font-size:13.5px;color:#1e1c18">${label}</span>
+          <span style="color:${f.color};font-size:10.5px;letter-spacing:.05em">${freq}</span>
+        </div>`;
+    }
+    cards += `
+      <div style="background:${f.bg};border-radius:12px;padding:14px 14px 16px;border-left:5px solid ${f.color}">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+          <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;color:${f.color}">${f.nom}</div>
+          <div style="font-size:11px;color:${f.color};opacity:.65">${f.verbes.length}</div>
+        </div>
+        <div style="font-size:11.5px;color:#5a5448;font-style:italic;margin-bottom:10px">${f.question}</div>
+        <div style="display:flex;flex-direction:column;gap:4px">${cases}</div>
+      </div>`;
+  }
+
+  // Bloc "15 lignes" à part — c'est une catégorie composition, pas un verbe simple
+  const blocSynth = `
+    <div style="background:#f3eafc;border-radius:12px;padding:14px 14px 16px;border-left:5px solid #6d3a8e;grid-column:1 / -1">
+      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;color:#6d3a8e">🟣 Rédaction 15 lignes</div>
+        <div style="font-size:11px;color:#6d3a8e;opacity:.65">composition</div>
+      </div>
+      <div style="font-size:11.5px;color:#5a5448;font-style:italic;margin-bottom:10px">Comment je rédige une composition argumentée ?</div>
+      <div class="verb-case" onclick="showVerb('quinzelignes')" style="background:white;border:1px solid #6d3a8e40;border-left:3px solid #6d3a8e;border-radius:6px;padding:8px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;transition:background .12s,transform .08s"
+           onmouseover="this.style.background='#ede0fa';this.style.transform='translateX(2px)'"
+           onmouseout="this.style.background='white';this.style.transform='translateX(0)'">
+        <span style="font-family:'Nunito',sans-serif;font-weight:700;font-size:13.5px">En ~15 lignes, montrer que…</span>
+        <span style="color:#6d3a8e;font-size:10.5px;letter-spacing:.05em">★★★★★</span>
+      </div>
+    </div>`;
+
+  document.getElementById('main').innerHTML = `
+    <div style="padding:24px 28px;max-width:1200px">
+      <div style="text-align:center;margin-bottom:18px">
+        <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:4px;color:#3d1a5c">🔑 Carte des verbes de consigne</h2>
+        <p style="color:var(--gris);font-size:13px;margin:0">26 verbes · 5 familles · cliquer un verbe pour voir attendu, format, piège et réponse modèle</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+        ${cards}
+        ${blocSynth}
+      </div>
+    </div>`;
+}
+
+// Affiche la méthode générale de décodage en 3 étapes
+function showDecodageMethode(el) {
+  document.querySelectorAll('#sidebar-decodage .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+
   document.getElementById('main').innerHTML = `
     <div style="padding:24px 28px;max-width:780px">
-      <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px;color:#3d1a5c">🔑 Décoder les verbes de consigne</h2>
-      <p style="color:var(--gris);font-size:13px;margin-bottom:18px">Lire la question avant d'y répondre. 70 % du hors-sujet vient d'un verbe mal compris.</p>
+      <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px;color:#3d1a5c">📐 Méthode générale — décoder un verbe en 5 secondes</h2>
+      <p style="color:var(--gris);font-size:13px;margin-bottom:20px">Lire la question avant d'y répondre. <strong style="color:#b5415a">70 % du hors-sujet vient d'un verbe mal compris.</strong></p>
 
-      <div style="background:#fef8e2;border-left:4px solid #f5c842;padding:14px 18px;border-radius:8px;margin-bottom:20px;font-family:'Nunito',sans-serif;font-weight:700;color:#7a5800;font-size:14px;line-height:1.55">
-        💡 <strong style="color:#b5415a">Avant chaque question</strong>, fais 3 choses dans cet ordre :<br>
-        1. Repère le verbe de consigne — 2. Identifie la notion à mobiliser — 3. Choisis le bon format.<br>
-        Si tu sautes l'étape 1, tu écris parfaitement… une réponse à côté.
+      <div style="background:#fef8e2;border-left:4px solid #f5c842;padding:16px 20px;border-radius:8px;margin-bottom:24px;font-family:'Nunito',sans-serif;font-weight:700;color:#7a5800;font-size:14.5px;line-height:1.6">
+        💡 <strong style="color:#b5415a">Avant chaque question</strong>, fais 3 choses dans cet ordre :<br><br>
+        <strong>1.</strong> <strong>Repère le verbe</strong> de consigne (Présenter, Calculer, Montrer…)<br>
+        <strong>2.</strong> <strong>Identifie la notion</strong> à mobiliser (FRNG, parties prenantes, RSE…)<br>
+        <strong>3.</strong> <strong>Choisis le bon format</strong> (liste / tableau / paragraphe / calcul + commentaire)<br><br>
+        <span style="font-weight:600;color:#7a5800">Si tu sautes l'étape 1, tu écris parfaitement… une réponse à côté.</span>
       </div>
 
-      <h3 style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;margin:18px 0 10px;color:#3d1a5c">📊 Tableau express — repère le verbe en 5 secondes</h3>
-      <div style="background:white;border-radius:10px;overflow:hidden;border:1px solid var(--bordure);font-size:13px;margin-bottom:18px">
+      <h3 style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;margin:18px 0 12px;color:#3d1a5c">🎯 Les 5 grandes familles de verbes</h3>
+      <div style="background:white;border-radius:10px;overflow:hidden;border:1px solid var(--bordure);font-size:13px">
         <table style="width:100%;border-collapse:collapse">
           <thead>
             <tr style="background:#3d1a5c;color:white">
-              <th style="padding:8px 12px;text-align:left;font-family:'Nunito',sans-serif;font-size:12px">Si tu lis…</th>
-              <th style="padding:8px 12px;text-align:left;font-family:'Nunito',sans-serif;font-size:12px">Tu dois…</th>
-              <th style="padding:8px 12px;text-align:left;font-family:'Nunito',sans-serif;font-size:12px">Volume</th>
+              <th style="padding:9px 12px;text-align:left;font-family:'Nunito',sans-serif;font-size:12px">Famille</th>
+              <th style="padding:9px 12px;text-align:left;font-family:'Nunito',sans-serif;font-size:12px">Tu dois…</th>
+              <th style="padding:9px 12px;text-align:left;font-family:'Nunito',sans-serif;font-size:12px">Volume</th>
             </tr>
           </thead>
           <tbody>
-            <tr onclick="showVerb('presenter')" style="cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f3eafc'" onmouseout="this.style.background=''"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Présenter / Identifier</td><td style="padding:7px 12px">Énumérer depuis les docs</td><td style="padding:7px 12px;color:#2d7a4f;font-weight:600">Court</td></tr>
-            <tr onclick="showVerb('reperer')" style="cursor:pointer;background:#faf7f0;transition:background .15s" onmouseover="this.style.background='#f3eafc'" onmouseout="this.style.background='#faf7f0'"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Repérer</td><td style="padding:7px 12px">Pointer + nommer</td><td style="padding:7px 12px;color:#2d7a4f;font-weight:600">Court</td></tr>
-            <tr onclick="showVerb('caracteriser')" style="cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f3eafc'" onmouseout="this.style.background=''"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Caractériser</td><td style="padding:7px 12px">Nommer + critères distinctifs</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
-            <tr onclick="showVerb('determiner')" style="cursor:pointer;background:#faf7f0;transition:background .15s" onmouseover="this.style.background='#f3eafc'" onmouseout="this.style.background='#faf7f0'"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Déterminer</td><td style="padding:7px 12px">Choisir + motiver</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
-            <tr onclick="showVerb('analyser')" style="cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f3eafc'" onmouseout="this.style.background=''"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Analyser</td><td style="padding:7px 12px">Décomposer + relier cause/effet</td><td style="padding:7px 12px;color:#b5415a;font-weight:600">Long</td></tr>
-            <tr onclick="showVerb('expliquer')" style="cursor:pointer;background:#faf7f0;transition:background .15s" onmouseover="this.style.background='#f3eafc'" onmouseout="this.style.background='#faf7f0'"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Expliquer</td><td style="padding:7px 12px">Démontrer le mécanisme</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
-            <tr onclick="showVerb('montrer')" style="cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f3eafc'" onmouseout="this.style.background=''"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Montrer que</td><td style="padding:7px 12px">Prouver la thèse donnée</td><td style="padding:7px 12px;color:#b5415a;font-weight:600">Long</td></tr>
-            <tr onclick="showVerb('justifier')" style="cursor:pointer;background:#faf7f0;transition:background .15s" onmouseover="this.style.background='#f3eafc'" onmouseout="this.style.background='#faf7f0'"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Justifier</td><td style="padding:7px 12px">Affirmer + preuves doc</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
-            <tr onclick="showVerb('apprecier')" style="cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f3eafc'" onmouseout="this.style.background=''"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Apprécier</td><td style="padding:7px 12px">Évaluer (+ et –)</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
-            <tr onclick="showVerb('proposer')" style="cursor:pointer;background:#faf7f0;transition:background .15s" onmouseover="this.style.background='#f3eafc'" onmouseout="this.style.background='#faf7f0'"><td style="padding:7px 12px;font-weight:700;color:#3d1a5c">Proposer</td><td style="padding:7px 12px">Recommander</td><td style="padding:7px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
-            <tr onclick="showVerb('quinzelignes')" style="cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f3eafc'" onmouseout="this.style.background=''"><td style="padding:7px 12px;font-weight:700;color:#6d3a8e">~15 lignes</td><td style="padding:7px 12px">Composition + exemples ext.</td><td style="padding:7px 12px;color:#b5415a;font-weight:600">Long imposé</td></tr>
+            <tr><td style="padding:9px 12px;color:#2563a8;font-weight:800">🔵 Repérage</td><td style="padding:9px 12px">Extraire des éléments des docs (sans commenter)</td><td style="padding:9px 12px;color:#2d7a4f;font-weight:600">Court</td></tr>
+            <tr style="background:#faf7f0"><td style="padding:9px 12px;color:#8a6d00;font-weight:800">🟡 Description</td><td style="padding:9px 12px">Détailler avec critères distinctifs</td><td style="padding:9px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
+            <tr><td style="padding:9px 12px;color:#c45c2e;font-weight:800">🟠 Analyse</td><td style="padding:9px 12px">Décomposer, expliquer, prouver une thèse</td><td style="padding:9px 12px;color:#b5415a;font-weight:600">Long</td></tr>
+            <tr style="background:#faf7f0"><td style="padding:9px 12px;color:#b5415a;font-weight:800">🔴 Jugement</td><td style="padding:9px 12px">Trancher, évaluer, recommander</td><td style="padding:9px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
+            <tr><td style="padding:9px 12px;color:#1a7a3c;font-weight:800">🟢 Calcul / Schéma</td><td style="padding:9px 12px">Action concrète : formule, schéma, méthode</td><td style="padding:9px 12px;color:#8a6d00;font-weight:600">Moyen</td></tr>
+            <tr style="background:#faf7f0"><td style="padding:9px 12px;color:#6d3a8e;font-weight:800">🟣 Rédaction 15 lignes</td><td style="padding:9px 12px">Composition argumentée + exemples extérieurs</td><td style="padding:9px 12px;color:#b5415a;font-weight:600">Long imposé</td></tr>
           </tbody>
         </table>
       </div>
 
-      <p style="color:var(--gris);font-size:13px;margin-top:14px"><em>👉 Clique sur n'importe quel verbe — dans le tableau ci-dessus ou dans la sidebar à gauche — pour voir : attendu, format, piège, exemple bac 2025 et <strong>réponse rédigée modèle</strong>.</em></p>
+      <p style="color:var(--gris);font-size:13px;margin-top:18px"><em>👉 Pour voir le détail d'un verbe (attendu, format, piège, exemple bac, réponse modèle), clique sur <strong>🗺️ Carte des verbes</strong> dans la sidebar puis sur n'importe quel verbe.</em></p>
     </div>`;
 }
 
-function showFicheHome() {
-  document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
+// Affiche La Carte dans le panneau principal via un iframe vers fiche-memo-cycle.html.
+// La carte reste un fichier autonome (source unique) ; on l'embarque ici sans duplication.
+// Si un qid (identifiant de question du Bac) est passé, on ajoute des paramètres d'URL
+// pour que la carte surligne les notions concernées et ouvre la mini-modale Question du Bac.
+function showFicheHome(qid) {
+  let src = 'fiche-memo-cycle.html';
+  if (qid && typeof getQuestionBac === 'function') {
+    const q = getQuestionBac(qid);
+    if (q) {
+      const params = new URLSearchParams();
+      params.set('p', q.primary);
+      if (q.secondary && q.secondary.length) params.set('s', q.secondary.join(','));
+      params.set('qid', q.id);
+      src += '?' + params.toString();
+    }
+  }
   document.getElementById('main').innerHTML = `
-    <div style="padding:40px 28px;max-width:700px">
-      <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:6px">📝 Fiches mémo MSGN</h2>
-      <p style="color:var(--gris);font-size:13px;margin-bottom:24px">3 dossiers · 33 notions · Tout retenir pour le Bac · <a href="print-fiches-memo.html" target="_blank" style="color:var(--accent);font-weight:700;text-decoration:none">🖨️ Version imprimable</a></p>
-      <div style="background:#fdeef1;border-left:5px solid #e8526b;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
-        <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 1 — Stratégie</div>
-        <div style="display:flex;gap:8px;margin-bottom:8px">
-          <div onclick="showFiche('d1','q1',document.querySelector('#sidebar-fiches .q-item'))" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🔍</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où je suis ?</div><div style="font-size:10px;color:#7a6a58">5 notions · Analyser</div></div>
-          <div style="align-self:center;color:#a09880;font-size:16px">→</div>
-          <div onclick="showFiche('d1','q2',document.querySelectorAll('#sidebar-fiches .q-item')[1])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🧭</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Où veux-je aller ?</div><div style="font-size:10px;color:#7a6a58">4 notions · Décider</div></div>
-          <div style="align-self:center;color:#a09880;font-size:16px">→</div>
-          <div onclick="showFiche('d1','q3',document.querySelectorAll('#sidebar-fiches .q-item')[2])" style="flex:1;background:white;border:1.5px solid #e8526b;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🛤️</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#b5415a">Comment j'y vais ?</div><div style="font-size:10px;color:#7a6a58">5 notions · Agir</div></div>
-        </div>
-        <div style="font-size:11px;color:#7a6a58">14 notions · Parties prenantes · Marché · Décision · Comportement conso · Labels</div>
-      </div>
-      <div style="background:#e8f3ff;border-left:5px solid #3a82c8;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
-        <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 2 — Finances & GRH</div>
-        <div style="display:flex;gap:8px;margin-bottom:8px">
-          <div onclick="showFiche('d2','fin',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">💰</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Perf. financière & co.</div><div style="font-size:10px;color:#7a6a58">10 notions</div></div>
-          <div onclick="showFiche('d2','soc',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">👥</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance sociale</div><div style="font-size:10px;color:#7a6a58">5 notions</div></div>
-          <div onclick="showFiche('d2','ope',null)" style="flex:1;background:white;border:1.5px solid #3a82c8;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">⚙️</div><div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#2a69a8">Performance opérationnelle</div><div style="font-size:10px;color:#7a6a58">3 notions</div></div>
-        </div>
-        <div style="font-size:11px;color:#7a6a58">18 notions · VA · FRNG · Likert · Maslow · GPEC · Flux · CA · TMS · Processus</div>
-      </div>
-      <div style="background:#eaf8ef;border-left:5px solid #1a7a3c;border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:16px">
-        <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;margin-bottom:10px">Dossier 3 — RSE & Numérique</div>
-        <div style="display:flex;gap:8px;margin-bottom:8px">
-          <div onclick="showFiche('d3','num',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">💻</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes outils</div><div style="font-size:10px;color:#7a6a58">7 notions · Numérique</div></div>
-          <div style="align-self:center;color:#a09880;font-size:16px">→</div>
-          <div onclick="showFiche('d3','rse',null)" style="flex:1;background:white;border:1.5px solid #1a7a3c;border-radius:10px;padding:10px;text-align:center;cursor:pointer"><div style="font-size:18px;margin-bottom:3px">🌿</div><div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:#1a7a3c">Mes valeurs</div><div style="font-size:10px;color:#7a6a58">5 notions · RSE</div></div>
-        </div>
-        <div style="font-size:11px;color:#7a6a58">12 notions · PGI · E-commerce · RGPD · Blockchain · IA · RSE · 5 valeurs</div>
-      </div>
-    </div>`;
+    <iframe src="${src}"
+            style="width:100%;height:calc(100vh - 110px);border:none;display:block"
+            title="La Carte MSGN"></iframe>`;
 }
 
 // ═══════════════ SYNTHÈSE ═══════════════
@@ -1517,7 +1611,29 @@ const SYNTH = [
    question:"Montrez que la démarche RSE peut être créatrice de valeur pour Renou Textiles.",
    attendu:"RSE = volontaire, au-delà de la loi. Valeur = pas seulement financière. Structurer en 3 piliers (éco/social/enviro) et montrer que chacun crée de la valeur.",
    notions:["RSE","3 piliers","performance globale","avantage concurrentiel","fidélisation"],
-   corrige:`<strong>Intro :</strong> La RSE est l'engagement volontaire d'une entreprise à intégrer des préoccupations sociales et environnementales au-delà de ses obligations légales.<br><br><strong>1. Pilier économique :</strong> Renou utilise des matériaux recyclés → réduit les coûts de matières premières et attire une clientèle sensible au made in France → hausse du CA.<br><br><strong>2. Pilier social :</strong> L'entreprise maintient son site en Haute-Vienne, créant de l'emploi local. La GPEC anticipe les besoins en compétences → performance sociale.<br><br><strong>3. Pilier environnemental :</strong> Le recyclage de coton réduit l'empreinte écologique. Les labels EPV et OFG renforcent la crédibilité de l'engagement.<br><br><strong>Conclusion :</strong> La RSE de Renou n'est pas un coût mais un avantage concurrentiel qui crée de la valeur sur les 3 dimensions.`}
+   corrige:`<strong>Intro :</strong> La RSE est l'engagement volontaire d'une entreprise à intégrer des préoccupations sociales et environnementales au-delà de ses obligations légales.<br><br><strong>1. Pilier économique :</strong> Renou utilise des matériaux recyclés → réduit les coûts de matières premières et attire une clientèle sensible au made in France → hausse du CA.<br><br><strong>2. Pilier social :</strong> L'entreprise maintient son site en Haute-Vienne, créant de l'emploi local. La GPEC anticipe les besoins en compétences → performance sociale.<br><br><strong>3. Pilier environnemental :</strong> Le recyclage de coton réduit l'empreinte écologique. Les labels EPV et OFG renforcent la crédibilité de l'engagement.<br><br><strong>Conclusion :</strong> La RSE de Renou n'est pas un coût mais un avantage concurrentiel qui crée de la valeur sur les 3 dimensions.`},
+
+  // ─── Ajouts à partir des corrigés officiels (PDFs) ───
+  // SYNTH 8 — Bébé Serein 2025 · 3.3
+  {titre:"RSE créatrice de valeurs · Bébé Serein (2025)", theme:"RSE",
+   question:"Montrer que la mise en place d'une démarche RSE est créatrice de valeurs.",
+   attendu:"RSE = concept où les organisations intègrent les préoccupations sociales et environnementales dans leurs décisions. Structurer autour des 5 types de valeurs (financière, ajoutée, sociale, perçue, partenariale) en montrant comment la RSE en crée plusieurs.",
+   notions:["RSE","5 types de valeurs","valeur financière","valeur perçue","valeur sociale","valeur partenariale","performance globale","labels"],
+   corrige:`<strong>Intro :</strong> La RSE est un concept dans lequel les organisations intègrent les préoccupations sociales et environnementales dans leurs décisions. Une organisation peut créer plusieurs formes de valeurs : financière, ajoutée, sociale, perçue, partenariale.<br><br><strong>1. Valeurs perçue et financière (volet environnemental) :</strong> La réduction des déchets, le recyclage des emballages, la commercialisation de produits biologiques ou la production raisonnée peuvent faire l'objet d'une communication commerciale. Cela permet de se différencier des concurrents et d'attirer une cible soucieuse des enjeux environnementaux. <em>Exemple : Asphalte (vêtements responsables en précommande) communique sur ses engagements pour attirer et fidéliser ses clients.</em><br><br><strong>2. Image de marque renforcée (valeur perçue) :</strong> S'engager dans une démarche RSE améliore l'image de marque. En se différenciant, l'entreprise peut espérer voir ses ventes et sa rentabilité augmenter (hausse du CA et du bénéfice) → création de valeur financière et ajoutée.<br><br><strong>3. Labellisation (valeur perçue) :</strong> Le volet environnemental passe notamment par la labellisation (Label bio), qui garantit des produits de meilleure qualité et impacte la satisfaction des consommateurs. <em>Exemple : Bébé Serein propose du lait infantile certifié bio, ce qui répond aux attentes des clients soucieux de proposer des produits sains aux enfants.</em><br><br><strong>4. Valeurs partenariale et sociale (volet social) :</strong> Développer une politique RSE renforce le sentiment d'appartenance et de fierté des collaborateurs, source de motivation et de cohésion. <em>Exemple : Innocent récolte chaque hiver des fonds pour « Petits frères des pauvres », créant valeur sociale et partenariale.</em> En améliorant les conditions de travail, le volet social participe au bien-être et à la satisfaction des salariés → impact positif sur la valeur sociale.<br><br><strong>Conclusion :</strong> Une politique RSE cohérente peut avoir un effet positif sur le climat de travail, la dynamique de groupe et l'intelligence collective, ce qui décuple l'efficience organisationnelle et impacte positivement toutes les valeurs créées.`},
+
+  // SYNTH 9 — Saveurs & Nature 2023 · 2.3
+  {titre:"Qualité et avantage concurrentiel · Saveurs & Nature (2023)", theme:"Qualité",
+   question:"Montrer comment la qualité permet à une entreprise de se démarquer sur un marché très concurrentiel.",
+   attendu:"Qualité = démarche sur toute la chaîne de valeur. Montrer qu'elle construit un avantage concurrentiel durable via labels, certifications, image de marque, fidélisation et optimisation des processus.",
+   notions:["qualité","avantage concurrentiel","labels","certifications","image de marque","fidélisation","chaîne de valeur","processus"],
+   corrige:`<strong>Intro :</strong> La préoccupation de qualité s'envisage sur toute la chaîne de valeur de l'entreprise, de l'approvisionnement à la fabrication puis la distribution jusqu'au consommateur final. Elle permet à une entreprise de construire un avantage concurrentiel.<br><br><strong>1. Différenciation par les certifications :</strong> Les certifications, issues d'une démarche qualité et d'un contrôle précis en entreprise, renforcent la confiance du consommateur. <em>Exemple : la marque IKALIA de Saveurs & Nature bénéficie de plusieurs labels (Max Havelaar, bio…) qui la distinguent des autres produits chocolatés.</em> Le label de commerce équitable assure au consommateur que le fabricant est engagé → fidélisation et attractivité.<br><br><strong>2. Optimisation des processus :</strong> La recherche de qualité, bien que complexe, permet d'<em>optimiser les processus de production</em>. En contrôlant la qualité en amont (usine), l'entreprise diminue les coûts de non-qualité, les rebuts → meilleure performance. La formalisation des processus (comme la certification « épi barré ») contribue à la fiabilisation.<br><br><strong>3. Image de marque et fidélisation :</strong> La qualité a un effet positif sur l'image de marque. Une qualité constante et durable favorise la fidélisation des consommateurs et la confiance dans la marque.<br><br><strong>Conclusion :</strong> La recherche qualité favorise l'ensemble des performances de l'entreprise et lui garantit un positionnement durable sur son marché. Elle est le socle de la construction d'un avantage concurrentiel durable.`},
+
+  // SYNTH 10 — Caraïbes Fumés 2022 · 2.3b
+  {titre:"Outils numériques et performance commerciale · Caraïbes Fumés (2022)", theme:"Numérique commercial",
+   question:"Montrer que les outils numériques de l'entreprise sont au service de l'amélioration de sa performance commerciale.",
+   attendu:"Performance commerciale = CA, part de marché, fidélité. Montrer comment chaque outil numérique (site marchand, réseaux sociaux, courriels personnalisés, logiciel de production) améliore au moins un de ces indicateurs.",
+   notions:["outils numériques","performance commerciale","site marchand","réseaux sociaux","CRM","traçabilité","fidélisation","notoriété"],
+   corrige:`<strong>Intro :</strong> La performance commerciale d'une entreprise se mesure par le chiffre d'affaires, la part de marché et la fidélité de la clientèle. Les outils numériques de Caraïbes Fumés contribuent à améliorer ces indicateurs.<br><br><strong>1. Outils de digitalisation de la communication :</strong><br>• Des <em>courriels personnalisés</em> permettent de cibler les clients afin de les fidéliser.<br>• Les <em>réseaux sociaux</em> permettent d'accroître la notoriété, la réputation et l'image de marque.<br>• Le <em>site internet marchand</em> permet d'accroître la visibilité et le chiffre d'affaires de l'entreprise.<br><br><strong>2. Logiciel de suivi de production agro-alimentaire :</strong> Il permet d'accroître la qualité de la production, ce qui participe à l'amélioration de la satisfaction des clients. Il assure également la traçabilité des aliments pour réagir de façon réactive en cas d'intoxication alimentaire et maîtriser la réputation de l'entreprise.<br><br><strong>Conclusion :</strong> L'ensemble de ces outils numériques œuvre dans le même sens : fidéliser les clients existants, attirer de nouveaux consommateurs, sécuriser l'image de marque. Ils sont donc directement au service de la performance commerciale de Caraïbes Fumés.`}
 ];
 
 function showSynthMethode(el) {
@@ -1696,8 +1812,458 @@ function showChecklist(dossier, el) {
     </div>`;
 }
 
-// Charger Fiches mémo par défaut au démarrage
+// ═══════════════ SIDEBAR QUESTIONS DU BAC (généré dynamiquement) ═══════════════
+// Lit QUESTIONS_BAC (questions-bac.js) et construit une sidebar compacte :
+// les 3 dossiers pliables, dans chacun les numéros distincts (1.1, 1.2, ...).
+// Les variantes "1.4a" et "1.4b" sont regroupées sous le numéro principal "1.4".
+function buildSidebarQuestions() {
+  const container = document.getElementById('sidebar-questions');
+  if (!container || typeof QUESTIONS_BAC === 'undefined') return;
+
+  // Titres calés sur la réalité statistique des 128 questions du bac 2022-2025.
+  // (option B validée — voir analyse de répartition par famille)
+  const TITRES = {
+    1: 'Dossier 1 — Stratégie & diagnostic',
+    2: 'Dossier 2 — Performance financière & sociale',
+    3: 'Dossier 3 — Performance globale & engagement'
+  };
+
+  let html = '<div class="sidebar-intro">Questions du Bac</div>';
+
+  for (const dossier of [1, 2, 3]) {
+    // On exclut ici les questions de synthèse (✍️ 15 lignes) : elles sont
+    // affichées dans l'onglet Questions de synthèse, pas ici.
+    const qs = QUESTIONS_BAC.filter(q => q.dossier === dossier && !q.synthese);
+    // Récupère les numéros principaux (sans suffixe a/b) et les trie
+    const nums = [...new Set(qs.map(q => q.num.replace(/[a-z]$/, '')))].sort();
+
+    let items = '';
+    for (const num of nums) {
+      // Compte les annales qui posent cette question (variantes a/b incluses)
+      const matchs = qs.filter(q => q.num === num || q.num.startsWith(num + 'a') || q.num.startsWith(num + 'b'));
+      const count = matchs.length;
+      items += `
+        <div class="q-item" onclick="showQuestionsForNum('${num}', this)">
+          <span class="q-name" style="font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--bleu)">Question ${num}</span>
+          <div class="q-meta"><span class="q-time">${count} annale${count > 1 ? 's' : ''}</span></div>
+        </div>`;
+    }
+
+    html += `
+      <div class="group">
+        <div class="group-header" onclick="toggleGroup(this)">
+          <span class="group-label">${TITRES[dossier]}</span>
+          <span class="group-arrow">▶</span>
+        </div>
+        <div class="group-body">${items}</div>
+      </div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+// Ordre des notions sur la carte — sert à trier les libellés dans la vue centrale
+// pour que la liste suive le même cheminement visuel que la carte (Phase 1 → 4,
+// famille par famille). Si une notion n'est pas dans la liste, elle ira à la fin.
+const NOTIONS_ORDER = [
+  // Phase 1 — Stratégie
+  'finalites', 'parties', 'modele', 'competences', 'fcs', 'diagnostic_ext', 'marche', 'comportement',
+  'strategies', 'das', 'decision', 'croissance', 'integration', 'ess',
+  // Phase 2 — Mise en œuvre
+  'mercatique_n', 'labels', 'production_n', 'mintzberg', 'processus', 'communication_n', 'communication_ext',
+  'si_fonctions', 'pgi', 'ecommerce', 'blockchain', 'ia', 'identite_num',
+  // Phase 3 — Pilotage
+  'va', 'rex', 'couts', 'frng', 'bfr', 'tn', 'caf', 'seuil', 'financement', 'perf_co',
+  'likert', 'culture', 'motivation', 'gpec', 'risques_pro',
+  // Phase 4 — Vision
+  'rse', 'performance', 'valeurs', 'ethique'
+];
+
+// Affiche au centre la liste exhaustive des libellés pour un numéro de question
+// (ex: toutes les Q "1.1" du programme), triée selon l'ordre des notions sur la carte.
+function showQuestionsForNum(num, el) {
+  // Si le panneau Carte est ouvert sur une question précédente, on le ferme
+  // (la nouvelle liste centrale ne correspond plus à ce qu'il affichait)
+  const overlay = document.getElementById('carte-overlay');
+  if (overlay && overlay.style.display !== 'none') closeCartePanel();
+
+  document.querySelectorAll('.q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  // Exclusion des questions de synthèse (✍️ 15 lignes) :
+  // elles sont affichées dans l'onglet Questions de synthèse, pas ici.
+  const matches = QUESTIONS_BAC.filter(q =>
+    !q.synthese &&
+    (q.num === num || q.num === num + 'a' || q.num === num + 'b')
+  );
+
+  // Tri par primary selon l'ordre de la carte (les notions inconnues vont à la fin)
+  matches.sort((a, b) => {
+    const ia = NOTIONS_ORDER.indexOf(a.primary);
+    const ib = NOTIONS_ORDER.indexOf(b.primary);
+    return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+  });
+
+  let html = `
+    <div style="padding:24px 28px;max-width:900px">
+      <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--gris);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">Question ${num}</div>
+      <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:18px">${matches.length} libellé${matches.length > 1 ? 's' : ''} du bac · classés par ordre de la carte</h2>
+      <div style="background:white;border:1px solid var(--bordure);border-radius:10px;overflow:hidden">`;
+
+  for (const q of matches) {
+    // Petits badges colorés pour les questions de synthèse (✍️ 15 lignes) et "au choix"
+    const badges = [
+      q.synthese ? '<span style="background:#fdf2c8;color:#7a5800;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;margin-left:6px">✍️ 15 lignes</span>' : '',
+      q.choix    ? '<span style="background:#e3eef8;color:#2a69a8;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;margin-left:6px">🔀 au choix</span>' : ''
+    ].join('');
+    html += `
+      <div class="bac-line" data-qid="${q.id}" onclick="openCartePanel('${q.id}', this)" style="padding:10px 14px;border-bottom:1px solid var(--bordure);cursor:pointer;display:flex;gap:12px;align-items:baseline;font-size:14px;line-height:1.4;transition:background .12s">
+        <span style="flex-shrink:0;font-size:15px">${q.fam}</span>
+        <span style="flex-shrink:0;font-family:'Nunito',sans-serif;font-weight:800;color:var(--bleu);min-width:46px">Q ${q.num}</span>
+        <span style="flex:1;min-width:0">${q.libelle}${badges}</span>
+        <span style="flex-shrink:0;color:var(--gris);font-size:13px;font-style:italic">${q.sujet} '${String(q.annee).slice(-2)}</span>
+      </div>`;
+  }
+
+  html += `
+      </div>
+      <div style="margin-top:14px;padding:10px 14px;font-size:12px;color:var(--gris);text-align:center">
+        Clique sur une ligne pour voir la question sur 🗺️ La Carte (notions surlignées).
+      </div>
+    </div>`;
+
+  document.getElementById('main').innerHTML = html;
+}
+
+// ═══════════════ PANNEAU LATÉRAL "Carte sur Question du Bac" ═══════════════
+// Ouvre la Carte dans un panneau coulissant à droite, par-dessus la liste
+// centrale, en gardant la sidebar gauche visible. Permet de passer d'une
+// question à une autre sans perdre le contexte de la liste.
+function openCartePanel(qid, el) {
+  if (typeof getQuestionBac !== 'function') return;
+  const q = getQuestionBac(qid);
+  if (!q) return;
+
+  // Construire l'URL avec les paramètres de surlignage
+  const params = new URLSearchParams();
+  params.set('p', q.primary);
+  if (q.secondary && q.secondary.length) params.set('s', q.secondary.join(','));
+  params.set('qid', q.id);
+
+  const overlay = document.getElementById('carte-overlay');
+  const iframe = document.getElementById('carte-overlay-iframe');
+  iframe.src = 'fiche-memo-cycle.html?' + params.toString();
+  overlay.style.display = 'flex';
+
+  // Marquer la ligne cliquée comme active (et désactiver les autres)
+  document.querySelectorAll('.bac-line.bac-line-active')
+    .forEach(l => l.classList.remove('bac-line-active'));
+  if (el) el.classList.add('bac-line-active');
+}
+
+function closeCartePanel() {
+  const overlay = document.getElementById('carte-overlay');
+  const iframe = document.getElementById('carte-overlay-iframe');
+  overlay.style.display = 'none';
+  iframe.src = 'about:blank'; // libère la mémoire
+
+  // Retirer l'état actif de toutes les lignes
+  document.querySelectorAll('.bac-line.bac-line-active')
+    .forEach(l => l.classList.remove('bac-line-active'));
+}
+
+// Touche Échap pour fermer le panneau
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('carte-overlay');
+    if (overlay && overlay.style.display !== 'none') closeCartePanel();
+  }
+});
+
+// Clic en dehors du panneau ferme le panneau — sauf si on clique sur une
+// ligne de question (.bac-line), qui doit pouvoir ouvrir une autre carte.
+document.addEventListener('click', e => {
+  const overlay = document.getElementById('carte-overlay');
+  if (!overlay || overlay.style.display === 'none') return;
+  if (overlay.contains(e.target)) return;           // clic DANS le panneau → on garde
+  if (e.target.closest('.bac-line')) return;        // clic sur une ligne → openCartePanel s'occupe du reste
+  closeCartePanel();
+});
+
+// ═══════════════ SIDEBAR QUESTIONS DE SYNTHÈSE (généré dynamiquement) ═══════════════
+// 2 entrées seulement : Méthode générale + Questions Bac.
+// La liste centrale s'affiche au clic sur "Questions Bac".
+function buildSidebarSynthese() {
+  const container = document.getElementById('sidebar-synthese');
+  if (!container || typeof QUESTIONS_BAC === 'undefined') return;
+
+  // Compte les questions de synthèse (✍️ 15 lignes) — toutes confondues
+  const nbSynth = QUESTIONS_BAC.filter(q => q.synthese).length;
+
+  container.innerHTML = `
+    <div class="sidebar-intro">Questions de synthèse</div>
+    <div class="q-item" onclick="showSyntheseMethode(this)">
+      <span class="q-name" style="font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--accent)">📐 Méthode générale</span>
+      <div class="q-meta"><span class="q-time">5 étapes · 4-6 pts</span></div>
+    </div>
+    <div class="q-item" onclick="showSyntheseListe(this)">
+      <span class="q-name" style="font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--bleu)">📋 Questions Bac</span>
+      <div class="q-meta"><span class="q-time">${nbSynth} questions ✍️ 15 lignes</span></div>
+    </div>`;
+}
+
+// Affiche au centre la méthode générale pour rédiger une synthèse 15 lignes.
+// Réutilise les données de l'objet Q['synthese'] si dispo, sinon fallback.
+function showSyntheseMethode(el) {
+  // Si on est dans le panneau Carte, on le ferme
+  const overlay = document.getElementById('carte-overlay');
+  if (overlay && overlay.style.display !== 'none') closeCartePanel();
+
+  document.querySelectorAll('#sidebar-synthese .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  const q = (typeof Q !== 'undefined' && Q.synthese) ? Q.synthese : null;
+  if (!q) {
+    document.getElementById('main').innerHTML = `
+      <div style="padding:30px 28px;max-width:780px">
+        <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900">Méthode de la synthèse 15 lignes</h2>
+        <p style="color:var(--gris)">Contenu indisponible.</p>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('main').innerHTML = `
+    <div style="padding:24px 28px;max-width:820px">
+      <div class="q-header">
+        <div class="type-tag">SYNTHÈSE · 4-6 PTS · ~20 MIN</div>
+        <h2>Méthode de la synthèse 15 lignes</h2>
+        <div class="freq">${q.freq || ''}</div>
+      </div>
+      <div class="section">
+        <div class="sec-title bleu">⚙️ Méthode en 5 étapes</div>
+        <div class="steps">
+          ${q.methode.map(s => `<div class="step"><div class="step-n">${s.n}</div><div class="step-body"><strong>${s.t}</strong><br><em>${s.d}</em></div></div>`).join('')}
+        </div>
+      </div>
+      <div class="section">
+        <div class="sec-title rouge">⚠️ Erreur classique</div>
+        <div class="alerte"><span class="alerte-i">⚠️</span><span>${q.alerte || ''}</span></div>
+      </div>
+    </div>`;
+}
+
+// Affiche au centre la liste exhaustive des questions de synthèse (✍️ 15 lignes),
+// triée selon l'ordre des notions sur la carte (NOTIONS_ORDER).
+// Fonctionne en miroir de showQuestionsForNum() de Questions du Bac.
+function showSyntheseListe(el) {
+  // Si on est dans le panneau Carte, on le ferme
+  const overlay = document.getElementById('carte-overlay');
+  if (overlay && overlay.style.display !== 'none') closeCartePanel();
+
+  document.querySelectorAll('#sidebar-synthese .q-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  const matches = QUESTIONS_BAC.filter(q => q.synthese);
+  // Tri par primary selon l'ordre de la carte
+  matches.sort((a, b) => {
+    const ia = NOTIONS_ORDER.indexOf(a.primary);
+    const ib = NOTIONS_ORDER.indexOf(b.primary);
+    return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+  });
+
+  let html = `
+    <div style="padding:24px 28px;max-width:900px">
+      <div style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--gris);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px">Questions ✍️ 15 lignes</div>
+      <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:18px">${matches.length} questions de synthèse · classées par ordre de la carte</h2>
+      <div style="background:white;border:1px solid var(--bordure);border-radius:10px;overflow:hidden">`;
+
+  for (const q of matches) {
+    // Tag rouge si pas de corrigé rédigé (synthIndex absent)
+    const corrigeTag = (q.synthIndex !== undefined)
+      ? '<span style="background:#e7f4ec;color:#1a7a3c;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;margin-left:6px">✅ corrigé</span>'
+      : '<span style="background:#fde7ec;color:#a8344a;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;margin-left:6px">⏳ à rédiger</span>';
+    html += `
+      <div class="bac-line" data-qid="${q.id}" onclick="openCartePanel('${q.id}', this)" style="padding:10px 14px;border-bottom:1px solid var(--bordure);cursor:pointer;display:flex;gap:12px;align-items:baseline;font-size:14px;line-height:1.4;transition:background .12s">
+        <span style="flex-shrink:0;font-size:15px">${q.fam}</span>
+        <span style="flex-shrink:0;font-family:'Nunito',sans-serif;font-weight:800;color:var(--bleu);min-width:46px">Q ${q.num}</span>
+        <span style="flex:1;min-width:0">${q.libelle}${corrigeTag}</span>
+        <span style="flex-shrink:0;color:var(--gris);font-size:13px;font-style:italic">${q.sujet} '${String(q.annee).slice(-2)}</span>
+      </div>`;
+  }
+
+  html += `
+      </div>
+      <div style="margin-top:14px;padding:10px 14px;font-size:12px;color:var(--gris);text-align:center">
+        Clique sur une question pour voir le sujet sur 🗺️ La Carte + bouton « Réponse attendue ».
+      </div>
+    </div>`;
+
+  document.getElementById('main').innerHTML = html;
+}
+
+// Construire la sidebar Synthèse au démarrage
+buildSidebarSynthese();
+
+// Construire la sidebar Questions au démarrage (avant que l'utilisateur clique sur l'onglet)
+buildSidebarQuestions();
+
+// Charger La Carte par défaut au démarrage
 switchMode('fiches');
 </script>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     PANNEAU LATÉRAL "Carte sur Question du Bac"
+     S'ouvre par-dessus la liste centrale quand on clique sur un libellé.
+     Laisse la sidebar gauche visible pour pouvoir naviguer entre questions.
+     ════════════════════════════════════════════════════════════════════ -->
+<div id="carte-overlay" style="display:none">
+  <div class="carte-overlay-header">
+    <span class="carte-overlay-title">🗺️ La Carte sur cette question</span>
+    <button class="carte-overlay-close" onclick="closeCartePanel()" title="Fermer (Échap)">×</button>
+  </div>
+  <iframe id="carte-overlay-iframe" src="about:blank" title="La Carte MSGN"></iframe>
+</div>
+
+<!-- MODALE "MÉTHODE COMPLÈTE" (TYPE) — s'ouvre depuis la popup bac dans l'iframe
+     via postMessage. Affiche méthode, exemple bac, corrigé, piège, astuce. -->
+<div id="type-modal" onclick="if(event.target===this)closeTypeModal()">
+  <div class="type-modal-content">
+    <button class="type-modal-close" onclick="closeTypeModal()" title="Fermer (Échap)">×</button>
+    <div id="type-modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════ MODALE MÉTHODE COMPLÈTE (TYPE) ═══════════════
+// Reçoit un postMessage de l'iframe (popup bac → bouton "Voir la méthode")
+// et affiche le contenu du TYPE méthodologique correspondant (objet Q).
+function openTypeModal(typeKey) {
+  if (typeof Q === 'undefined' || !Q[typeKey]) return;
+  const q = Q[typeKey];
+
+  const html = `
+    <div class="q-header">
+      <div class="type-tag">${q.dossier} · ${q.type}</div>
+      <h2>${q.titre}</h2>
+      <div class="freq">${q.freq}</div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title rouge">📚 Notions à connaître</div>
+      <div class="pills">
+        ${q.notions.map(nid => {
+          const n = (typeof N !== 'undefined' && N[nid]) || {};
+          const label = (n.titre || nid).split('—')[0].split('+')[0].trim();
+          return `<button class="pill" onclick="openN('${nid}')"><span class="pill-arrow">→</span>${label}</button>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title bleu">⚙️ Méthode attendue</div>
+      <div class="steps">
+        ${q.methode.map(s => `<div class="step"><span style="color:var(--accent);font-weight:800;font-size:13px;margin-top:2px;flex-shrink:0">—</span><div class="step-body"><strong>${s.t}</strong><br><em>${s.d}</em></div></div>`).join('')}
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--gris)"><strong>Mots-clés :</strong> ${q.mots.join(' · ')}</div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title vert">✏️ S'entraîner — Question d'annale</div>
+      <div class="annale-box"><span class="annale-source">${q.annale.src}</span>${q.annale.q}</div>
+      <div class="corr-block show">
+        <div class="corr-title">✅ Corrigé</div>
+        ${q.corrige}
+      </div>
+      <div class="alerte"><span class="alerte-i">⚠️</span><span>${q.alerte}</span></div>
+      <div class="astuce"><span class="alerte-i">💡</span><span>${q.astuce}</span></div>
+    </div>
+  `;
+  document.getElementById('type-modal-body').innerHTML = html;
+  document.getElementById('type-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTypeModal() {
+  document.getElementById('type-modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// Affiche le corrigé d'une question de synthèse (objet SYNTH du fichier).
+// Réutilise le rendu de showSynthSujet() mais dans une modale par-dessus tout.
+function openSynthModal(synthIndex) {
+  if (typeof SYNTH === 'undefined' || !SYNTH[synthIndex]) return;
+  const s = SYNTH[synthIndex];
+
+  // Mapping notions textuelles → IDs (repris de showSynthSujet, pour rendre cliquables)
+  const notionMap = {
+    'PGI':'pgi','CRM':'pgi','RGPD':'pgi','e-commerce':'pgi',
+    'performance commerciale':'performance','performance opérationnelle':'performance',
+    'QVT':'gpec','QVCT':'gpec','turnover':'gpec','conditions de travail':'gpec','fidélisation':'gpec',
+    'identité numérique':'identite_num','réseaux sociaux':'communication_n','communauté':'communication_n',
+    'culture organisationnelle':'culture','marque employeur':'gpec','recrutement':'gpec',
+    'performance sociale':'performance','performance économique':'performance',
+    'innovation produit':'modele','valeur perçue':'modele','différenciation':'strategies','positionnement':'mercatique_n',
+    'engagement':'motivation','productivité':'production_n','numérique':'pgi','opportunités':'pgi',
+    'innovation':'modele','risques':'identite_num','emploi':'gpec','données':'pgi',
+    'RSE':'rse','3 piliers':'rse','performance globale':'performance','avantage concurrentiel':'competences'
+  };
+  const pills = (s.notions || []).map(n => {
+    const nid = notionMap[n];
+    if (nid && typeof N !== 'undefined' && N[nid]) {
+      return `<button class="pill" onclick="openN('${nid}')"><span class="pill-arrow">→</span>${n}</button>`;
+    }
+    return `<span class="mot">${n}</span>`;
+  }).join('');
+
+  const html = `
+    <div class="q-header">
+      <div class="type-tag">SYNTHÈSE · ${s.theme}</div>
+      <h2>${s.titre}</h2>
+    </div>
+    <div class="section">
+      <div class="sec-title bleu">📝 Question posée</div>
+      <div class="annale-box"><em>${s.question}</em></div>
+      <div style="margin-top:12px;background:#fef8e2;border:1px solid #f0d070;border-radius:8px;padding:10px 14px;font-size:13px;line-height:1.5">
+        <strong style="color:#946e00">🎯 Ce qu'on attend :</strong> ${s.attendu}
+      </div>
+      <div style="margin-top:12px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px">📚 Notions clés</div>
+        <div class="mots">${pills}</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="sec-title vert">✅ Corrigé rédigé (15 lignes)</div>
+      <div class="corr-block show">${s.corrige}</div>
+    </div>`;
+
+  document.getElementById('type-modal-body').innerHTML = html;
+  document.getElementById('type-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+// Écoute les messages venant de l'iframe (popup bac → clic sur "Réponse attendue")
+window.addEventListener('message', e => {
+  const data = e.data;
+  if (!data || data.source !== 'revizo-carte') return;
+  // Compatibilité ascendante : ancien format utilisait data.typeKey
+  const target = data.target || data.typeKey;
+  if (data.action === 'show-type' && target) {
+    openTypeModal(target);
+  } else if (data.action === 'show-synth' && target !== undefined) {
+    openSynthModal(parseInt(target, 10));
+  }
+});
+
+// Échap ferme la modale TYPE en priorité (avant le panneau Carte)
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  const typeModal = document.getElementById('type-modal');
+  if (typeModal && typeModal.classList.contains('show')) {
+    closeTypeModal();
+    e.stopPropagation();
+  }
+}, true);
+</script>
+
 </body>
 </html>
