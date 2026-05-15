@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Revizo — Éco Terminale STMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --fond: #f0ede6; --blanc: #fffdf8; --texte: #1e1c18;
+  --accent: #b5415a; --jaune: #f5c842; --vert: #2d7a4f;
+  --bleu: #2563a8; --orange: #c4742a; --gris: #8a8478;
+  --bordure: #ddd8cc; --sidebar-w: 290px;
+}
+body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; }
+
+/* ─── LAYOUT ─── */
+.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: calc(100vh - 84px); margin-top: 35px; }
+.sidebar { background: white; border-right: 1px solid var(--bordure); position: sticky; top: 84px; height: calc(100vh - 84px); overflow-y: auto; }
+.sidebar-intro { padding: 14px 16px 8px; font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; cursor: default; }
+.main { padding: 24px 28px; max-width: 820px; }
+
+/* ─── SIDEBAR : GROUPES (DOSSIERS THÉMATIQUES) ─── */
+.group { border-bottom: 1px solid var(--bordure); }
+.group-header { padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; user-select: none; }
+.group-header:hover { background: var(--fond); }
+.group-label { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; flex: 1; }
+.group-count { font-size: 10px; color: var(--gris); font-weight: 600; }
+.group-arrow { font-size: 10px; color: var(--gris); transition: transform .2s; }
+.group-arrow.open { transform: rotate(90deg); }
+.group-body { display: none; }
+.group-body.open { display: block; }
+
+/* ─── SIDEBAR : ITEMS QUESTION ─── */
+.q-item { padding: 9px 16px 9px 22px; cursor: pointer; border-left: 3px solid transparent; display: flex; flex-direction: column; gap: 2px; transition: all .15s; }
+.q-item:hover { background: var(--fond); }
+.q-item.active { background: #fdf5f7; border-left-color: var(--accent); }
+.q-item .q-name { font-size: 12.5px; font-weight: 600; line-height: 1.3; }
+.q-item .q-meta { display: flex; gap: 6px; align-items: center; font-size: 10px; color: var(--gris); margin-top: 2px; }
+.q-fam { font-size: 11px; }
+
+/* ─── BAC LINES (liste centrale d'une question) ─── */
+.bac-line {
+  padding: 11px 14px; border-bottom: 1px solid #f0ede6; cursor: pointer;
+  display: flex; gap: 10px; align-items: flex-start; transition: background .15s;
+}
+.bac-line:hover { background: #fef8e2; }
+.bac-line.bac-line-active { background: #fdf0b8; box-shadow: inset 4px 0 0 #f5c842; }
+.bac-line-num { font-weight: 800; color: var(--accent); font-size: 13px; min-width: 28px; }
+.bac-line-body { flex: 1; }
+.bac-line-libelle { font-size: 13.5px; line-height: 1.45; font-weight: 500; }
+.bac-line-meta { display: flex; gap: 8px; align-items: center; margin-top: 5px; font-size: 11px; color: var(--gris); }
+.bac-line-session { background: white; border: 1px solid var(--bordure); padding: 1px 8px; border-radius: 10px; font-weight: 600; }
+.bac-line-synth { background: #fdf5f7; border: 1px solid #e8b4bf; color: var(--accent); padding: 1px 8px; border-radius: 10px; font-weight: 700; }
+.bac-section-title { padding: 14px 16px 8px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 16px; color: var(--accent); }
+
+/* ─── PANNEAU CARTE (slide-in droite) ─── */
+#carte-overlay {
+  position: fixed; top: 84px; right: 0; bottom: 0;
+  width: 65%; max-width: 960px;
+  background: var(--fond);
+  box-shadow: -8px 0 28px rgba(0,0,0,0.18);
+  z-index: 150; display: none; flex-direction: column;
+  animation: slide-in-right 0.25s ease-out;
+}
+@keyframes slide-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.carte-overlay-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: white; border-bottom: 1px solid var(--bordure); flex-shrink: 0; }
+.carte-overlay-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; color: var(--accent); }
+.carte-overlay-close { background: transparent; border: none; font-size: 22px; cursor: pointer; color: var(--gris); line-height: 1; padding: 2px 10px; border-radius: 6px; }
+.carte-overlay-close:hover { background: var(--fond); color: var(--accent); }
+#carte-overlay-iframe { flex: 1; border: none; width: 100%; display: block; }
+
+/* Popup "Question du Bac" en haut du panneau carte */
+.bac-popup {
+  position: fixed; top: 96px; left: 50%; transform: translateX(-50%);
+  width: 600px; max-width: 90vw;
+  background: white; border: 2px solid var(--accent); border-radius: 12px;
+  padding: 14px 18px; z-index: 180;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+.bac-popup-close { position: absolute; top: 8px; right: 12px; background: transparent; border: none; font-size: 18px; cursor: pointer; color: var(--gris); }
+.bac-popup-source { font-size: 11px; color: var(--gris); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.bac-popup-q { font-size: 14px; line-height: 1.45; font-weight: 600; }
+.bac-popup-method-btn {
+  margin-top: 10px; background: var(--vert); color: white; border: none;
+  padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+.bac-popup-method-btn:hover { background: #1f5e3c; }
+.bac-popup-method-btn.disabled { background: var(--gris); cursor: not-allowed; opacity: 0.7; }
+
+/* ─── MODALE TYPE / SYNTHÈSE ─── */
+#type-modal { position: fixed; inset: 0; background: rgba(30, 28, 24, 0.55); z-index: 200; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
+#type-modal.show { display: flex; }
+.type-modal-content { background: white; width: 100%; max-width: 820px; border-radius: 14px; padding: 24px 28px 30px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.type-modal-close { position: absolute; top: 10px; right: 14px; background: transparent; border: none; font-size: 26px; color: var(--gris); cursor: pointer; padding: 4px 10px; border-radius: 6px; }
+.type-modal-close:hover { background: var(--fond); color: var(--accent); }
+.type-modal-tag { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 5px; }
+.type-modal-titre { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 900; margin-bottom: 12px; }
+.type-modal-body { font-size: 14px; line-height: 1.6; }
+.type-modal-body h4 { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--gris); margin: 16px 0 8px; }
+.type-modal-body .annale-box { background: #f7f4ee; border-left: 4px solid var(--jaune); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 10px 0; font-size: 13.5px; }
+.type-modal-body .corr-box { background: #f0f7f3; border: 1px solid #b8dfc9; border-radius: 8px; padding: 14px 16px; margin-top: 10px; font-size: 13.5px; line-height: 1.7; }
+.type-modal-body .alert-box { background: #fff8e6; border: 1px solid #f0d070; border-radius: 8px; padding: 11px 14px; font-size: 13px; margin-top: 10px; }
+.type-modal-body .astuce-box { background: #eef5ff; border: 1px solid #b8d0f0; border-radius: 8px; padding: 11px 14px; font-size: 13px; margin-top: 8px; }
+
+/* Pills (notions) */
+.pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.pill { background: #fdf5f7; border: 1.5px solid #e8b4bf; color: var(--accent); font-size: 12px; font-weight: 600; padding: 4px 11px; border-radius: 18px; cursor: pointer; transition: all .15s; }
+.pill:hover { background: var(--accent); color: white; }
+
+/* Steps méthode */
+.steps { display: flex; flex-direction: column; gap: 9px; margin-top: 8px; }
+.step { display: flex; gap: 11px; align-items: flex-start; }
+.step-n { width: 23px; height: 23px; min-width: 23px; background: var(--accent); color: white; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+.step-body { font-size: 13.5px; line-height: 1.5; }
+.step-body strong { font-weight: 700; }
+
+/* PLACEHOLDER */
+.placeholder { text-align: center; padding: 80px 20px; color: var(--gris); }
+.placeholder .big { font-size: 48px; margin-bottom: 12px; }
+.placeholder h3 { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; color: var(--texte); }
+.placeholder p { font-size: 14px; line-height: 1.5; max-width: 500px; margin: 0 auto; }
+
+/* Onglet fiches : la carte plein écran */
+.fiches-iframe-wrap { padding: 0; margin: -24px -28px 0; }
+.fiches-iframe-wrap iframe { width: 100%; height: calc(100vh - 84px); border: none; display: block; }
+
+@media (max-width: 680px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; }
+  .main { padding: 16px; }
+  #carte-overlay { width: 100%; max-width: none; }
+}
+</style>
+</head>
+<body data-subject="eco">
+
+<!-- Nav haute : épreuves -->
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="revizo-eco.html" class="epreuve-link active">Éco</a>
+  <a href="revizo-droit.html" class="epreuve-link">Droit</a>
+  <a href="revizo-msgn.html" class="epreuve-link">MSGN</a>
+  <a href="revizo-philo.html" class="epreuve-link">Philo</a>
+</nav>
+
+<!-- Nav basse : rubriques (5 onglets) -->
+<nav class="nav-rubriques">
+  <a href="#" class="active" id="tab-intro" onclick="switchMode('intro');return false">📚 Intro</a>
+  <a href="#" id="tab-fiches" onclick="switchMode('fiches');return false">🗺️ La Carte</a>
+  <a href="#" id="tab-questions" onclick="switchMode('questions');return false">📋 Questions du Bac</a>
+  <a href="#" id="tab-synthese" onclick="switchMode('synthese');return false">📝 Synthèse ✍️</a>
+  <a href="#" id="tab-decodage" onclick="switchMode('decodage');return false">🔑 Décodage</a>
+</nav>
+
+<!-- Layout principal -->
+<div class="layout" id="layout">
+
+  <aside class="sidebar" id="sidebar">
+
+    <!-- MODE FICHES (la carte plein écran masque la sidebar) -->
+    <div id="sidebar-fiches" style="display:none">
+      <div class="sidebar-intro" style="cursor:pointer" onclick="switchMode('fiches')">🗺️ La Carte</div>
+      <div style="padding: 8px 16px; font-size: 12.5px; color: var(--gris); line-height: 1.5;">
+        Carte interactive du programme Éco STMG.<br><br>
+        <strong>42 notions</strong> · 3 thèmes écrits + 1 oral · 13 sujets bac (2023-2025)
+      </div>
+    </div>
+
+    <!-- MODE QUESTIONS DU BAC -->
+    <div id="sidebar-questions"></div>
+
+    <!-- MODE SYNTHÈSE -->
+    <div id="sidebar-synthese" style="display:none"></div>
+
+    <!-- MODE DÉCODAGE -->
+    <div id="sidebar-decodage" style="display:none">
+      <div class="sidebar-intro">🔑 Décodage des verbes</div>
+      <div style="padding: 8px 16px; font-size: 12.5px; color: var(--gris); line-height: 1.5;">
+        En construction.<br><br>Bientôt : décodage des verbes de consigne Éco (Présentez · Commentez · Distinguez · Identifiez · Expliquez · Montrez · Rédigez une argumentation).
+      </div>
+    </div>
+
+  </aside>
+
+  <main class="main" id="main">
+    <div class="placeholder"><div class="big">⏳</div><h3>Chargement…</h3></div>
+  </main>
+
+</div>
+
+<!-- Panneau coulissant Carte -->
+<div id="carte-overlay">
+  <div class="carte-overlay-header">
+    <span class="carte-overlay-title">🗺️ La Carte sur cette question</span>
+    <button class="carte-overlay-close" onclick="closeCartePanel()" title="Fermer (Échap)">×</button>
+  </div>
+  <iframe id="carte-overlay-iframe" src="about:blank" title="La Carte Éco"></iframe>
+</div>
+
+<!-- Popup "Question du Bac" -->
+<div class="bac-popup" id="bac-popup" style="display:none">
+  <button class="bac-popup-close" onclick="closeBacPopup()" title="Fermer">×</button>
+  <div class="bac-popup-source" id="bac-source"></div>
+  <div class="bac-popup-q" id="bac-question"></div>
+  <button class="bac-popup-method-btn" id="bac-method-btn" style="display:none" onclick="openMethodFromBac()">
+    📖 Réponse attendue
+  </button>
+</div>
+
+<!-- Modale TYPE / SYNTHÈSE -->
+<div id="type-modal" onclick="if(event.target.id==='type-modal')closeTypeModal()">
+  <div class="type-modal-content">
+    <button class="type-modal-close" onclick="closeTypeModal()" title="Fermer">×</button>
+    <div class="type-modal-tag" id="tm-tag"></div>
+    <div class="type-modal-titre" id="tm-titre"></div>
+    <div class="type-modal-body" id="tm-body"></div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- DONNÉES & LOGIQUE                                                -->
+<!-- ============================================================== -->
+
+<script src="notions-eco.js"></script>
+<script src="questions-bac-eco.js"></script>
+<script>
+
+// === Q : 7 TYPES méthodologiques (méthode + exemple corrigé) ===
+// Données stub V1 — contenu détaillé déjà rédigé dans questions-bac-eco.html
+// À ETOFFER plus tard (extraction du HTML existant)
+const Q = {
+  pol_eco: {
+    type:"TYPE 1", titre:"Argumenter sur l'efficacité d'une politique économique",
+    freq:"★★★★★ — Quasi chaque session", pts:"~5 pts", temps:"≈ 25 min",
+    annales:"2023 CE (Liban) · 2024 ME (Camélia) · 2025 ME Remp. (Pouvoir d'achat)",
+    notions:["pol-budgetaire", "pol-monetaire", "redistribution", "fonctions-etat", "prelevements"],
+    methode:[
+      {n:1, t:"Définir la politique économique mobilisée", d:"Budgétaire (État via budget) ou monétaire (BCE via taux)."},
+      {n:2, t:"Présenter les outils", d:"Pour budgétaire : relance par la demande / par l'offre. Pour monétaire : taux directeurs."},
+      {n:3, t:"Argumenter POUR (effets positifs)", d:"Citer 2-3 effets attendus + un exemple historique (plan de relance Covid, baisse taux BCE…)."},
+      {n:4, t:"Argumenter CONTRE (limites)", d:"Risques (creusement déficit, inflation, inégalités, effets différés)."},
+      {n:5, t:"Conclure de façon nuancée", d:"Reconnaître l'utilité + souligner les conditions de succès (timing, ciblage, coordination européenne)."}
+    ],
+    alerte:"L'argumentation doit ÉQUILIBRER pour et contre. Ne pas faire un plaidoyer unilatéral pro-État ou anti-État.",
+    astuce:"Toujours citer un EXEMPLE concret : plan de relance Covid 2020 (budgétaire), hausse taux BCE 2022-2023 (monétaire). Ça structure l'argumentation."
+  },
+  emploi: {
+    type:"TYPE 2", titre:"Analyser une situation d'emploi ou de chômage",
+    freq:"★★★★☆ — 4 sujets sur 13", pts:"~4-5 pts", temps:"≈ 20 min",
+    annales:"2024 ME Remp. · 2025 PO Remp. · 2025 PO · 2025 NC",
+    notions:["marche-travail", "types-chomage", "politiques-emploi", "politique-active-passive"],
+    methode:[
+      {n:1, t:"Mesurer (taux de chômage, halo, sous-emploi)", d:"Calcul = Chômeurs / Population active × 100. Mentionner halo et sous-emploi."},
+      {n:2, t:"Identifier le type de chômage", d:"Conjoncturel · structurel · frictionnel · technologique."},
+      {n:3, t:"Repérer les causes (offre vs demande de travail)", d:"Freins individuels · structurels · institutionnels."},
+      {n:4, t:"Présenter les politiques de l'emploi mobilisées", d:"Active (formation, contrats aidés) vs passive (allocations chômage)."},
+      {n:5, t:"Évaluer l'efficacité", d:"Effets directs + limites (durée d'indemnisation, qualité de la formation, etc.)."}
+    ],
+    alerte:"Ne pas confondre OFFRE et DEMANDE de travail. Les SALARIÉS offrent, les ENTREPRISES demandent (contre-intuitif).",
+    astuce:"Toujours mentionner que le chômage officiel SOUS-ESTIME la réalité : ajouter halo + sous-emploi pour une vue complète."
+  },
+  libre_echange: {
+    type:"TYPE 3", titre:"Argumenter sur le libre-échange et le commerce international",
+    freq:"★★★★☆ — 4 sujets sur 13", pts:"~5 pts", temps:"≈ 25 min",
+    annales:"2023 CE (FMN) · 2025 ME (ArchiDij974) · 2025 CE (Tourisme)",
+    notions:["libre-echange", "protectionnisme", "mondialisation", "ide", "fmn", "droits-douane", "balance-commerciale"],
+    methode:[
+      {n:1, t:"Définir libre-échange et protectionnisme", d:"Libre-échange = suppression des barrières. Protectionnisme = restrictions (droits de douane, quotas)."},
+      {n:2, t:"Citer les théories (Ricardo, List)", d:"Ricardo : avantages comparatifs → spécialisation. List : protéger industries naissantes."},
+      {n:3, t:"Arguments POUR le libre-échange", d:"Baisse prix, choix consommateurs, économies d'échelle, diffusion innovation."},
+      {n:4, t:"Arguments CONTRE (et POUR le protectionnisme)", d:"Concurrence déloyale (dumping social/fiscal/environnemental), désindustrialisation, dépendance stratégique."},
+      {n:5, t:"Conclure sur le débat actuel", d:"Montée du protectionnisme (Trump 2025, démondialisation), tensions UE/Chine."}
+    ],
+    alerte:"La mondialisation est un PROCESSUS factuel. Le libre-échange est une DOCTRINE normative. Ne pas confondre.",
+    astuce:"Mentionner les exemples ACTUELS : tarifs Trump sur l'UE (2025), guerre commerciale USA-Chine, taxe carbone aux frontières UE (CBAM)."
+  },
+  calcul: {
+    type:"TYPE 4", titre:"Calculer et commenter un indicateur économique",
+    freq:"★★★☆☆ — 6 sujets sur 13", pts:"~3-4 pts", temps:"≈ 15 min",
+    annales:"2023 CE (déficit) · 2024 IN · 2025 ME (PIB) · 2025 PO · 2025 NC",
+    notions:["deficit-dette", "pib", "balance-commerciale", "population-active"],
+    methode:[
+      {n:1, t:"Écrire la formule", d:"Une ligne. Ex : Déficit = Dépenses publiques − Recettes publiques."},
+      {n:2, t:"Remplacer par les chiffres du document", d:"Montrer les calculs intermédiaires."},
+      {n:3, t:"Donner le résultat avec l'unité", d:"Milliards d'euros, %, points de PIB…"},
+      {n:4, t:"Comparer (N vs N-1, France vs UE)", d:"Mettre en perspective la valeur."},
+      {n:5, t:"Interpréter pour l'économie", d:"Que dit ce chiffre sur la situation économique ? Lien avec la conjoncture."}
+    ],
+    alerte:"Le calcul seul = moitié des points. Le COMMENTAIRE est aussi important. Ne jamais s'arrêter au résultat.",
+    astuce:"Pour les contributions au PIB : si une ligne contribue à −0,4 pt, ça NE veut PAS dire que la composante baisse de 0,4 %. C'est sa part dans la variation totale."
+  },
+  distinguer: {
+    type:"TYPE 5", titre:"Distinguer deux notions proches",
+    freq:"★★★☆☆ — 5 sujets sur 13", pts:"~2-3 pts", temps:"≈ 10 min",
+    annales:"2023 CE (déficit/dette) · 2024 IN (assurance/assistance) · 2024 CE (biens publics/communs) · 2025 PO Remp. (actif/passif) · 2025 NC (halo/sous-emploi)",
+    notions:["deficit-dette", "protection-sociale", "biens-publics", "biens-communs", "politique-active-passive", "halo-chomage", "sous-emploi"],
+    methode:[
+      {n:1, t:"Définir CHAQUE notion en 1 phrase", d:"Une ligne par notion, claire et précise."},
+      {n:2, t:"Identifier LE critère de distinction", d:"Ex : flux vs stock (déficit/dette) · contributif vs non contributif (assurance/assistance) · rival vs non rival (biens)…"},
+      {n:3, t:"Donner UN exemple par notion", d:"Concret, tiré du document ou de l'actualité."},
+      {n:4, t:"Conclure sur l'enjeu de la distinction", d:"Pourquoi cette différence est importante pour l'économie ou la politique publique."}
+    ],
+    alerte:"Ne pas se contenter de juxtaposer les deux définitions — il faut formuler explicitement LA différence.",
+    astuce:"Astuce mnémotechnique : déficit (la baignoire qui fuit, flux) vs dette (le niveau d'eau, stock)."
+  },
+  mecanisme: {
+    type:"TYPE 6", titre:"Expliquer un mécanisme économique à partir des documents",
+    freq:"★★★★★ — Présent dans presque tous les sujets", pts:"~3-4 pts", temps:"≈ 15 min",
+    annales:"2023 CE (dépenses pub → consommation) · 2024 IN (hausse prix → inégalités) · 2025 ME Remp. (prix → revenu → PA) · 2025 PO (subst. T/K → chômage)",
+    notions:["inflation", "pouvoir-achat", "facteurs-production", "fiscalite-eco", "defaillances"],
+    methode:[
+      {n:1, t:"Identifier la chaîne causale", d:"Cause → effet 1 → effet 2 → effet final."},
+      {n:2, t:"Mobiliser le vocabulaire éco précis", d:"'Effet multiplicateur', 'élasticité-prix', 'externalité', 'choc d'offre'…"},
+      {n:3, t:"Appuyer chaque étape par UN document", d:"'Doc 2 montre que…' / 'Annexe 4 illustre…'"},
+      {n:4, t:"Donner un exemple chiffré quand possible", d:"Aller chercher un chiffre précis dans les annexes."},
+      {n:5, t:"Conclure sur l'enjeu économique", d:"En quoi ce mécanisme éclaire la situation décrite ?"}
+    ],
+    alerte:"Une explication = une CHAÎNE de causes. Si on saute une étape, le raisonnement est cassé.",
+    astuce:"Les annexes du Bac sont là pour ÊTRE UTILISÉES. Citer explicitement 'd'après l'annexe X' fait gagner des points (l'élève prouve qu'il lit les documents)."
+  },
+  evolution: {
+    type:"TYPE 7", titre:"Commenter l'évolution de données (tableau / graphique)",
+    freq:"★★★☆☆ — 5 sujets sur 13", pts:"~3 pts", temps:"≈ 12 min",
+    annales:"2024 IN · 2025 ME Remp. (RDB/PA) · 2025 ME (échanges) · 2025 PO · 2025 NC",
+    notions:["pib", "inflation", "pouvoir-achat", "types-chomage", "balance-commerciale"],
+    methode:[
+      {n:1, t:"Lecture LITTÉRALE (la phrase d'amorce)", d:"'En 2023, le revenu disponible augmente de X % par rapport à 2022.'"},
+      {n:2, t:"Identifier la TENDANCE générale", d:"Hausse, baisse, stabilité ? Sur quelle période ?"},
+      {n:3, t:"Repérer les RUPTURES ou les pics", d:"Ex : choc Covid 2020, choc énergétique 2022."},
+      {n:4, t:"Calculer un TAUX d'évolution simple", d:"((V_arrivée − V_départ) / V_départ) × 100."},
+      {n:5, t:"Interpréter ÉCONOMIQUEMENT", d:"Quel contexte économique explique cette évolution ?"}
+    ],
+    alerte:"Ne pas se contenter de lire des chiffres. Donner une LECTURE économique en mobilisant le contexte (crise, plan de relance, etc.).",
+    astuce:"Toujours mentionner UNE rupture ou UN pic visible sur le graphique. Ça montre qu'on a compris la dynamique."
+  }
+};
+
+// === SYNTH : 13 questions ✍️ (argumentations) ===
+// V1 : libellé + référence à la notion-clé. Les corrigés rédigés viendront
+// dans une étape ultérieure (extraction des PDFs Corrigé.pdf).
+const SYNTH = QUESTIONS_BAC_ECO.filter(q => q.synthese).map((q, i) => ({
+  index: i,
+  id: q.id,
+  titre: q.libelle.replace(/^Rédigez une argumentation\s*:\s*/, ''),
+  theme: q.theme,
+  source: `${q.annee} ${q.session} — ${q.sujet}`,
+  notions: [q.primary, ...(q.secondary || [])],
+  corrige: null  // ⏳ à rédiger depuis les PDFs Corrigé
+}));
+
+// === ÉTAT GLOBAL ===
+let currentMode = 'fiches';
+let currentBacQuestion = null;
+let currentTypeKey = null;
+
+// === SWITCH MODE ===
+function switchMode(mode, qid) {
+  currentMode = mode;
+  closeCartePanel();
+  closeBacPopup();
+  closeTypeModal();
+
+  // Mettre à jour les tabs
+  document.querySelectorAll('.nav-rubriques a').forEach(a => a.classList.remove('active'));
+  document.getElementById('tab-' + mode).classList.add('active');
+
+  // Sidebars : tout masquer puis afficher la bonne (si elle existe)
+  ['fiches','questions','synthese','decodage'].forEach(m => {
+    const el = document.getElementById('sidebar-' + m);
+    if (el) el.style.display = 'none';
+  });
+
+  const sidebar = document.getElementById('sidebar');
+  const layout = document.getElementById('layout');
+  const main = document.getElementById('main');
+
+  if (mode === 'intro' || mode === 'fiches') {
+    // Intro et Carte : plein écran via iframe, sidebar masquée
+    sidebar.style.display = 'none';
+    layout.style.gridTemplateColumns = '1fr';
+    main.style.maxWidth = 'none';
+    main.style.padding = '0';
+    const src = (mode === 'intro') ? 'intro-eco.html?embed=1' : 'memos-eco.html';
+    const title = (mode === 'intro') ? 'Intro Éco' : 'La Carte Éco';
+    main.innerHTML = `<div class="fiches-iframe-wrap"><iframe src="${src}" title="${title}"></iframe></div>`;
+  } else {
+    sidebar.style.display = 'block';
+    layout.style.gridTemplateColumns = 'var(--sidebar-w) 1fr';
+    main.style.maxWidth = '820px';
+    main.style.padding = '24px 28px';
+    const sb = document.getElementById('sidebar-' + mode);
+    if (sb) sb.style.display = 'block';
+
+    if (mode === 'questions') renderQuestionsMain(qid);
+    else if (mode === 'synthese') renderSyntheseMain(qid);
+    else if (mode === 'decodage') renderDecodageMain();
+  }
+}
+
+// === SIDEBAR QUESTIONS DU BAC ===
+function buildSidebarQuestions() {
+  const container = document.getElementById('sidebar-questions');
+  // Grouper par sujet (entreprise)
+  const sujets = {};
+  QUESTIONS_BAC_ECO.forEach(q => {
+    if (!sujets[q.sujet]) sujets[q.sujet] = { sujet: q.sujet, annee: q.annee, session: q.session, questions: [] };
+    sujets[q.sujet].questions.push(q);
+  });
+
+  let html = `<div class="sidebar-intro">📋 Questions du Bac · 13 sujets · 54 questions</div>`;
+  Object.values(sujets).forEach((s, i) => {
+    const open = i === 0 ? 'open' : '';
+    html += `
+      <div class="group">
+        <div class="group-header" onclick="toggleGroup(this)">
+          <span class="group-arrow ${open}">▸</span>
+          <span class="group-label">${s.sujet}</span>
+          <span class="group-count">${s.annee}</span>
+        </div>
+        <div class="group-body ${open}">
+          ${s.questions.map(q => `
+            <div class="q-item" data-qid="${q.id}" onclick="showQuestion('${q.id}')">
+              <div class="q-name"><span class="q-fam">${q.fam}</span> Q${q.num} ${q.synthese ? '✍️' : ''}</div>
+              <div class="q-meta">${q.session}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function toggleGroup(headerEl) {
+  const arrow = headerEl.querySelector('.group-arrow');
+  const body = headerEl.nextElementSibling;
+  arrow.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// === MAIN : Questions du Bac (vue : sujet sélectionné ou question cliquée) ===
+function renderQuestionsMain(qid) {
+  const main = document.getElementById('main');
+  if (!qid) {
+    // Vue par défaut : on affiche le 1er sujet
+    qid = QUESTIONS_BAC_ECO[0].id;
+  }
+  const q = QUESTIONS_BAC_ECO.find(x => x.id === qid);
+  if (!q) { main.innerHTML = `<div class="placeholder"><h3>Question introuvable</h3></div>`; return; }
+  // Toutes les questions du même sujet (sujet = entreprise + année)
+  const peers = QUESTIONS_BAC_ECO.filter(x => x.sujet === q.sujet);
+
+  let html = `<div class="bac-section-title">${q.sujet} · ${q.annee} ${q.session}</div>`;
+  html += `<div style="padding: 0 4px 12px; font-size: 12px; color: var(--gris);">Code officiel : <strong>${q.code}</strong> · Cliquez sur une question pour ouvrir la Carte avec la notion-clé surlignée.</div>`;
+  peers.forEach(p => {
+    const isActive = p.id === qid ? 'bac-line-active' : '';
+    html += `
+      <div class="bac-line ${isActive}" data-qid="${p.id}" onclick="openCarteOnQuestion('${p.id}')">
+        <span class="bac-line-num">Q${p.num}</span>
+        <div class="bac-line-body">
+          <div class="bac-line-libelle">${p.libelle}</div>
+          <div class="bac-line-meta">
+            <span class="bac-line-session">${p.fam}</span>
+            ${p.synthese ? '<span class="bac-line-synth">✍️ Argumentation</span>' : ''}
+            <span>Notion : <strong>${getNotionTitre(p.primary)}</strong></span>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  main.innerHTML = html;
+
+  // Marquer la question dans la sidebar
+  document.querySelectorAll('.q-item').forEach(el => el.classList.toggle('active', el.dataset.qid === qid));
+}
+
+function showQuestion(qid) {
+  renderQuestionsMain(qid);
+}
+
+// === OUVERTURE DU PANNEAU CARTE SUR UNE QUESTION ===
+function openCarteOnQuestion(qid) {
+  const q = QUESTIONS_BAC_ECO.find(x => x.id === qid);
+  if (!q) return;
+  currentBacQuestion = q;
+
+  // Marquer la ligne active
+  document.querySelectorAll('.bac-line').forEach(el => el.classList.toggle('bac-line-active', el.dataset.qid === qid));
+
+  // Ouvrir le panneau carte
+  const overlay = document.getElementById('carte-overlay');
+  const iframe = document.getElementById('carte-overlay-iframe');
+  // Passer la notion-clé via hash (pour future implémentation côté carte)
+  iframe.src = `memos-eco.html#notion=${q.primary}`;
+  overlay.style.display = 'flex';
+
+  // Afficher la popup question en haut
+  document.getElementById('bac-source').textContent = `${q.annee} ${q.session} · ${q.sujet} · Q${q.num}`;
+  document.getElementById('bac-question').textContent = q.libelle;
+  const methodBtn = document.getElementById('bac-method-btn');
+  // Bouton "Réponse attendue"
+  if (q.synthese) {
+    // Pour les ✍️ argumentations → ouvre la modale SYNTH
+    methodBtn.style.display = 'inline-block';
+    methodBtn.classList.remove('disabled');
+    methodBtn.textContent = '📖 Réponse attendue (synthèse)';
+    methodBtn.onclick = () => openSynthFromBac(q.id);
+  } else {
+    // Pour les questions normales → ouvre la modale TYPE
+    const typeKey = NOTION_TO_TYPE_FROM_KEY(q.primary);
+    if (typeKey) {
+      methodBtn.style.display = 'inline-block';
+      methodBtn.classList.remove('disabled');
+      methodBtn.textContent = '📖 Réponse attendue';
+      methodBtn.onclick = () => openTypeModal(typeKey);
+    } else {
+      methodBtn.style.display = 'inline-block';
+      methodBtn.classList.add('disabled');
+      methodBtn.textContent = '⏳ Méthode en attente';
+      methodBtn.onclick = () => {};
+    }
+  }
+  document.getElementById('bac-popup').style.display = 'block';
+}
+
+// Retourne la CLÉ du Q[] (pol_eco, emploi, ...) selon le TYPE n° de la notion
+function NOTION_TO_TYPE_FROM_KEY(notionId) {
+  const typeNum = NOTION_TO_TYPE_ECO[notionId];
+  if (!typeNum) return null;
+  const map = { 1: 'pol_eco', 2: 'emploi', 3: 'libre_echange', 4: 'calcul', 5: 'distinguer', 6: 'mecanisme', 7: 'evolution' };
+  return map[typeNum];
+}
+
+function closeCartePanel() {
+  document.getElementById('carte-overlay').style.display = 'none';
+  document.getElementById('carte-overlay-iframe').src = 'about:blank';
+  closeBacPopup();
+}
+
+function closeBacPopup() {
+  document.getElementById('bac-popup').style.display = 'none';
+}
+
+// === MODALE TYPE ===
+function openTypeModal(typeKey) {
+  const t = Q[typeKey];
+  if (!t) return;
+  currentTypeKey = typeKey;
+  document.getElementById('tm-tag').textContent = t.type + ' · ' + t.freq;
+  document.getElementById('tm-titre').textContent = t.titre;
+  const body = document.getElementById('tm-body');
+  body.innerHTML = `
+    <div style="font-size:13px;color:var(--gris);margin-bottom:6px"><strong>Points :</strong> ${t.pts} · <strong>Temps :</strong> ${t.temps}</div>
+    <div style="font-size:12.5px;color:var(--gris);font-style:italic">Apparaît dans : ${t.annales}</div>
+
+    <h4>🎯 Notions à mobiliser</h4>
+    <div class="pills">${t.notions.map(n => `<span class="pill" onclick="openCarteOnNotion('${n}')">${getNotionTitre(n)}</span>`).join('')}</div>
+
+    <h4>📐 Méthode en ${t.methode.length} étapes</h4>
+    <div class="steps">
+      ${t.methode.map(s => `<div class="step"><div class="step-n">${s.n}</div><div class="step-body"><strong>${s.t}</strong> — <span>${s.d}</span></div></div>`).join('')}
+    </div>
+
+    <h4>⚠️ Piège à éviter</h4>
+    <div class="alert-box">${t.alerte}</div>
+
+    <h4>💡 Astuce du correcteur</h4>
+    <div class="astuce-box">${t.astuce}</div>
+  `;
+  document.getElementById('type-modal').classList.add('show');
+}
+
+function closeTypeModal() {
+  document.getElementById('type-modal').classList.remove('show');
+}
+
+// === MODE SYNTHÈSE ===
+function buildSidebarSynthese() {
+  const container = document.getElementById('sidebar-synthese');
+  let html = `<div class="sidebar-intro">📝 Synthèse · 13 argumentations ✍️</div>`;
+  html += `
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-arrow open">▸</span>
+        <span class="group-label">📐 Méthode générale</span>
+      </div>
+      <div class="group-body open">
+        <div class="q-item" onclick="renderSyntheseMain('methode')"><div class="q-name">Comment rédiger une argumentation Éco</div></div>
+      </div>
+    </div>
+  `;
+  html += `
+    <div class="group">
+      <div class="group-header" onclick="toggleGroup(this)">
+        <span class="group-arrow open">▸</span>
+        <span class="group-label">📋 13 Questions Bac ✍️</span>
+        <span class="group-count">${SYNTH.length}</span>
+      </div>
+      <div class="group-body open">
+        ${SYNTH.map(s => {
+          const tag = s.corrige ? '✅' : '⏳';
+          return `<div class="q-item" data-sid="${s.id}" onclick="renderSyntheseMain('${s.id}')">
+            <div class="q-name">${tag} ${s.titre.substring(0,60)}${s.titre.length>60?'…':''}</div>
+            <div class="q-meta">${s.source}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+  container.innerHTML = html;
+}
+
+function renderSyntheseMain(sid) {
+  const main = document.getElementById('main');
+  if (sid === 'methode' || !sid) {
+    main.innerHTML = `
+      <div class="bac-section-title">📐 Méthode de l'argumentation Éco (15 lignes)</div>
+      <div style="background:white;border:1px solid var(--bordure);border-radius:10px;padding:20px;font-size:14px;line-height:1.7">
+        <h3 style="font-family:'Nunito',sans-serif;font-size:17px;margin-bottom:10px">Structure attendue (~15 lignes)</h3>
+        <ol style="padding-left:20px">
+          <li><strong>Introduction (2-3 lignes)</strong> : reformuler la question + définir 1-2 notions-clés + annoncer le plan.</li>
+          <li><strong>1ère partie — Thèse (5-6 lignes)</strong> : arguments POUR. Citer au moins UN mécanisme économique + UN exemple chiffré (extrait de l'annexe) + UNE référence théorique ou historique.</li>
+          <li><strong>2ème partie — Antithèse (5-6 lignes)</strong> : arguments CONTRE / limites. Même structure (mécanisme + exemple + référence).</li>
+          <li><strong>Conclusion (2 lignes)</strong> : réponse nuancée. Ouvrir sur une perspective (débat actuel, alternative).</li>
+        </ol>
+
+        <h3 style="font-family:'Nunito',sans-serif;font-size:15px;margin-top:18px;margin-bottom:8px">💡 Astuces du jury</h3>
+        <ul style="padding-left:20px">
+          <li>L'élève DOIT prendre position dans la conclusion (pas de réponse en eau tiède).</li>
+          <li>Réutiliser EXPLICITEMENT les notions du programme (les souligner si on rédige).</li>
+          <li>Toujours mobiliser AU MOINS 2 annexes.</li>
+          <li>Indiquer le nombre de lignes attendu (~15) — ni trop court ni trop long.</li>
+        </ul>
+      </div>`;
+    return;
+  }
+  const s = SYNTH.find(x => x.id === sid);
+  if (!s) { main.innerHTML = `<div class="placeholder"><h3>Synthèse introuvable</h3></div>`; return; }
+  let html = `<div class="bac-section-title">✍️ ${s.titre}</div>`;
+  html += `<div style="padding: 0 4px 12px; font-size: 12.5px; color: var(--gris);">Source : <strong>${s.source}</strong> · Thème : ${s.theme}</div>`;
+  html += `<div style="background:#fdf5f7;border:1px solid #e8b4bf;border-radius:8px;padding:14px 16px;margin-bottom:14px">
+    <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Notions à mobiliser</div>
+    <div class="pills">${s.notions.map(n => `<span class="pill" onclick="openCarteOnNotion('${n}')">${getNotionTitre(n)}</span>`).join('')}</div>
+  </div>`;
+
+  if (s.corrige) {
+    html += `<div style="background:#f0f7f3;border:1px solid #b8dfc9;border-radius:10px;padding:18px 20px;font-size:14px;line-height:1.7">
+      <div style="font-size:11px;font-weight:700;color:var(--vert);text-transform:uppercase;margin-bottom:10px">Corrigé officiel rédigé</div>
+      ${s.corrige}
+    </div>`;
+  } else {
+    html += `<div style="background:#fff8e6;border:1px solid #f0d070;border-radius:10px;padding:18px 20px;text-align:center;color:#7a5800">
+      <div style="font-size:24px;margin-bottom:6px">⏳</div>
+      <div style="font-weight:700;font-size:14px;margin-bottom:6px">Corrigé en cours d'extraction</div>
+      <div style="font-size:13px;line-height:1.5">Le corrigé officiel est dans le PDF correspondant (<code>Eco-Droit/annales/*Corrigé.pdf</code>).<br>Étape 5 de la roadmap : extraction des 13 corrigés.</div>
+    </div>`;
+  }
+  main.innerHTML = html;
+  document.querySelectorAll('.q-item').forEach(el => el.classList.toggle('active', el.dataset.sid === sid));
+}
+
+function openSynthFromBac(qid) {
+  closeCartePanel();
+  switchMode('synthese', qid);
+  renderSyntheseMain(qid);
+}
+
+// === MODE DÉCODAGE ===
+function renderDecodageMain() {
+  document.getElementById('main').innerHTML = `
+    <div class="placeholder">
+      <div class="big">🔑</div>
+      <h3>Décodage des verbes — En construction</h3>
+      <p>Cette section décodera les verbes de consigne de l'Éco STMG : <strong>Présentez · Commentez · Distinguez · Identifiez · Expliquez · Montrez · Rédigez une argumentation</strong>.<br><br>
+      À venir dans une prochaine version.</p>
+    </div>
+  `;
+}
+
+// === HELPER ===
+function getNotionTitre(id) {
+  return (NE[id] && NE[id].titre) || id;
+}
+
+function openCarteOnNotion(notionId) {
+  closeTypeModal();
+  const overlay = document.getElementById('carte-overlay');
+  const iframe = document.getElementById('carte-overlay-iframe');
+  iframe.src = `memos-eco.html#notion=${notionId}`;
+  overlay.style.display = 'flex';
+  closeBacPopup();
+}
+
+function openMethodFromBac() {
+  if (!currentBacQuestion) return;
+  if (currentBacQuestion.synthese) openSynthFromBac(currentBacQuestion.id);
+  else {
+    const typeKey = NOTION_TO_TYPE_FROM_KEY(currentBacQuestion.primary);
+    if (typeKey) openTypeModal(typeKey);
+  }
+}
+
+// === KEYBOARD ===
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeTypeModal();
+    closeCartePanel();
+    closeBacPopup();
+  }
+});
+
+// === INIT ===
+buildSidebarQuestions();
+buildSidebarSynthese();
+
+// Mode par défaut : intro. Si #hash dans l'URL (intro/carte/questions/synthese/decodage),
+// on ouvre l'onglet correspondant. 'carte' est un alias de 'fiches' pour les liens externes.
+const hashToMode = { intro:'intro', carte:'fiches', fiches:'fiches', questions:'questions', synthese:'synthese', decodage:'decodage' };
+const initialMode = hashToMode[location.hash.replace('#','')] || 'intro';
+switchMode(initialMode);
+
+// Réagir aux changements de hash (navigation entre onglets via liens externes)
+window.addEventListener('hashchange', () => {
+  const m = hashToMode[location.hash.replace('#','')];
+  if (m && m !== currentMode) switchMode(m);
+});
+
+console.log('Revizo Éco chargé :', QUESTIONS_BAC_ECO.length, 'questions ·', Object.keys(NE).length, 'notions ·', Object.keys(Q).length, 'TYPES ·', SYNTH.length, 'synthèses · mode initial =', initialMode);
+
+</script>
+
+</body>
+</html>
