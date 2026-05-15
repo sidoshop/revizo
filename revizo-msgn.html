@@ -1432,6 +1432,43 @@ function showVerb(id, el) {
   `;
 }
 
+// ═══════════════ AUTO-ÉVALUATION CARTE DES VERBES (localStorage) ═══════════════
+// Stocké sous une clé DIFFÉRENTE de la carte des notions ('msgn-states') pour
+// que les couleurs des deux cartes ne se mélangent pas.
+const VERB_STATES = JSON.parse(localStorage.getItem('msgn-verbs-states') || '{}');
+const VERB_STATE_CYCLE = { unknown:'review', review:'know', know:'unknown' };
+
+// Petite phrase d'attendu pour chaque verbe (extraite/synthétisée de VERBS).
+// Affichée sous chaque case quand on toggle le bouton "Afficher l'attendu".
+const VERB_HINTS = {
+  presenter:"Tu dois énumérer depuis les docs.",
+  identifier:"Tu dois reconnaître + nommer (1 terme technique par élément).",
+  reperer:"Tu dois pointer + nommer (pas d'interprétation).",
+  relever:"Tu dois extraire tel quel (citation/synthèse).",
+  lister:"Tu dois énumérer rapidement (sans hiérarchie).",
+  caracteriser:"Tu dois nommer + donner 2-3 critères distinctifs.",
+  determiner:"Tu dois choisir + motiver (analyse rapide).",
+  decrire:"Tu dois détailler systématiquement (factuel, sans juger).",
+  preciser:"Tu dois apporter le détail manquant (rôle, fonction).",
+  analyser:"Tu dois décomposer + relier cause/effet.",
+  expliquer:"Tu dois démontrer le mécanisme (le « comment »).",
+  montrer:"Tu dois prouver la thèse donnée (avec preuves docs).",
+  demontrer:"Tu dois enchaîner les arguments (affirmation → preuve → conséquence).",
+  comparer:"Tu dois mettre en parallèle + trancher.",
+  commenter:"Tu dois interpréter le résultat (sens, cause, impact).",
+  conclure:"Tu dois synthétiser + verdict tranché.",
+  justifier:"Tu dois affirmer + preuves doc.",
+  apprecier:"Tu dois évaluer (positif ET négatif).",
+  proposer:"Tu dois recommander (action + justification + effet).",
+  choisir:"Tu dois sélectionner + motiver le choix.",
+  expliciter:"Tu dois formuler clairement (rendre explicite).",
+  calculer:"Tu dois appliquer la formule + résultat avec unité.",
+  retrouver:"Tu dois recomposer par le calcul (tableau d'opérations).",
+  schematiser:"Tu dois représenter par un schéma (étapes, acteurs).",
+  realiser:"Tu dois appliquer une méthode connue (PESTEL, SWOT…).",
+  quinzelignes:"Tu dois composer (intro + 2-3 axes + exemples extérieurs + conclu)."
+};
+
 // Affiche la "Carte des verbes" — 5 familles colorées de cases cliquables,
 // dans le même esprit visuel que la Carte des notions MSGN.
 function showDecodageHome(el) {
@@ -1453,16 +1490,30 @@ function showDecodageHome(el) {
       verbes:[ ['calculer','Calculer','★★★★★'], ['retrouver','Retrouver','★★★☆☆'], ['schematiser','Schématiser','★★★☆☆'], ['realiser','Réaliser','★★★★☆'] ] }
   ];
 
+  // Couleur de fond du bullet d'auto-évaluation selon l'état
+  function bulletStyle(id) {
+    const s = VERB_STATES[id] || 'unknown';
+    const colors = { unknown:'transparent', review:'#e8743e', know:'#1a7a3c' };
+    const border = { unknown:'#a09880', review:'#e8743e', know:'#1a7a3c' };
+    return `background:${colors[s]};border:1.5px solid ${border[s]}`;
+  }
+
   let cards = '';
   for (const f of familles) {
     let cases = '';
     for (const [id, label, freq] of f.verbes) {
+      const hint = VERB_HINTS[id] || '';
       cases += `
-        <div class="verb-case" onclick="showVerb('${id}')" style="background:white;border:1px solid ${f.color}40;border-left:3px solid ${f.color};border-radius:6px;padding:8px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;transition:background .12s,transform .08s"
-             onmouseover="this.style.background='${f.bg}';this.style.transform='translateX(2px)'"
-             onmouseout="this.style.background='white';this.style.transform='translateX(0)'">
-          <span style="font-family:'Nunito',sans-serif;font-weight:700;font-size:13.5px;color:#1e1c18">${label}</span>
-          <span style="color:${f.color};font-size:10.5px;letter-spacing:.05em">${freq}</span>
+        <div>
+          <div class="verb-case" onclick="showVerb('${id}')" style="background:white;border:1px solid ${f.color}40;border-left:3px solid ${f.color};border-radius:6px;padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .12s,transform .08s"
+               onmouseover="this.style.background='${f.bg}';this.style.transform='translateX(2px)'"
+               onmouseout="this.style.background='white';this.style.transform='translateX(0)'">
+            <span class="verb-bullet" onclick="event.stopPropagation();cycleVerbState('${id}',this)" title="Cliquer pour changer : à apprendre → à revoir → su"
+                  style="width:12px;height:12px;border-radius:50%;flex-shrink:0;cursor:pointer;${bulletStyle(id)}"></span>
+            <span style="font-family:'Nunito',sans-serif;font-weight:700;font-size:13.5px;color:#1e1c18;flex:1">${label}</span>
+            <span style="color:${f.color};font-size:10.5px;letter-spacing:.05em">${freq}</span>
+          </div>
+          <div class="verb-hint" data-verb="${id}" style="display:none;font-size:11.5px;color:#5a5448;font-style:italic;padding:4px 12px 0 32px;line-height:1.4">${hint}</div>
         </div>`;
     }
     cards += `
@@ -1472,11 +1523,12 @@ function showDecodageHome(el) {
           <div style="font-size:11px;color:${f.color};opacity:.65">${f.verbes.length}</div>
         </div>
         <div style="font-size:11.5px;color:#5a5448;font-style:italic;margin-bottom:10px">${f.question}</div>
-        <div style="display:flex;flex-direction:column;gap:4px">${cases}</div>
+        <div style="display:flex;flex-direction:column;gap:6px">${cases}</div>
       </div>`;
   }
 
   // Bloc "15 lignes" à part — c'est une catégorie composition, pas un verbe simple
+  const hintQ = VERB_HINTS['quinzelignes'] || '';
   const blocSynth = `
     <div style="background:#f3eafc;border-radius:12px;padding:14px 14px 16px;border-left:5px solid #6d3a8e;grid-column:1 / -1">
       <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
@@ -1484,25 +1536,61 @@ function showDecodageHome(el) {
         <div style="font-size:11px;color:#6d3a8e;opacity:.65">composition</div>
       </div>
       <div style="font-size:11.5px;color:#5a5448;font-style:italic;margin-bottom:10px">Comment je rédige une composition argumentée ?</div>
-      <div class="verb-case" onclick="showVerb('quinzelignes')" style="background:white;border:1px solid #6d3a8e40;border-left:3px solid #6d3a8e;border-radius:6px;padding:8px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;transition:background .12s,transform .08s"
-           onmouseover="this.style.background='#ede0fa';this.style.transform='translateX(2px)'"
-           onmouseout="this.style.background='white';this.style.transform='translateX(0)'">
-        <span style="font-family:'Nunito',sans-serif;font-weight:700;font-size:13.5px">En ~15 lignes, montrer que…</span>
-        <span style="color:#6d3a8e;font-size:10.5px;letter-spacing:.05em">★★★★★</span>
+      <div>
+        <div class="verb-case" onclick="showVerb('quinzelignes')" style="background:white;border:1px solid #6d3a8e40;border-left:3px solid #6d3a8e;border-radius:6px;padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .12s,transform .08s"
+             onmouseover="this.style.background='#ede0fa';this.style.transform='translateX(2px)'"
+             onmouseout="this.style.background='white';this.style.transform='translateX(0)'">
+          <span class="verb-bullet" onclick="event.stopPropagation();cycleVerbState('quinzelignes',this)" title="Cliquer pour changer"
+                style="width:12px;height:12px;border-radius:50%;flex-shrink:0;cursor:pointer;${bulletStyle('quinzelignes')}"></span>
+          <span style="font-family:'Nunito',sans-serif;font-weight:700;font-size:13.5px;flex:1">En ~15 lignes, montrer que…</span>
+          <span style="color:#6d3a8e;font-size:10.5px;letter-spacing:.05em">★★★★★</span>
+        </div>
+        <div class="verb-hint" data-verb="quinzelignes" style="display:none;font-size:11.5px;color:#5a5448;font-style:italic;padding:4px 12px 0 32px;line-height:1.4">${hintQ}</div>
       </div>
     </div>`;
 
+  // Bouton "Afficher l'attendu" + légende des bullets, en haut, façon Carte des notions
   document.getElementById('main').innerHTML = `
     <div style="padding:24px 28px;max-width:1200px">
-      <div style="text-align:center;margin-bottom:18px">
+      <div style="text-align:center;margin-bottom:14px">
         <h2 style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;margin-bottom:4px;color:#3d1a5c">🔑 Carte des verbes de consigne</h2>
-        <p style="color:var(--gris);font-size:13px;margin:0">26 verbes · 5 familles · cliquer un verbe pour voir attendu, format, piège et réponse modèle</p>
+        <p style="color:var(--gris);font-size:13px;margin:0 0 12px">27 verbes · 5 familles + rédaction · cliquer un verbe pour la fiche complète</p>
+        <div style="display:inline-flex;align-items:center;gap:18px;font-size:11.5px;color:#7a6a58">
+          <button id="btn-toggle-attendus" onclick="toggleVerbAttendus()" style="padding:6px 14px;background:#fef8e2;border:1px solid #f0d070;border-radius:6px;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;color:#7a5800;cursor:pointer;letter-spacing:.02em">📝 Afficher l'attendu</button>
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:11px;height:11px;border-radius:50%;border:1.5px solid #a09880"></span>à apprendre</span>
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:11px;height:11px;border-radius:50%;background:#e8743e;border:1.5px solid #e8743e"></span>à revoir</span>
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:11px;height:11px;border-radius:50%;background:#1a7a3c;border:1.5px solid #1a7a3c"></span>su</span>
+        </div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
         ${cards}
         ${blocSynth}
       </div>
     </div>`;
+}
+
+// Toggle l'affichage de tous les hints sous les cases
+function toggleVerbAttendus() {
+  const btn = document.getElementById('btn-toggle-attendus');
+  const hints = document.querySelectorAll('.verb-hint');
+  const willShow = hints[0] && hints[0].style.display === 'none';
+  hints.forEach(h => h.style.display = willShow ? 'block' : 'none');
+  if (btn) btn.textContent = willShow ? '📝 Masquer l\'attendu' : '📝 Afficher l\'attendu';
+}
+
+// Cycle l'état d'un bullet d'auto-évaluation (à apprendre → à revoir → su → à apprendre)
+function cycleVerbState(verbId, bulletEl) {
+  const current = VERB_STATES[verbId] || 'unknown';
+  const next = VERB_STATE_CYCLE[current];
+  if (next === 'unknown') delete VERB_STATES[verbId];
+  else VERB_STATES[verbId] = next;
+  localStorage.setItem('msgn-verbs-states', JSON.stringify(VERB_STATES));
+
+  // Mise à jour visuelle immédiate (sans tout re-render)
+  const colors = { unknown:'transparent', review:'#e8743e', know:'#1a7a3c' };
+  const border = { unknown:'#a09880', review:'#e8743e', know:'#1a7a3c' };
+  bulletEl.style.background = colors[next];
+  bulletEl.style.borderColor = border[next];
 }
 
 // Affiche la méthode générale de décodage en 3 étapes
