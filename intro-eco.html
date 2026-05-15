@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Révizo — Éco · Intro</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --fond: #f0ede6; --blanc: #fffdf8; --texte: #1e1c18;
+  --accent: #b5415a; --jaune: #f5c842; --vert: #2d7a4f;
+  --bleu: #2563a8; --orange: #c4742a; --violet: #5b3a8c;
+  --gris: #8a8478; --bordure: #ddd8cc;
+}
+body {
+  font-family: 'Inter', sans-serif; background: var(--fond);
+  color: var(--texte); line-height: 1.55;
+}
+
+/* ─── CONTAINER ─── */
+.page {
+  max-width: 900px; margin: 0 auto;
+  padding: 30px 24px 80px;
+}
+
+/* ─── TITRE PAGE ─── */
+.page-hd { text-align: center; margin-bottom: 18px; }
+.page-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 28px; font-weight: 900;
+  margin-bottom: 6px; color: var(--texte);
+}
+.page-sub {
+  font-size: 14px; color: var(--gris);
+  max-width: 600px; margin: 0 auto;
+}
+
+/* ─── BANDEAU "COMMENT UTILISER" ─── */
+.guide {
+  background: #fff8e6;
+  border: 1.5px solid #f0d070;
+  border-radius: 12px;
+  padding: 16px 22px;
+  margin: 22px 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.guide-icon { font-size: 32px; flex-shrink: 0; }
+.guide-body { flex: 1; }
+.guide-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 800;
+  color: #7a5800;
+  text-transform: uppercase; letter-spacing: .05em;
+  margin-bottom: 4px;
+}
+.guide-text { font-size: 13px; line-height: 1.5; color: #5a4400; }
+.guide-text strong { color: #1e1c18; }
+
+/* ─── MODE EMBED (page chargée dans un iframe de la SPA) ─── */
+/* La nav de la SPA parente fait déjà le boulot — on masque celle d'ici */
+body.embed .nav-epreuve,
+body.embed .nav-rubriques { display: none; }
+body.embed .page { padding-top: 18px; }
+
+/* ─── PARAGRAPHES DE NARRATION (liens entre blocs) ─── */
+.narration {
+  font-size: 14px; line-height: 1.65;
+  color: #3a3630;
+  margin: 22px 14px 18px;
+  padding: 0 6px;
+  max-width: 780px;
+}
+.narration strong { color: var(--texte); font-weight: 700; }
+.narration em { color: #5a4400; }
+
+/* ─── INTRO BLOC ─── */
+.intro-bloc {
+  background: white;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  padding: 16px 22px;
+  margin: 22px 0;
+}
+.intro-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 800;
+  color: var(--accent);
+  text-transform: uppercase; letter-spacing: .07em;
+  margin-bottom: 6px;
+}
+.intro-lead {
+  font-size: 14px; line-height: 1.55;
+  color: #3a3630;
+}
+.intro-lead strong { color: var(--texte); }
+
+/* ─── WORDS BLOCK (les 5 mots-clés du fil rouge) ─── */
+.words-block {
+  margin: 8px 0 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.word-card {
+  background: white;
+  border: 1.5px solid var(--bordure);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.word-card .word-emoji {
+  font-size: 32px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.word-card .word-body { flex: 1; }
+.word-card .word-name {
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px; font-weight: 900;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.word-card .word-def {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #3a3630;
+}
+.word-card .word-def strong { color: var(--texte); }
+.word-card .word-def em { color: var(--gris); }
+.word-card-bonus { border-left-color: var(--gris); background: #faf7ee; }
+.word-card-bonus .word-name { color: var(--gris); }
+
+/* Highlight inline pour le fil rouge dans la progression */
+.hl-etat        { background: #eef5ff; color: var(--bleu);   padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+.hl-marche      { background: #e8f4ee; color: var(--vert);   padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+.hl-coop        { background: #fef0e2; color: var(--orange); padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+.hl-emploi      { background: #e8f4ee; color: var(--vert);   padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+.hl-croissance  { background: #fef8e2; color: #946e00;        padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+.hl-soutenabilite{ background: #f3eafc; color: var(--violet); padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+
+/* Progression détaillée par thème */
+.prog-detail { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.prog-detail-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  background: var(--fond);
+  border-radius: 8px;
+  border-left: 4px solid var(--accent);
+}
+.prog-detail-row.prog-t6 { border-left-color: var(--bleu); }
+.prog-detail-row.prog-t6 .prog-detail-label strong { color: var(--bleu); }
+.prog-detail-row.prog-t7 { border-left-color: var(--vert); }
+.prog-detail-row.prog-t7 .prog-detail-label strong { color: var(--vert); }
+.prog-detail-row.prog-t8 { border-left-color: var(--orange); }
+.prog-detail-row.prog-t8 .prog-detail-label strong { color: var(--orange); }
+.prog-detail-row.prog-t9 { border-left-color: var(--violet); }
+.prog-detail-row.prog-t9 .prog-detail-label strong { color: var(--violet); }
+.prog-detail-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 800;
+}
+.prog-detail-body {
+  font-size: 13.5px; line-height: 1.55;
+  color: #3a3630;
+}
+.prog-detail-body strong { color: var(--texte); }
+.prog-conclu {
+  font-size: 13.5px; line-height: 1.6;
+  margin-top: 14px; padding: 10px 14px;
+  background: white;
+  border: 1.5px solid var(--bordure);
+  border-radius: 8px;
+  color: #3a3630;
+}
+.prog-conclu strong { color: var(--accent); }
+
+/* Narration "forte" (transition emphatique) */
+.narration-strong {
+  background: #fdf5f7;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+/* Emoji dans les leviers (header) */
+.levier-emoji { font-size: 22px; vertical-align: middle; margin-right: 4px; }
+
+/* ─── BLOC OBJECTIFS / LEVIERS / PROGRESSION ─── */
+.bloc-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px; font-weight: 800;
+  text-align: center;
+  margin-bottom: 14px;
+  color: var(--texte);
+}
+
+.objectifs-bloc, .leviers-bloc, .progression-bloc {
+  background: white;
+  border: 1.5px solid var(--bordure);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin: 22px 0;
+}
+
+.objectifs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+}
+.obj {
+  background: var(--fond);
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-align: center;
+}
+.obj-emoji { font-size: 28px; margin-bottom: 4px; }
+.obj-name {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900; font-size: 14px;
+  margin-bottom: 4px;
+  color: var(--accent);
+}
+.obj-desc { font-size: 11.5px; line-height: 1.45; color: #3a3630; }
+.obj-desc strong { color: var(--texte); }
+
+.leviers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+.levier {
+  background: var(--fond);
+  border-radius: 10px;
+  padding: 12px 14px;
+  border-top: 3px solid var(--accent);
+}
+.levier.l-etat { border-top-color: var(--bleu); }
+.levier.l-etat .levier-hd { color: var(--bleu); }
+.levier.l-marche { border-top-color: var(--vert); }
+.levier.l-marche .levier-hd { color: var(--vert); }
+.levier.l-coop { border-top-color: var(--orange); }
+.levier.l-coop .levier-hd { color: var(--orange); }
+.levier-hd {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: 13px;
+  margin-bottom: 6px;
+}
+.levier-desc { font-size: 12px; line-height: 1.5; color: #3a3630; margin-bottom: 6px; }
+.levier-desc strong { color: var(--texte); }
+.levier-tag {
+  font-size: 10px; font-weight: 700;
+  color: var(--gris);
+  text-transform: uppercase; letter-spacing: .05em;
+  background: white; padding: 3px 8px; border-radius: 10px;
+  display: inline-block;
+}
+
+.progression-flow {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  gap: 4px; flex-wrap: wrap;
+}
+.prog-step {
+  flex: 1;
+  background: var(--fond);
+  border-radius: 8px;
+  padding: 9px 10px;
+  font-size: 12px;
+  text-align: center;
+  border-top: 3px solid var(--accent);
+  min-width: 130px;
+}
+.prog-step strong { display: block; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 14px; margin-bottom: 3px; }
+.prog-step span { font-size: 10.5px; color: var(--gris); }
+.prog-step.prog-t6 { border-top-color: var(--bleu); }
+.prog-step.prog-t6 strong { color: var(--bleu); }
+.prog-step.prog-t7 { border-top-color: var(--vert); }
+.prog-step.prog-t7 strong { color: var(--vert); }
+.prog-step.prog-t8 { border-top-color: var(--orange); }
+.prog-step.prog-t8 strong { color: var(--orange); }
+.prog-step.prog-t9 { border-top-color: var(--violet); }
+.prog-step.prog-t9 strong { color: var(--violet); }
+.prog-arrow { color: var(--gris); font-size: 18px; font-weight: 800; }
+
+/* ─── CONSEIL MÉTHODO (triplet) ─── */
+.conseil-bloc {
+  background: linear-gradient(135deg, #f5c842 0%, #e8a920 100%);
+  border-radius: 12px;
+  padding: 16px 22px;
+  margin: 22px 0;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.conseil-icon { font-size: 32px; flex-shrink: 0; }
+.conseil-body { flex: 1; color: #3a2c00; }
+.conseil-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900; font-size: 14px;
+  margin-bottom: 6px;
+}
+.conseil-text { font-size: 13px; line-height: 1.55; }
+.conseil-text strong { color: #1e1c18; }
+.conseil-text em { color: #5a4400; font-style: italic; }
+.trio-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  margin: 2px 3px;
+  color: white;
+}
+.trio-tag.t-1 { background: #b5415a; }
+.trio-tag.t-2 { background: #5b3a8c; }
+.trio-tag.t-3 { background: #2d7a4f; }
+
+/* ─── QUESTION MÉTA ─── */
+.meta {
+  background: linear-gradient(135deg, #b5415a 0%, #8c3045 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 12px 20px;
+  margin: 18px 0;
+  text-align: center;
+}
+.meta-label {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .12em;
+  opacity: 0.85; margin-bottom: 4px;
+}
+.meta-q {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px; font-weight: 700;
+  line-height: 1.45;
+}
+.meta-q strong { color: #f5c842; }
+
+/* ─── 3 NOTIONS-PIVOT ─── */
+.pivots {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin: 22px 0;
+}
+.pivot {
+  background: white;
+  border: 2px solid var(--bordure);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.pivot:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+.pivot-label {
+  font-size: 10px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--accent); margin-bottom: 4px;
+}
+.pivot-name {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px; font-weight: 900;
+  margin-bottom: 4px;
+}
+.pivot-def { font-size: 11.5px; color: var(--gris); line-height: 1.4; }
+.pivots-intro {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 800;
+  color: var(--gris);
+  margin: 18px 0 6px;
+  text-transform: uppercase; letter-spacing: .05em;
+  text-align: center;
+}
+
+/* ─── FRISE MÉTHODE TRANSVERSE ─── */
+.methode {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 22px;
+  margin: 22px 0;
+  border: 1.5px solid var(--bordure);
+}
+.methode-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 12px; font-weight: 800;
+  color: var(--gris); text-transform: uppercase;
+  letter-spacing: .07em; text-align: center;
+  margin-bottom: 10px;
+}
+.methode-flow {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 6px;
+  flex-wrap: wrap;
+}
+.methode-step {
+  background: var(--fond);
+  padding: 7px 13px; border-radius: 18px;
+  font-size: 12.5px; font-weight: 700;
+  border: 1.5px solid var(--bordure);
+  display: flex; align-items: center; gap: 6px;
+}
+.methode-step .stepn {
+  background: var(--accent); color: white;
+  width: 18px; height: 18px; border-radius: 50%;
+  font-size: 10px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.methode-arrow { color: var(--gris); font-size: 16px; font-weight: 800; }
+
+/* ─── SOMMAIRE ANCRÉ (sticky) ─── */
+.sommaire-sticky {
+  position: sticky;
+  top: 90px;
+  background: rgba(240, 237, 230, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--bordure);
+  padding: 10px 0;
+  margin: 0 -24px 18px;
+  z-index: 50;
+  text-align: center;
+}
+.sommaire-row {
+  display: inline-flex; gap: 6px; flex-wrap: wrap;
+  justify-content: center;
+}
+.somm-link {
+  background: white; padding: 6px 14px;
+  border-radius: 18px; font-size: 12px; font-weight: 700;
+  border: 1.5px solid var(--bordure);
+  color: var(--texte); text-decoration: none;
+  transition: all .15s;
+}
+.somm-link:hover {
+  background: var(--accent); color: white; border-color: var(--accent);
+}
+.somm-link.t6 { border-left: 3px solid var(--bleu); }
+.somm-link.t7 { border-left: 3px solid var(--vert); }
+.somm-link.t8 { border-left: 3px solid var(--orange); }
+.somm-link.t9 { border-left: 3px solid var(--violet); }
+
+/* ─── BLOC THÈME ─── */
+.theme {
+  background: white;
+  border-radius: 14px;
+  border: 1.5px solid var(--bordure);
+  margin: 30px 0;
+  overflow: hidden;
+  scroll-margin-top: 150px;
+}
+.theme-hd {
+  padding: 18px 26px 14px;
+  border-bottom: 1px solid var(--bordure);
+}
+.theme-hd .nb {
+  font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .15em;
+  margin-bottom: 3px;
+}
+.theme-hd h2 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 22px; font-weight: 900;
+  line-height: 1.2; margin-bottom: 6px;
+}
+.theme-hd .q-officielle {
+  font-size: 13.5px;
+  color: var(--gris); font-style: italic;
+}
+
+/* Coloration par thème */
+.theme.t6 { border-top: 5px solid var(--bleu); }
+.theme.t6 .theme-hd .nb { color: var(--bleu); }
+.theme.t7 { border-top: 5px solid var(--vert); }
+.theme.t7 .theme-hd .nb { color: var(--vert); }
+.theme.t8 { border-top: 5px solid var(--orange); }
+.theme.t8 .theme-hd .nb { color: var(--orange); }
+.theme.t9 { border-top: 5px solid var(--violet); }
+.theme.t9 .theme-hd .nb { color: var(--violet); }
+
+/* ─── ÉTAPES DU RAISONNEMENT ─── */
+.theme-body { padding: 14px 26px 22px; }
+
+.etape {
+  margin: 16px 0;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 16px;
+  align-items: flex-start;
+}
+.etape-num {
+  background: var(--fond);
+  border-radius: 10px;
+  padding: 10px 6px;
+  text-align: center;
+  border: 1.5px solid var(--bordure);
+}
+.etape-num .n {
+  font-family: 'Nunito', sans-serif;
+  font-size: 26px; font-weight: 900;
+  line-height: 1; color: var(--accent);
+}
+.etape-num .label {
+  font-size: 9.5px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: var(--gris); margin-top: 5px;
+}
+/* Couleur par type d'étape */
+.etape.definir .etape-num { background:#fef8e2; border-color:#946e00; }
+.etape.definir .etape-num .n { color:#946e00; }
+.etape.constater .etape-num { background:#eef5ff; border-color:#2563a8; }
+.etape.constater .etape-num .n { color:#2563a8; }
+.etape.expliquer .etape-num { background:#f3eafc; border-color:#5b3a8c; }
+.etape.expliquer .etape-num .n { color:#5b3a8c; }
+.etape.agir .etape-num { background:#fef0e2; border-color:#c4742a; }
+.etape.agir .etape-num .n { color:#c4742a; }
+.etape.debattre .etape-num { background:#fdf5f7; border-color:#b5415a; }
+.etape.debattre .etape-num .n { color:#b5415a; }
+.etape-content { padding-top: 4px; }
+.etape-h {
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px; font-weight: 800;
+  margin-bottom: 6px;
+}
+.etape-def {
+  font-size: 13.5px; line-height: 1.55;
+  color: #3a3630; margin-bottom: 8px;
+}
+.etape-def strong { color: var(--texte); }
+.notions-row {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-top: 6px;
+}
+.notion-chip {
+  background: #eef5ff;
+  border: 1px solid #b8d0f0;
+  color: var(--bleu);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11.5px; font-weight: 600;
+  cursor: pointer;
+  transition: all .12s;
+  position: relative;
+}
+.notion-chip:hover {
+  background: var(--bleu); color: white;
+  border-color: var(--bleu);
+}
+.theme.t7 .notion-chip { background: #e8f4ee; border-color: #b8dfc9; color: var(--vert); }
+.theme.t7 .notion-chip:hover { background: var(--vert); color: white; }
+.theme.t8 .notion-chip { background: #fef0e2; border-color: #f0c890; color: var(--orange); }
+.theme.t8 .notion-chip:hover { background: var(--orange); color: white; }
+.theme.t9 .notion-chip { background: #f3eafc; border-color: #d4bce8; color: var(--violet); }
+.theme.t9 .notion-chip:hover { background: var(--violet); color: white; }
+
+/* Notion pivot mise en valeur */
+.notion-chip.pivot-mark {
+  background: #fdf5f7 !important;
+  border: 1.5px solid #e8b4bf !important;
+  color: var(--accent) !important;
+  font-weight: 800;
+}
+.notion-chip.pivot-mark::before { content: "★ "; font-size: 9px; }
+.notion-chip.pivot-mark:hover {
+  background: var(--accent) !important;
+  color: white !important;
+}
+
+/* DÉBATTRE : exemples bac */
+.debat-ex {
+  background: #fef8e2;
+  border-left: 3px solid var(--jaune);
+  padding: 8px 12px;
+  border-radius: 0 8px 8px 0;
+  margin-top: 8px;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.debat-ex strong { color: #7a5800; }
+
+/* ─── LIEN MÉMO ─── */
+.memo-link-wrap {
+  background: #faf7ee;
+  border-top: 1px solid var(--bordure);
+  padding: 14px 26px;
+  text-align: center;
+}
+.memo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--texte);
+  color: white;
+  padding: 9px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 13px; font-weight: 700;
+  transition: all .15s;
+}
+.memo-link:hover { background: var(--accent); transform: translateY(-1px); }
+
+/* ─── TOOLTIP au survol des notions ─── */
+.tip {
+  position: fixed;
+  background: #1e1c18;
+  color: #f0ede6;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px; line-height: 1.45;
+  max-width: 320px;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s;
+  font-weight: 500;
+}
+.tip.show { opacity: 1; }
+.tip-term {
+  font-weight: 800;
+  display: block;
+  color: var(--jaune);
+  margin-bottom: 3px;
+  font-size: 11.5px;
+}
+
+/* ─── NEXT STEP (invitation à passer à la suite) ─── */
+.next-step {
+  background: linear-gradient(135deg, #1e1c18 0%, #3a3630 100%);
+  color: #f0ede6;
+  border-radius: 14px;
+  padding: 22px 28px;
+  margin: 30px 0;
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+.next-step-icon {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--jaune);
+  flex-shrink: 0;
+  line-height: 1;
+}
+.next-step-body { flex: 1; }
+.next-step-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--jaune);
+  margin-bottom: 6px;
+}
+.next-step-text {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.next-step-text strong { color: white; font-weight: 700; }
+
+/* ─── FOOTER ─── */
+.footer {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--gris);
+  margin-top: 36px;
+  padding-top: 16px;
+  border-top: 1px solid var(--bordure);
+}
+
+@media (max-width: 680px) {
+  .pivots { grid-template-columns: 1fr; }
+  .etape { grid-template-columns: 1fr; }
+  .etape-num { max-width: 80px; }
+  .methode-flow { flex-direction: column; align-items: stretch; }
+  .methode-arrow { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV TOP : épreuves -->
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="revizo-eco.html" class="epreuve-link active">Éco</a>
+  <a href="revizo-droit.html" class="epreuve-link">Droit</a>
+  <a href="revizo-msgn.html" class="epreuve-link">MSGN</a>
+  <a href="revizo-philo.html" class="epreuve-link">Philo</a>
+</nav>
+
+<!-- NAV BASSE : rubriques Éco -->
+<nav class="nav-rubriques">
+  <a href="intro-eco.html" class="active">📚 Intro</a>
+  <a href="revizo-eco.html#carte">🗺️ La Carte</a>
+  <a href="revizo-eco.html#questions">📋 Questions du Bac</a>
+  <a href="revizo-eco.html#synthese">📝 Synthèse ✍️</a>
+  <a href="revizo-eco.html#decodage">🔑 Décodage</a>
+</nav>
+
+<div class="page">
+
+  <div class="page-hd">
+    <h1 class="page-title">📚 Intro Éco STMG</h1>
+    <p class="page-sub">
+      Avant de plonger dans les fiches · comprendre la logique du programme · les 4 objectifs · les 3 leviers
+    </p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- INTRO : Avant de plonger, comprends ce qu'on va te demander          -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+  <div class="intro-bloc">
+    <div class="intro-label">📚 Avant de plonger : comprends la logique du programme</div>
+    <p class="intro-lead">
+      Le programme d'économie de Terminale STMG est construit autour <strong>d'une seule grande question</strong>
+      que tu dois garder en tête tout au long de tes révisions. Pose-la-toi sous cette forme :
+    </p>
+  </div>
+
+  <!-- LA GRANDE QUESTION (fil rouge) -->
+  <div class="meta">
+    <div class="meta-label">La grande question du programme</div>
+    <div class="meta-q">
+      "Comment faire en sorte que l'économie produise des richesses (<strong>💰 croissance</strong>),
+      donne du travail aux gens (<strong>👷 emploi</strong>), répartisse ces richesses sans creuser
+      les inégalités (<strong>⚖️ équité</strong>), et tout ça sans épuiser la planète ni accumuler
+      les dettes pour les générations futures (<strong>🌍 soutenabilité</strong>) ?
+      Et pour y arriver, qui agit : l'<strong>🏛️ État</strong>, le <strong>🌐 marché</strong>,
+      les <strong>🤝 organisations internationales</strong> ?"
+    </div>
+  </div>
+
+  <!-- DÉCORTIQUER LES MOTS-CLÉS -->
+  <p class="narration">
+    Décortiquons les mots-clés, parce que c'est tout le vocabulaire qui va revenir dans tes révisions :
+  </p>
+
+  <div class="words-block">
+    <div class="word-card">
+      <span class="word-emoji">💰</span>
+      <div class="word-body">
+        <div class="word-name">Croissance</div>
+        <div class="word-def">
+          C'est la production de richesses qui augmente d'une année sur l'autre. On la mesure avec le <strong>PIB</strong>.
+          Quand on dit qu'un pays « va bien économiquement », on parle souvent de ça.
+        </div>
+      </div>
+    </div>
+
+    <div class="word-card">
+      <span class="word-emoji">👷</span>
+      <div class="word-body">
+        <div class="word-name">Emploi</div>
+        <div class="word-def">
+          La capacité de l'économie à fournir du travail à ceux qui en cherchent. L'envers de l'emploi, c'est le
+          <strong>chômage</strong>.
+        </div>
+      </div>
+    </div>
+
+    <div class="word-card">
+      <span class="word-emoji">⚖️</span>
+      <div class="word-body">
+        <div class="word-name">Équité</div>
+        <div class="word-def">
+          Le fait que les richesses produites soient réparties de manière juste, sans laisser une partie de la population
+          trop loin derrière. <strong>Attention</strong>, équité ≠ égalité parfaite : il s'agit de réduire les inégalités
+          les plus injustes, pas de donner exactement la même chose à tout le monde.
+        </div>
+      </div>
+    </div>
+
+    <div class="word-card">
+      <span class="word-emoji">🌍</span>
+      <div class="word-body">
+        <div class="word-name">Soutenabilité</div>
+        <div class="word-def">
+          C'est l'idée qu'on ne peut pas continuer indéfiniment à produire et consommer comme aujourd'hui. Une croissance
+          est <em>« soutenable »</em> si elle peut durer dans le temps sans épuiser les <strong>ressources naturelles</strong>
+          (pétrole, forêts, eau…), sans détruire l'environnement, et sans creuser une <strong>dette publique</strong> impossible
+          à rembourser. Bref : produire des richesses aujourd'hui sans empêcher les générations futures de faire pareil.
+        </div>
+      </div>
+    </div>
+
+    <div class="word-card word-card-bonus">
+      <span class="word-emoji">🎛️</span>
+      <div class="word-body">
+        <div class="word-name">Leviers</div>
+        <div class="word-def">
+          Ce mot désigne les <strong>moyens d'action</strong> dont on dispose pour agir sur l'économie. Imagine un tableau
+          de bord avec plusieurs boutons : baisser les impôts, augmenter les dépenses publiques, modifier les taux d'intérêt,
+          signer des accords commerciaux… ce sont autant de leviers. Tout le programme te présente ces leviers et discute
+          de leur efficacité.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LES 3 LEVIERS -->
+  <p class="narration">
+    Maintenant, <strong>par quels mécanismes l'économie est-elle régulée ?</strong> Trois grandes forces, que le programme
+    oppose et combine sans cesse :
+  </p>
+
+  <div class="leviers-bloc">
+    <div class="leviers-grid">
+      <div class="levier l-etat">
+        <div class="levier-hd"><span class="levier-emoji">🏛️</span> L'État (français ou européen)</div>
+        <div class="levier-desc">
+          Il peut <strong>intervenir activement</strong> (politiques <strong>budgétaire</strong>, <strong>monétaire</strong>,
+          <strong>sociale</strong>, <strong>de l'emploi</strong>…) ou au contraire <strong>laisser faire</strong>
+          (= laisser le marché agir seul).
+        </div>
+        <div class="levier-tag">Thèmes 6 + 7</div>
+      </div>
+
+      <div class="levier l-marche">
+        <div class="levier-hd"><span class="levier-emoji">🌐</span> Le marché <span style="font-size:11px;font-weight:600;color:#7a6a58">(mécanisme spontané)</span></div>
+        <div class="levier-desc">
+          Personne ne l'actionne : il fonctionne <strong>tout seul</strong>, par la rencontre entre offre et demande.
+          <strong>Laisser faire le marché</strong>, c'est l'approche <strong>libérale</strong>. Il peut être efficace,
+          mais il a aussi des <strong>défaillances</strong> (pollutions non payées, monopoles abusifs, inégalités…)
+          que seul l'État peut corriger.
+        </div>
+        <div class="levier-tag">Thème 8 + T5 1ère</div>
+      </div>
+
+      <div class="levier l-coop">
+        <div class="levier-hd"><span class="levier-emoji">🤝</span> La coopération internationale</div>
+        <div class="levier-desc">
+          Pour les problèmes qui dépassent les frontières (commerce mondial, climat, lutte contre la pauvreté), aucun État
+          seul ne peut agir efficacement. Il faut des règles communes, négociées dans des enceintes comme l'<strong>OMC</strong>,
+          l'<strong>UE</strong>, ou les <strong>conférences climat</strong>.
+        </div>
+        <div class="levier-tag">Thèmes 8 + 9</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIL ROUGE -->
+  <p class="narration narration-strong">
+    <strong>Si tu gardes ce fil rouge en tête</strong>, chaque notion que tu apprendras prendra naturellement sa place
+    dans l'ensemble — au lieu d'être un mot isolé à mémoriser.
+  </p>
+
+  <!-- PROGRESSION DES 4 THÈMES (détaillée) -->
+  <div class="progression-bloc">
+    <div class="bloc-title">🗺️ La progression des 4 thèmes du programme</div>
+
+    <div class="prog-detail">
+      <div class="prog-detail-row prog-t6">
+        <div class="prog-detail-label"><strong>Thème 6</strong></div>
+        <div class="prog-detail-body">
+          <strong>Pose le décor</strong> : l'<span class="hl-etat">🏛️ État</span> doit-il intervenir dans l'économie,
+          et comment ? Tu y découvres ses outils (politique budgétaire, politique monétaire, politiques sociales) et
+          les limites de son action (défaillances de l'État, contraintes européennes).
+        </div>
+      </div>
+
+      <div class="prog-detail-row prog-t7">
+        <div class="prog-detail-label"><strong>Thème 7</strong></div>
+        <div class="prog-detail-body">
+          <strong>Applique cette question au <span class="hl-emploi">👷 marché du travail</span></strong> : pourquoi
+          y a-t-il du chômage, et que peut faire l'État pour l'emploi ?
+        </div>
+      </div>
+
+      <div class="prog-detail-row prog-t8">
+        <div class="prog-detail-label"><strong>Thème 8</strong></div>
+        <div class="prog-detail-body">
+          <strong>Sort du cadre national</strong> : comment l'économie <span class="hl-marche">🌐 mondiale</span>
+          s'organise-t-elle entre libre-échange et protectionnisme, et quel rôle joue l'<span class="hl-coop">🤝 OMC</span>
+          (Organisation Mondiale du Commerce) ?
+        </div>
+      </div>
+
+      <div class="prog-detail-row prog-t9">
+        <div class="prog-detail-label"><strong>Thème 9</strong></div>
+        <div class="prog-detail-body">
+          <strong>Met tout en perspective</strong> : la <span class="hl-croissance">💰 croissance</span> est-elle
+          compatible avec le <span class="hl-soutenabilite">🌍 développement durable</span> et la réduction des
+          inégalités ?
+        </div>
+      </div>
+    </div>
+
+    <p class="prog-conclu">
+      <strong>Tu vois la progression</strong> : on part de l'<span class="hl-etat">🏛️ État dans son pays</span>,
+      on <strong>zoome</strong> sur le <span class="hl-emploi">👷 marché du travail</span>, puis on <strong>élargit</strong>
+      au <span class="hl-marche">🌐 monde</span>, et enfin aux <span class="hl-soutenabilite">🌍 grands défis du futur</span>.
+    </p>
+  </div>
+
+  <!-- CONSEIL MÉTHODO — mini paragraphe (triplet + exemple) -->
+  <p class="narration">
+    💡 <strong>Le conseil-clé du jury</strong> — pour chaque notion, vise le triplet
+    <strong>idée + mécanisme + exemple</strong>. Ex : <em>« politique monétaire »</em> = la BCE pilote les
+    taux directeurs ; en 2022, elle les a remontés de 0 % à 4,5 % pour casser l'inflation. C'est ce qui distingue
+    une copie à 12 d'une copie à 18.
+  </p>
+
+  <div class="footer">
+    Révizo · Intro Éco · 2026 · Source : programme officiel STMG (Annexe 1, Eduscol)
+  </div>
+
+</div>
+
+<!-- TOOLTIP NOTION (rempli par JS au survol) -->
+<div class="tip" id="tip">
+  <span class="tip-term" id="tip-term"></span>
+  <span id="tip-def"></span>
+</div>
+
+<script>
+// === Détection mode embed (chargée dans iframe via ?embed=1) ===
+if (new URLSearchParams(location.search).get('embed') === '1') {
+  document.body.classList.add('embed');
+}
+</script>
+
+<script src="notions-eco.js"></script>
+<script>
+// === Tooltip au survol des notions ===
+const tipEl = document.getElementById('tip');
+const tipTerm = document.getElementById('tip-term');
+const tipDef = document.getElementById('tip-def');
+
+document.querySelectorAll('[data-notion]').forEach(el => {
+  el.addEventListener('mouseenter', e => {
+    const id = el.dataset.notion;
+    const n = NE[id];
+    if (!n) return;
+    tipTerm.textContent = n.titre;
+    tipDef.textContent = n.def;
+    tipEl.classList.add('show');
+  });
+  el.addEventListener('mousemove', e => {
+    const x = Math.min(e.clientX + 14, window.innerWidth - 340);
+    const y = Math.min(e.clientY + 16, window.innerHeight - 200);
+    tipEl.style.left = x + 'px';
+    tipEl.style.top = y + 'px';
+  });
+  el.addEventListener('mouseleave', () => {
+    tipEl.classList.remove('show');
+  });
+});
+
+console.log('Carte du raisonnement chargée :', Object.keys(NE).length, 'notions disponibles');
+</script>
+
+</body>
+</html>

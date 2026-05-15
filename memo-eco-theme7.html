@@ -142,8 +142,9 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 
 <nav class="nav-epreuve">
   <a href="index.html" class="logo">Révi<span>zo</span></a>
-  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
-  <a href="revizo-msgn.html" class="epreuve-link">SGDN</a>
+  <a href="revizo-eco.html"   class="epreuve-link active">Éco</a>
+  <a href="revizo-droit.html" class="epreuve-link">Droit</a>
+  <a href="revizo-msgn.html"  class="epreuve-link">MSGN</a>
   <a href="revizo-philo.html" class="epreuve-link">Philo</a>
 </nav>
 <nav class="nav-rubriques">
@@ -240,12 +241,13 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
     <div class="inode inode-root">
       <div class="inode-label">Indicateurs <span class="freq">★★★★☆</span></div>
       <div class="inode-h">Mesurer l'emploi et le chômage</div>
-      <div class="inode-def">La <strong>population active</strong> = ceux qui travaillent + ceux qui cherchent. Le <strong>taux de chômage</strong> = (chômeurs / pop. active) × 100 — attention au dénominateur, c'est la pop. ACTIVE, pas totale. Le <strong>taux d'emploi</strong> mesure la part des 15-64 ans qui travaillent effectivement. Mais ces chiffres ne disent PAS tout : le <strong>halo du chômage</strong> compte les personnes qui VOUDRAIENT travailler mais ne sont pas comptées comme chômeurs (découragées, ou non disponibles immédiatement).</div>
+      <div class="inode-def">La <strong>population active</strong> = ceux qui travaillent + ceux qui cherchent. Le <strong>taux de chômage</strong> = (chômeurs / pop. active) × 100 — attention au dénominateur, c'est la pop. ACTIVE, pas totale. Le <strong>taux d'emploi</strong> mesure la part des 15-64 ans qui travaillent effectivement. Mais ces chiffres ne disent PAS tout : le <strong>halo du chômage</strong> compte les inactifs qui VOUDRAIENT travailler ; le <strong>sous-emploi</strong> compte ceux qui ont un emploi mais voudraient travailler PLUS (temps partiel subi). Les trois cumulés = sous-emploi global, presque 2× le chômage officiel.</div>
       <div class="tree-sub" style="justify-content:center">
         <span class="tree-chip chip-rose" data-tip="pop_active">Population active</span>
         <span class="tree-chip chip-rose" data-tip="taux_chomage">Taux de chômage</span>
         <span class="tree-chip chip-rose" data-tip="taux_emploi">Taux d'emploi</span>
         <span class="tree-chip chip-violet" data-tip="halo_chomage">Halo du chômage</span>
+        <span class="tree-chip chip-violet" data-tip="sous_emploi">Sous-emploi</span>
         <span class="tree-chip chip-gris" data-tip="taux_variation_t7">Taux de variation</span>
       </div>
     </div>
@@ -343,6 +345,28 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 </div>
 
 <!-- ═══════════════════════════════════════ -->
+<!-- BLOC LIMITES (intervention pour l'emploi) -->
+<!-- ═══════════════════════════════════════ -->
+<div style="background:#fdeef2;border:2px solid #b5415a;border-radius:14px;padding:14px 18px;width:100%;margin:16px 0">
+  <div class="tree-label" style="color:#b5415a">Limites des politiques de l'emploi ⚠️ <span class="freq">★★★☆☆</span></div>
+  <div style="font-size:14px;font-weight:900;color:#1e1c18;margin:4px 0">Pourquoi l'État ne peut pas tout résoudre</div>
+  <div style="font-size:12px;line-height:1.6;color:#3a3630">
+    Quatre limites majeures :<br>
+    • <strong>Coût budgétaire élevé</strong> : les politiques actives (formation, contrats aidés, allègements) pèsent ~3 % du PIB français → tension avec les critères européens 3 % de déficit.<br>
+    • <strong>Effets pervers</strong> : <strong>trappe à inactivité</strong> (cumul aides + RSA presque égal au SMIC → désincitation à reprendre un emploi) ; <strong>effet d'aubaine</strong> (l'aide profite à des embauches qui auraient eu lieu sans).<br>
+    • <strong>Chômage structurel</strong> peu sensible aux politiques conjoncturelles : inadéquation formation/besoins, lourdeurs du marché du travail.<br>
+    • <strong>Mondialisation et numérique</strong> : délocalisations et automatisation détruisent des emplois en dehors du contrôle de l'État national.
+  </div>
+  <div class="tree-sub" style="margin-top:8px">
+    <span class="tree-chip chip-rose" data-tip="cout_budgetaire">Coût budgétaire</span>
+    <span class="tree-chip chip-rose" data-tip="trappe_inactivite">Trappe à inactivité</span>
+    <span class="tree-chip chip-rose" data-tip="effet_aubaine">Effet d'aubaine</span>
+    <span class="tree-chip chip-rose" data-tip="flex_secu">Flexibilité vs sécurité</span>
+  </div>
+  <div style="font-size:11px;color:#7a6a58;font-style:italic;margin-top:6px">Ex. : le CICE (20 Md€/an) aurait créé 100 000 emplois selon France Stratégie — coût ~200 000 €/emploi. Débat sur l'efficacité réelle.</div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
 <!-- PARTIE 3 : RÉCUPÉRER -->
 <!-- ═══════════════════════════════════════ -->
 
@@ -425,6 +449,26 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
   </div>
 </div>
 
+<!-- Encart capacités attendues -->
+<style>
+.cap-link { color:#1a7a3c; font-weight:700; cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-decoration-color:#1a7a3c; text-underline-offset:3px; transition:background .1s; }
+.cap-link:hover { background:rgba(26,122,60,.08); border-radius:4px; }
+.cap-link strong { font-weight:800; }
+</style>
+<div style="background:#e6f5ec;border-left:4px solid #1a7a3c;border-radius:12px;padding:14px 18px;margin:16px 0">
+  <div class="tree-label" style="color:#1a7a3c;margin-bottom:6px">🎯 Ce que les correcteurs attendent (programme officiel)</div>
+  <div style="font-size:12px;line-height:1.9;color:#3a3630">
+    Sur le Thème 7, on attend que tu saches <em>(clique sur chaque ligne pour voir comment ça doit apparaître dans ta copie)</em> :<br>
+    <span class="cap-link" data-tip="cap_t7_indicateurs">✓ Distinguer <strong>taux de chômage</strong>, <strong>taux d'emploi</strong> et <strong>halo du chômage</strong></span><br>
+    <span class="cap-link" data-tip="cap_t7_typologie">✓ Identifier les types de chômage : <strong>conjoncturel</strong>, <strong>structurel</strong>, <strong>frictionnel</strong></span><br>
+    <span class="cap-link" data-tip="cap_t7_marche">✓ Décrire le fonctionnement du <strong>marché du travail</strong> (offre, demande, salaire d'équilibre, SMIC)</span><br>
+    <span class="cap-link" data-tip="cap_t7_politiques">✓ Distinguer <strong>politiques actives</strong> et <strong>politiques passives</strong> de l'emploi</span><br>
+    <span class="cap-link" data-tip="cap_t7_mutations">✓ Analyser l'impact de la <strong>mondialisation</strong> et du <strong>numérique</strong> sur l'emploi</span><br>
+    <span class="cap-link" data-tip="cap_t7_flexisecurite">✓ Comprendre la tension <strong>flexibilité</strong> / <strong>sécurité</strong> du marché du travail</span><br>
+    <span class="cap-link" data-tip="cap_t7_argumentation">✓ Mobiliser ces notions en <strong>argumentation</strong> (Q4) pour répondre OUI/NON à une question d'actualité</span>
+  </div>
+</div>
+
 <!-- Footer -->
 <div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
   Révizo · Mémo Thème 7 · Économie STMG · Avril 2026 · Sources : 15 annales post-réforme, BO 2019, consignes de correction
@@ -444,6 +488,15 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 </div>
 
 <script>
+// ─────────────────────────────────────────────────────────────────────
+// 🔗 LIEN AVEC notions-eco.js — RÈGLE DE SYNCHRONISATION
+// Ce TIPS est la vue PÉDAGOGIQUE FINE du Thème 7 (22 tooltips).
+// La vue PROGRAMME CADRE (8 notions T7) est dans site/notions-eco.js.
+// Mapping : Documentation/annales-eco-2023-2025.md §2bis
+//
+// ⚠️ Si on modifie une définition correspondant à notions-eco.js,
+//    synchroniser les deux versions.
+// ─────────────────────────────────────────────────────────────────────
 const TIPS = {
   offre_travail: {
     term: "Offre de travail",
@@ -489,9 +542,15 @@ const TIPS = {
   },
   halo_chomage: {
     term: "Halo du chômage",
-    def: "Personnes qui SOUHAITERAIENT travailler mais qui ne sont PAS comptées comme chômeurs au sens du BIT. Elles ne cherchent pas activement (découragement) ou ne sont pas disponibles immédiatement (formation, problème de santé). Le taux de chômage officiel sous-estime donc le vrai 'sous-emploi'.",
-    ex: "Une mère de famille qui voudrait travailler mais a arrêté de chercher par découragement après 2 ans de refus = halo. Elle n'apparaît pas dans le taux de chômage, mais elle est bien dans le halo. En France, le halo représente environ 2 millions de personnes.",
-    bac: "★★★☆☆ — Notion BONUS sur une copie : montre que tu nuances la mesure du chômage"
+    def: "Personnes INACTIVES au sens du BIT mais qui SOUHAITERAIENT travailler. Elles ne cherchent pas activement (découragement) ou ne sont pas disponibles immédiatement (formation, problème de santé). Le taux de chômage officiel sous-estime donc le vrai 'sous-emploi global'.",
+    ex: "Une mère de famille qui voudrait travailler mais a arrêté de chercher par découragement après 2 ans de refus = halo. En France, le halo représente environ 1,8 million de personnes — presque autant que le chômage officiel.",
+    bac: "★★★☆☆ — Tombé en 2025 Nouvelle-Calédonie (à DISTINGUER du sous-emploi)"
+  },
+  sous_emploi: {
+    term: "Sous-emploi",
+    def: "Personnes qui ONT un emploi mais voudraient travailler DAVANTAGE. Deux composantes : (1) le temps partiel SUBI (la personne voudrait être à temps plein) ; (2) le chômage technique / partiel (sous-activité dans l'entreprise, indemnisée). C'est une utilisation INCOMPLÈTE du facteur travail.",
+    ex: "Une caissière à 20 h/semaine qui aimerait être à 35 h = temps partiel subi. Les ouvriers Renault au chômage partiel en 2021 (pénurie de semi-conducteurs) = chômage technique. Concerne surtout les femmes et les jeunes.",
+    bac: "★★★☆☆ — Tombé en 2025 Nouvelle-Calédonie ('Distinguez halo du chômage et sous-emploi')"
   },
   numerique_emploi: {
     term: "Numérique et emploi",
@@ -570,6 +629,74 @@ const TIPS = {
     def: "Formule : ((Valeur finale − Valeur initiale) / Valeur initiale) × 100. Résultat en %. Utilisé pour commenter l'évolution du chômage, de l'emploi, de la population active d'une année à l'autre.",
     ex: "Le nombre de chômeurs passe de 3,2 à 2,8 millions : ((2,8 − 3,2) / 3,2) × 100 = −12,5%. Le chômage a baissé de 12,5%.",
     bac: "★★★☆☆ — TOUJOURS poser la formule, donner le résultat, puis commenter"
+  },
+  // ───── BLOC LIMITES ─────
+  cout_budgetaire: {
+    term: "Coût budgétaire des politiques de l'emploi",
+    def: "Les politiques actives (formation, contrats aidés, allègements de charges) coûtent cher : ~3 % du PIB français, soit environ 80 milliards d'euros par an. Ce coût pèse sur le budget de l'État, donc sur le déficit (déjà à 5,5 %) et la dette (~110 % du PIB). Tension directe avec les critères européens du Pacte de stabilité (3 % / 60 %).",
+    ex: "Le CICE (Crédit d'impôt compétitivité emploi, 2013-2018) a coûté ~20 Md€/an. Selon France Stratégie, il aurait créé environ 100 000 emplois, soit ~200 000 € par emploi créé. Coût-efficacité contesté.",
+    bac: "★★★☆☆ — À mobiliser dans une argumentation CONTRE des politiques de l'emploi très généreuses"
+  },
+  trappe_inactivite: {
+    term: "Trappe à inactivité",
+    def: "Situation où le système d'aides sociales rend la reprise d'un emploi peu intéressante financièrement. Si le cumul RSA + APL + autres aides approche le SMIC, un actif n'a pas d'incitation forte à accepter un emploi mal payé ou pénible. C'est un <strong>effet pervers</strong> de la redistribution.",
+    ex: "Un parent isolé au RSA + APL peut toucher ~1 200 €/mois. Un emploi à temps plein au SMIC net rapporte ~1 400 €, mais avec frais de transport, garde d'enfants, fatigue → gain net minime. Réformes en cours (prime d'activité) pour rendre le travail plus attractif.",
+    bac: "★★☆☆☆ — Argument classique de la critique libérale des politiques passives"
+  },
+  effet_aubaine: {
+    term: "Effet d'aubaine",
+    def: "Quand une aide publique (subvention, exonération, crédit d'impôt) profite à des entreprises qui auraient embauché de toute façon, sans l'aide. L'argent public est dépensé pour rien — il finance une décision déjà prise. C'est l'une des critiques majeures des politiques actives.",
+    ex: "Une entreprise qui prévoyait d'embaucher 10 personnes obtient une aide à l'embauche pour ces 10 postes. Sans l'aide, elle aurait embauché quand même : l'État paye sans créer de poste supplémentaire. Estimation : 20-40 % des aides à l'embauche en France relèvent de l'effet d'aubaine.",
+    bac: "★★☆☆☆ — Argument-clé dans le débat sur l'efficacité des politiques actives"
+  },
+  flex_secu: {
+    term: "Flexibilité vs sécurité",
+    def: "Tension structurelle sur le marché du travail. <strong>Flexibilité</strong> (demandée par les employeurs) = pouvoir embaucher/licencier facilement, ajuster les horaires, les contrats courts. <strong>Sécurité</strong> (demandée par les salariés) = stabilité de l'emploi, protection contre le licenciement, allocations. La <strong>flexicurité</strong> (modèle danois) tente de combiner les deux : flexibilité côté entreprise + sécurité forte côté salarié (allocations généreuses + formation).",
+    ex: "Réforme du marché du travail française 2017 (loi Travail) : assouplissement du licenciement (flexibilité) + monétisation du compte personnel de formation (sécurité). Inspirée du modèle danois.",
+    bac: "★★★☆☆ — À mobiliser dans une Q4 sur la modernisation du marché du travail"
+  },
+  // ───── CAPACITÉS ATTENDUES ─────
+  cap_t7_indicateurs: {
+    term: "🎯 Capacité : distinguer les indicateurs du chômage",
+    def: "Trois indicateurs à NE PAS confondre. <strong>Taux de chômage</strong> = chômeurs / population active × 100 (= ceux qui veulent travailler ET cherchent activement). <strong>Taux d'emploi</strong> = personnes en emploi / population en âge de travailler × 100 (mesure plus large). <strong>Halo du chômage</strong> = personnes qui veulent travailler mais ne cherchent plus activement (découragement) — non comptées dans le taux de chômage.",
+    ex: "Format attendu : « Le taux de chômage français est de ~7,5 % en 2024 (3 millions de chômeurs sur 30 millions d'actifs). Mais si on ajoute le halo du chômage (~2 millions de personnes), le sous-emploi réel est bien supérieur. Le taux d'emploi des 15-64 ans n'est que de 68 %, contre 75 % en Allemagne. »",
+    bac: "★★★★☆ — Tombé régulièrement, distinction taux chômage/halo attendue"
+  },
+  cap_t7_typologie: {
+    term: "🎯 Capacité : identifier les types de chômage",
+    def: "Trois types distincts du programme : <strong>Conjoncturel</strong> = lié à la baisse temporaire de la demande (crise économique) — la solution est la relance. <strong>Structurel</strong> = lié à des problèmes durables (inadéquation formation/emplois, rigidités) — la solution est la réforme structurelle. <strong>Frictionnel</strong> = lié au temps nécessaire pour trouver un nouvel emploi (incompressible, normal).",
+    ex: "Format attendu : « Le chômage post-Covid 2020 (10 %) était essentiellement conjoncturel — le plan de relance a permis de le résorber. Mais le chômage structurel français (~5-6 %) reste élevé : inadéquation entre les jeunes diplômés et les besoins du marché (numérique, industrie). »",
+    bac: "★★★☆☆ — Distinction structurel/conjoncturel attendue dans toute argumentation"
+  },
+  cap_t7_marche: {
+    term: "🎯 Capacité : décrire le marché du travail",
+    def: "Tu dois pouvoir expliquer la rencontre <strong>offre</strong> (salariés) / <strong>demande</strong> (employeurs), le <strong>salaire d'équilibre</strong> théorique, et le rôle du <strong>SMIC</strong> (plancher légal qui empêche le salaire de descendre sous un seuil). En théorie pure, un SMIC trop élevé créerait du chômage en empêchant l'équilibre. Mais en pratique, il protège les bas salaires et soutient la demande.",
+    ex: "Format attendu : « Sur le marché du travail, les salariés OFFRENT leur travail (attention au piège : c'est l'inverse du langage courant), les entreprises DEMANDENT du travail. Le SMIC (~1 400 € net en 2024) fixe un plancher : 13 % des salariés français sont au SMIC. Débat : soutient le pouvoir d'achat mais peut freiner l'embauche des moins qualifiés. »",
+    bac: "★★★☆☆ — Le piège offre/demande inversées est récurrent"
+  },
+  cap_t7_politiques: {
+    term: "🎯 Capacité : distinguer politiques actives et passives",
+    def: "<strong>Politiques actives</strong> = agir sur les CAUSES du chômage (formation, contrats aidés, allègements de charges, aide à la création d'entreprise). <strong>Politiques passives</strong> = amortir les EFFETS (indemnités chômage, préretraites, RSA). Les deux sont complémentaires mais ont des effets pervers : passives → trappe à inactivité ; actives → effet d'aubaine et coût budgétaire.",
+    ex: "Format attendu : « Pour réduire le chômage, la France combine politiques actives (Plan d'investissement dans les compétences, 15 Md€ pour la formation) et passives (allocations chômage versées par France Travail, ~40 Md€/an). Les actives sont jugées plus efficaces à long terme mais coûteuses. »",
+    bac: "★★★★☆ — Distinction structurante, tombée plusieurs fois"
+  },
+  cap_t7_mutations: {
+    term: "🎯 Capacité : analyser mondialisation et numérique",
+    def: "L'emploi subit deux grandes transformations : <strong>la mondialisation</strong> détruit des emplois industriels (délocalisations, concurrence des pays à bas coûts) mais crée des services et emplois qualifiés ; <strong>le numérique</strong> automatise les tâches répétitives mais crée des métiers techniques (data, cybersécurité, IA). Bilan net : polarisation de l'emploi (hauts salaires + emplois précaires, disparition des classes moyennes).",
+    ex: "Format attendu : « La France a perdu ~2 millions d'emplois industriels depuis 1980 (mondialisation, automatisation). Parallèlement, l'économie numérique a créé ~1 million d'emplois. Mais ces nouveaux emplois sont soit très qualifiés (ingénieur IA), soit précaires (livreur Uber). C'est la polarisation. »",
+    bac: "★★★☆☆ — Capacité d'analyse contemporaine, attendue en Q4"
+  },
+  cap_t7_flexisecurite: {
+    term: "🎯 Capacité : comprendre la tension flexibilité/sécurité",
+    def: "Tu dois pouvoir mobiliser ce débat structurant. <strong>Flexibilité</strong> (employeurs) = embaucher et licencier facilement. <strong>Sécurité</strong> (salariés) = stabilité et protection. La <strong>flexicurité</strong> (modèle danois, repris en France) tente de combiner les deux : licenciement facilité + indemnités chômage généreuses + formation continue financée.",
+    ex: "Format attendu : « Le modèle français évolue vers la flexicurité depuis les années 2010. La loi Travail 2017 a facilité le licenciement (flexibilité), tout en renforçant le compte personnel de formation (sécurité). Inspiré du Danemark, où le taux de chômage est de 5 % avec un licenciement très facile mais des allocations généreuses. »",
+    bac: "★★☆☆☆ — Argument moderne pour Q4 d'argumentation"
+  },
+  cap_t7_argumentation: {
+    term: "🎯 Capacité : argumenter en Q4 (le piège du bac)",
+    def: "La Q4 d'argumentation vaut ~6 points sur 20. Tu dois : (1) poser une thèse claire (OUI/NON nuancé), (2) mobiliser AU MOINS 2 notions du programme T7, (3) appuyer chaque argument par un EXEMPLE concret et daté, (4) montrer une opposition (politiques actives vs passives, flexibilité vs sécurité), (5) conclure en synthèse.",
+    ex: "Sujet : « Les politiques de l'emploi sont-elles efficaces pour réduire le chômage en France ? » Plan : OUI (CICE 100 000 emplois, formation Plan compétences) MAIS limites (effet d'aubaine 30 %, trappe à inactivité, mondialisation hors contrôle). Synthèse : oui ciblées (formation, jeunes décrocheurs) plutôt que générales.",
+    bac: "★★★★★ — LA capacité différenciante au bac"
   }
 };
 
@@ -580,8 +707,9 @@ document.querySelectorAll('[data-tip]').forEach(chip => {
     const tip = TIPS[key];
     if (!tip) return;
     document.getElementById('tipTerm').textContent = tip.term;
-    document.getElementById('tipDef').textContent = tip.def;
-    document.getElementById('tipEx').textContent = tip.ex;
+    // innerHTML pour permettre <strong>, <br>, etc. — TIPS est statique et contrôlé (pas de risque XSS).
+    document.getElementById('tipDef').innerHTML = tip.def;
+    document.getElementById('tipEx').innerHTML = tip.ex;
     document.getElementById('tipBac').textContent = tip.bac;
     document.getElementById('tipOverlay').classList.add('show');
   });

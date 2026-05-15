@@ -186,8 +186,9 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 
 <nav class="nav-epreuve">
   <a href="index.html" class="logo">Révi<span>zo</span></a>
-  <a href="epreuve-ecodroit.html" class="epreuve-link active">Éco-Droit</a>
-  <a href="revizo-msgn.html" class="epreuve-link">SGDN</a>
+  <a href="revizo-eco.html"   class="epreuve-link active">Éco</a>
+  <a href="revizo-droit.html" class="epreuve-link">Droit</a>
+  <a href="revizo-msgn.html"  class="epreuve-link">MSGN</a>
   <a href="revizo-philo.html" class="epreuve-link">Philo</a>
 </nav>
 <nav class="nav-rubriques">
@@ -287,10 +288,12 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
         <div class="inode-child">
           <div class="inode-label">Concept pivot <span class="freq">★★★★☆</span></div>
           <div class="inode-h">La compétitivité</div>
-          <div class="inode-def">Pour survivre dans le libre-échange, une entreprise ou un pays doit être <strong>compétitif</strong>. Deux leviers : la <strong>compétitivité-prix</strong> (produire MOINS CHER — baisse des coûts salariaux, productivité) et la <strong>compétitivité hors-prix</strong> (produire MIEUX — qualité, innovation, image de marque, design). Un sujet sur le libre-échange mobilise PRESQUE TOUJOURS ces deux notions.</div>
+          <div class="inode-def">Pour survivre dans le libre-échange, une entreprise ou un pays doit être <strong>compétitif</strong>. Deux leviers : la <strong>compétitivité-prix</strong> (produire MOINS CHER — baisse des coûts salariaux, productivité) et la <strong>compétitivité hors-prix</strong> (produire MIEUX — qualité, innovation, image de marque, design). Ces leviers dépendent de la <strong>combinaison des facteurs de production</strong> (travail + capital). La <strong>substitution</strong> du capital au travail (robots, IA) accroît la productivité mais peut générer du chômage technologique.</div>
           <div class="tree-sub">
             <span class="tree-chip chip-vert" data-tip="competitivite_prix">Compétitivité-prix</span>
             <span class="tree-chip chip-vert" data-tip="competitivite_horsprix">Compétitivité hors-prix</span>
+            <span class="tree-chip chip-jaune" data-tip="facteurs_prod">Facteurs de production (T/K)</span>
+            <span class="tree-chip chip-jaune" data-tip="substitution">Substitution T/K</span>
           </div>
         </div>
       </div>
@@ -349,6 +352,28 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
     </div>
   </div>
 
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- BLOC LIMITES (mondialisation/libre-échange) -->
+<!-- ═══════════════════════════════════════ -->
+<div style="background:#fdeef2;border:2px solid #b5415a;border-radius:14px;padding:14px 18px;width:100%;margin:16px 0">
+  <div class="tree-label" style="color:#b5415a">Limites de la mondialisation / du libre-échange ⚠️ <span class="freq">★★★☆☆</span></div>
+  <div style="font-size:14px;font-weight:900;color:#1e1c18;margin:4px 0">Pourquoi la mondialisation n'est pas la solution à tout</div>
+  <div style="font-size:12px;line-height:1.6;color:#3a3630">
+    Quatre limites majeures :<br>
+    • <strong>Désindustrialisation et destruction d'emplois</strong> : les délocalisations et la concurrence de la main-d'œuvre à bas coûts (Chine, Vietnam) détruisent les emplois dans les pays développés. La France a perdu 2 millions d'emplois industriels depuis 1980.<br>
+    • <strong>Inégalités creusées</strong> : les gagnants sont les FMN et les consommateurs (prix bas). Les perdants sont les ouvriers des pays en développement (conditions de travail, salaires) et les industriels des pays riches (faillites, reconversion).<br>
+    • <strong>Impact environnemental</strong> : transports intercontinentaux, pollution, dépendance énergétique croissante, extraction de ressources non renouvelables (cobalt, lithium) pour la technologie mondiale.<br>
+    • <strong>Crises systémiques</strong> : l'interdépendance des économies fait que les chocs se propagent rapidement (Covid-19 : ruptures de chaînes d'approvisionnement ; Ukraine 2022 : pénurie de blé et gaz ; financier 2008).
+  </div>
+  <div class="tree-sub" style="margin-top:8px">
+    <span class="tree-chip chip-rose" data-tip="desindustrialisation">Désindustrialisation</span>
+    <span class="tree-chip chip-rose" data-tip="inegalites_mondial">Inégalités mondiales</span>
+    <span class="tree-chip chip-rose" data-tip="impact_environnement">Impact environnemental</span>
+    <span class="tree-chip chip-rose" data-tip="crises_systemiques">Crises systémiques</span>
+  </div>
+  <div style="font-size:11px;color:#7a6a58;font-style:italic;margin-top:6px">Ex. : la sidérurgie française a perdu 200 000 emplois depuis 1970 (Lorraine) ; la taxe carbone aux frontières (TCAC) de l'UE vise à compenser cet impact mais risque de ralentir les échanges.</div>
 </div>
 
 <!-- ═══════════════════════════════════════ -->
@@ -438,6 +463,26 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
   </div>
 </div>
 
+<!-- Encart capacités attendues -->
+<style>
+.cap-link { color:#1a7a3c; font-weight:700; cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-decoration-color:#1a7a3c; text-underline-offset:3px; transition:background .1s; }
+.cap-link:hover { background:rgba(26,122,60,.08); border-radius:4px; }
+.cap-link strong { font-weight:800; }
+</style>
+<div style="background:#e6f5ec;border-left:4px solid #1a7a3c;border-radius:12px;padding:14px 18px;margin:16px 0">
+  <div class="tree-label" style="color:#1a7a3c;margin-bottom:6px">🎯 Ce que les correcteurs attendent (programme officiel)</div>
+  <div style="font-size:12px;line-height:1.9;color:#3a3630">
+    Sur le Thème 8, on attend que tu saches <em>(clique sur chaque ligne pour voir comment ça doit apparaître dans ta copie)</em> :<br>
+    <span class="cap-link" data-tip="cap_t8_concepts">✓ Distinguer <strong>mondialisation</strong>, <strong>internationalisation</strong>, <strong>DIT</strong> et <strong>DIPP</strong></span><br>
+    <span class="cap-link" data-tip="cap_t8_fmn">✓ Comprendre le rôle des <strong>FMN</strong> et des <strong>IDE</strong> dans la mondialisation</span><br>
+    <span class="cap-link" data-tip="cap_t8_ricardo">✓ Maîtriser l'<strong>avantage comparatif</strong> de Ricardo et la <strong>spécialisation</strong></span><br>
+    <span class="cap-link" data-tip="cap_t8_libre_protect">✓ Distinguer <strong>libre-échange</strong> et <strong>protectionnisme</strong>, mesurer leurs effets</span><br>
+    <span class="cap-link" data-tip="cap_t8_outils_protect">✓ Décrire les outils du protectionnisme : droits de douane, quotas, normes, subventions</span><br>
+    <span class="cap-link" data-tip="cap_t8_omc_ue">✓ Comprendre le rôle de l'<strong>OMC</strong> et des accords régionaux (<strong>UE</strong>)</span><br>
+    <span class="cap-link" data-tip="cap_t8_argumentation">✓ Mobiliser ces notions en argumentation Q4 (le libre-échange favorise-t-il vraiment la croissance ?)</span>
+  </div>
+</div>
+
 <!-- Footer -->
 <div style="text-align:center;font-size:10px;color:#a09880;margin-top:8px;font-weight:600">
   Révizo · Mémo Thème 8 · Économie STMG · Avril 2026 · Sources : 15 annales post-réforme, BO 2019, consignes de correction
@@ -457,6 +502,15 @@ body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c
 </div>
 
 <script>
+// ─────────────────────────────────────────────────────────────────────
+// 🔗 LIEN AVEC notions-eco.js — RÈGLE DE SYNCHRONISATION
+// Ce TIPS est la vue PÉDAGOGIQUE FINE du Thème 8 (29 tooltips).
+// La vue PROGRAMME CADRE (10 notions T8) est dans site/notions-eco.js.
+// Mapping : Documentation/annales-eco-2023-2025.md §2bis
+//
+// ⚠️ Si on modifie une définition correspondant à notions-eco.js,
+//    synchroniser les deux versions.
+// ─────────────────────────────────────────────────────────────────────
 const TIPS = {
   mondialisation: {
     term: "Mondialisation",
@@ -505,6 +559,18 @@ const TIPS = {
     def: "Politique commerciale favorable à la libre circulation des biens et services entre pays, par la suppression des barrières aux échanges. Arguments : baisse des prix pour les consommateurs, spécialisation, économies d'échelle, stimulation de l'innovation.",
     ex: "Le marché unique européen : les 27 pays de l'UE échangent sans droits de douane entre eux. Un produit fabriqué en Espagne arrive en France sans taxe.",
     bac: "★★★★★ — 'Le libre-échange favorise-t-il la croissance ?' (2025 Métropole)"
+  },
+  facteurs_prod: {
+    term: "Facteurs de production (travail & capital)",
+    def: "Les deux ressources combinées pour produire : le TRAVAIL (T) = la main-d'œuvre · le CAPITAL (K) = machines, équipements, locaux. Chaque entreprise choisit une proportion T/K selon les coûts relatifs, la technique disponible et les politiques publiques (formation, fiscalité). Industries capitalistiques (auto) vs services intensifs en travail (restauration).",
+    ex: "Une usine automobile = beaucoup de capital (chaînes de montage robotisées) + travail qualifié. Un restaurant = beaucoup de travail + peu de capital (cuisine + salle). 2023 Centres Étrangers : 'L'actuelle combinaison des facteurs de production en France contribue à l'attractivité du pays.'",
+    bac: "★★★☆☆ — Tombé en 2023 Centres Étrangers (combinaison T/K et attractivité)"
+  },
+  substitution: {
+    term: "Substitution des facteurs (T ⇌ K)",
+    def: "Remplacement d'un facteur par l'autre. Quand le capital devient relativement moins cher OU plus productif, les entreprises remplacent du TRAVAIL par du CAPITAL. Conséquence : gains de productivité MAIS risque de chômage technologique. Historiquement : tracteur (XXe siècle) → robots industriels (1970+) → IA générative (2023+).",
+    ex: "Les caisses automatiques dans les supermarchés remplacent les caissières = substitution K pour T. L'IA générative qui rédige des emails ou des résumés = substitution K (logiciel) pour T (employés tertiaires).",
+    bac: "★★★☆☆ — Tombé en 2025 Polynésie ('Substitution entre facteurs de production = source de chômage ?')"
   },
   avantage_comparatif: {
     term: "Avantage comparatif (Ricardo)",
@@ -619,6 +685,74 @@ const TIPS = {
     def: "Formule : ((Valeur finale − Valeur initiale) / Valeur initiale) × 100. Résultat en %. C'est LE calcul le plus demandé au Bac. Utilisé pour commenter l'évolution des échanges, du PIB, de la balance commerciale.",
     ex: "Les exportations passent de 500 à 550 milliards : ((550−500)/500) × 100 = +10%. On dit que les exportations ont augmenté de 10%.",
     bac: "★★★☆☆ — TOUJOURS poser la formule, donner le résultat avec %, puis commenter"
+  },
+  // ───── BLOC LIMITES (4 entrées) ─────
+  desindustrialisation: {
+    term: "Désindustrialisation",
+    def: "Processus de déclin des activités industrielles dans un pays, dû aux délocalisations et à la concurrence des pays à bas coûts. Les usines ferment, les emplois manufacturiers disparaissent. La France a perdu 2 millions d'emplois industriels depuis 1980, notamment en <strong>sidérurgie</strong>, textile et automobile.",
+    ex: "La Lorraine française : fermeture des hauts-fourneaux (années 1970-80), chômage massif. Aujourd'hui, la Chine produit 50% de l'acier mondial. Reconversion difficile vers les services, souvent moins bien payés.",
+    bac: "★★★☆☆ — À mobiliser dans une argumentation CONTRE le libre-échange sans limites"
+  },
+  inegalites_mondial: {
+    term: "Inégalités amplifiées par la mondialisation",
+    def: "Le libre-échange crée des gagnants et des perdants asymétriques. <strong>Gagnants</strong> : FMN (profits croissants), consommateurs (prix bas), pays avec avantages comparatifs forts (Chine, Allemagne). <strong>Perdants</strong> : ouvriers non qualifiés (chômage, baisse des salaires réels), petites/moyennes entreprises nationales (faillites), pays en développement exploités (salaires misérables, conditions de travail).",
+    ex: "Un PDG de groupe Fortune 500 gagne 300× le salaire moyen du pays. Une ouvrière chinoise en usine textile gagne 200 EUR/mois pour 10h/jour. Un ménage français de classe moyenne voit ses salaires stagner depuis 2008 malgré la croissance.",
+    bac: "★★★☆☆ — Argument clé pour critiquer le libre-échange : utile en Q4 OUI/MAIS"
+  },
+  impact_environnement: {
+    term: "Impact environnemental de la mondialisation",
+    def: "Les chaînes de valeur mondiales génèrent une <strong>pollution liée aux transports</strong> (conteneurs par cargo, CO2 croissant), une <strong>surexploitation des ressources</strong> (lithium pour les batteries, cobalt pour l'électronique, eau pour le textile), et une <strong>dépendance énergétique mondiale</strong> fragile (2022 : crise énergétique due à la Russie). La taxe carbone aux frontières (TCAC) de l'UE vise à compenser cet impact.",
+    ex: "Un t-shirt fabriqué au Bangladesh, expédié en conteneur vers l'Europe : pollution textile locale + transport transcontinental = 2,7 kg CO2 par t-shirt. L'IA générative consomme de l'électricité massive = nouvelle dépendance énergétique.",
+    bac: "★★★☆☆ — Notion TENDANCE depuis 2023 (développement durable, RSE)"
+  },
+  crises_systemiques: {
+    term: "Crises systémiques et interdépendance",
+    def: "L'interdépendance des économies mondiales fait qu'un choc local se propage globalement. <strong>Covid-19 (2020)</strong> : rupture des chaînes d'approvisionnement → pénurie partout. <strong>Guerre Ukraine (2022)</strong> : pénurie de blé, gaz, métaux rares → inflation mondiale. <strong>Crise financière 2008</strong> : effondrement US → récession globale. La <strong>découpling</strong> (démondialisation progressive) est une réaction pour réduire cette vulnérabilité.",
+    ex: "Février 2020 : fermeture des usines chinoises → rupture de pièces détachées autos en Europe 2-3 mois plus tard. 2022 : blocage du grain ukrainien → prix céréales + 30% en 3 mois → crises alimentaires en Afrique.",
+    bac: "★★★☆☆ — Argument contemporain, très actuel pour l'argumentation Q4"
+  },
+  // ───── CAPACITÉS ATTENDUES (7 entrées) ─────
+  cap_t8_concepts: {
+    term: "🎯 Capacité : distinguer les concepts du T8",
+    def: "Le correcteur attend que tu différencies 4 concepts clés. <strong>Mondialisation</strong> = processus observable d'ouverture (FAIT). <strong>Internationalisation</strong> = augmentation des échanges (CONSÉQUENCE). <strong>DIT</strong> = un PAYS se spécialise dans un PRODUIT (Ricardo, années 1950-1990). <strong>DIPP</strong> = une ÉTAPE d'un produit dans chaque pays (années 1990+, chaînes de valeur modernes).",
+    ex: "Format attendu : « La mondialisation désigne l'ouverture des économies, observable par l'internationalisation croissante des échanges (le commerce représente 60% du PIB mondial). Mais la forme a évolué : de la DIT (la France produit du vin, le Portugal du textile) vers la DIPP (un iPhone : design USA, puces Corée, assemblage Chine, logistique Pays-Bas). »",
+    bac: "★★★☆☆ — Distinction DIPP = TENDANCE très attendue depuis 2020"
+  },
+  cap_t8_fmn: {
+    term: "🎯 Capacité : expliquer FMN et IDE",
+    def: "Tu dois pouvoir dire : les <strong>FMN sont les acteurs principaux de la mondialisation</strong> — elles produisent et investissent dans plusieurs pays pour chercher les meilleures conditions (coûts bas, matières premières, marchés). Les <strong>IDE (Investissements Directs à l'Étranger) matérialisent cette stratégie</strong>. On distingue : <strong>IDE entrants</strong> (des FMN étrangères investissent CHEZ NOUS) vs <strong>IDE sortants</strong> (nos FMN investissent À L'ÉTRANGER). Bilan : création d'emplois mais aussi délocalisation.",
+    ex: "Format attendu : « Les FMN comme Apple ou Toyota fondent la mondialisation. Toyota ouvre une usine en France (IDE entrant) pour être plus proche de ses clients européens et réduire les coûts de transport. Renault ouvre une usine en Roumanie (IDE sortant) pour les bas salaires. Les IDE mondiaux étaient de 1,6 trillion USD en 2021. »",
+    bac: "★★★☆☆ — IDE tombé en 5 sujets sur 15, distinction entrant/sortant attendue"
+  },
+  cap_t8_ricardo: {
+    term: "🎯 Capacité : maîtriser l'avantage comparatif",
+    def: "C'est LE fondement théorique du libre-échange. Ricardo dit : même si un pays est moins bon que d'autres dans TOUS les domaines, il a intérêt à se spécialiser dans ce où il est le MOINS mauvais (avantage comparatif = relatif, pas absolu). Cela justifie la <strong>spécialisation</strong> et permet à <strong>chaque pays de gagner au commerce</strong>. Mais attention : c'est de la théorie. La réalité inclut coûts de transport, rigidités du travail, inégalités.",
+    ex: "Format attendu : « Selon Ricardo, même si la France produit tout mieux que la Thaïlande, si elle est BEAUCOUP meilleure en aéronautique (Airbus) mais seulement LÉGÈREMENT meilleure en textile, elle a intérêt à se spécialiser en aéronautique et importer du textile. Chaque pays y gagne. Mais en réalité, le textile français disparaît (chômage). »",
+    bac: "★★☆☆☆ — Notion théorique, calcul rarement demandé. Surtout utile pour CRITIQUER le libre-échange"
+  },
+  cap_t8_libre_protect: {
+    term: "🎯 Capacité : débattre libre-échange vs protectionnisme",
+    def: "C'EST LE SUJET BAC. Tu dois pouvoir présenter les DEUX visions et peser leurs EFFETS. <strong>Libre-échange : avantages</strong> (baisse des prix, spécialisation, innovations, croissance) <strong>mais inconvénients</strong> (désindustrialisation, inégalités, dépendance). <strong>Protectionnisme : avantages</strong> (protège emplois, industries stratégiques) <strong>mais inconvénients</strong> (renchérissement, représailles commerciales, guerre des tarifs = réduit le bien-être global).",
+    ex: "Format attendu : « Le libre-échange baisse les prix pour les consommateurs (t-shirt à 10 EUR au lieu de 25 EUR) mais détruit les emplois textiles français. Le protectionnisme (droits de douane 50% = t-shirt 15 EUR + emplois maintenus) préserve l'emploi mais coûte cher au consommateur et provoque des représailles (l'UE augmente les droits sur l'acier US → les autos US augmentent). »",
+    bac: "★★★★★ — Question d'argumentation très probable : 'Le libre-échange favorise-t-il la croissance ?' (2025 Métropole)"
+  },
+  cap_t8_outils_protect: {
+    term: "🎯 Capacité : décrire les outils du protectionnisme",
+    def: "Deux familles : <strong>barrières tarifaires</strong> = <strong>droits de douane</strong> (taxes, ex. 25% sur l'acier chinois) ; <strong>barrières non tarifaires</strong> (plus discrètes, plus efficaces) = <strong>quotas</strong> (limiter le volume), <strong>normes</strong> (sanitaires, tech, environnement), <strong>subventions</strong> (aider les producteurs nationaux). Tu dois pouvoir expliquer l'EFFET de chacun : droit de douane → prix monte → produit national redevient compétitif ; quota → pénurie artificielle → prix monte.",
+    ex: "Format attendu : « Les USA imposent 25% de droits de douane sur l'acier chinois (barrière tarifaire). L'acier chinois coûte 400 USD/tonne, avec droit = 500 USD, donc l'acier US (480 USD) devient compétitif. L'UE limite les importations de bananes non-ACP à 2,6 millions de tonnes/an (quota) pour protéger la Guadeloupe. »",
+    bac: "★★★☆☆ — Tombé en 2025 Métropole (ArchiDij974). Appliquer la formule : outil → mécanisme → effet"
+  },
+  cap_t8_omc_ue: {
+    term: "🎯 Capacité : comprendre OMC et UE",
+    def: "L'<strong>OMC (164 pays)</strong> tente de réguler le commerce mondial avec des principes (non-discrimination, transparence, réciprocité) et règle les différends. Limites : très lente, montée du bilatéralisme (USA-Chine, pas via l'OMC). L'<strong>UE (27 pays)</strong> est l'accord régional le plus abouti : marché unique (0 droits), libre circulation des biens/services/personnes/capitaux, monnaie commune (euro). Elle démontre que l'intégration peut aller très loin, mais crée aussi des tensions (inégalités régionales, migrations).",
+    ex: "Format attendu : « Quand les USA imposent des droits de douane sur l'acier européen (2018), l'UE porte plainte à l'OMC, qui conclut que c'est illégal. Mais l'OMC ne peut pas forcer les USA à obéir — ils restent en place. L'UE autorise alors contre-mesures. C'est un exemple des limites de l'OMC. À l'inverse, dans l'UE, une voiture allemande arrive en France sans droits ni contrôle. »",
+    bac: "★★★☆☆ — OMC moins testée (★★), UE plus testée (★★★). Bien connaître l'UE = avantage au Bac"
+  },
+  cap_t8_argumentation: {
+    term: "🎯 Capacité : argumenter en Q4 (le piège du bac)",
+    def: "La Q4 d'argumentation vaut ~6 points sur 20. Pour T8, tu dois : (1) poser une thèse claire sur le libre-échange (OUI/NON nuancé), (2) mobiliser AU MOINS 2 notions du programme T8 (libre-échange, protectionnisme, FMN, IDE, compétitivité, limites), (3) appuyer chaque argument avec un EXEMPLE concret et daté, (4) montrer une opposition (ex. gagnants vs perdants, court-terme vs long-terme, théorie vs réalité), (5) conclure en synthèse subtile.",
+    ex: "Sujet : 'Le libre-échange favorise-t-il vraiment la croissance économique ?' Plan OUI (Ricardo, économies d'échelle, baisse des prix, Airbus exporte) MAIS NON (désindustrialisation 2 millions emplois, inégalités creusées, dépendance chaînes de valeur 2020). Synthèse : libre-échange OUI pour la croissance GLOBALE (+3% PIB) MAIS concentrée (FMN, services qualifiés) → redistribution + normes urgentes.",
+    bac: "★★★★★ — LA capacité différenciante. À entraîner spécifiquement sur cette question"
   }
 };
 
@@ -629,8 +763,9 @@ document.querySelectorAll('[data-tip]').forEach(chip => {
     const tip = TIPS[key];
     if (!tip) return;
     document.getElementById('tipTerm').textContent = tip.term;
-    document.getElementById('tipDef').textContent = tip.def;
-    document.getElementById('tipEx').textContent = tip.ex;
+    // innerHTML pour permettre <strong>, <br>, etc. — TIPS est statique et contrôlé (pas de risque XSS).
+    document.getElementById('tipDef').innerHTML = tip.def;
+    document.getElementById('tipEx').innerHTML = tip.ex;
     document.getElementById('tipBac').textContent = tip.bac;
     document.getElementById('tipOverlay').classList.add('show');
   });
