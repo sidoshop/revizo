@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Révizo — Droit Terminale STMG</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --fond: #f0ede6; --blanc: #fffdf8; --texte: #1e1c18;
+  --accent: #b5415a; --jaune: #f5c842; --vert: #2d7a4f;
+  --bleu: #2563a8; --gris: #8a8478; --bordure: #ddd8cc;
+}
+body {
+  font-family: 'Inter', sans-serif; background: var(--fond);
+  color: var(--texte); min-height: 100vh;
+}
+
+.page { max-width: 900px; margin: 0 auto; padding: 40px 24px 60px; }
+
+.page-hd { text-align: center; margin-bottom: 28px; }
+.page-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 28px; font-weight: 900;
+  margin-bottom: 6px;
+}
+.page-sub { font-size: 14px; color: var(--gris); }
+
+.access-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 24px;
+}
+.access-card {
+  background: white;
+  border: 1.5px solid var(--bordure);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 18px 22px;
+  text-decoration: none;
+  color: var(--texte);
+  transition: all .15s;
+  display: block;
+}
+.access-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  border-left-color: var(--bleu);
+}
+.access-emoji { font-size: 26px; margin-bottom: 6px; }
+.access-name {
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px; font-weight: 900;
+  margin-bottom: 4px;
+}
+.access-desc { font-size: 12.5px; color: var(--gris); line-height: 1.5; }
+
+.notice {
+  background: #fff8e6;
+  border: 1.5px dashed #f0d070;
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-top: 30px;
+  text-align: center;
+}
+.notice-icon { font-size: 30px; margin-bottom: 6px; }
+.notice-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px; font-weight: 800;
+  color: #7a5800;
+  margin-bottom: 6px;
+}
+.notice-text {
+  font-size: 13px; color: #5a4400; line-height: 1.5;
+  max-width: 550px; margin: 0 auto;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV TOP : épreuves -->
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="revizo-eco.html" class="epreuve-link">Éco</a>
+  <a href="revizo-droit.html" class="epreuve-link active">Droit</a>
+  <a href="revizo-msgn.html" class="epreuve-link">MSGN</a>
+  <a href="revizo-philo.html" class="epreuve-link">Philo</a>
+</nav>
+
+<!-- NAV BASSE : rubriques Droit (utilisation des pages existantes) -->
+<nav class="nav-rubriques">
+  <a href="memos-droit.html">📖 Mémos</a>
+  <a href="flashcards-droit.html">🃏 Flashcards</a>
+  <a href="questions-bac-droit.html">📋 Questions Bac</a>
+  <a href="methode-jour-j-droit.html">🎯 Méthode Jour J</a>
+  <a href="vocabulaire-droit.html">📚 Vocabulaire</a>
+</nav>
+
+<div class="page">
+
+  <div class="page-hd">
+    <h1 class="page-title">⚖️ Révizo — Droit Terminale STMG</h1>
+    <p class="page-sub">
+      Hub d'accès aux ressources Droit · 4 thèmes au programme · épreuve 10 points sur 20 (l'autre moitié = Éco)
+    </p>
+  </div>
+
+  <div class="access-grid">
+    <a href="memos-droit.html" class="access-card">
+      <div class="access-emoji">📖</div>
+      <div class="access-name">Mémos thématiques</div>
+      <div class="access-desc">Les 4 thèmes du programme en fiches flux narratif (5, 6, 7, 8).</div>
+    </a>
+    <a href="flashcards-droit.html" class="access-card">
+      <div class="access-emoji">🃏</div>
+      <div class="access-name">Flashcards</div>
+      <div class="access-desc">Entraînement actif sur les notions-clés du programme.</div>
+    </a>
+    <a href="questions-bac-droit.html" class="access-card">
+      <div class="access-emoji">📋</div>
+      <div class="access-name">Questions du Bac</div>
+      <div class="access-desc">Types de questions récurrents avec exemples corrigés.</div>
+    </a>
+    <a href="methode-jour-j-droit.html" class="access-card">
+      <div class="access-emoji">🎯</div>
+      <div class="access-name">Méthode Jour J</div>
+      <div class="access-desc">Plan de bataille pour les 2 heures de Droit le jour de l'épreuve.</div>
+    </a>
+    <a href="vocabulaire-droit.html" class="access-card">
+      <div class="access-emoji">📚</div>
+      <div class="access-name">Vocabulaire</div>
+      <div class="access-desc">Glossaire des termes juridiques essentiels.</div>
+    </a>
+    <a href="question4-droit.html" class="access-card">
+      <div class="access-emoji">✍️</div>
+      <div class="access-name">Question 4 (Argumentation)</div>
+      <div class="access-desc">Méthode pour la question d'argumentation juridique de fin d'épreuve.</div>
+    </a>
+  </div>
+
+  <div class="notice">
+    <div class="notice-icon">🚧</div>
+    <div class="notice-title">Refonte du module Droit à venir</div>
+    <div class="notice-text">
+      Le module Droit utilise pour l'instant les pages existantes du site (mémos, flashcards, questions bac, méthode).
+      Une refonte sur le modèle du module Éco (avec onglet <strong>Intro</strong> + carte de raisonnement) est prévue après
+      finalisation du module Éco. En attendant, les liens ci-dessus pointent vers les pages déjà en ligne.
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

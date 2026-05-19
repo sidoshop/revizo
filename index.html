@@ -111,10 +111,15 @@
     }
 
     /* Couleurs par épreuve */
-    .card-ecodroit { border-color: #1a3d5c; }
-    .card-ecodroit .card-icon { background: #e8f3ff; }
-    .card-ecodroit .card-title { color: #1a3d5c; }
-    .card-ecodroit .card-status { background: #e8f3ff; color: #1a3d5c; }
+    .card-eco { border-color: #1a4778; }
+    .card-eco .card-icon { background: #e8f3ff; }
+    .card-eco .card-title { color: #1a4778; }
+    .card-eco .card-status { background: #e8f3ff; color: #1a4778; }
+
+    .card-droit { border-color: #8c2030; }
+    .card-droit .card-icon { background: #fdeef2; }
+    .card-droit .card-title { color: #8c2030; }
+    .card-droit .card-status { background: #fdeef2; color: #8c2030; }
 
     .card-sgdn { border-color: #3d1a5c; }
     .card-sgdn .card-icon { background: #f3eafc; }
@@ -165,9 +170,10 @@
   <!-- BARRE HAUTE -->
   <nav class="nav-epreuve">
     <a href="index.html" class="logo">Révi<span>zo</span></a>
-    <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
-    <a href="revizo-msgn.html"     class="epreuve-link">SGDN</a>
-    <a href="revizo-philo.html"    class="epreuve-link">Philo</a>
+    <a href="revizo-eco.html"   class="epreuve-link">Éco</a>
+    <a href="revizo-droit.html" class="epreuve-link">Droit</a>
+    <a href="revizo-msgn.html"  class="epreuve-link">MSGN</a>
+    <a href="revizo-philo.html" class="epreuve-link">Philo</a>
   </nav>
 
   <!-- HERO -->
@@ -179,11 +185,20 @@
   <!-- CARTES ÉPREUVES -->
   <div class="epreuves">
 
-    <a href="epreuve-ecodroit.html" class="epreuve-card card-ecodroit">
+    <a href="revizo-eco.html" class="epreuve-card card-eco">
       <div class="card-icon">📊</div>
       <div class="card-body">
-        <div class="card-title">Éco-Droit</div>
-        <div class="card-sub">Économie · Droit — 8 mémos · 137 flashcards · 12 types Bac</div>
+        <div class="card-title">Économie</div>
+        <div class="card-sub">10 pts · 47 notions · 13 sujets bac (2023-2025) · 4 thèmes (T6/T7/T8/T9)</div>
+      </div>
+      <div class="card-status">Disponible</div>
+    </a>
+
+    <a href="revizo-droit.html" class="epreuve-card card-droit">
+      <div class="card-icon">⚖️</div>
+      <div class="card-body">
+        <div class="card-title">Droit</div>
+        <div class="card-sub">10 pts · 4 mémos · flashcards · vocabulaire juridique · méthode jour J</div>
       </div>
       <div class="card-status">Disponible</div>
     </a>
@@ -191,10 +206,10 @@
     <a href="revizo-msgn.html" class="epreuve-card card-sgdn" style="text-decoration:none">
       <div class="card-icon">⚙️</div>
       <div class="card-body">
-        <div class="card-title">SGDN</div>
+        <div class="card-title">MSGN</div>
         <div class="card-sub">Management · Sciences de gestion · Numérique — 18 types Bac · 44 notions</div>
       </div>
-      <div class="card-status" style="background:#eef6ee;color:#1a7a3c">MSGN</div>
+      <div class="card-status" style="background:#eef6ee;color:#1a7a3c">Disponible</div>
     </a>
 
     <a href="revizo-philo.html" class="epreuve-card card-philo">

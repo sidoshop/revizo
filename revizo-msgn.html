@@ -78,6 +78,29 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
   display: block;
 }
 
+/* Panneau latéral fiche verbe — même mécanique que #carte-overlay (slide-in
+   droite), mais plus étroit car la fiche est moins dense qu'une carte. */
+#verb-overlay {
+  position: fixed;
+  top: 84px;
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  max-width: 720px;
+  background: var(--fond);
+  box-shadow: -8px 0 28px rgba(0,0,0,0.18);
+  z-index: 160; /* au-dessus de carte-overlay (150) si jamais les deux étaient
+                   ouverts simultanément — on les ferme mutuellement par sécurité */
+  display: flex;
+  flex-direction: column;
+  animation: slide-in-right 0.25s ease-out;
+}
+#verb-overlay-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 22px 28px;
+}
+
 /* MODALE "MÉTHODE COMPLÈTE" (TYPE) — s'ouvre par-dessus le panneau Carte
    lors du clic sur "Voir la méthode complète" dans la popup bac. */
 #type-modal {
@@ -277,8 +300,9 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
 
 <nav class="nav-epreuve">
   <a href="index.html" class="logo">Révi<span>zo</span></a>
-  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
-  <a href="revizo-msgn.html" class="epreuve-link active">SGDN</a>
+  <a href="revizo-eco.html"   class="epreuve-link">Éco</a>
+  <a href="revizo-droit.html" class="epreuve-link">Droit</a>
+  <a href="revizo-msgn.html"  class="epreuve-link active">MSGN</a>
   <a href="revizo-philo.html" class="epreuve-link">Philo</a>
 </nav>
 <nav class="nav-rubriques">
@@ -429,8 +453,8 @@ const Q = {
       {n:5, t:"Contextualiser pour l'entreprise", d:"<em>'La TN positive de 45 000€ signifie que Topschuss peut faire face à ses échéances sans recours bancaire.'</em>"}
     ],
     mots:["FRNG","BFR","trésorerie nette","ressources stables","emplois stables","cycle d'exploitation"],
-    annale:{src:"Bac STMG MSGN · Métropole 2024", q:"À partir des documents, calculez le FRNG, le BFR et la trésorerie nette de Topschuss pour N et N-1. Vous commenterez les résultats obtenus."},
-    corrige:`<strong>FRNG :</strong><br>FRNG = Ressources stables − Emplois stables<br>N-1 : 320 000 − 295 000 = <strong>25 000 €</strong> | N : 410 000 − 360 000 = <strong>50 000 €</strong><br><br>Le FRNG progresse de 25 000 à 50 000 €. L'augmentation de capital en N a renforcé les ressources stables de Topschuss, offrant une marge de sécurité plus large.<br><br><strong>BFR :</strong><br>BFR = 240 000 − 210 000 = <strong>30 000 €</strong> en N (vs 20 000 en N-1).<br>Le BFR augmente avec la croissance de l'activité et les stocks outdoor plus importants.<br><br><strong>TN = FRNG − BFR :</strong><br>N : 50 000 − 30 000 = <strong>20 000 €</strong> (vs 5 000 en N-1).<br>La trésorerie est positive et en forte amélioration. Topschuss est solvable à court terme.`,
+    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"À partir des documents, calculez le FRNG, le BFR et la trésorerie nette de Topschuss en 2022. Vous commenterez les résultats obtenus."},
+    corrige:`<strong>FRNG :</strong><br>FRNG = Ressources stables − Emplois stables = 21 857 305 − 7 362 156 = <strong>14 495 149 €</strong><br><br><strong>BFR :</strong><br>BFR = Actif circulant − Passif circulant = 17 225 417 − 13 624 272 = <strong>3 601 145 €</strong><br><br><strong>TN = FRNG − BFR :</strong><br>TN = 14 495 149 − 3 601 145 = <strong>10 894 004 €</strong><br><br><strong>Commentaire :</strong><br>Topschuss dispose d'une trésorerie nette largement positive (≈ 10,9 M€). Les ressources stables couvrent largement les emplois stables, et le BFR reste modéré au regard du FRNG : l'entreprise peut financer son cycle d'exploitation et faire face à ses échéances sans recours bancaire. Néanmoins, une forte croissance de l'activité pourrait dégrader cet équilibre (hausse du BFR) : une vigilance reste de mise.`,
     alerte:"Le calcul seul = moitié des points. Le commentaire est aussi important. Toujours mentionner l'entreprise dans l'interprétation.",
     astuce:"Vérification : TN = FRNG − BFR. Si le résultat ne coïncide pas avec Actif tréso − Passif tréso, il y a une erreur."
   },
@@ -447,8 +471,8 @@ const Q = {
       {n:5, t:"Contextualiser", d:"<em>'Un résultat d'exploitation positif confirme que l'activité principale de X est rentable.'</em>"}
     ],
     mots:["valeur ajoutée","richesse créée","résultat d'exploitation","performance opérationnelle","consommations intermédiaires"],
-    annale:{src:"Bac STMG MSGN · Métropole 2022 (Caraïbes Fumés)", q:"Calculez la valeur ajoutée et le résultat d'exploitation de Caraïbes Fumés pour N et N-1. Analysez leur évolution."},
-    corrige:`<strong>Valeur ajoutée :</strong><br>VA = CA − Consommations intermédiaires<br>N-1 : 850 000 − 420 000 = <strong>430 000 €</strong> | N : 980 000 − 460 000 = <strong>520 000 €</strong><br><br>La VA progresse de 21 %, traduisant une création de richesse en hausse. Caraïbes Fumés valorise davantage sa transformation artisanale locale.<br><br><strong>Résultat d'exploitation :</strong><br>N : 520 000 − 310 000 − 85 000 = <strong>125 000 €</strong><br><br>Le résultat d'exploitation est positif : l'activité de transformation du poisson est rentable. Sa progression reflète la montée en gamme de l'offre.`,
+    annale:{src:"Bac STMG MSGN · Métropole 2022 (Caraïbes Fumés)", q:"Calculer les indicateurs de création de valeur de Caraïbes Fumés en 2020 (valeur ajoutée, résultat d'exploitation, résultat net) et procéder à l'analyse de sa performance financière."},
+    corrige:`<strong>Valeur ajoutée 2020 :</strong><br>VA = Production − Consommations intermédiaires = 3 225 485 − 2 012 893 = <strong>1 212 592 €</strong><br>Évolution 2019 → 2020 : <strong>+ 26,09 %</strong> (vs 961 668 € en 2019)<br><br><strong>Résultat d'exploitation 2020 :</strong><br>Rex = 3 225 485 − 2 847 305 = <strong>378 180 €</strong><br>Évolution 2019 → 2020 : <strong>− 2,53 %</strong> (vs 388 008 € en 2019)<br><br><strong>Résultat net 2020 :</strong><br>RN = <strong>428 175 €</strong><br>Évolution 2019 → 2020 : <strong>− 29,32 %</strong> (vs 605 818 € en 2019)<br><br><strong>Analyse :</strong><br>La VA augmente fortement (+ 26 %) : Caraïbes Fumés crée davantage de richesse. Pourtant, le bénéfice (résultat net) chute de 29 %. Cette baisse s'explique principalement par l'effondrement du résultat exceptionnel (≈ − 169 000 €, soit − 77 %) et, dans une moindre mesure, par un léger repli du résultat d'exploitation (− 2,5 %). En 2020, la création de richesse progresse mais la rentabilité globale se dégrade.`,
     alerte:"VA ≠ chiffre d'affaires. Deux entreprises avec le même CA peuvent avoir des VA très différentes.",
     astuce:"La VA se répartit entre salariés (charges de personnel), État (impôts) et l'entreprise elle-même (autofinancement). Mentionner cette répartition valorise la réponse."
   },
@@ -465,7 +489,7 @@ const Q = {
     ],
     mots:["style de direction","grille de Likert","délégation","centralisation","communication bidirectionnelle"],
     annale:{src:"Bac STMG MSGN · Métropole 2023 (Ankama)", q:"Identifiez et justifiez le style de direction adopté par le dirigeant d'Ankama. Appuyez-vous sur des éléments précis des documents."},
-    corrige:`Le style de direction est le style <strong>participatif</strong> (grille de Likert).<br><br>Ce style se caractérise par une forte délégation, une co-décision et une communication bidirectionnelle.<br><br>— Doc 2 : les équipes proposent et valident elles-mêmes les projets artistiques.<br>— Doc 4 : le fondateur co-crée les orientations stratégiques avec ses équipes lors de sessions collectives.<br>— Doc 5 : faible turnover → climat de confiance caractéristique du style participatif.<br><br>Ce style favorise la créativité et l'engagement, essentiels dans les secteurs de la création et du jeu vidéo.`,
+    corrige:`Le style de direction adopté par Anthony Roux (fondateur d'Ankama) est le style <strong>paternaliste</strong> (grille de Likert).<br><br>Ce style se caractérise par un dirigeant qui prend seul les décisions (autorité centralisée) tout en se comportant avec ses salariés comme un père de famille : bienveillance, esprit familial, fidélité, confiance.<br><br>— Anthony Roux décide seul des orientations stratégiques, fort de sa légitimité de fondateur et de son charisme.<br>— Esprit familial à l'intérieur de l'entreprise : tutoiement généralisé, ambiance décontractée, attention portée au bien-être des collaborateurs.<br>— Avantages accordés aux salariés : salle de sport, crèche, cinéma, zéro jour de carence — autant de preuves d'une démarche paternaliste assumée.<br><br>Au regard de la culture créative de l'organisation (confiance, collaboration), un style <strong>participatif</strong> aurait également pu être pertinent : davantage de co-décision et de délégation auraient pu nourrir encore plus la créativité des équipes.`,
     alerte:"Ne jamais nommer deux styles. Un seul, le plus représentatif. Style ≠ personnalité.",
     astuce:"Chercher dans les docs les mots : 'décide seul', 'consulte', 'délègue', 'équipe autonome'. Ce sont les signaux directs."
   },
@@ -483,7 +507,7 @@ const Q = {
     ],
     mots:["culture organisationnelle","valeurs","rites","symboles","cohésion","identité collective"],
     annale:{src:"Bac STMG MSGN · Métropole 2023 (Ankama)", q:"Montrez qu'Ankama possède une culture organisationnelle forte."},
-    corrige:`La culture organisationnelle regroupe les valeurs, rites et symboles partagés qui créent l'identité collective d'Ankama.<br><br><strong>Valeurs :</strong> Doc 1 → la passion créative et l'originalité sont des valeurs fondatrices. Chaque projet doit "surprendre" le public.<br><br><strong>Rites :</strong> Doc 3 → sessions hebdomadaires de pitching créatif → rituel d'appartenance au studio.<br><br><strong>Symboles :</strong> Doc 2 → l'univers graphique des Krosmoz est présent sur tous les supports (jeux, BD, boutique) → symbole identitaire fort.<br><br>Cette culture forte explique le faible turnover et la capacité d'Ankama à attirer des profils créatifs passionnés.`,
+    corrige:`La culture organisationnelle regroupe les valeurs, rites et symboles partagés qui créent l'identité collective d'Ankama.<br><br><strong>Valeurs :</strong> esprit familial, fidélité, confiance accordée aux salariés, créativité et bien-être au travail. Ces valeurs sont incarnées et défendues par le fondateur Anthony Roux.<br><br><strong>Rites :</strong> tutoiement généralisé, ambiance décontractée, moments collectifs partagés autour des infrastructures dédiées (salle de sport, crèche d'entreprise, cinéma, espaces de détente).<br><br><strong>Symboles :</strong> la figure d'Anthony Roux lui-même, dirigeant charismatique perçu comme un « père de famille » de l'entreprise ; les locaux et aménagements dédiés au bien-être ; le zéro jour de carence accordé aux salariés.<br><br>Cette culture forte fédère les équipes, justifie le faible turnover et permet à Ankama d'attirer et de fidéliser des profils créatifs.`,
     alerte:"Lister des caractéristiques sans les rattacher aux 3 composantes (valeurs/rites/symboles) = réponse incomplète.",
     astuce:"Dans les docs, chercher : 'valeurs', 'philosophie', 'rituel', 'charte', 'logo', 'tenue', 'évènement annuel'."
   },
@@ -499,8 +523,8 @@ const Q = {
       {n:4, t:"Conclure sur l'avantage concurrentiel", d:"Ces compétences fondent la supériorité durable de l'entreprise."}
     ],
     mots:["compétence distinctive","avantage concurrentiel","difficile à imiter","rare","créateur de valeur"],
-    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Identifiez les compétences distinctives de Topschuss et montrez en quoi elles lui confèrent un avantage concurrentiel durable."},
-    corrige:`Une compétence distinctive est une ressource rare, difficile à imiter et créatrice de valeur.<br><br><strong>Compétence 1 — Expertise conseil outdoor :</strong><br>Doc 2 → Topschuss emploie des sportifs experts qui conseillent les clients en magasin. Cette compétence humaine est difficile à reproduire par les grandes surfaces généralistes.<br><br><strong>Compétence 2 — Marque reconnue sur le segment outdoor :</strong><br>Doc 1 → notoriété construite sur 15 ans, associée à la qualité et à la pratique. Un concurrent ne peut pas acheter cette réputation immédiatement.<br><br>Ces deux compétences fondent l'avantage concurrentiel de Topschuss : une offre premium justifiée par une expertise et une image que les concurrents ne peuvent pas imiter à court terme.`,
+    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Expliquer en quoi le partenariat avec la startup Goodloop génère un avantage concurrentiel pour Topschuss."},
+    corrige:`Une compétence distinctive (ou un atout stratégique) est une ressource ou pratique rare, difficile à imiter et créatrice de valeur, qui fonde l'avantage concurrentiel d'une entreprise.<br><br><strong>Le partenariat avec Goodloop :</strong> Topschuss s'associe à la startup Goodloop, spécialisée dans la réparation de produits sport outdoor. Ce service est proposé dans certaines boutiques de l'enseigne.<br><br><strong>En quoi ce partenariat génère un avantage concurrentiel :</strong><br>— Il répond aux nouvelles attentes des consommateurs sensibles à l'<strong>économie circulaire</strong>, à la durabilité et à la lutte contre le gaspillage.<br>— Il attire de nouveaux clients en boutique (occasion d'achats additionnels lors du dépôt ou du retrait des produits réparés).<br>— Il positionne Topschuss comme une <strong>marque engagée et responsable</strong>, en cohérence avec sa politique RSE (siège HQE, panneaux solaires, label Effinergie).<br><br>Cet engagement responsable la distingue des concurrents généralistes qui ne proposent pas ce service : c'est un avantage concurrentiel durable, difficile à copier sans investissement comparable dans une démarche RSE globale.`,
     alerte:"Une simple force (bonne localisation, bon prix) ≠ compétence distinctive. Elle doit être RARE et DIFFICILE À IMITER.",
     astuce:"Dans les docs, chercher ce que l'entreprise fait mieux que tout le monde et depuis longtemps. C'est souvent lié à un savoir-faire humain ou une histoire de marque."
   },
@@ -517,7 +541,7 @@ const Q = {
     ],
     mots:["stratégie globale","stratégie de domaine","DAS","spécialisation","diversification","différenciation","domination par les coûts","focalisation"],
     annale:{src:"Bac STMG MSGN · Métropole 2023 (Ankama)", q:"Caractérisez la stratégie de développement choisie par Ankama et justifiez sa pertinence."},
-    corrige:`<strong>Stratégie globale — Diversification liée :</strong><br>Ankama développe 3 DAS (jeux vidéo, BD, animation) autour d'un univers commun (les Krosmoz). Ces activités partagent des ressources créatives → diversification liée.<br><br><strong>Stratégie de domaine — Différenciation par le haut :</strong><br>Sur chaque DAS, Ankama se positionne sur l'originalité (Doc 1 : 'univers unique, jamais vu') et la qualité artistique. Prix plus élevés que la concurrence généraliste → différenciation par le haut.<br><br><strong>Pertinence :</strong><br>La diversification liée permet des économies de ressources créatives. La différenciation protège des concurrents low-cost car les fans sont prêts à payer pour l'univers Ankama.`,
+    corrige:`<strong>Stratégie globale — Diversification :</strong><br>Ankama exploite 4 DAS (Domaines d'Activité Stratégique) : jeux vidéo, bandes dessinées, séries et films d'animation, jeux de société et produits dérivés. L'entreprise a donc fait le choix d'une stratégie de <strong>diversification</strong>.<br><br><strong>Intérêts de cette diversification :</strong><br>— Création de <strong>synergies entre les contenus</strong> (l'univers des Krosmoz est exploité de manière transverse sur tous les DAS).<br>— <strong>Répartition des risques</strong> sur plusieurs activités : pas de dépendance à un seul marché.<br>— Amélioration de la <strong>rentabilité globale</strong> grâce à de nouvelles sources de revenus.<br>— Acquisition de <strong>nouvelles compétences</strong> dans chaque secteur abordé.<br><br><strong>Stratégie de domaine — Différenciation :</strong><br>Sur chaque DAS, Ankama mise sur l'<strong>originalité de son univers</strong> et sur la maîtrise complète de la chaîne créative. Ce positionnement haut de gamme justifie des prix plus élevés et protège l'entreprise des concurrents low-cost, car les fans sont attachés à l'univers Ankama et acceptent de payer pour cette singularité.`,
     alerte:"Toujours traiter les DEUX niveaux (globale ET domaine). N'en traiter qu'un = réponse incomplète.",
     astuce:"Commencer par la globale (combien de DAS ?) puis descendre au domaine (comment concurrencer sur chacun)."
   },
@@ -535,7 +559,7 @@ const Q = {
     ],
     mots:["RSE","performance globale","volontaire","au-delà des obligations légales","piliers économique / social / environnemental"],
     annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss, adapté)", q:"Montrez que la politique RSE de Topschuss contribue à sa performance globale."},
-    corrige:`La RSE est un engagement volontaire au-delà des obligations légales. La performance globale intègre 3 piliers : économique, social, environnemental.<br><br><strong>Économique :</strong> Doc 1 → engagement RSE = différenciation. Les clients outdoor privilégient les marques engagées → CA +18%.<br><br><strong>Social :</strong> Doc 3 → télétravail partiel + formations terrain. Turnover inférieur à la moyenne du secteur = performance sociale positive.<br><br><strong>Environnemental :</strong> Doc 2 → 60% de matières recyclées d'ici 2026 + emballages plastique −30%.<br><br>La RSE de Topschuss est un levier de différenciation durable, pas une contrainte.`,
+    corrige:`La RSE est un engagement volontaire au-delà des obligations légales. La performance globale intègre 3 piliers : économique, social, environnemental.<br><br><strong>Économique :</strong> L'engagement RSE est un facteur de différenciation. Les consommateurs outdoor étant prêts à payer plus cher pour des produits responsables et durables, cette démarche soutient la croissance du chiffre d'affaires de Topschuss et la fidélisation client.<br><br><strong>Social :</strong> Topschuss offre à ses salariés <strong>5 jours par an</strong> pour s'investir dans une fondation environnementale. La marque employeur (cadre de travail soigné, esprit « Rebloch'Family ») renforce l'attractivité et la fidélisation des talents dans un secteur outdoor en tension.<br><br><strong>Environnemental :</strong> Le nouveau siège répond à une démarche HQE : <strong>béton bas carbone</strong>, <strong>panneaux solaires</strong> en toiture, éclairage géré selon la présence, conception bioclimatique adaptée aux fortes chaleurs, <strong>label Effinergie</strong>. Le partenariat avec la startup <strong>Goodloop</strong> permet la réparation des produits en boutique, dans une logique d'économie circulaire.<br><br>La RSE de Topschuss est cohérente avec les attentes des consommateurs (durabilité, écologie) et constitue un véritable levier d'avantage concurrentiel, pas une contrainte.`,
     alerte:"RSE ≠ obligation légale. Structurer obligatoirement en 3 piliers. Réponse sans les 3 dimensions = incomplète.",
     astuce:"3 paragraphes = 3 piliers. C'est la structure que les correcteurs attendent pour la question de synthèse."
   },
@@ -552,7 +576,7 @@ const Q = {
     ],
     mots:["modèle économique","proposition de valeur","segments clients","sources de revenus","création de valeur"],
     annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"Présentez le modèle économique de Bébé Serein et montrez en quoi il évolue."},
-    corrige:`Le modèle économique de Bébé Serein repose sur :<br><br><strong>Proposition de valeur :</strong> des couches écologiques et du lait infantile sans perturbateurs endocriniens, pour les parents soucieux de la santé de leur enfant.<br><br><strong>Clients :</strong> parents de jeunes enfants (0-3 ans), CSP+, sensibles à l'écologie.<br><br><strong>Sources de revenus :</strong> initialement vente unitaire en pharmacies → évolution vers un abonnement mensuel (fidélisation + revenus récurrents).<br><br><strong>Évolution :</strong> le pivot vers l'abonnement réduit la dépendance aux distributeurs et crée une relation directe avec le client.`,
+    corrige:`Le modèle économique de Bébé Serein repose sur :<br><br><strong>Proposition de valeur :</strong> des couches écologiques et du lait infantile sans perturbateurs endocriniens, pour les parents soucieux de la santé de leur enfant et engagés dans une démarche responsable.<br><br><strong>Clients :</strong> parents de jeunes enfants (0-3 ans), CSP+, sensibles à l'écologie et à la sécurité sanitaire.<br><br><strong>Sources de revenus :</strong> abonnement mensuel — les clients reçoivent à domicile des colis de couches à la fréquence choisie.<br><br><strong>Flexibilité du modèle (les 3 atouts clés) :</strong><br>— Choix de la <strong>fréquence d'envoi</strong> (adaptable selon les besoins du foyer).<br>— Possibilité de changer la <strong>taille des couches</strong> au fil de la croissance du bébé.<br>— <strong>Mise en pause ou résiliation à tout moment</strong> (+ modification de l'adresse de livraison).<br><br><strong>Atouts pour l'entreprise :</strong> revenus récurrents, relation directe avec le client (sans intermédiaire distributeur), fidélisation forte, simplicité d'usage pour des parents au quotidien chargé.`,
     alerte:"Modèle économique ≠ stratégie concurrentielle. Le BM répond à 'comment on crée et capte de la valeur', pas à 'comment on bat la concurrence'.",
     astuce:"Les 3 éléments clés à toujours avoir : proposition de valeur + clients + revenus. Même si le sujet ne les demande pas tous explicitement."
   },
@@ -568,7 +592,7 @@ const Q = {
     ],
     mots:["parties prenantes","internes","externes","attentes","gouvernance","intérêts"],
     annale:{src:"Bac STMG MSGN · Remplacement 2024 (YBRA)", q:"Identifiez les parties prenantes de YBRA et présentez leurs attentes respectives."},
-    corrige:`<strong>Parties prenantes internes :</strong><br>— Salariés (chauffeurs) : sécurité, rémunération équitable, conditions de travail décentes.<br>— Dirigeants : rentabilité, développement de l'activité, pérennité.<br><br><strong>Parties prenantes externes :</strong><br>— Clients (entreprises, particuliers) : fiabilité des livraisons, tarifs compétitifs, qualité de service.<br>— État / collectivités : respect du droit du travail, normes environnementales, emploi local.<br>— Fournisseurs : paiement dans les délais, volume de commandes.<br><br>Tension principale : les attentes des salariés (meilleures conditions) et des clients (tarifs bas) peuvent être contradictoires.`,
+    corrige:`<strong>Parties prenantes internes :</strong><br>— Salariés (chauffeurs) : sécurité, rémunération équitable, conditions de travail décentes.<br>— Dirigeants : rentabilité, développement de l'activité, pérennité.<br>— Actionnaires / associés : rentabilité, dividendes, valorisation de leur investissement.<br><br><strong>Parties prenantes externes :</strong><br>— Clients (entreprises, particuliers) : fiabilité des livraisons, tarifs compétitifs, qualité de service.<br>— État / collectivités : respect du droit du travail, normes environnementales, emploi local.<br>— Fournisseurs : paiement dans les délais, volume de commandes.<br><br>Tension principale : les attentes des salariés (meilleures conditions) et des clients (tarifs bas) peuvent être contradictoires. Le rôle du management est de concilier ces intérêts divergents.`,
     alerte:"Les actionnaires sont des PP INTERNES (ils apportent le capital), pas externes.",
     astuce:"Cette question est souvent en introduction du dossier 1. Répondre vite (5-7 min max) pour préserver du temps pour les questions à plus fort barème."
   },
@@ -585,7 +609,7 @@ const Q = {
     ],
     mots:["GPEC","marque employeur","QVT","motivation","Maslow","Herzberg","performance sociale"],
     annale:{src:"Bac STMG MSGN · Asie 2023 (TPS)", q:"Montrez que TPS met en place des pratiques GRH favorisant la motivation et la fidélisation de ses salariés."},
-    corrige:`<strong>Formation interne :</strong><br>Doc 3 → plan de formation sur 3 ans pour tous les opérateurs. Selon Maslow, répond au besoin d'estime (niveau 4). Selon Herzberg, c'est un facteur de motivation (responsabilités accrues).<br><br><strong>Rémunération variable :</strong><br>Doc 4 → primes liées aux résultats. Facteur de motivation (Herzberg) et réponse au besoin d'estime.<br><br><strong>Marque employeur :</strong><br>Ces pratiques construisent la marque employeur de TPS : l'entreprise devient attractive pour les profils qualifiés dans un secteur en tension.<br><br>Résultat : turnover réduit de 12% à 8% en 2 ans → performance sociale en amélioration.`,
+    corrige:`<strong>Rémunération attractive :</strong><br>TPS verse à ses opérateurs des primes supérieures à celles du secteur : <strong>prime double machine</strong>, <strong>prime sécurité</strong>, <strong>prime Macron</strong>. → Facteur de motivation (Herzberg) et réponse au besoin d'estime (Maslow, niveau 4).<br><br><strong>Conditions de travail améliorées :</strong><br>Rénovation de l'atelier (espace de stockage en macadam, vestiaires, douches), prévention des TMS par l'ergonomie, organisation possible en <strong>semaine de 4 jours</strong>. → Répond aux besoins de sécurité et de bien-être (Maslow, niveaux 1-2).<br><br><strong>Reconnaissance des compétences :</strong><br>Mise en place des <strong>CQPM</strong> (Certificats de Qualification Paritaires de la Métallurgie), reconnaissant le savoir-faire spécifique des perforateurs. → Facteur de motivation (Herzberg) et besoin d'estime / d'accomplissement (Maslow, niveaux 4-5).<br><br><strong>Engagement environnemental :</strong><br>Bornes électriques en libre accès, recyclage des déchets de perforation → sentiment de fierté et d'adhésion aux valeurs de l'entreprise.<br><br><strong>Performance sociale :</strong><br>Ces leviers (financier + conditions de travail + reconnaissance) renforcent l'engagement, la cohésion et la fidélisation. Ils contribuent à baisser le turn-over, à maintenir la productivité et à faciliter le recrutement futur dans un secteur en tension.`,
     alerte:"Citer Maslow sans préciser à quel niveau de besoin correspond la pratique = réponse incomplète.",
     astuce:"Lier chaque pratique RH à un niveau de Maslow ou un facteur de Herzberg. C'est le critère de différenciation entre une copie moyenne et une bonne copie."
   },
@@ -603,7 +627,7 @@ const Q = {
     ],
     mots:["coût de revient","marge brute","taux de marge","taux de marque","charges fixes","charges variables"],
     annale:{src:"Bac STMG MSGN · Métropole 2023 (Ankama)", q:"Calculez le coût de revient unitaire d'un album BD d'Ankama. Calculez le taux de marge correspondant."},
-    corrige:`<strong>Coût de revient unitaire :</strong><br>D'après le tableau doc 5 :<br>Coûts de production : 8,50 € | Coûts de distribution : 2,20 €<br>Coût de revient = 8,50 + 2,20 = <strong>10,70 €</strong><br><br><strong>Marge brute :</strong><br>PV HT = 14,90 € | Marge = 14,90 − 10,70 = <strong>4,20 €</strong><br><br><strong>Taux de marge :</strong><br>(4,20 / 10,70) × 100 = <strong>39,25 %</strong><br><br>Ce taux est satisfaisant pour le secteur éditorial. Ankama peut améliorer sa marge en réduisant les coûts de distribution grâce à la vente directe en ligne.`,
+    corrige:`<strong>Coût de revient unitaire (lot de 3 000 albums) :</strong><br><br><em>Charges directes :</em> papier 0,67 + illustration 2,00 + correcteur 0,09 + impression 1,80 + distribution 2,10 = <strong>6,66 €</strong><br><em>Charges indirectes :</em> approvisionnement 0,40 + production 1,59 + distribution 1,69 = <strong>3,68 €</strong><br><br><strong>Coût de revient = 6,66 + 3,68 = 10,34 €</strong><br><br><strong>Marge brute :</strong><br>PV HT = 17,56 € | Marge = 17,56 − 10,34 = <strong>7,22 €</strong><br><br><strong>Taux de marge :</strong><br>(7,22 / 10,34) × 100 ≈ <strong>69 %</strong><br><br>Ce taux est nettement supérieur à celui pratiqué dans le secteur éditorial (≈ 60 %). Ankama a donc tout intérêt à poursuivre la commercialisation : la rentabilité unitaire de l'album est élevée, et le canal direct (boutique + vente en ligne) peut encore améliorer la marge en réduisant les coûts de distribution.`,
     alerte:"Coût de revient ≠ coût de production. Oublier les coûts de distribution = erreur classique.",
     astuce:"Taux de marque TOUJOURS < taux de marge. Si ton résultat donne le contraire, il y a une erreur."
   },
@@ -619,8 +643,8 @@ const Q = {
       {n:4, t:"Si RGPD : identifier obligations + risques", d:"Consentement, droit d'accès, sécurité, notification des violations."}
     ],
     mots:["PGI","ERP","CRM","RGPD","données personnelles","e-commerce","base de données","fidélisation"],
-    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Montrez que les technologies numériques permettent à Topschuss d'améliorer sa performance commerciale et opérationnelle."},
-    corrige:`<strong>CRM :</strong><br>Doc 4 → Topschuss utilise un CRM pour centraliser l'historique d'achat de ses clients. Cela permet des offres personnalisées → fidélisation + hausse du panier moyen.<br><br><strong>E-commerce :</strong><br>Doc 3 → site marchand 24h/24 = 28% du CA en N. Réduit la dépendance aux magasins physiques et touche une clientèle nationale.<br><br><strong>RGPD :</strong><br>Doc 5 → Topschuss collecte des données clients (CRM, commandes). Obligations : recueil du consentement explicite, politique de confidentialité, sécurisation des données.<br><br>Ces outils numériques renforcent la performance commerciale (CRM, e-commerce) tout en nécessitant une gestion responsable des données (RGPD).`,
+    annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Montrer comment la diversité des outils numériques de Topschuss contribue à la relation client."},
+    corrige:`Topschuss mobilise une diversité d'outils numériques pour interagir avec ses clients et entretenir la relation commerciale :<br><br><strong>— Site web :</strong> vitrine permanente de l'enseigne et catalogue produit accessible 24h/24.<br><strong>— Formulaire de contact :</strong> permet aux clients d'adresser une demande personnalisée à l'entreprise.<br><strong>— Lettre d'information (newsletter) :</strong> communication régulière sur les nouveautés, promotions et engagements de la marque.<br><strong>— Réseaux sociaux (Facebook, Instagram, X, YouTube) :</strong> contenus inspirants, communauté engagée autour du sport outdoor, retours clients visibles.<br><strong>— Chat en direct :</strong> assistance instantanée et personnalisée pendant la navigation.<br><strong>— FAQ :</strong> réponses immédiates aux questions fréquentes, sans solliciter le service client.<br><br><strong>Apports pour la relation client :</strong><br>— Une <strong>connaissance plus fine du consommateur</strong> et de ses attentes (analyse des comportements en ligne).<br>— Une <strong>interactivité continue et instantanée</strong> (chat en temps réel, réponses sur réseaux sociaux).<br>— La capacité pour Topschuss d'<strong>adapter son offre et sa communication</strong> aux attentes exprimées, renforçant la fidélisation.`,
     alerte:"Décrire l'outil sans montrer son impact sur la performance = réponse incomplète.",
     astuce:"PGI + CRM + RGPD apparaissent souvent dans le même dossier. Traiter les 3 si les docs le permettent."
   },
@@ -637,7 +661,7 @@ const Q = {
     ],
     mots:["diagnostic interne","diagnostic externe","SWOT","PESTEL","forces","faiblesses","opportunités","menaces"],
     annale:{src:"Bac STMG MSGN · Polynésie 2024 (Renou Textiles)", q:"Réaliser le diagnostic externe de Renou Textiles et en déduire les facteurs clés de succès."},
-    corrige:`<strong>Diagnostic externe (PESTEL) :</strong><br>— Économique : hausse des coûts des matières premières → menace pour les marges<br>— Socioculturel : engouement pour le made in France → opportunité<br>— Environnemental : sensibilité croissante à l'éco-responsabilité → opportunité<br>— Technologique : e-commerce en forte croissance → opportunité<br><br><strong>Facteurs clés de succès :</strong><br>Qualité (labels EPV, OFG) + fabrication française + innovation (matériaux recyclés) + présence en ligne`,
+    corrige:`<strong>Diagnostic externe — Opportunités / Menaces (Macro + Micro) :</strong><br><br><em>Macroenvironnement :</em><br>— ✅ Opportunité : engouement des consommateurs pour le <strong>made in France</strong> (62 % attentifs aux labels) et pour les engagements environnementaux (49 %).<br>— ✅ Opportunité : volonté de <strong>solidarité avec les emplois français</strong> post-crise sanitaire.<br>— ✅ Opportunité : croissance forte du <strong>e-commerce</strong> (+ 15,27 % en 2021) et du segment Habillement-Mode (+ 6 %).<br>— ⚠️ Menace : hausse des coûts des matières premières → pression sur les marges.<br><br><em>Microenvironnement :</em><br>— ✅ Opportunité : développement des <strong>places de marché en ligne</strong> (Amazon, etc.) qui élargissent la visibilité.<br>— ⚠️ Menace : concurrence des chaussettes importées à bas coût.<br><br><strong>Facteurs clés de succès (FCS) :</strong><br>— Le <strong>made in France</strong> pour conquérir le marché national comme l'international.<br>— La <strong>capacité à répondre à la demande sur les places de marché en ligne</strong>.<br>— L'<strong>engagement environnemental</strong> (produits recyclés) et <strong>sociétal</strong> (solidarité vis-à-vis des entreprises locales et des emplois français).<br>— Le label <strong>Origine France Garantie (OFG)</strong>, gage de crédibilité.`,
     alerte:"PESTEL = environnement GÉNÉRAL (macro). 5 forces Porter = environnement CONCURRENTIEL. Ne pas les confondre.",
     astuce:"Si la question demande 'diagnostic externe', commencer par le PESTEL. Si elle demande 'pression concurrentielle', utiliser Porter."
   },
@@ -654,7 +678,7 @@ const Q = {
     ],
     mots:["autofinancement","emprunt","augmentation de capital","CAF","financement participatif","crowdfunding"],
     annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Repérer et justifier la pertinence du choix de financement de Topschuss pour son développement."},
-    corrige:`<strong>Augmentation de capital (10M€) :</strong><br>Doc 9 → Topschuss a levé 10 millions d'euros auprès d'investisseurs. Ce mode de financement renforce les capitaux propres sans créer de dette. Il améliore le FRNG et la capacité d'emprunt future.<br><br><strong>Pertinence :</strong> Un emprunt bancaire de ce montant aurait alourdi les charges financières et fragilisé la trésorerie dans un contexte de forte croissance (CA visé de 100M€). L'augmentation de capital est cohérente avec un projet de développement ambitieux.`,
+    corrige:`<strong>Augmentation de capital (10 M€) :</strong><br>Topschuss a récolté <strong>10 millions d'euros</strong> auprès de <strong>trois investisseurs privés</strong> : <strong>MK Développement</strong>, <strong>Sofimac Régions</strong> et <strong>123 IM</strong>. Ces derniers entrent au capital de l'entreprise. <strong>Thomas R. reste cependant actionnaire majoritaire</strong>, ce qui lui permet de conserver le contrôle stratégique de l'entreprise.<br><br><strong>Avantages :</strong><br>— Accès rapide à une somme importante pour financer le développement des nouvelles boutiques.<br>— Renforcement des capitaux propres → amélioration du FRNG et de la capacité d'emprunt future.<br>— Pas de charges financières supplémentaires (contrairement à un emprunt).<br><br><strong>Inconvénients :</strong><br>— Risque de perte de contrôle au profit des nouveaux actionnaires (ici maîtrisé puisque Thomas R. conserve la majorité).<br>— Dilution du pouvoir de décision et obligation de rendre des comptes aux investisseurs.<br><br><strong>Pertinence :</strong> Ce choix est cohérent avec un projet de croissance ambitieux (objectif 100 M€ de CA d'ici 2025) sans alourdir les charges financières comme l'aurait fait un emprunt bancaire de ce montant. Un complément en autofinancement ou en emprunt bancaire pourrait être envisagé pour les besoins courants.`,
     alerte:"Ne jamais se limiter à lister les sources. Toujours JUSTIFIER pourquoi ce choix est adapté au contexte.",
     astuce:"Relier le financement au FRNG : si l'augmentation de capital augmente les ressources stables → le FRNG s'améliore → plus de marge de sécurité."
   },
@@ -671,7 +695,7 @@ const Q = {
     ],
     mots:["flux poussés","flux tirés","juste-à-temps","mode de production","artisanal","en série","stocks"],
     annale:{src:"Bac STMG MSGN · Asie 2023 (TPS)", q:"Identifier le mode de gestion des stocks pour les matières premières destinées à la fabrication des commandes des clients occasionnels et préciser son intérêt."},
-    corrige:`TPS utilise un mode de gestion en <strong>flux tirés</strong> (juste-à-temps) pour les commandes occasionnelles :<br><br>— La production est déclenchée par la commande du client (pas de stock de produits finis)<br>— Intérêt : réduction des coûts de stockage, adaptation à la demande spécifique de chaque client<br>— Pertinence pour TPS : les commandes occasionnelles portent sur des produits sur mesure (dimensions spécifiques) → impossible de stocker à l'avance<br><br>En revanche, pour les clients grands comptes, TPS utilise des <strong>flux poussés</strong> : les matières premières sont achetées par le client lui-même, ce qui réduit le BFR de TPS.`,
+    corrige:`Pour les <strong>commandes occasionnelles</strong>, TPS achète la matière première <strong>après enregistrement de la commande</strong> : il s'agit d'une gestion en <strong>flux tendus</strong> (synonyme : juste-à-temps / flux tirés).<br><br><strong>Intérêt :</strong><br>— Les stocks coûtent cher et alourdissent le BFR ; en n'achetant que les quantités strictement nécessaires à chaque commande, l'entreprise maîtrise ses coûts d'achat et de stockage.<br>— Adaptation parfaite à la demande spécifique de chaque client (produits sur mesure, dimensions particulières).<br>— Impossible de stocker à l'avance des matières dédiées à un client unique.<br><br>Pour les <strong>clients grands comptes</strong>, TPS pratique en revanche une <strong>gestion externalisée des stocks</strong> : la matière première appartient au client et est confiée à TPS via un cloud partagé (PGI). Cela évite à TPS de financer ce stock (BFR allégé) et fidélise les grands comptes par une intégration forte du processus.`,
     alerte:"Flux poussés ≠ mauvaise gestion. C'est adapté quand la demande est prévisible (ex : grande distribution). Flux tirés = adapté quand la demande est variable ou sur mesure.",
     astuce:"Chercher dans les docs : 'sur commande' = flux tirés. 'Prévisions de vente' ou 'stocks' = flux poussés."
   },
@@ -688,7 +712,7 @@ const Q = {
     ],
     mots:["GPEC","GEPP","anticipation","formation","recrutement","mobilité interne","compétences"],
     annale:{src:"Bac STMG MSGN · Asie 2023 (TPS)", q:"Recenser les principales causes du problème de recrutement des perforateurs et montrer l'importance pour TPS de mettre en place une GPEC."},
-    corrige:`<strong>Causes du problème :</strong><br>— Métier de perforateur peu connu → manque d'attractivité<br>— Compétences rares sur le marché du travail<br>— Départs en retraite anticipés<br><br><strong>Importance de la GPEC :</strong><br>— Anticiper les besoins : identifier les postes critiques à 3-5 ans<br>— Former en interne : transmission du savoir-faire par les seniors aux juniors<br>— Recruter en amont : partenariats avec des écoles techniques<br>— Mobilité interne : reconvertir des salariés vers le métier de perforateur<br><br>Sans GPEC, TPS risque de perdre son savoir-faire unique (compétence distinctive) et donc son avantage concurrentiel.`,
+    corrige:`<strong>Causes du problème de recrutement :</strong><br>— <strong>Absence d'organisme de formation</strong> dans le domaine très spécifique de la perforation.<br>— <strong>Désintérêt des jeunes générations</strong> pour les filières industrielles.<br>— TPS, en tant que <strong>PME</strong>, apparaît moins attractive que les grands groupes installés.<br>— La <strong>formation des perforateurs est longue (au moins 3 ans)</strong> et très spécifique à l'entreprise.<br><br><strong>Importance de la GPEC :</strong><br>TPS doit mettre en place une démarche prévisionnelle qui consiste à :<br>— <strong>Recenser les besoins</strong> en compétences en fonction des décisions stratégiques (perforateurs experts en nombre suffisant).<br>— <strong>Analyser les ressources existantes</strong> (départs en retraite, pertes de compétences à venir).<br>— <strong>Mesurer les écarts</strong> entre besoins futurs et ressources disponibles.<br>— Bâtir un <strong>plan RH</strong> : formation interne des futurs perforateurs experts, transmission du savoir-faire par les anciens, partenariats avec des écoles techniques, amélioration de la politique de recrutement.<br><br>Sans GPEC, TPS risque de perdre son savoir-faire unique (compétence distinctive) et donc son avantage concurrentiel.`,
     alerte:"GPEC ≠ simple recrutement. C'est une démarche PRÉVISIONNELLE sur plusieurs années, pas un recrutement ponctuel.",
     astuce:"Relier la GPEC aux compétences distinctives : si les compétences clés partent sans être transmises → l'avantage concurrentiel disparaît."
   },
@@ -705,7 +729,7 @@ const Q = {
     ],
     mots:["marque employeur","QVT","QVCT","attractivité","fidélisation","turnover","bien-être au travail","engagement"],
     annale:{src:"Bac STMG MSGN · Métropole 2024 (Topschuss)", q:"Justifier l'intérêt de la marque employeur pour répondre aux besoins de recrutement de Topschuss."},
-    corrige:`La <strong>marque employeur</strong> est l'image d'une organisation en tant qu'employeur, construite à travers ses pratiques RH et sa culture.<br><br><strong>Chez Topschuss :</strong><br>— Doc 7 (site de recrutement) : Topschuss met en avant ses valeurs (passion outdoor, esprit d'équipe) et ses avantages (locaux modernes, crèche, salle de sport) pour attirer des candidats.<br>— Doc 6 : le nouveau siège social à Annecy est conçu pour le bien-être → QVT renforcée.<br><br><strong>Intérêt :</strong><br>Dans un secteur concurrentiel où les profils experts outdoor sont rares, la marque employeur permet de se différencier des autres recruteurs. Elle attire des profils qualifiés qui partagent les valeurs de l'entreprise → meilleure adéquation poste/candidat → réduction du turnover → économies sur les coûts de recrutement.`,
+    corrige:`La <strong>marque employeur</strong> est l'image d'une organisation en tant qu'employeur, construite à travers ses pratiques RH et sa culture. Topschuss a des besoins de recrutement importants (<strong>10 à 15 postes par an</strong>) dans un secteur outdoor concurrentiel où les profils experts sont rares.<br><br><strong>Chez Topschuss :</strong><br>Sur son site de recrutement, Topschuss met en avant :<br>— L'esprit <strong>« Rebloch'Family »</strong> : aventure collective et cohésion d'équipe, élément emblématique de la culture maison.<br>— Les possibilités d'<strong>évolution interne</strong>.<br>— Un cadre de travail stimulant et agréable en <strong>Haute-Savoie</strong>, ancré dans l'univers de la montagne.<br>— La possibilité pour les collaborateurs de s'engager dans des <strong>actions environnementales</strong> (5 jours/an pour une fondation), en phase avec les valeurs RSE de l'entreprise.<br>— Une démarche QVT affirmée : mur d'escalade, pétanque, salle de sport, salle de sieste avec capsules ; un projet de crèche d'entreprise est à l'étude.<br><br><strong>Intérêt :</strong><br>Une marque employeur forte permet à Topschuss de se différencier des autres recruteurs du secteur, d'attirer des profils qualifiés qui partagent ses valeurs (sport, outdoor, engagement environnemental) et de bénéficier d'une bonne réputation. À la clé : meilleure adéquation poste/candidat → fidélisation des talents → réduction du turn-over → économies sur les coûts de recrutement.`,
     alerte:"Marque employeur ≠ communication externe vers les clients. C'est l'image auprès des CANDIDATS et des SALARIÉS.",
     astuce:"Lier toujours marque employeur + QVT + GPEC : ce sont les 3 leviers RH qui se renforcent mutuellement."
   },
@@ -723,7 +747,7 @@ const Q = {
     ],
     mots:["segmentation","ciblage","positionnement","mix marketing","4P","comportement consommateur","freins","motivations"],
     annale:{src:"Bac STMG MSGN · Polynésie 2024 (Renou Textiles)", q:"Identifier l'approche mercatique choisie par l'entreprise Renou Textiles pour leur marque Maison Renou et justifier votre réponse."},
-    corrige:`<strong>Segmentation :</strong><br>Renou Textiles segmente son marché en 2 catégories : les professionnels du textile (B2B, 95% du CA) et les particuliers (B2C, via la marque Maison Renou).<br><br><strong>Ciblage :</strong><br>Pour Maison Renou, l'entreprise cible les particuliers sensibles au made in France, à la qualité artisanale et à l'éco-responsabilité (matériaux recyclés).<br><br><strong>Positionnement :</strong><br>Positionnement premium artisanal : "la chaussette 100% made in France, fabriquée en Haute-Vienne depuis 1938". Les labels EPV et Origine France Garantie renforcent ce positionnement de qualité et d'authenticité.<br><br><strong>Mix marketing :</strong><br>— Produit : chaussettes haut de gamme, coton recyclé, design tendance<br>— Prix : premium (justifié par la fabrication française)<br>— Place : e-commerce (vente en ligne nationale) + boutiques locales<br>— Promotion : réseaux sociaux, storytelling familial`,
+    corrige:`<strong>Approche mercatique : RÉACTIVE</strong><br><br>L'approche mercatique choisie par Renou Textiles pour la marque Maison Renou est <strong>réactive</strong> : l'offre proposée correspond à un besoin <strong>clairement exprimé</strong> par les consommateurs. L'entreprise répond à une demande déjà identifiée, plutôt que d'anticiper un besoin latent (qui aurait été une approche anticipative).<br><br><strong>Justifications tirées du sujet :</strong><br>— <strong>62 %</strong> des consommateurs déclarent être attentifs aux labels (Origine France Garantie).<br>— <strong>49 %</strong> se disent attentifs aux engagements environnementaux et de durabilité des marques.<br>— Une volonté de <strong>solidarité avec les emplois français</strong> émerge nettement post-crise sanitaire.<br><br>Maison Renou répond directement à ces attentes : chaussettes <em>made in France</em> fabriquées en Haute-Vienne, label <strong>Origine France Garantie</strong>, matériaux recyclés (coton).<br><br><strong>Complément pédagogique (SCP + 4P) :</strong><br><em>Segmentation :</em> 2 catégories — professionnels du textile (B2B, ≈ 95 % du CA) / particuliers (B2C, via Maison Renou).<br><em>Ciblage :</em> particuliers sensibles au made in France, à la qualité artisanale et à l'éco-responsabilité.<br><em>Positionnement :</em> premium artisanal — « la chaussette 100 % made in France, fabriquée en Haute-Vienne depuis 1938 ».<br><em>Mix marketing :</em> Produit (chaussettes haut de gamme, coton recyclé) · Prix (premium) · Place (e-commerce + places de marché + boutiques) · Promotion (réseaux sociaux, storytelling familial).`,
     alerte:"SCP = Segmentation → Ciblage → Positionnement. Les 3 vont TOUJOURS ensemble. Ne jamais présenter l'un sans les autres.",
     astuce:"Chercher dans les docs : 'nos clients sont...' = ciblage. 'Nous nous positionnons comme...' = positionnement. 'Notre gamme...' = produit (4P)."
   },
@@ -800,7 +824,7 @@ const Q = {
     ],
     mots:["besoins","motivations","freins","attitude","cognitif","affectif","conatif","comportement consommateur"],
     annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"Repérer les différents facteurs explicatifs du comportement des consommateurs (freins, motivations, attitude et besoins) de l'entreprise Bébé Serein."},
-    corrige:`<strong>Besoins :</strong> qualité, sécurité, produits écologiques sans perturbateurs endocriniens.<br><br><strong>Motivations :</strong> auto-expression (afficher un engagement écologique et parental), gain de temps grâce à l'abonnement.<br><br><strong>Freins :</strong> prix des couches, nécessité d'avoir Internet, sentiment de pollution liée aux livraisons.<br><br><strong>Attitude :</strong> cognitive (attention à la qualité et à la capacité d'absorption), affective (sentiment de confiance, attachement à la marque), conative (clients ambassadeurs, recommandation).<br><br>Ces 4 facteurs montrent que Bébé Serein répond précisément à des attentes de consommateurs conscients et engagés, ce qui légitime un positionnement premium.`,
+    corrige:`<strong>Besoins :</strong> qualité des produits ; produits écologiques, recyclables, sans perturbateurs endocriniens ni produits chimiques, respectant la peau des bébés ; sécurité (couches saines et lait sûr pour le nourrisson).<br><br><strong>Motivations :</strong> motivation d'<strong>auto-expression</strong> (afficher un engagement écologique et parental) ; <strong>gain de temps</strong> via le modèle d'abonnement qui permet de consacrer ce temps à autre chose (parentalité, loisirs).<br><br><strong>Freins :</strong><br>— Prix des couches.<br>— Nécessité d'avoir une <strong>connexion Internet, un terminal et un compte personnel</strong>.<br>— Sentiment de participer à la <strong>pollution de l'air liée aux livraisons</strong>, renforcé par le <strong>caractère jetable</strong> des couches.<br>— Crainte de <strong>composants potentiellement dangereux</strong> dans les produits.<br><br><strong>Attitude :</strong><br>— <em>Cognitive</em> (je sais) : attention à la qualité, à la capacité d'absorption et à la composition.<br>— <em>Affective</em> (je ressens) : sentiment de confiance, attachement à la marque, sentiment de communauté autour des « parents ambassadeurs ».<br>— <em>Conative</em> (je fais) : achat répété, abonnement, recommandation à d'autres parents.<br><br>Ces 4 facteurs montrent que Bébé Serein répond précisément aux attentes de consommateurs conscients et engagés, ce qui légitime un positionnement premium.`,
     alerte:"Confondre besoin (générique) et motivation (raison d'acheter ce produit). Le besoin de sécurité est universel ; la motivation auto-expressive est propre à un produit donné.",
     astuce:"Au Bac, présenter les 4 catégories EXPLICITEMENT, même si le corrigé ne les liste pas toujours. Le vocabulaire (cognitif / affectif / conatif) marque les bons élèves."
   },
@@ -834,7 +858,7 @@ const Q = {
     ],
     mots:["processus","schématisation","BPMN","événement","tâche","acteurs","automatisation","formalisation"],
     annale:{src:"Bac STMG MSGN · Polynésie 2023 (Saveurs & Nature)", q:"Montrer les avantages attendus pour l'entreprise de schématiser le processus de renouvellement de la certification « épi barré » et préciser le rôle des parties prenantes impliquées."},
-    corrige:`<strong>Avantages de la schématisation :</strong><br>— <strong>Formalisation :</strong> détailler les étapes pour éviter oublis et confusions.<br>— <strong>Identification des intervenants :</strong> clarté des responsabilités.<br>— <strong>Automatisation du déclenchement :</strong> assure le démarrage du processus à temps (lève les angoisses du service qualité).<br>— <strong>Rapidité :</strong> l'enchaînement des tâches est clairement défini.<br><br><strong>Rôle des parties prenantes :</strong><br>— <strong>Service qualité (interne) :</strong> contrôler la teneur en gluten, réaliser un audit, constituer le dossier de renouvellement.<br>— <strong>Laboratoire indépendant (externe) :</strong> réaliser le test demandé.<br>— <strong>Association AFDIAG (externe) :</strong> étudier le dossier et porter un avis.`,
+    corrige:`<strong>Avantages de la schématisation :</strong><br>— <strong>Formalisation :</strong> détailler les étapes pour éviter oublis et confusions.<br>— <strong>Identification des intervenants :</strong> clarté des responsabilités de chacun.<br>— <strong>Déclenchement automatique :</strong> prévu pour démarrer le processus à temps, ce qui lève les angoisses du service qualité et <strong>assure de conserver la licence sans risque de rupture de la certification « épi barré »</strong>.<br>— <strong>Rapidité :</strong> l'enchaînement des tâches est clairement défini, donc le processus avance sans temps morts.<br><br><strong>Rôle des parties prenantes :</strong><br>— <strong>Service qualité (interne) :</strong> contrôler la teneur en gluten, réaliser un audit, constituer le dossier de renouvellement.<br>— <strong>Laboratoire indépendant (externe) :</strong> réaliser le test demandé sur les échantillons.<br>— <strong>Association AFDIAG (externe) :</strong> étudier le dossier et porter un avis sur le renouvellement de la certification.`,
     alerte:"Schématiser ≠ automatiser. La schématisation permet la formalisation ; l'automatisation est une étape suivante qui repose sur le schéma.",
     astuce:"Toujours nommer chaque acteur ET préciser s'il est interne ou externe. Au Bac, c'est ce qui distingue une bonne copie d'une excellente."
   },
@@ -869,7 +893,7 @@ const Q = {
     ],
     mots:["valeur financière","valeur ajoutée","valeur perçue","valeur sociale","valeur partenariale","performance globale"],
     annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"En une quinzaine de lignes, montrer que la mise en place d'une démarche RSE est créatrice de valeurs (15 pts)."},
-    corrige:`<strong>Intro</strong> — La RSE intègre les enjeux sociaux et environnementaux dans la stratégie. Elle permet de créer plusieurs types de valeur : financière, ajoutée, perçue, sociale et partenariale.<br><br><strong>Axe 1 — Valeur perçue et financière</strong> : les certifications RSE renforcent la confiance et différencient. Le label bio de Bébé Serein attire les parents engagés. Patagonia communique sur sa fabrication responsable → fidélisation + premium tarifaire → ↑ CA.<br><br><strong>Axe 2 — Valeur sociale et partenariale</strong> : la RSE renforce le sentiment d'appartenance. Innocent (smoothies) collabore avec l'association « Petits frères des pauvres » chaque hiver → cohésion d'équipe + valeur partenariale.<br><br><strong>Conclusion</strong> — La RSE produit une performance globale durable, supérieure au seul résultat financier. C'est un véritable choix stratégique de long terme.`,
+    corrige:`<strong>Intro</strong> — La RSE intègre les enjeux sociaux et environnementaux dans la stratégie. Elle permet à une organisation de créer <strong>5 formes de valeur</strong> : <strong>financière</strong> (revenu, patrimoine), <strong>ajoutée</strong> (richesse créée, partagée entre les acteurs), <strong>perçue</strong> (image, notoriété, qualité perçue), <strong>sociale</strong> (bien-être des salariés et de l'environnement) et <strong>partenariale</strong> (richesse créée par la coopération avec les partenaires).<br><br><strong>Axe 1 — Valeur perçue, financière et ajoutée</strong> : les certifications RSE renforcent la confiance et différencient. Le label bio et l'engagement « sans perturbateurs endocriniens » de Bébé Serein attirent les parents engagés (valeur perçue). Patagonia communique sur sa fabrication responsable → fidélisation + premium tarifaire → hausse du CA (valeur financière). En captant cette demande, l'entreprise crée aussi davantage de <strong>valeur ajoutée</strong>, qui se répartit entre salariés, État, partenaires (ESAT) et autofinancement.<br><br><strong>Axe 2 — Valeur sociale et partenariale</strong> : la RSE renforce le sentiment d'appartenance. Bébé Serein collabore avec des ESAT (inclusion sociale) et participe à des projets de reforestation (valeur sociale). Innocent (smoothies) collabore avec l'association « Petits frères des pauvres » chaque hiver → cohésion d'équipe + valeur partenariale.<br><br><strong>Conclusion</strong> — En activant les 5 formes de valeur, la RSE produit une <strong>performance globale</strong> durable, supérieure au seul résultat financier. C'est un véritable choix stratégique de long terme.`,
     alerte:"Mentionner moins de 5 types de valeurs = -50% sur la question. Ne pas inclure d'exemple d'organisation EXTERNE = -25%. Lire 2 fois la consigne avant de répondre.",
     astuce:"Mémoriser une mini-liste d'exemples par type de valeur : Patagonia (perçue), Innocent (partenariale), MAIF (sociale), Le Slip Français (financière), Biocoop (ajoutée)."
   },
@@ -966,7 +990,7 @@ const Q = {
     ],
     mots:["éthique","démarche éthique","engagement volontaire","au-delà de la loi","transparence","équité","parties prenantes","labels"],
     annale:{src:"Bac STMG MSGN · Métropole 2025 (Bébé Serein)", q:"Montrer que l'entreprise Bébé Serein est engagée dans une démarche éthique."},
-    corrige:`L'entreprise Bébé Serein est clairement engagée dans une démarche éthique, comme le montrent plusieurs aspects :<br><br><strong>1. Production locale et circuits courts :</strong> Les couches et le lait infantile sont fabriqués en France, limitant l'empreinte carbone liée au transport. L'entreprise privilégie les matières premières locales (cellulose) et participe à des projets de reforestation en France.<br><br><strong>2. Partenariats avec des ESAT :</strong> Bébé Serein collabore avec des Établissements et Services d'Aide par le Travail, employant des personnes en situation de handicap pour préparer les kits d'essai. Engagement fort en faveur de l'inclusion sociale.<br><br><strong>3. Labels et certifications :</strong> Produits certifiés FSC, TCF et Ecolabel — labels indépendants qui garantissent une fabrication responsable. Label « Quelle Couche® » qui valorise les produits français en circuit court.<br><br><strong>4. Transparence et sécurité :</strong> Analyses régulières par des laboratoires externes pour vérifier l'absence de contaminants, assurant la sécurité des bébés.<br><br><strong>5. Engagement environnemental :</strong> Organisation du « Green Friday » pour financer des projets écologiques, en opposition au « Black Friday ».<br><br>Ces éléments montrent une intégration de pratiques éthiques dans toutes les opérations, de la production locale et durable à l'inclusion sociale et à la transparence.`,
+    corrige:`L'entreprise Bébé Serein est clairement engagée dans une démarche éthique, comme le montrent plusieurs aspects de son fonctionnement, de ses pratiques et des valeurs qu'elle met en avant :<br><br><strong>1. Production locale et circuits courts :</strong> Les couches et le lait infantile sont fabriqués en France, limitant l'empreinte carbone liée au transport. L'entreprise privilégie les matières premières locales (cellulose) et participe à des projets de reforestation en France.<br><br><strong>2. Partenariats avec des ESAT :</strong> Bébé Serein collabore avec des Établissements et Services d'Aide par le Travail, employant des personnes en situation de handicap pour préparer les kits d'essai. Engagement fort en faveur de l'inclusion sociale.<br><br><strong>3. Labels et certifications :</strong> Produits certifiés FSC, TCF et Ecolabel — labels indépendants qui garantissent une fabrication responsable. Label « Quelle Couche® » qui valorise les produits français en circuit court.<br><br><strong>4. Transparence et sécurité :</strong> Analyses régulières par des laboratoires externes pour vérifier l'absence de contaminants, assurant la sécurité des bébés.<br><br><strong>5. Engagement environnemental :</strong> Organisation du « Green Friday » pour financer des projets écologiques, en opposition au « Black Friday ».<br><br>Ces éléments montrent une intégration de pratiques éthiques dans toutes les opérations, de la production locale et durable à l'inclusion sociale et à la transparence.`,
     alerte:"Éthique ≠ obligation légale. Une entreprise qui respecte simplement la loi n'est PAS particulièrement éthique : l'éthique implique un engagement VOLONTAIRE au-delà des obligations.",
     astuce:"Structurer en 4-5 pratiques distinctes avec un titre court pour chacune. Citer des éléments TRÈS CONCRETS du document (noms de labels, partenaires spécifiques, actions précises) pour éviter le hors-sujet."
   }
@@ -1392,6 +1416,26 @@ const VERBS = {
     ex:"<strong>Orgas externes à mobiliser</strong> : Patagonia, Yuka, Innocent, Décathlon, Carrefour, Veja, MAIF, Michelin, Le Slip Français, Picard, Biocoop.",
     reponse:"<strong>Intro</strong> — La RSE intègre les enjeux sociaux et environnementaux dans la stratégie. Elle permet de créer plusieurs types de valeur : financière, ajoutée, perçue, sociale et partenariale.<br><br><strong>Axe 1 — Valeur perçue et financière</strong> : les certifications RSE renforcent la confiance et différencient. Le label bio de Bébé Serein attire des parents engagés. Patagonia communique sur sa fabrication responsable → fidélisation + premium tarifaire → ↑ CA.<br><br><strong>Axe 2 — Valeur sociale et partenariale</strong> : la RSE renforce le sentiment d'appartenance. Innocent (smoothies) collabore avec l'association \"Petits frères des pauvres\" chaque hiver → cohésion d'équipe + valeur partenariale.<br><br><strong>Conclusion</strong> — La RSE produit une performance globale durable, supérieure au seul résultat financier. Elle peut être un véritable choix stratégique de long terme."
   }
+};
+
+// Mapping premier-mot-du-libellé → id de verbe dans VERBS.
+// Pourquoi : les libellés de questions du bac (questions-bac.js) n'ont pas de
+// champ "verbe" pré-rempli. On le détecte au vol via le premier mot pour
+// pouvoir coloriser/rendre cliquable le verbe dans la liste "Questions du Bac".
+// Les libellés qui commencent par un nom commun (Causes, Facteurs, Risques…)
+// ne matchent rien et restent affichés sans couleur particulière.
+const VERB_FROM_LIBELLE = {
+  "Présenter":"presenter", "Identifier":"identifier", "Repérer":"reperer",
+  "Relever":"relever",     "Lister":"lister",
+  "Caractériser":"caracteriser", "Déterminer":"determiner",
+  "Décrire":"decrire",     "Préciser":"preciser",
+  "Analyser":"analyser",   "Expliquer":"expliquer",
+  "Montrer":"montrer",     "Démontrer":"demontrer",
+  "Comparer":"comparer",   "Commenter":"commenter", "Conclure":"conclure",
+  "Justifier":"justifier", "Apprécier":"apprecier",
+  "Proposer":"proposer",   "Choisir":"choisir", "Expliciter":"expliciter",
+  "Calculer":"calculer",   "Retrouver":"retrouver",
+  "Schématiser":"schematiser", "Réaliser":"realiser"
 };
 
 function showVerb(id, el) {
@@ -2004,11 +2048,33 @@ function showQuestionsForNum(num, el) {
       q.synthese ? '<span style="background:#fdf2c8;color:#7a5800;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;margin-left:6px">✍️ 15 lignes</span>' : '',
       q.choix    ? '<span style="background:#e3eef8;color:#2a69a8;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;margin-left:6px">🔀 au choix</span>' : ''
     ].join('');
+
+    // Détecte le verbe d'attaque pour coloriser "Q num" et le verbe lui-même
+    // selon la famille (Repérage = bleu, Analyse = orange…). Si le libellé ne
+    // commence pas par un verbe connu (cas type "Causes…", "Facteurs…"), on
+    // garde la couleur bleue par défaut et le libellé reste tel quel.
+    const firstWordMatch = q.libelle.match(/^[A-ZÀ-Ÿ][a-zà-ÿ]+/);
+    const firstWord = firstWordMatch ? firstWordMatch[0] : null;
+    const verbId    = firstWord ? VERB_FROM_LIBELLE[firstWord] : null;
+    const qColor    = verbId ? VERBS[verbId].color : 'var(--bleu)';
+
+    let libelleHtml;
+    if (verbId) {
+      // event.stopPropagation : empêche le clic sur le verbe de déclencher
+      // openCartePanel sur la ligne entière (on veut la fiche du verbe, pas la carte).
+      // Classe verb-link : sert au listener clic-extérieur pour ne PAS fermer
+      // le panneau quand on passe d'un verbe à l'autre.
+      const verbSpan = `<span class="verb-link" style="color:${qColor};font-weight:700;cursor:pointer" onclick="event.stopPropagation();openVerbPanel('${verbId}')" title="Voir la fiche du verbe">${firstWord}</span>`;
+      libelleHtml = verbSpan + q.libelle.slice(firstWord.length);
+    } else {
+      libelleHtml = q.libelle;
+    }
+
     html += `
       <div class="bac-line" data-qid="${q.id}" onclick="openCartePanel('${q.id}', this)" style="padding:10px 14px;border-bottom:1px solid var(--bordure);cursor:pointer;display:flex;gap:12px;align-items:baseline;font-size:14px;line-height:1.4;transition:background .12s">
         <span style="flex-shrink:0;font-size:15px">${q.fam}</span>
-        <span style="flex-shrink:0;font-family:'Nunito',sans-serif;font-weight:800;color:var(--bleu);min-width:46px">Q ${q.num}</span>
-        <span style="flex:1;min-width:0">${q.libelle}${badges}</span>
+        <span style="flex-shrink:0;font-family:'Nunito',sans-serif;font-weight:800;color:${qColor};min-width:46px">Q ${q.num}</span>
+        <span style="flex:1;min-width:0">${libelleHtml}${badges}</span>
         <span style="flex-shrink:0;color:var(--gris);font-size:13px;font-style:italic">${q.sujet} '${String(q.annee).slice(-2)}</span>
       </div>`;
   }
@@ -2060,22 +2126,97 @@ function closeCartePanel() {
     .forEach(l => l.classList.remove('bac-line-active'));
 }
 
-// Touche Échap pour fermer le panneau
+// ═══════════════ PANNEAU LATÉRAL "Fiche verbe" ═══════════════
+// Ouvre la fiche complète d'un verbe (attendu, format, piège, exemple bac,
+// réponse modèle) dans un panneau coulissant à droite, sans écraser la liste
+// centrale. Réutilise le contenu de VERBS — pas de duplication avec showVerb().
+function openVerbPanel(verbId) {
+  const v = VERBS[verbId];
+  if (!v) return;
+
+  // Si la Carte est ouverte, on la ferme : les deux panneaux se chevaucheraient.
+  const carte = document.getElementById('carte-overlay');
+  if (carte && carte.style.display !== 'none') closeCartePanel();
+
+  // Titre du header reprend la couleur de famille pour le repérage visuel
+  const title = document.getElementById('verb-overlay-title');
+  title.textContent = `🔑 ${v.nom}`;
+  title.style.color = v.color;
+
+  // Même structure que showVerb() : on garde une seule source de vérité visuelle
+  document.getElementById('verb-overlay-content').innerHTML = `
+    <div class="q-header">
+      <div class="type-tag" style="color:${v.color}">${v.cat} · Verbe de consigne</div>
+      <h2>${v.nom}</h2>
+      <div class="freq">${v.freq}</div>
+    </div>
+
+    <div class="section" style="border-left:5px solid ${v.color}">
+      <div class="sec-title" style="color:${v.color}">🎯 Ce qu'on attend vraiment</div>
+      <div style="font-size:14px;line-height:1.6">${v.attendu}</div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title bleu">📝 Format de réponse</div>
+      <div style="font-size:14px;line-height:1.6">${v.format}</div>
+    </div>
+
+    <div class="section" style="background:#fdeef1;border-color:#e8b4bf">
+      <div class="sec-title rouge">⚠️ Piège classique</div>
+      <div style="font-size:14px;line-height:1.6">${v.piege}</div>
+    </div>
+
+    <div class="section" style="background:#f0f7f2;border-color:#b8dfc9">
+      <div class="sec-title vert">📌 Exemple bac</div>
+      <div style="font-size:12px;color:var(--gris);font-weight:700;margin-bottom:6px">${v.ex_src}</div>
+      <div style="font-size:14px;line-height:1.6;margin-bottom:14px">${v.ex}</div>
+      <div style="background:white;border-left:3px solid #1a7a3c;border-radius:0 8px 8px 0;padding:12px 14px">
+        <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;color:#1a7a3c;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">✏️ Réponse rédigée — modèle</div>
+        <div style="font-size:13.5px;line-height:1.65;color:#2a3e30">${v.reponse}</div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('verb-overlay').style.display = 'flex';
+  // Repart en haut quand on change de verbe (sinon on garde le scroll précédent)
+  document.getElementById('verb-overlay-content').scrollTop = 0;
+}
+
+function closeVerbPanel() {
+  const overlay = document.getElementById('verb-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+// Touche Échap : ferme le panneau verbe en priorité (s'il est au-dessus),
+// sinon ferme la Carte. Les deux ne sont jamais ouverts en même temps —
+// mais cet ordre reste robuste si jamais ça change.
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    const overlay = document.getElementById('carte-overlay');
-    if (overlay && overlay.style.display !== 'none') closeCartePanel();
-  }
+  if (e.key !== 'Escape') return;
+  const verbOv = document.getElementById('verb-overlay');
+  if (verbOv && verbOv.style.display !== 'none') { closeVerbPanel(); return; }
+  const overlay = document.getElementById('carte-overlay');
+  if (overlay && overlay.style.display !== 'none') closeCartePanel();
 });
 
-// Clic en dehors du panneau ferme le panneau — sauf si on clique sur une
-// ligne de question (.bac-line), qui doit pouvoir ouvrir une autre carte.
+// Clic en dehors d'un panneau ouvert : on le ferme. Exceptions :
+//   - clic DANS le panneau lui-même
+//   - clic sur une .bac-line (ouvre la Carte → géré par openCartePanel)
+//   - clic sur un .verb-link (ouvre une autre fiche verbe → géré par openVerbPanel)
 document.addEventListener('click', e => {
+  const insideBacLine = !!e.target.closest('.bac-line');
+  const insideVerbLink = !!e.target.closest('.verb-link');
+
+  const verbOv = document.getElementById('verb-overlay');
+  if (verbOv && verbOv.style.display !== 'none' &&
+      !verbOv.contains(e.target) && !insideVerbLink) {
+    closeVerbPanel();
+  }
+
   const overlay = document.getElementById('carte-overlay');
-  if (!overlay || overlay.style.display === 'none') return;
-  if (overlay.contains(e.target)) return;           // clic DANS le panneau → on garde
-  if (e.target.closest('.bac-line')) return;        // clic sur une ligne → openCartePanel s'occupe du reste
-  closeCartePanel();
+  if (overlay && overlay.style.display !== 'none' &&
+      !overlay.contains(e.target) && !insideBacLine && !insideVerbLink) {
+    closeCartePanel();
+  }
 });
 
 // ═══════════════ SIDEBAR QUESTIONS DE SYNTHÈSE (généré dynamiquement) ═══════════════
@@ -2210,6 +2351,17 @@ switchMode('fiches');
     <button class="carte-overlay-close" onclick="closeCartePanel()" title="Fermer (Échap)">×</button>
   </div>
   <iframe id="carte-overlay-iframe" src="about:blank" title="La Carte MSGN"></iframe>
+</div>
+
+<!-- Panneau latéral fiche verbe — ouvert au clic sur un verbe dans la liste
+     "Questions du Bac". Le titre et la couleur sont mis à jour dynamiquement
+     par openVerbPanel() en fonction du verbe affiché. -->
+<div id="verb-overlay" style="display:none">
+  <div class="carte-overlay-header">
+    <span id="verb-overlay-title" class="carte-overlay-title">🔑 Fiche verbe</span>
+    <button class="carte-overlay-close" onclick="closeVerbPanel()" title="Fermer (Échap)">×</button>
+  </div>
+  <div id="verb-overlay-content"></div>
 </div>
 
 <!-- MODALE "MÉTHODE COMPLÈTE" (TYPE) — s'ouvre depuis la popup bac dans l'iframe
