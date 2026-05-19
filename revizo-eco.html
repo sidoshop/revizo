@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>Revizo — Éco Terminale STMG</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="revizo-design-system.css">
 <link rel="stylesheet" href="revizo-nav.css">
 <style>
@@ -14,131 +14,800 @@
   --fond: #f0ede6; --blanc: #fffdf8; --texte: #1e1c18;
   --accent: #b5415a; --jaune: #f5c842; --vert: #2d7a4f;
   --bleu: #2563a8; --orange: #c4742a; --gris: #8a8478;
-  --bordure: #ddd8cc; --sidebar-w: 290px;
+  --bordure: #ddd8cc;
+  --eco: #2a69a8; --eco-bg: #e8f3ff; --eco-dark: #1a5c8a;
+  --plus-vert: #1a7a3c; --plus-bg: #e6f5ec;
+  --moins-rouge: #b5415a; --moins-bg: #fdeef2;
 }
-body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; }
+body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; line-height: 1.5; }
 
-/* ─── LAYOUT ─── */
-.layout { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: calc(100vh - 84px); margin-top: 35px; }
-.sidebar { background: white; border-right: 1px solid var(--bordure); position: sticky; top: 84px; height: calc(100vh - 84px); overflow-y: auto; }
-.sidebar-intro { padding: 14px 16px 8px; font-size: 11px; font-weight: 700; color: var(--gris); letter-spacing: .07em; text-transform: uppercase; cursor: default; }
-.main { padding: 24px 28px; max-width: 820px; }
+/* ─── PAGE ─── */
+.page { max-width: 980px; margin: 0 auto; padding: 28px 22px 60px; }
 
-/* ─── SIDEBAR : GROUPES (DOSSIERS THÉMATIQUES) ─── */
-.group { border-bottom: 1px solid var(--bordure); }
-.group-header { padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; user-select: none; }
-.group-header:hover { background: var(--fond); }
-.group-label { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; flex: 1; }
-.group-count { font-size: 10px; color: var(--gris); font-weight: 600; }
-.group-arrow { font-size: 10px; color: var(--gris); transition: transform .2s; }
-.group-arrow.open { transform: rotate(90deg); }
-.group-body { display: none; }
-.group-body.open { display: block; }
+/* ─── ONGLETS (cache/affiche les sections) ─── */
+body[data-tab="intro"] [data-tab]:not([data-tab="intro"]) { display: none; }
+body[data-tab="carte"] [data-tab]:not([data-tab="carte"]) { display: none; }
+body[data-tab="methodo"] [data-tab]:not([data-tab="methodo"]) { display: none; }
 
-/* ─── SIDEBAR : ITEMS QUESTION ─── */
-.q-item { padding: 9px 16px 9px 22px; cursor: pointer; border-left: 3px solid transparent; display: flex; flex-direction: column; gap: 2px; transition: all .15s; }
-.q-item:hover { background: var(--fond); }
-.q-item.active { background: #fdf5f7; border-left-color: var(--accent); }
-.q-item .q-name { font-size: 12.5px; font-weight: 600; line-height: 1.3; }
-.q-item .q-meta { display: flex; gap: 6px; align-items: center; font-size: 10px; color: var(--gris); margin-top: 2px; }
-.q-fam { font-size: 11px; }
+/* ─── HEADER ─── */
+.eco-header { text-align: center; margin-bottom: 24px; }
+.eco-header h1 { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; margin-bottom: 4px; color: var(--eco-dark); }
+.eco-header .lead { font-size: 13.5px; color: #5a4e3e; max-width: 680px; margin: 0 auto; }
 
-/* ─── BAC LINES (liste centrale d'une question) ─── */
-.bac-line {
-  padding: 11px 14px; border-bottom: 1px solid #f0ede6; cursor: pointer;
-  display: flex; gap: 10px; align-items: flex-start; transition: background .15s;
+/* ============================================================ */
+/* INTRO — Le schéma mental                                    */
+/* ============================================================ */
+.intro-bloc { margin-bottom: 24px; }
+.intro-bloc h2 {
+  font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 800;
+  color: var(--texte); margin-bottom: 4px; display: flex; align-items: center; gap: 8px;
 }
-.bac-line:hover { background: #fef8e2; }
-.bac-line.bac-line-active { background: #fdf0b8; box-shadow: inset 4px 0 0 #f5c842; }
-.bac-line-num { font-weight: 800; color: var(--accent); font-size: 13px; min-width: 28px; }
-.bac-line-body { flex: 1; }
-.bac-line-libelle { font-size: 13.5px; line-height: 1.45; font-weight: 500; }
-.bac-line-meta { display: flex; gap: 8px; align-items: center; margin-top: 5px; font-size: 11px; color: var(--gris); }
-.bac-line-session { background: white; border: 1px solid var(--bordure); padding: 1px 8px; border-radius: 10px; font-weight: 600; }
-.bac-line-synth { background: #fdf5f7; border: 1px solid #e8b4bf; color: var(--accent); padding: 1px 8px; border-radius: 10px; font-weight: 700; }
-.bac-section-title { padding: 14px 16px 8px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 16px; color: var(--accent); }
-
-/* ─── PANNEAU CARTE (slide-in droite) ─── */
-#carte-overlay {
-  position: fixed; top: 84px; right: 0; bottom: 0;
-  width: 65%; max-width: 960px;
-  background: var(--fond);
-  box-shadow: -8px 0 28px rgba(0,0,0,0.18);
-  z-index: 150; display: none; flex-direction: column;
-  animation: slide-in-right 0.25s ease-out;
+.intro-bloc h2 .num {
+  display: inline-flex; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--eco); color: #fff; font-size: 13px; font-weight: 900;
+  align-items: center; justify-content: center; font-family: 'Inter', sans-serif;
 }
-@keyframes slide-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
-.carte-overlay-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: white; border-bottom: 1px solid var(--bordure); flex-shrink: 0; }
-.carte-overlay-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; color: var(--accent); }
-.carte-overlay-close { background: transparent; border: none; font-size: 22px; cursor: pointer; color: var(--gris); line-height: 1; padding: 2px 10px; border-radius: 6px; }
-.carte-overlay-close:hover { background: var(--fond); color: var(--accent); }
-#carte-overlay-iframe { flex: 1; border: none; width: 100%; display: block; }
+.intro-bloc .sub { font-size: 12.5px; color: #5a4e3e; margin-bottom: 14px; margin-left: 34px; }
 
-/* Popup "Question du Bac" en haut du panneau carte */
-.bac-popup {
-  position: fixed; top: 96px; left: 50%; transform: translateX(-50%);
-  width: 600px; max-width: 90vw;
-  background: white; border: 2px solid var(--accent); border-radius: 12px;
-  padding: 14px 18px; z-index: 180;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+/* Déclic (citation pivot) */
+.declic {
+  background: var(--eco-bg); border-left: 4px solid var(--eco);
+  border-radius: 0 10px 10px 0; padding: 16px 20px; margin-bottom: 26px;
+  font-size: 14.5px; line-height: 1.6; color: var(--texte);
 }
-.bac-popup-close { position: absolute; top: 8px; right: 12px; background: transparent; border: none; font-size: 18px; cursor: pointer; color: var(--gris); }
-.bac-popup-source { font-size: 11px; color: var(--gris); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-.bac-popup-q { font-size: 14px; line-height: 1.45; font-weight: 600; }
-.bac-popup-method-btn {
-  margin-top: 10px; background: var(--vert); color: white; border: none;
-  padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;
+.declic strong { color: var(--eco-dark); }
+.declic .label {
+  font-size: 11px; font-weight: 800; color: var(--eco-dark);
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px;
+  display: block;
+}
+
+/* Grille 6 questions (le tableau pivot) */
+.grille-pivot {
+  background: var(--blanc); border: 1px solid var(--bordure);
+  border-radius: 12px; padding: 18px 20px; margin-bottom: 6px;
+}
+.grille-pivot table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px;
+}
+.grille-pivot th, .grille-pivot td {
+  padding: 10px 8px; text-align: left;
+  border-bottom: 1px solid #f0ede6;
+  vertical-align: top;
+}
+.grille-pivot th {
+  font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800;
+  color: var(--eco-dark); background: var(--eco-bg);
+  text-transform: uppercase; letter-spacing: .04em;
+  white-space: nowrap;
+}
+.grille-pivot td.q-label {
+  font-family: 'Nunito', sans-serif; font-weight: 800;
+  color: var(--accent); width: 18%;
+  text-transform: uppercase; font-size: 12px; letter-spacing: .04em;
+}
+.grille-pivot td.q-meta { color: #5a4e3e; font-size: 12px; width: 32%; }
+.grille-pivot td.q-ex { color: #3a3630; font-size: 12px; }
+.grille-pivot td.q-ex .plus { color: var(--plus-vert); font-weight: 700; }
+.grille-pivot td.q-ex .moins { color: var(--moins-rouge); font-weight: 700; }
+
+/* Acteurs grid */
+.acteurs-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+}
+@media (max-width: 800px) { .acteurs-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .acteurs-grid { grid-template-columns: 1fr; } }
+.acteur-card {
+  background: var(--blanc); border: 1px solid var(--bordure); border-radius: 10px;
+  padding: 12px; cursor: pointer; transition: all .15s;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.acteur-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.08); border-color: var(--eco); }
+.acteur-card .emoji { font-size: 24px; }
+.acteur-card .nom {
+  font-family: 'Nunito', sans-serif; font-size: 13.5px; font-weight: 900; color: var(--texte);
+}
+.acteur-card .role { font-size: 11.5px; color: #5a4e3e; line-height: 1.4; }
+.acteur-card .niveau {
+  font-size: 9.5px; color: var(--eco); background: var(--eco-bg);
+  padding: 1px 6px; border-radius: 8px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .04em; align-self: flex-start;
+  margin-top: 2px;
+}
+
+/* Objectifs grid */
+.objectifs-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+}
+@media (max-width: 800px) { .objectifs-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .objectifs-grid { grid-template-columns: 1fr; } }
+.objectif-card {
+  background: var(--blanc); border: 1px solid var(--bordure); border-radius: 10px;
+  padding: 14px; cursor: pointer; transition: all .15s;
+  border-top: 4px solid;
+}
+.objectif-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+.objectif-card.obj-croissance   { border-top-color: var(--accent); }
+.objectif-card.obj-emploi       { border-top-color: var(--orange); }
+.objectif-card.obj-equite       { border-top-color: var(--bleu); }
+.objectif-card.obj-soutenabilite{ border-top-color: var(--vert); }
+.objectif-card .emoji { font-size: 22px; margin-bottom: 4px; }
+.objectif-card .nom {
+  font-family: 'Nunito', sans-serif; font-size: 14.5px; font-weight: 900; margin-bottom: 4px;
+}
+.objectif-card .quest {
+  font-size: 11.5px; color: #5a4e3e; font-style: italic; line-height: 1.4;
+}
+
+/* CTA vers la carte */
+.cta-carte {
+  background: var(--eco); color: #fff; border-radius: 10px;
+  padding: 14px 18px; text-align: center; margin-top: 22px;
+  cursor: pointer; transition: all .15s;
+  font-size: 13.5px; font-weight: 600;
+}
+.cta-carte:hover { background: var(--eco-dark); transform: translateY(-1px); }
+.cta-carte strong { font-family: 'Nunito', sans-serif; font-weight: 900; }
+
+/* ============================================================ */
+/* CARTE — 6 blocs de notions                                  */
+/* ============================================================ */
+.carte-intro {
+  background: var(--blanc); border: 1px solid var(--bordure);
+  border-radius: 10px; padding: 14px 18px; margin-bottom: 22px;
+  font-size: 13px; line-height: 1.55; color: #3a3630;
+}
+.carte-intro strong { color: var(--eco-dark); }
+
+.bloc {
+  background: var(--blanc); border: 1px solid var(--bordure);
+  border-radius: 12px; padding: 18px 20px; margin-bottom: 16px;
+  border-left: 5px solid;
+}
+.bloc-1 { border-left-color: var(--eco); }
+.bloc-2 { border-left-color: var(--accent); }
+.bloc-3 { border-left-color: var(--vert); }
+.bloc-4 { border-left-color: var(--orange); }
+.bloc-5 { border-left-color: var(--bleu); }
+.bloc-6 { border-left-color: #7030a0; }
+
+.bloc-hd {
+  display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+.bloc-num {
+  font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--gris);
+}
+.bloc-titre {
+  font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 900;
+  color: var(--texte);
+}
+.bloc-q {
+  font-size: 12px; color: var(--gris); font-style: italic; margin-left: auto;
+}
+.bloc-sub {
+  font-size: 12.5px; color: #5a4e3e; margin-bottom: 12px; line-height: 1.5;
+}
+.fiches-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px;
+}
+.fiche-pill {
+  background: var(--fond); border: 1px solid var(--bordure);
+  border-radius: 8px; padding: 9px 12px;
+  cursor: pointer; transition: all .12s;
+  font-size: 12.5px; line-height: 1.4;
+  display: flex; align-items: center; gap: 6px;
+  position: relative;
+}
+.fiche-pill:hover { background: var(--eco-bg); border-color: var(--eco); color: var(--eco-dark); }
+.fiche-pill .pill-emoji { font-size: 14px; flex-shrink: 0; }
+.fiche-pill .pill-nom { font-weight: 600; flex: 1; }
+
+/* ─── BULLET 3-états (○ → 🟠 → 🟢 → ○) ─── */
+.bullet {
+  display: inline-block; flex-shrink: 0;
+  width: 12px; height: 12px;
+  border: 1.5px solid rgba(0,0,0,0.30);
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  transition: all .12s;
+  position: relative;
+}
+/* zone cliquable étendue (invisible) */
+.bullet::before {
+  content: ''; position: absolute; inset: -7px; border-radius: 50%;
+}
+.bullet:hover { transform: scale(1.25); border-color: rgba(0,0,0,0.55); }
+.bullet.state-review { background: #e88e3e; border-color: #c45c2e; }
+.bullet.state-know   { background: #2db35a; border-color: #1a7a3c; }
+
+/* Légende des bullets en haut de la Carte */
+.bullets-legend {
+  font-size: 11.5px; color: var(--gris); margin-top: 10px;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.bullets-legend .leg-item { display: flex; align-items: center; gap: 5px; }
+.bullets-legend .leg-dot {
+  display: inline-block; width: 11px; height: 11px;
+  border: 1.5px solid rgba(0,0,0,0.30); border-radius: 50%; background: white;
+}
+.bullets-legend .leg-dot.review { background: #e88e3e; border-color: #c45c2e; }
+.bullets-legend .leg-dot.know { background: #2db35a; border-color: #1a7a3c; }
+
+/* ─── TOOLTIPS au survol (CSS pur via data-keywords) ─── */
+.fiche-pill[data-keywords]:hover::after {
+  content: attr(data-keywords);
+  position: absolute;
+  left: 50%; top: calc(100% + 6px);
+  transform: translateX(-50%);
+  background: #1e1c18; color: #fffdf8;
+  padding: 8px 12px; border-radius: 8px;
   font-family: 'Inter', sans-serif;
+  font-size: 11.5px; font-weight: 500;
+  line-height: 1.5; white-space: normal;
+  width: max-content; max-width: 320px;
+  text-align: center;
+  z-index: 50;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.28);
+  pointer-events: none;
 }
-.bac-popup-method-btn:hover { background: #1f5e3c; }
-.bac-popup-method-btn.disabled { background: var(--gris); cursor: not-allowed; opacity: 0.7; }
-
-/* ─── MODALE TYPE / SYNTHÈSE ─── */
-#type-modal { position: fixed; inset: 0; background: rgba(30, 28, 24, 0.55); z-index: 200; display: none; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; }
-#type-modal.show { display: flex; }
-.type-modal-content { background: white; width: 100%; max-width: 820px; border-radius: 14px; padding: 24px 28px 30px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.type-modal-close { position: absolute; top: 10px; right: 14px; background: transparent; border: none; font-size: 26px; color: var(--gris); cursor: pointer; padding: 4px 10px; border-radius: 6px; }
-.type-modal-close:hover { background: var(--fond); color: var(--accent); }
-.type-modal-tag { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 5px; }
-.type-modal-titre { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 900; margin-bottom: 12px; }
-.type-modal-body { font-size: 14px; line-height: 1.6; }
-.type-modal-body h4 { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--gris); margin: 16px 0 8px; }
-.type-modal-body .annale-box { background: #f7f4ee; border-left: 4px solid var(--jaune); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 10px 0; font-size: 13.5px; }
-.type-modal-body .corr-box { background: #f0f7f3; border: 1px solid #b8dfc9; border-radius: 8px; padding: 14px 16px; margin-top: 10px; font-size: 13.5px; line-height: 1.7; }
-.type-modal-body .alert-box { background: #fff8e6; border: 1px solid #f0d070; border-radius: 8px; padding: 11px 14px; font-size: 13px; margin-top: 10px; }
-.type-modal-body .astuce-box { background: #eef5ff; border: 1px solid #b8d0f0; border-radius: 8px; padding: 11px 14px; font-size: 13px; margin-top: 8px; }
-
-/* Pills (notions) */
-.pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-.pill { background: #fdf5f7; border: 1.5px solid #e8b4bf; color: var(--accent); font-size: 12px; font-weight: 600; padding: 4px 11px; border-radius: 18px; cursor: pointer; transition: all .15s; }
-.pill:hover { background: var(--accent); color: white; }
-
-/* Steps méthode */
-.steps { display: flex; flex-direction: column; gap: 9px; margin-top: 8px; }
-.step { display: flex; gap: 11px; align-items: flex-start; }
-.step-n { width: 23px; height: 23px; min-width: 23px; background: var(--accent); color: white; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
-.step-body { font-size: 13.5px; line-height: 1.5; }
-.step-body strong { font-weight: 700; }
-
-/* PLACEHOLDER */
-.placeholder { text-align: center; padding: 80px 20px; color: var(--gris); }
-.placeholder .big { font-size: 48px; margin-bottom: 12px; }
-.placeholder h3 { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; color: var(--texte); }
-.placeholder p { font-size: 14px; line-height: 1.5; max-width: 500px; margin: 0 auto; }
-
-/* Onglet fiches : la carte plein écran */
-.fiches-iframe-wrap { padding: 0; margin: -24px -28px 0; }
-.fiches-iframe-wrap iframe { width: 100%; height: calc(100vh - 84px); border: none; display: block; }
-
-@media (max-width: 680px) {
-  .layout { grid-template-columns: 1fr; }
-  .sidebar { position: static; height: auto; }
-  .main { padding: 16px; }
-  #carte-overlay { width: 100%; max-width: none; }
+@media (max-width: 600px) {
+  /* Sur mobile, on désactive les tooltips (peu utilisables au tap) */
+  .fiche-pill[data-keywords]:hover::after { display: none; }
 }
+
+/* ============================================================ */
+/* MODALE FICHE (6 cases — libellés courts)                    */
+/* ============================================================ */
+.fiche-overlay {
+  position: fixed; inset: 0; background: rgba(30,28,24,0.55);
+  z-index: 200; display: none; align-items: flex-start; justify-content: center;
+  padding: 40px 16px; overflow-y: auto;
+}
+.fiche-overlay.show { display: flex; }
+.fiche-modal {
+  background: #fff; width: 100%; max-width: 640px;
+  border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  position: relative; overflow: hidden;
+}
+.fiche-modal-hd {
+  padding: 18px 22px 14px; border-bottom: 1px solid var(--bordure);
+  background: var(--eco-bg);
+}
+.fiche-modal-tag {
+  font-size: 10.5px; font-weight: 800; color: var(--eco-dark);
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px;
+}
+.fiche-modal-titre {
+  font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 900;
+  color: var(--texte); line-height: 1.25;
+}
+.fiche-modal-emoji {
+  font-size: 28px; margin-bottom: 4px;
+}
+.fiche-modal-body { padding: 16px 22px 20px; }
+.fiche-row {
+  display: grid; grid-template-columns: 110px 1fr; gap: 12px;
+  padding: 11px 0; border-bottom: 1px solid #f0ede6;
+  font-size: 13.5px; line-height: 1.5;
+}
+.fiche-row:last-child { border-bottom: none; }
+.fiche-row .q {
+  font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 900;
+  color: var(--accent); text-transform: uppercase; letter-spacing: .06em;
+  padding-top: 2px;
+}
+.fiche-row .r { color: var(--texte); }
+
+/* Effets : bullets ✅/⚠️ stylés */
+.fiche-row.row-effets .r { display: flex; flex-direction: column; gap: 7px; }
+.bullet-effet {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 8px 10px; border-radius: 8px;
+  font-size: 13px; line-height: 1.45;
+}
+.bullet-effet .ico {
+  font-size: 14px; line-height: 1.45; flex-shrink: 0;
+  font-weight: 900;
+}
+.bullet-effet.b-plus  { background: var(--plus-bg); color: #1e1c18; border-left: 3px solid var(--plus-vert); }
+.bullet-effet.b-plus .ico  { color: var(--plus-vert); }
+.bullet-effet.b-moins { background: var(--moins-bg); color: #1e1c18; border-left: 3px solid var(--moins-rouge); }
+.bullet-effet.b-moins .ico { color: var(--moins-rouge); }
+
+@media (max-width: 520px) {
+  .fiche-row { grid-template-columns: 1fr; gap: 4px; }
+  .fiche-row .q { padding-top: 0; padding-bottom: 2px; }
+}
+/* Encart "Formule" — affiché juste avant la case Mesure */
+.fiche-formule {
+  display: grid; grid-template-columns: 110px 1fr; gap: 12px;
+  padding: 11px 0; border-bottom: 1px solid #f0ede6;
+}
+.fiche-formule .q {
+  font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 900;
+  color: var(--eco-dark); text-transform: uppercase; letter-spacing: .06em;
+  padding-top: 4px;
+}
+.fiche-formule .formule-box {
+  background: var(--eco-bg); border-left: 3px solid var(--eco);
+  border-radius: 0 8px 8px 0; padding: 9px 12px;
+  font-family: 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 13px; line-height: 1.5; color: var(--texte);
+}
+@media (max-width: 520px) {
+  .fiche-formule { grid-template-columns: 1fr; gap: 4px; }
+  .fiche-formule .q { padding-top: 0; padding-bottom: 2px; }
+}
+
+/* Encart "À savoir par cœur" — sur les fiches qui requièrent une connaissance par cœur non fournie en annexe */
+.fiche-asavoir {
+  margin: 14px 0 0; padding: 12px 14px;
+  background: #e8f3ff; border: 1px solid #b3d4f0;
+  border-radius: 8px;
+}
+.fiche-asavoir-tag {
+  font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 900;
+  color: #1a5c8a; text-transform: uppercase; letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+.fiche-asavoir-body {
+  font-size: 13px; line-height: 1.55; color: #1e1c18;
+}
+.fiche-asavoir-body ul { margin: 6px 0 0 18px; padding: 0; }
+.fiche-asavoir-body li { margin-bottom: 3px; }
+
+/* Encart "Piège du bac" en bas de la modale */
+.fiche-piege {
+  margin: 14px 0 0; padding: 12px 14px;
+  background: #fff8e6; border: 1px solid #f0d070;
+  border-radius: 8px;
+}
+.fiche-piege-tag {
+  font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 900;
+  color: #7a5800; text-transform: uppercase; letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+.fiche-piege-body {
+  font-size: 13px; line-height: 1.55; color: #1e1c18;
+}
+
+.fiche-modal-close {
+  position: absolute; top: 12px; right: 14px;
+  background: transparent; border: none; font-size: 24px;
+  color: var(--gris); cursor: pointer; line-height: 1;
+  padding: 4px 10px; border-radius: 6px;
+}
+.fiche-modal-close:hover { background: var(--fond); color: var(--accent); }
+
+/* Bouton "annoter" dans le header de la modale (fiche & méthode) */
+.modal-annot-btn {
+  position: absolute; top: 14px; right: 52px;
+  background: transparent; border: 1.5px solid transparent;
+  font-size: 16px; color: var(--gris);
+  cursor: pointer; line-height: 1;
+  padding: 4px 10px; border-radius: 8px;
+  font-family: 'Inter', sans-serif; font-weight: 700;
+  display: flex; align-items: center; gap: 5px;
+  transition: all .15s;
+}
+.modal-annot-btn:hover {
+  background: var(--jaune); color: #5a4400; border-color: #f0d070;
+}
+.modal-annot-btn.has-note {
+  background: var(--jaune); color: #5a4400; border-color: #f0d070;
+}
+.modal-annot-btn .annot-label {
+  font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em;
+}
+@media (max-width: 480px) {
+  .modal-annot-btn .annot-label { display: none; }
+  .modal-annot-btn { right: 50px; padding: 4px 8px; }
+}
+
+/* ============================================================ */
+/* MÉTHODO — 5 démarches + modale méthode                       */
+/* ============================================================ */
+.methodo-intro {
+  background: var(--blanc); border: 1px solid var(--bordure);
+  border-radius: 10px; padding: 14px 18px; margin-bottom: 22px;
+  font-size: 13px; line-height: 1.55; color: #3a3630;
+}
+.methodo-intro strong { color: var(--eco-dark); }
+
+.methodo-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;
+}
+.methode-card {
+  background: var(--blanc); border: 1px solid var(--bordure);
+  border-radius: 12px; padding: 16px 18px; cursor: pointer;
+  transition: all .15s; border-left: 4px solid;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.methode-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.10); }
+.methode-card.m-1 { border-left-color: var(--accent); }
+.methode-card.m-2 { border-left-color: var(--eco); }
+.methode-card.m-3 { border-left-color: var(--orange); }
+.methode-card.m-4 { border-left-color: var(--vert); }
+.methode-card.m-5 { border-left-color: #7030a0; }
+.methode-card .m-emoji { font-size: 26px; }
+.methode-card .m-titre {
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900;
+  color: var(--texte); line-height: 1.25;
+}
+.methode-card .m-freq {
+  font-size: 11px; font-weight: 700; color: var(--gris);
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.methode-card .m-pts {
+  font-size: 12px; color: #5a4e3e;
+}
+.methode-card .m-pts strong { color: var(--texte); }
+
+/* Modale Méthode */
+.methode-overlay {
+  position: fixed; inset: 0; background: rgba(30,28,24,0.55);
+  z-index: 200; display: none; align-items: flex-start; justify-content: center;
+  padding: 30px 16px; overflow-y: auto;
+}
+.methode-overlay.show { display: flex; }
+.methode-modal {
+  background: #fff; width: 100%; max-width: 720px;
+  border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  position: relative; overflow: hidden;
+}
+.methode-modal-hd {
+  padding: 18px 22px 14px; background: var(--eco-bg);
+  border-bottom: 1px solid var(--bordure);
+}
+.methode-modal-emoji { font-size: 28px; margin-bottom: 4px; }
+.methode-modal-tag {
+  font-size: 10.5px; font-weight: 800; color: var(--eco-dark);
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px;
+}
+.methode-modal-titre {
+  font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 900;
+  color: var(--texte); line-height: 1.2;
+}
+.methode-modal-meta {
+  font-size: 12.5px; color: var(--gris); margin-top: 4px;
+}
+.methode-modal-meta strong { color: var(--texte); }
+.methode-modal-body { padding: 16px 22px 22px; }
+.methode-modal-body h4 {
+  font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800;
+  color: var(--accent); text-transform: uppercase; letter-spacing: .05em;
+  margin: 18px 0 8px;
+}
+.methode-modal-body h4:first-child { margin-top: 0; }
+
+.etapes { display: flex; flex-direction: column; gap: 10px; }
+.etape {
+  display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: flex-start;
+}
+.etape-n {
+  width: 26px; height: 26px; background: var(--eco); color: #fff;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 800;
+  flex-shrink: 0;
+}
+.etape-body { font-size: 13.5px; line-height: 1.5; }
+.etape-body strong { color: var(--texte); }
+
+.exemple-bac {
+  background: #fef9f0; border: 1px solid #f0e2c4; border-radius: 10px;
+  padding: 12px 14px; font-size: 13px; line-height: 1.55;
+}
+.exemple-bac .ex-source {
+  font-size: 11px; font-weight: 800; color: #7a5800;
+  text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px;
+}
+.exemple-bac .ex-question {
+  font-style: italic; color: #3a3630; margin-bottom: 8px;
+}
+.exemple-bac .ex-corrige {
+  border-top: 1px dashed #f0e2c4; padding-top: 8px; margin-top: 6px;
+}
+
+.methode-piege {
+  background: #fff8e6; border: 1px solid #f0d070; border-radius: 8px;
+  padding: 11px 14px; font-size: 13px; line-height: 1.5;
+}
+.methode-piege strong { color: #7a5800; }
+
+/* Engrenages classiques (dans la méthode 3) */
+.engrenages-grid {
+  display: grid; grid-template-columns: 1fr; gap: 8px;
+}
+.engrenage {
+  background: var(--fond); border-left: 3px solid var(--orange);
+  border-radius: 0 8px 8px 0; padding: 9px 12px;
+  font-size: 12.5px; line-height: 1.55;
+}
+.engrenage .eng-titre {
+  font-family: 'Nunito', sans-serif; font-weight: 800; color: var(--texte);
+  font-size: 13px; margin-bottom: 2px;
+}
+.engrenage .eng-chain { color: #3a3630; }
+.engrenage .eng-chain .arrow { color: var(--orange); font-weight: 700; padding: 0 2px; }
+
+/* Header flex : titre à gauche, bouton à droite */
+.engrenage-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 3px;
+}
+.engrenage-hd .eng-titre { margin-bottom: 0; }
+
+/* Bouton "Exemple corrigé" sur chaque engrenage */
+.engrenage-toggle {
+  background: transparent; border: 1px solid var(--orange); color: var(--orange);
+  border-radius: 6px; padding: 3px 10px;
+  font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+  cursor: pointer; transition: all .15s;
+  display: inline-flex; align-items: center; gap: 4px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.engrenage-toggle:hover { background: var(--orange); color: #fff; }
+@media (max-width: 480px) {
+  .engrenage-hd { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .engrenage-toggle { align-self: stretch; text-align: center; }
+}
+
+/* Panneau latéral slide-in droite pour afficher l'exemple corrigé */
+#eng-panel {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 50%; max-width: 580px;
+  background: var(--blanc);
+  box-shadow: -10px 0 32px rgba(0,0,0,0.20);
+  z-index: 210; /* au-dessus de methode-overlay (200) */
+  transform: translateX(100%);
+  transition: transform .3s ease;
+  overflow-y: auto;
+  padding: 56px 26px 30px;
+}
+#eng-panel.show { transform: translateX(0); }
+.eng-panel-close {
+  position: absolute; top: 14px; right: 16px;
+  background: transparent; border: none; font-size: 26px;
+  color: var(--gris); cursor: pointer; line-height: 1;
+  padding: 4px 12px; border-radius: 6px;
+}
+.eng-panel-close:hover { background: var(--fond); color: var(--accent); }
+
+.eng-panel-titre {
+  font-family: 'Nunito', sans-serif; font-size: 19px; font-weight: 900;
+  color: var(--texte); margin-bottom: 4px; line-height: 1.25;
+}
+.eng-panel-tag {
+  font-size: 10.5px; font-weight: 800; color: var(--orange);
+  text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px;
+}
+.eng-panel-chain {
+  font-size: 12.5px; color: #3a3630; line-height: 1.55;
+  background: var(--fond); padding: 9px 12px; border-radius: 8px;
+  border-left: 3px solid var(--orange);
+  margin-bottom: 22px;
+}
+.eng-panel-chain .arrow { color: var(--orange); font-weight: 700; padding: 0 2px; }
+
+.eng-panel-section-tag {
+  font-family: 'Nunito', sans-serif; font-size: 11.5px; font-weight: 900;
+  color: var(--accent); text-transform: uppercase; letter-spacing: .06em;
+  margin-top: 16px; margin-bottom: 7px;
+}
+.eng-panel-source {
+  font-size: 11px; font-weight: 800; color: #7a5800;
+  text-transform: uppercase; letter-spacing: .04em; margin-bottom: 10px;
+}
+.eng-panel-question {
+  font-style: italic; color: #3a3630;
+  background: #fef9f0; border: 1px solid #f0e2c4;
+  padding: 11px 14px; border-radius: 8px;
+  font-size: 13.5px; line-height: 1.55;
+}
+.eng-panel-corrige {
+  font-size: 14px; line-height: 1.65;
+  padding: 14px 16px;
+  background: #e6f5ec; border: 1px solid #b8dfc9;
+  border-radius: 8px;
+  color: var(--texte);
+}
+@media (max-width: 600px) {
+  #eng-panel { width: 100%; max-width: none; padding: 50px 18px 24px; }
+}
+
+.methode-modal-close {
+  position: absolute; top: 12px; right: 14px;
+  background: transparent; border: none; font-size: 24px;
+  color: var(--gris); cursor: pointer; line-height: 1;
+  padding: 4px 10px; border-radius: 6px;
+}
+.methode-modal-close:hover { background: var(--fond); color: var(--accent); }
+
+/* Pied de page — lien archive */
+.footer-archive {
+  text-align: center; font-size: 11.5px; color: var(--gris);
+  margin-top: 40px; padding-top: 16px; border-top: 1px dashed var(--bordure);
+}
+.footer-archive a { color: var(--eco); text-decoration: none; }
+.footer-archive a:hover { text-decoration: underline; }
+
+/* ============================================================ */
+/* MODE ANNOTATION — bouton flottant + popups                  */
+/* ============================================================ */
+.annot-fab {
+  position: fixed; bottom: 22px; right: 22px;
+  display: flex; flex-direction: column; gap: 8px;
+  z-index: 300;
+}
+.annot-btn {
+  width: 46px; height: 46px; border-radius: 50%;
+  border: none; background: var(--blanc); color: var(--texte);
+  font-size: 19px; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  transition: all .15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.annot-btn:hover { transform: scale(1.05); box-shadow: 0 6px 18px rgba(0,0,0,0.22); }
+.annot-btn.toggle-on { background: var(--jaune); color: #5a4400; }
+.annot-btn .badge {
+  position: absolute; top: -4px; right: -4px;
+  background: var(--accent); color: #fff;
+  font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800;
+  border-radius: 10px; padding: 1px 6px; min-width: 18px;
+  border: 2px solid var(--blanc);
+}
+
+/* Quand le mode annotation est actif */
+body.annot-on .fiche-pill,
+body.annot-on .acteur-card,
+body.annot-on .objectif-card,
+body.annot-on .bloc {
+  outline: 2px dashed transparent; outline-offset: 2px;
+  position: relative;
+}
+body.annot-on .fiche-pill:hover,
+body.annot-on .acteur-card:hover,
+body.annot-on .objectif-card:hover,
+body.annot-on .bloc:hover {
+  outline-color: var(--jaune); cursor: crosshair;
+}
+body.annot-on { cursor: default; }
+body.annot-on .nav-rubriques a,
+body.annot-on .nav-epreuve a { cursor: pointer; } /* nav reste normale */
+
+/* Bandeau d'info quand mode annot actif */
+.annot-banner {
+  display: none; position: fixed; top: 88px; left: 50%; transform: translateX(-50%);
+  background: var(--jaune); color: #5a4400;
+  font-size: 12.5px; font-weight: 700;
+  padding: 6px 14px; border-radius: 0 0 8px 8px;
+  z-index: 250; box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+body.annot-on .annot-banner { display: block; }
+
+/* Marqueur 📌 sur les éléments annotés */
+.annot-marker {
+  position: absolute; top: -6px; right: -6px;
+  background: var(--jaune); border: 2px solid var(--blanc);
+  border-radius: 50%; width: 20px; height: 20px;
+  font-size: 11px; display: flex; align-items: center; justify-content: center;
+  pointer-events: none; box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 5;
+}
+.fiche-pill, .acteur-card, .objectif-card, .bloc { position: relative; }
+
+/* Modale de saisie d'annotation */
+.annot-modal-overlay {
+  position: fixed; inset: 0; background: rgba(30,28,24,0.5);
+  z-index: 400; display: none; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.annot-modal-overlay.show { display: flex; }
+.annot-modal {
+  background: #fff; width: 100%; max-width: 480px;
+  border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+.annot-modal-hd {
+  padding: 14px 18px; background: var(--jaune); color: #5a4400;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px;
+}
+.annot-modal-context {
+  padding: 12px 18px; font-size: 12.5px; color: var(--gris);
+  border-bottom: 1px solid var(--bordure);
+}
+.annot-modal-context strong { color: var(--texte); }
+.annot-modal-body { padding: 14px 18px 18px; }
+.annot-modal-body textarea {
+  width: 100%; min-height: 90px; resize: vertical;
+  border: 1px solid var(--bordure); border-radius: 8px;
+  padding: 10px 12px; font-family: 'Inter', sans-serif; font-size: 13.5px;
+  line-height: 1.5; color: var(--texte);
+}
+.annot-modal-body textarea:focus {
+  outline: 2px solid var(--eco); outline-offset: -1px;
+}
+.annot-modal-actions {
+  display: flex; gap: 8px; justify-content: flex-end;
+  padding: 0 18px 18px; flex-wrap: wrap;
+}
+.annot-modal-actions button {
+  border: none; border-radius: 8px; padding: 8px 14px;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .15s;
+}
+.annot-btn-save { background: var(--eco); color: #fff; }
+.annot-btn-save:hover { background: var(--eco-dark); }
+.annot-btn-delete { background: var(--moins-bg); color: var(--moins-rouge); }
+.annot-btn-delete:hover { background: var(--moins-rouge); color: #fff; }
+.annot-btn-cancel { background: var(--fond); color: var(--texte); }
+.annot-btn-cancel:hover { background: var(--bordure); }
+
+/* Modale liste de toutes les annotations */
+.annot-list-modal {
+  background: #fff; width: 100%; max-width: 720px;
+  border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  max-height: 85vh; display: flex; flex-direction: column;
+}
+.annot-list-hd {
+  padding: 14px 18px; background: var(--jaune); color: #5a4400;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.annot-list-hd .count {
+  background: rgba(255,255,255,0.6); padding: 2px 8px; border-radius: 10px;
+  font-size: 12px;
+}
+.annot-list-actions {
+  padding: 10px 18px; border-bottom: 1px solid var(--bordure);
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.annot-list-actions button {
+  border: 1px solid var(--bordure); background: var(--blanc); color: var(--texte);
+  border-radius: 6px; padding: 5px 11px;
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+  cursor: pointer;
+}
+.annot-list-actions button:hover { background: var(--fond); border-color: var(--eco); color: var(--eco-dark); }
+.annot-list-body {
+  flex: 1; overflow-y: auto; padding: 6px 0;
+}
+.annot-list-empty {
+  text-align: center; padding: 40px 20px; color: var(--gris); font-size: 13px;
+}
+.annot-item {
+  padding: 11px 18px; border-bottom: 1px solid #f0ede6;
+  display: grid; grid-template-columns: 1fr auto; gap: 10px;
+}
+.annot-item:last-child { border-bottom: none; }
+.annot-item-context {
+  font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800;
+  color: var(--eco-dark); text-transform: uppercase; letter-spacing: .04em;
+  margin-bottom: 4px;
+}
+.annot-item-text { font-size: 13.5px; line-height: 1.5; color: var(--texte); white-space: pre-wrap; }
+.annot-item-actions { display: flex; flex-direction: column; gap: 4px; }
+.annot-item-actions button {
+  border: none; background: transparent; cursor: pointer;
+  padding: 4px 8px; border-radius: 6px; font-size: 12px;
+}
+.annot-item-actions .edit-btn { color: var(--eco); }
+.annot-item-actions .edit-btn:hover { background: var(--eco-bg); }
+.annot-item-actions .del-btn { color: var(--moins-rouge); }
+.annot-item-actions .del-btn:hover { background: var(--moins-bg); }
+.annot-copy-feedback {
+  display: inline-block; font-size: 11.5px; color: var(--vert);
+  font-weight: 700; padding: 5px 8px; opacity: 0;
+  transition: opacity .15s;
+}
+.annot-copy-feedback.show { opacity: 1; }
 </style>
 </head>
-<body data-subject="eco">
+<body data-subject="eco" data-tab="intro">
 
 <!-- Nav haute : épreuves -->
 <nav class="nav-epreuve">
@@ -149,590 +818,1362 @@ body { font-family: 'Inter', sans-serif; background: var(--fond); color: var(--t
   <a href="revizo-philo.html" class="epreuve-link">Philo</a>
 </nav>
 
-<!-- Nav basse : rubriques (5 onglets) -->
+<!-- Nav basse : rubriques -->
 <nav class="nav-rubriques">
-  <a href="#" class="active" id="tab-intro" onclick="switchMode('intro');return false">📚 Intro</a>
-  <a href="#" id="tab-fiches" onclick="switchMode('fiches');return false">🗺️ La Carte</a>
-  <a href="#" id="tab-questions" onclick="switchMode('questions');return false">📋 Questions du Bac</a>
-  <a href="#" id="tab-synthese" onclick="switchMode('synthese');return false">📝 Synthèse ✍️</a>
-  <a href="#" id="tab-decodage" onclick="switchMode('decodage');return false">🔑 Décodage</a>
+  <span class="matiere-pill">Éco</span>
+  <a href="#" class="active" id="tab-intro" onclick="switchTab('intro');return false">📚 Intro</a>
+  <a href="#" id="tab-carte" onclick="switchTab('carte');return false">🗺️ Carte</a>
+  <a href="#" id="tab-methodo" onclick="switchTab('methodo');return false">🛠️ Méthodo</a>
 </nav>
 
-<!-- Layout principal -->
-<div class="layout" id="layout">
+<div class="page">
 
-  <aside class="sidebar" id="sidebar">
+  <header class="eco-header">
+    <h1>Économie · Terminale STMG</h1>
+    <p class="lead">Une seule grille de lecture pour tout le programme. Apprendre à raisonner, pas à empiler.</p>
+  </header>
 
-    <!-- MODE FICHES (la carte plein écran masque la sidebar) -->
-    <div id="sidebar-fiches" style="display:none">
-      <div class="sidebar-intro" style="cursor:pointer" onclick="switchMode('fiches')">🗺️ La Carte</div>
-      <div style="padding: 8px 16px; font-size: 12.5px; color: var(--gris); line-height: 1.5;">
-        Carte interactive du programme Éco STMG.<br><br>
-        <strong>42 notions</strong> · 3 thèmes écrits + 1 oral · 13 sujets bac (2023-2025)
+  <!-- ============================================================ -->
+  <!-- ONGLET INTRO — Le schéma mental                              -->
+  <!-- ============================================================ -->
+  <section data-tab="intro">
+
+    <!-- 1. Le déclic -->
+    <div class="declic">
+      <span class="label">💡 Le déclic</span>
+      Toute l'éco STMG répond à une seule question :
+      <strong>comment les acteurs économiques essaient-ils d'améliorer croissance, emploi, équité et soutenabilité, dans une économie de marché ?</strong>
+      Si tu gardes cette question en tête, tu n'apprends plus des notions séparées — tu construis un système.
+    </div>
+
+    <!-- 2. La grille 6 questions -->
+    <div class="intro-bloc">
+      <h2><span class="num">1</span> La grille 6 questions</h2>
+      <p class="sub">Le réflexe à avoir sur chaque notion, chaque chapitre, chaque question de bac.</p>
+      <div class="grille-pivot">
+        <table>
+          <thead>
+            <tr>
+              <th>Case</th>
+              <th>Ce qu'on cherche</th>
+              <th>Exemple : politique monétaire</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="q-label">Qui</td><td class="q-meta">L'acteur qui agit</td><td class="q-ex">La BCE</td></tr>
+            <tr><td class="q-label">Pourquoi</td><td class="q-meta">L'objectif visé</td><td class="q-ex">Stabilité des prix (cible inflation ~ 2 %)</td></tr>
+            <tr><td class="q-label">Moyens</td><td class="q-meta">L'outil / le levier mobilisé</td><td class="q-ex">Les taux directeurs</td></tr>
+            <tr><td class="q-label">Agit sur</td><td class="q-meta">La variable sur laquelle ça agit</td><td class="q-ex">Le coût du crédit → consommation et investissement</td></tr>
+            <tr><td class="q-label">Effets</td><td class="q-meta">Avantages / limites</td><td class="q-ex"><span class="plus">+</span> Maîtrise l'inflation · <span class="moins">−</span> Freine la croissance</td></tr>
+            <tr><td class="q-label">Mesure</td><td class="q-meta">L'indicateur de suivi</td><td class="q-ex">Taux d'inflation (IPC / IPCH)</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <!-- MODE QUESTIONS DU BAC -->
-    <div id="sidebar-questions"></div>
-
-    <!-- MODE SYNTHÈSE -->
-    <div id="sidebar-synthese" style="display:none"></div>
-
-    <!-- MODE DÉCODAGE -->
-    <div id="sidebar-decodage" style="display:none">
-      <div class="sidebar-intro">🔑 Décodage des verbes</div>
-      <div style="padding: 8px 16px; font-size: 12.5px; color: var(--gris); line-height: 1.5;">
-        En construction.<br><br>Bientôt : décodage des verbes de consigne Éco (Présentez · Commentez · Distinguez · Identifiez · Expliquez · Montrez · Rédigez une argumentation).
+    <!-- 3. Les acteurs -->
+    <div class="intro-bloc">
+      <h2><span class="num">2</span> Les 5 acteurs économiques</h2>
+      <p class="sub">Tous les autres chapitres se rattachent à ces 5 acteurs. Si tu sais <strong>qui agit</strong>, 50 % du programme devient logique.</p>
+      <div class="acteurs-grid">
+        <div class="acteur-card" onclick="openFiche('menages')">
+          <div class="emoji">🏠</div>
+          <div class="nom">Ménages</div>
+          <div class="role">Consomment, travaillent, épargnent.</div>
+          <span class="niveau">Privé</span>
+        </div>
+        <div class="acteur-card" onclick="openFiche('entreprises')">
+          <div class="emoji">🏭</div>
+          <div class="nom">Entreprises</div>
+          <div class="role">Produisent, investissent, embauchent.</div>
+          <span class="niveau">Privé</span>
+        </div>
+        <div class="acteur-card" onclick="openFiche('etat')">
+          <div class="emoji">🏛️</div>
+          <div class="nom">État</div>
+          <div class="role">Régule, redistribue, protège, produit (services publics).</div>
+          <span class="niveau">Public · National</span>
+        </div>
+        <div class="acteur-card" onclick="openFiche('bce')">
+          <div class="emoji">🏦</div>
+          <div class="nom">BCE</div>
+          <div class="role">Stabilise les prix (politique monétaire).</div>
+          <span class="niveau">Public · Européen</span>
+        </div>
+        <div class="acteur-card" onclick="openFiche('monde')">
+          <div class="emoji">🌍</div>
+          <div class="nom">Reste du monde</div>
+          <div class="role">Commerce international, IDE, FMN.</div>
+          <span class="niveau">International</span>
+        </div>
       </div>
     </div>
 
-  </aside>
+    <!-- 4. Les objectifs -->
+    <div class="intro-bloc">
+      <h2><span class="num">3</span> Les 4 objectifs</h2>
+      <p class="sub">Le « pourquoi » derrière chaque politique. Tout sujet de bac questionne au moins l'un de ces 4 objectifs.</p>
+      <div class="objectifs-grid">
+        <div class="objectif-card obj-croissance" onclick="openFiche('croissance')">
+          <div class="emoji">💰</div>
+          <div class="nom">Croissance</div>
+          <div class="quest">Comment produire plus de richesses ?</div>
+        </div>
+        <div class="objectif-card obj-emploi" onclick="openFiche('emploi')">
+          <div class="emoji">👷</div>
+          <div class="nom">Emploi</div>
+          <div class="quest">Comment donner du travail à tous ?</div>
+        </div>
+        <div class="objectif-card obj-equite" onclick="openFiche('equite')">
+          <div class="emoji">⚖️</div>
+          <div class="nom">Équité</div>
+          <div class="quest">Comment répartir sans creuser les inégalités ?</div>
+        </div>
+        <div class="objectif-card obj-soutenabilite" onclick="openFiche('soutenabilite')">
+          <div class="emoji">🌱</div>
+          <div class="nom">Soutenabilité</div>
+          <div class="quest">Comment durer sans épuiser planète ni budgets ?</div>
+        </div>
+      </div>
+    </div>
 
-  <main class="main" id="main">
-    <div class="placeholder"><div class="big">⏳</div><h3>Chargement…</h3></div>
-  </main>
+    <!-- CTA vers la Carte -->
+    <div class="cta-carte" onclick="switchTab('carte')">
+      Maintenant que tu as la grille → <strong>passe à la 🗺️ Carte</strong> pour voir comment elle s'applique sur les 30 notions du programme.
+    </div>
 
-</div>
+  </section>
 
-<!-- Panneau coulissant Carte -->
-<div id="carte-overlay">
-  <div class="carte-overlay-header">
-    <span class="carte-overlay-title">🗺️ La Carte sur cette question</span>
-    <button class="carte-overlay-close" onclick="closeCartePanel()" title="Fermer (Échap)">×</button>
+  <!-- ============================================================ -->
+  <!-- ONGLET CARTE — 6 blocs                                      -->
+  <!-- ============================================================ -->
+  <section data-tab="carte">
+
+    <div class="carte-intro">
+      Le programme entier tient dans <strong>6 blocs</strong>. Chaque notion = une fiche au format 6 cases (Qui / Pourquoi / Moyens / Agit sur / Effets ± / Mesure). <strong>Clique sur une notion</strong> pour ouvrir sa fiche. <strong>Passe la souris dessus</strong> pour voir un aperçu des mots-clés.
+      <div class="bullets-legend">
+        <span class="leg-item"><span class="leg-dot"></span> pas commencé</span>
+        <span class="leg-item"><span class="leg-dot review"></span> à revoir</span>
+        <span class="leg-item"><span class="leg-dot know"></span> acquis</span>
+        <span style="color:var(--gris);font-style:italic">— clique sur le rond pour cycler · sauvegarde locale</span>
+      </div>
+    </div>
+
+    <!-- BLOC 1 — Acteurs -->
+    <div class="bloc bloc-1">
+      <div class="bloc-hd">
+        <span class="bloc-num">Bloc 1</span>
+        <span class="bloc-titre">Les acteurs économiques</span>
+        <span class="bloc-q">Qui agit ?</span>
+      </div>
+      <div class="bloc-sub">Les 5 protagonistes du programme. Tout part d'eux.</div>
+      <div class="fiches-grid">
+        <div class="fiche-pill" onclick="openFiche('menages')" data-keywords="Consommation · Travail · Épargne · 55 % du PIB"><span class="bullet" data-bullet="menages"></span><span class="pill-emoji">🏠</span><span class="pill-nom">Ménages</span></div>
+        <div class="fiche-pill" onclick="openFiche('entreprises')" data-keywords="Production · Investissement · Innovation · Valeur ajoutée"><span class="bullet" data-bullet="entreprises"></span><span class="pill-emoji">🏭</span><span class="pill-nom">Entreprises</span></div>
+        <div class="fiche-pill" onclick="openFiche('etat')" data-keywords="Régule · Redistribue · Politique BUDGÉTAIRE · Impôts + dépenses"><span class="bullet" data-bullet="etat"></span><span class="pill-emoji">🏛️</span><span class="pill-nom">État</span></div>
+        <div class="fiche-pill" onclick="openFiche('bce')" data-keywords="Politique MONÉTAIRE · Taux directeurs · Inflation 2 %"><span class="bullet" data-bullet="bce"></span><span class="pill-emoji">🏦</span><span class="pill-nom">BCE</span></div>
+        <div class="fiche-pill" onclick="openFiche('monde')" data-keywords="Exports · Imports · IDE (investissements étrangers) · FMN (multinationales)"><span class="bullet" data-bullet="monde"></span><span class="pill-emoji">🌍</span><span class="pill-nom">Reste du monde</span></div>
+      </div>
+    </div>
+
+    <!-- BLOC 2 — Objectifs -->
+    <div class="bloc bloc-2">
+      <div class="bloc-hd">
+        <span class="bloc-num">Bloc 2</span>
+        <span class="bloc-titre">Les objectifs</span>
+        <span class="bloc-q">Pourquoi on agit ?</span>
+      </div>
+      <div class="bloc-sub">Les 4 finalités. Toute politique économique vise au moins l'une d'elles.</div>
+      <div class="fiches-grid">
+        <div class="fiche-pill" onclick="openFiche('croissance')" data-keywords="PIB · Production · Niveau de vie"><span class="bullet" data-bullet="croissance"></span><span class="pill-emoji">💰</span><span class="pill-nom">Croissance</span></div>
+        <div class="fiche-pill" onclick="openFiche('emploi')" data-keywords="Taux d'emploi · Chômage · Population active"><span class="bullet" data-bullet="emploi"></span><span class="pill-emoji">👷</span><span class="pill-nom">Emploi</span></div>
+        <div class="fiche-pill" onclick="openFiche('equite')" data-keywords="Inégalités · Redistribution"><span class="bullet" data-bullet="equite"></span><span class="pill-emoji">⚖️</span><span class="pill-nom">Équité</span></div>
+        <div class="fiche-pill" onclick="openFiche('soutenabilite')" data-keywords="CO₂ · Dette · Environnement · Accord de Paris"><span class="bullet" data-bullet="soutenabilite"></span><span class="pill-emoji">🌱</span><span class="pill-nom">Soutenabilité</span></div>
+      </div>
+    </div>
+
+    <!-- BLOC 3 — Indicateurs -->
+    <div class="bloc bloc-3">
+      <div class="bloc-hd">
+        <span class="bloc-num">Bloc 3</span>
+        <span class="bloc-titre">Les indicateurs</span>
+        <span class="bloc-q">Comment on mesure ?</span>
+      </div>
+      <div class="bloc-sub">Les 8 indicateurs que l'INSEE / Eurostat / OCDE publient. À <strong>savoir lire</strong> sur un tableau d'annexe.</div>
+      <div class="fiches-grid">
+        <div class="fiche-pill" onclick="openFiche('pib')" data-keywords="Somme des valeurs ajoutées · C + I + (X−M) · 2 700 Md€"><span class="bullet" data-bullet="pib"></span><span class="pill-emoji">📈</span><span class="pill-nom">PIB</span></div>
+        <div class="fiche-pill" onclick="openFiche('chomage')" data-keywords="BIT · Population active · 7,3 %"><span class="bullet" data-bullet="chomage"></span><span class="pill-emoji">📉</span><span class="pill-nom">Taux de chômage</span></div>
+        <div class="fiche-pill" onclick="openFiche('inflation')" data-keywords="IPC · 2 % cible BCE · Spirale prix-salaires"><span class="bullet" data-bullet="inflation"></span><span class="pill-emoji">🔥</span><span class="pill-nom">Inflation (IPC)</span></div>
+        <div class="fiche-pill" onclick="openFiche('pouvoir-achat')" data-keywords="RDB / Indice des prix · Niveau de vie réel"><span class="bullet" data-bullet="pouvoir-achat"></span><span class="pill-emoji">💶</span><span class="pill-nom">Pouvoir d'achat</span></div>
+        <div class="fiche-pill" onclick="openFiche('balance')" data-keywords="(Exports − Imports) · France −100 Md€/an (négatif)"><span class="bullet" data-bullet="balance"></span><span class="pill-emoji">⚖️</span><span class="pill-nom">Balance commerciale</span></div>
+        <div class="fiche-pill" onclick="openFiche('co2')" data-keywords="Émissions · Neutralité 2050"><span class="bullet" data-bullet="co2"></span><span class="pill-emoji">🌫️</span><span class="pill-nom">Émissions CO₂</span></div>
+        <div class="fiche-pill" onclick="openFiche('pauvrete')" data-keywords="60 % du revenu médian · 14,5 % en France"><span class="bullet" data-bullet="pauvrete"></span><span class="pill-emoji">📊</span><span class="pill-nom">Taux de pauvreté</span></div>
+        <div class="fiche-pill" onclick="openFiche('deficit-dette')" data-keywords="Flux (déficit annuel) · Stock (dette cumulée) · France 5 % PIB · 110 % PIB"><span class="bullet" data-bullet="deficit-dette"></span><span class="pill-emoji">💸</span><span class="pill-nom">Déficit & Dette</span></div>
+      </div>
+    </div>
+
+    <!-- BLOC 4 — Marché -->
+    <div class="bloc bloc-4">
+      <div class="bloc-hd">
+        <span class="bloc-num">Bloc 4</span>
+        <span class="bloc-titre">Le fonctionnement du marché</span>
+        <span class="bloc-q">Comment ça s'ajuste ?</span>
+      </div>
+      <div class="bloc-sub">Le marché fonctionne <strong>spontanément</strong> par la rencontre offre/demande. Mais « spontané » ≠ « sans règles » : il existe toujours <strong>dans un cadre</strong> posé par 🏛️ l'État (SMIC, normes, droit) et 🤝 la coopération internationale (OMC, Accord de Paris). Quand il dysfonctionne (<strong>externalités, biens publics, monopoles</strong>), l'État ou la coopération interviennent pour le corriger.</div>
+      <div class="fiches-grid">
+        <div class="fiche-pill" onclick="openFiche('offre-demande')" data-keywords="Producteurs · Consommateurs · Prix"><span class="bullet" data-bullet="offre-demande"></span><span class="pill-emoji">⚖️</span><span class="pill-nom">Offre / Demande</span></div>
+        <div class="fiche-pill" onclick="openFiche('prix-equilibre')" data-keywords="Tâtonnement · Auto-régulation · Main invisible"><span class="bullet" data-bullet="prix-equilibre"></span><span class="pill-emoji">🎯</span><span class="pill-nom">Prix d'équilibre</span></div>
+        <div class="fiche-pill" onclick="openFiche('concurrence')" data-keywords="Parts de marché · Innovation · Monopole"><span class="bullet" data-bullet="concurrence"></span><span class="pill-emoji">🏁</span><span class="pill-nom">Concurrence</span></div>
+        <div class="fiche-pill" onclick="openFiche('externalites')" data-keywords="Pollueur-payeur · Subvention · Défaillance du marché · Biens publics/communs"><span class="bullet" data-bullet="externalites"></span><span class="pill-emoji">↔️</span><span class="pill-nom">Externalités</span></div>
+      </div>
+    </div>
+
+    <!-- BLOC 5 — Politiques économiques -->
+    <div class="bloc bloc-5">
+      <div class="bloc-hd">
+        <span class="bloc-num">Bloc 5</span>
+        <span class="bloc-titre">Les politiques économiques</span>
+        <span class="bloc-q">Comment l'État/BCE corrige le marché ?</span>
+      </div>
+      <div class="bloc-sub">Le cœur du programme. Quand le marché ne suffit pas, l'État et la BCE interviennent avec leurs leviers.</div>
+      <div class="fiches-grid">
+        <div class="fiche-pill" onclick="openFiche('budgetaire-relance')" data-keywords="État · Hausse dépenses · Baisse impôts · Plan Covid"><span class="bullet" data-bullet="budgetaire-relance"></span><span class="pill-emoji">🏛️</span><span class="pill-nom">Budgétaire (relance)</span></div>
+        <div class="fiche-pill" onclick="openFiche('budgetaire-rigueur')" data-keywords="État · Baisse dépenses · Hausse impôts · Réduction dette"><span class="bullet" data-bullet="budgetaire-rigueur"></span><span class="pill-emoji">🏛️</span><span class="pill-nom">Budgétaire (rigueur)</span></div>
+        <div class="fiche-pill" onclick="openFiche('monetaire')" data-keywords="Politique MONÉTAIRE · Taux directeurs · Inflation"><span class="bullet" data-bullet="monetaire"></span><span class="pill-emoji">🏦</span><span class="pill-nom">Monétaire (BCE)</span></div>
+        <div class="fiche-pill" onclick="openFiche('emploi-active')" data-keywords="Formation · Contrats aidés · Aides à l'embauche"><span class="bullet" data-bullet="emploi-active"></span><span class="pill-emoji">👷</span><span class="pill-nom">Emploi (active)</span></div>
+        <div class="fiche-pill" onclick="openFiche('emploi-passive')" data-keywords="Allocations chômage · Indemnisation · Unédic"><span class="bullet" data-bullet="emploi-passive"></span><span class="pill-emoji">👷</span><span class="pill-nom">Emploi (passive)</span></div>
+        <div class="fiche-pill" onclick="openFiche('redistribution')" data-keywords="Impôts progressifs · Prestations · Gini avant/après"><span class="bullet" data-bullet="redistribution"></span><span class="pill-emoji">🔄</span><span class="pill-nom">Redistribution</span></div>
+      </div>
+    </div>
+
+    <!-- BLOC 6 — International -->
+    <div class="bloc bloc-6">
+      <div class="bloc-hd">
+        <span class="bloc-num">Bloc 6</span>
+        <span class="bloc-titre">L'ouverture internationale</span>
+        <span class="bloc-q">Comment les pays s'échangent ?</span>
+      </div>
+      <div class="bloc-sub">L'éco française n'est pas isolée : exports/imports, IDE, FMN, accords commerciaux.</div>
+      <div class="fiches-grid">
+        <div class="fiche-pill" onclick="openFiche('libre-echange')" data-keywords="Pas de barrières · Ricardo · OMC · Avantages comparatifs"><span class="bullet" data-bullet="libre-echange"></span><span class="pill-emoji">🌐</span><span class="pill-nom">Libre-échange</span></div>
+        <div class="fiche-pill" onclick="openFiche('protectionnisme')" data-keywords="Droits de douane · Quotas · Industries naissantes"><span class="bullet" data-bullet="protectionnisme"></span><span class="pill-emoji">🚧</span><span class="pill-nom">Protectionnisme</span></div>
+        <div class="fiche-pill" onclick="openFiche('competitivite')" data-keywords="Prix · Hors-prix · Parts de marché export"><span class="bullet" data-bullet="competitivite"></span><span class="pill-emoji">🏆</span><span class="pill-nom">Compétitivité</span></div>
+        <div class="fiche-pill" onclick="openFiche('attractivite')" data-keywords="IDE · Fiscalité · Infrastructures · Talents"><span class="bullet" data-bullet="attractivite"></span><span class="pill-emoji">🧲</span><span class="pill-nom">Attractivité</span></div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- ONGLET MÉTHODO — 5 démarches du bac                          -->
+  <!-- ============================================================ -->
+  <section data-tab="methodo">
+    <div class="methodo-intro">
+      <strong>5 démarches</strong> couvrent 100 % des consignes du bac STMG Éco. Pour chaque verbe (Argumentez, Identifiez, Expliquez, Distinguez, Commentez), une méthode pas-à-pas + un exemple corrigé tiré d'une annale + le piège à éviter. <strong>Clique sur une carte</strong> pour ouvrir la fiche.
+    </div>
+    <div class="methodo-grid">
+      <div class="methode-card m-1" onclick="openMethode('argumenter')">
+        <div class="m-emoji">🎯</div>
+        <div class="m-freq">100 % des sujets · ★★★★★</div>
+        <div class="m-titre">Argumenter</div>
+        <div class="m-pts"><strong>~5 pts</strong> · ≈ 25 min · La grande question finale</div>
+      </div>
+      <div class="methode-card m-2" onclick="openMethode('reperer')">
+        <div class="m-emoji">🔍</div>
+        <div class="m-freq">77 % des sujets · ★★★★☆</div>
+        <div class="m-titre">Repérer / Caractériser un fait</div>
+        <div class="m-pts"><strong>~2-3 pts</strong> · ≈ 8 min · Lecture d'annexe</div>
+      </div>
+      <div class="methode-card m-3" onclick="openMethode('expliquer')">
+        <div class="m-emoji">⚙️</div>
+        <div class="m-freq">77 % des sujets · ★★★★☆</div>
+        <div class="m-titre">Expliquer un mécanisme</div>
+        <div class="m-pts"><strong>~3-4 pts</strong> · ≈ 15 min · Chaîne causale + engrenages</div>
+      </div>
+      <div class="methode-card m-4" onclick="openMethode('distinguer')">
+        <div class="m-emoji">🔀</div>
+        <div class="m-freq">54 % des sujets · ★★★☆☆</div>
+        <div class="m-titre">Distinguer deux notions</div>
+        <div class="m-pts"><strong>~2-3 pts</strong> · ≈ 10 min · Critère + exemple</div>
+      </div>
+      <div class="methode-card m-5" onclick="openMethode('commenter')">
+        <div class="m-emoji">📈</div>
+        <div class="m-freq">54 % des sujets · ★★★☆☆</div>
+        <div class="m-titre">Commenter une évolution</div>
+        <div class="m-pts"><strong>~3 pts</strong> · ≈ 12 min · Tableau / graphique + calcul</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pied de page -->
+  <div class="footer-archive">
+    📦 Besoin de l'ancienne version avec Questions du Bac, Synthèse, Décodage ? <a href="revizo-eco-archive.html">Voir l'archive</a>.
   </div>
-  <iframe id="carte-overlay-iframe" src="about:blank" title="La Carte Éco"></iframe>
+
 </div>
 
-<!-- Popup "Question du Bac" -->
-<div class="bac-popup" id="bac-popup" style="display:none">
-  <button class="bac-popup-close" onclick="closeBacPopup()" title="Fermer">×</button>
-  <div class="bac-popup-source" id="bac-source"></div>
-  <div class="bac-popup-q" id="bac-question"></div>
-  <button class="bac-popup-method-btn" id="bac-method-btn" style="display:none" onclick="openMethodFromBac()">
-    📖 Réponse attendue
+<!-- ============================================================ -->
+<!-- MODALE MÉTHODE                                              -->
+<!-- ============================================================ -->
+<div class="methode-overlay" id="methode-overlay" onclick="if(event.target.id==='methode-overlay')closeMethode()">
+  <div class="methode-modal">
+    <button class="modal-annot-btn" id="mm-annot-btn" onclick="annotateCurrentMethode()" title="Annoter cette méthode">✏️ <span class="annot-label">Annoter</span></button>
+    <button class="methode-modal-close" onclick="closeMethode()" title="Fermer (Échap)">×</button>
+    <div class="methode-modal-hd">
+      <div class="methode-modal-emoji" id="mm-emoji"></div>
+      <div class="methode-modal-tag" id="mm-tag"></div>
+      <div class="methode-modal-titre" id="mm-titre"></div>
+      <div class="methode-modal-meta" id="mm-meta"></div>
+    </div>
+    <div class="methode-modal-body" id="mm-body"></div>
+  </div>
+</div>
+
+<!-- Panneau latéral exemple corrigé (engrenages) -->
+<div id="eng-panel">
+  <button class="eng-panel-close" onclick="closeEngPanel()" title="Fermer (Échap)">×</button>
+  <div class="eng-panel-tag">🔗 Engrenage</div>
+  <div class="eng-panel-titre" id="eng-panel-titre"></div>
+  <div class="eng-panel-chain" id="eng-panel-chain"></div>
+  <div class="eng-panel-section-tag">📌 Source</div>
+  <div class="eng-panel-source" id="eng-panel-source"></div>
+  <div class="eng-panel-section-tag">Question type bac</div>
+  <div class="eng-panel-question" id="eng-panel-question"></div>
+  <div class="eng-panel-section-tag">Réponse rédigée</div>
+  <div class="eng-panel-corrige" id="eng-panel-corrige"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODE ANNOTATION — bouton flottant + bandeau + popups        -->
+<!-- ============================================================ -->
+<div class="annot-banner">✏️ Mode annotation — clique sur une fiche, un bloc ou une carte pour la commenter · <a href="#" onclick="toggleAnnotMode();return false" style="color:#5a4400;font-weight:800;text-decoration:underline">Quitter</a></div>
+
+<div class="annot-fab">
+  <button class="annot-btn" id="annot-list-btn" onclick="openAnnotList()" title="Voir mes notes" style="position:relative">
+    📋
+    <span class="badge" id="annot-count-badge" style="display:none">0</span>
+  </button>
+  <button class="annot-btn" id="annot-toggle-btn" onclick="toggleAnnotMode()" title="Activer/désactiver le mode annotation">
+    ✏️
   </button>
 </div>
 
-<!-- Modale TYPE / SYNTHÈSE -->
-<div id="type-modal" onclick="if(event.target.id==='type-modal')closeTypeModal()">
-  <div class="type-modal-content">
-    <button class="type-modal-close" onclick="closeTypeModal()" title="Fermer">×</button>
-    <div class="type-modal-tag" id="tm-tag"></div>
-    <div class="type-modal-titre" id="tm-titre"></div>
-    <div class="type-modal-body" id="tm-body"></div>
+<!-- Modale saisie d'annotation -->
+<div class="annot-modal-overlay" id="annot-edit-overlay" onclick="if(event.target.id==='annot-edit-overlay')closeAnnotEdit()">
+  <div class="annot-modal">
+    <div class="annot-modal-hd">✏️ Annotation</div>
+    <div class="annot-modal-context" id="annot-edit-context"></div>
+    <div class="annot-modal-body">
+      <textarea id="annot-edit-textarea" placeholder="Ce qui manque, à reformuler, à vérifier…"></textarea>
+    </div>
+    <div class="annot-modal-actions">
+      <button class="annot-btn-delete" id="annot-edit-delete" onclick="deleteCurrentAnnot()" style="display:none">Supprimer</button>
+      <button class="annot-btn-cancel" onclick="closeAnnotEdit()">Annuler</button>
+      <button class="annot-btn-save" onclick="saveCurrentAnnot()">Enregistrer</button>
+    </div>
   </div>
 </div>
 
-<!-- ============================================================== -->
-<!-- DONNÉES & LOGIQUE                                                -->
-<!-- ============================================================== -->
+<!-- Modale liste des annotations -->
+<div class="annot-modal-overlay" id="annot-list-overlay" onclick="if(event.target.id==='annot-list-overlay')closeAnnotList()">
+  <div class="annot-list-modal">
+    <div class="annot-list-hd">
+      📋 Mes notes de relecture
+      <span class="count" id="annot-list-count">0</span>
+      <button class="annot-btn-cancel" style="margin-left:auto;border-radius:6px;padding:4px 10px;border:none;font-size:12px;font-weight:700;cursor:pointer" onclick="closeAnnotList()">Fermer</button>
+    </div>
+    <div class="annot-list-actions">
+      <button onclick="copyAllAnnots()">📋 Copier toutes les notes</button>
+      <button onclick="exportAnnotsMarkdown()">📄 Copier en markdown</button>
+      <button onclick="clearAllAnnots()" style="color:var(--moins-rouge)">🗑️ Tout effacer</button>
+      <span class="annot-copy-feedback" id="annot-copy-feedback">✅ Copié dans le presse-papier</span>
+    </div>
+    <div class="annot-list-body" id="annot-list-body"></div>
+  </div>
+</div>
 
-<script src="notions-eco.js"></script>
-<script src="questions-bac-eco.js"></script>
+<!-- ============================================================ -->
+<!-- MODALE FICHE 6 CASES                                        -->
+<!-- ============================================================ -->
+<div class="fiche-overlay" id="fiche-overlay" onclick="if(event.target.id==='fiche-overlay')closeFiche()">
+  <div class="fiche-modal">
+    <button class="modal-annot-btn" id="fm-annot-btn" onclick="annotateCurrentFiche()" title="Annoter cette fiche">✏️ <span class="annot-label">Annoter</span></button>
+    <button class="fiche-modal-close" onclick="closeFiche()" title="Fermer (Échap)">×</button>
+    <div class="fiche-modal-hd">
+      <div class="fiche-modal-emoji" id="fm-emoji"></div>
+      <div class="fiche-modal-tag" id="fm-tag"></div>
+      <div class="fiche-modal-titre" id="fm-titre"></div>
+    </div>
+    <div class="fiche-modal-body" id="fm-body"></div>
+  </div>
+</div>
+
 <script>
+// ============================================================
+// LES 30 FICHES — Format 6 cases
+//   qui · pourquoi · moyens · cible · effetsPlus · effetsMoins · mesure
+// ============================================================
+const FICHES = {
 
-// === Q : 7 TYPES méthodologiques (méthode + exemple corrigé) ===
-// Données stub V1 — contenu détaillé déjà rédigé dans questions-bac-eco.html
-// À ETOFFER plus tard (extraction du HTML existant)
-const Q = {
-  pol_eco: {
-    type:"TYPE 1", titre:"Argumenter sur l'efficacité d'une politique économique",
-    freq:"★★★★★ — Quasi chaque session", pts:"~5 pts", temps:"≈ 25 min",
-    annales:"2023 CE (Liban) · 2024 ME (Camélia) · 2025 ME Remp. (Pouvoir d'achat)",
-    notions:["pol-budgetaire", "pol-monetaire", "redistribution", "fonctions-etat", "prelevements"],
-    methode:[
-      {n:1, t:"Définir la politique économique mobilisée", d:"Budgétaire (État via budget) ou monétaire (BCE via taux)."},
-      {n:2, t:"Présenter les outils", d:"Pour budgétaire : relance par la demande / par l'offre. Pour monétaire : taux directeurs."},
-      {n:3, t:"Argumenter POUR (effets positifs)", d:"Citer 2-3 effets attendus + un exemple historique (plan de relance Covid, baisse taux BCE…)."},
-      {n:4, t:"Argumenter CONTRE (limites)", d:"Risques (creusement déficit, inflation, inégalités, effets différés)."},
-      {n:5, t:"Conclure de façon nuancée", d:"Reconnaître l'utilité + souligner les conditions de succès (timing, ciblage, coordination européenne)."}
-    ],
-    alerte:"L'argumentation doit ÉQUILIBRER pour et contre. Ne pas faire un plaidoyer unilatéral pro-État ou anti-État.",
-    astuce:"Toujours citer un EXEMPLE concret : plan de relance Covid 2020 (budgétaire), hausse taux BCE 2022-2023 (monétaire). Ça structure l'argumentation."
+  // ──────────── BLOC 1 : ACTEURS ────────────
+  menages: {
+    emoji: "🏠", tag: "Acteur · Privé", titre: "Les ménages",
+    qui: "Particuliers vivant sous le même toit (couples, célibataires, familles). En France ≈ 30 millions de ménages.",
+    pourquoi: "Maximiser leur utilité : consommer, épargner, transmettre un patrimoine.",
+    moyens: "Travail (revenu salarial) ; épargne ; choix de consommation.",
+    cible: "Leur niveau de vie et leur consommation finale.",
+    effetsPlus: "Ils sont le <strong>1er moteur du PIB</strong> (≈ 55 % de la demande). Quand leur pouvoir d'achat monte, la consommation tire la croissance et l'emploi.",
+    effetsMoins: "Comportement <strong>procyclique</strong> : en période de crise, les ménages épargnent par précaution au lieu de consommer, ce qui aggrave le ralentissement (l'inverse de ce dont l'économie aurait besoin).",
+    mesure: "Revenu disponible brut (RDB) ; taux d'épargne ; pouvoir d'achat."
+  },
+  entreprises: {
+    emoji: "🏭", tag: "Acteur · Privé", titre: "Les entreprises",
+    qui: "Unités de production de biens et services marchands (TPE, PME, ETI, GE, FMN).",
+    pourquoi: "Maximiser le profit, gagner des parts de marché, innover.",
+    moyens: "Facteurs de production (travail + capital) ; investissement ; <strong>innovation et progrès technique</strong> (R&D) ; marketing.",
+    cible: "La valeur ajoutée qu'elles créent.",
+    effetsPlus: "Elles <strong>créent l'essentiel des emplois</strong> et la richesse mesurée par le PIB. L'investissement tire la productivité de toute l'économie.",
+    effetsMoins: "Logique de rentabilité = <strong>externalités négatives</strong> possibles (pollution, précarité, délocalisations) que le marché seul ne paie pas.",
+    formule: "Valeur ajoutée = Chiffre d'affaires − Consommations intermédiaires",
+    mesure: "Valeur ajoutée ; investissement ; taux de marge ; parts de marché.",
+    aSavoir: "<strong>Substitution travail / capital</strong> (Bac 2025-6) — mécanisme à connaître. Quand le coût du travail monte (hausse SMIC, charges sociales) ou que la technologie progresse (automatisation, IA), l'entreprise <strong>remplace des salariés par des machines</strong>. Effet positif : gains de <strong>productivité</strong> et de <strong>compétitivité</strong>. Effet négatif : <strong>chômage technologique</strong> pour les emplois substituables. On distingue substitution <strong>partielle</strong> (qui libère des compétences vers de nouveaux secteurs) et <strong>totale</strong> (qui détruit l'emploi sans réallocation)."
+  },
+  etat: {
+    emoji: "🏛️", tag: "Acteur · Public · National", titre: "L'État",
+    qui: "Administrations publiques (gouvernement, Sécu, collectivités). Environ 56 % du PIB de dépenses en France.",
+    pourquoi: "Réguler le marché, redistribuer les revenus, protéger les citoyens, produire des services publics.",
+    moyens: "Politique budgétaire : dépenses publiques ; prélèvements obligatoires (impôts, cotisations).",
+    cible: "Tous les objectifs : 💰 croissance ; 👷 emploi ; ⚖️ équité ; 🌱 soutenabilité.",
+    effetsPlus: "Il <strong>corrige les défaillances du marché</strong> : externalités, biens publics, inégalités, chômage. Il amortit les chocs (stabilisateur automatique).",
+    effetsMoins: "Risque de <strong>dette publique excessive</strong> (≈ 110 % du PIB en France) et d'<strong>effet d'éviction</strong> : quand l'État emprunte massivement, les taux d'intérêt montent, ce qui décourage l'investissement privé.",
+    formule: "Déficit public = Dépenses publiques − Recettes publiques<br>Dette / PIB (en %)",
+    mesure: "Solde public (déficit) ; dette / PIB ; dépenses publiques / PIB."
+  },
+  bce: {
+    emoji: "🏦", tag: "Acteur · Public · Européen", titre: "La BCE",
+    qui: "Banque centrale européenne (Francfort, indépendante des gouvernements). Gouverneur : Christine Lagarde.",
+    pourquoi: "Stabilité des prix dans la zone euro (cible d'inflation ≈ 2 %).",
+    moyens: "Politique monétaire : <strong>les taux directeurs</strong> (taux auxquels la BCE prête aux banques commerciales — ils se répercutent ensuite sur tous les crédits aux ménages et entreprises).",
+    cible: "Le coût du crédit, donc la consommation et l'investissement.",
+    effetsPlus: "Outil <strong>réactif et indépendant du politique</strong>. Mécanisme : quand l'inflation s'emballe, la BCE remonte ses taux → les crédits deviennent plus chers → ménages et entreprises empruntent moins → la demande ralentit → les prix se stabilisent. En pratique : taux passés de 0 % à 4 % entre 2022 et 2024, ce qui a ramené l'inflation zone euro de 10 % à ~ 2 %.",
+    effetsMoins: "<strong>Effet retardé</strong> de 12-18 mois et impact <strong>récessif</strong> : des taux élevés freinent la croissance, l'investissement et l'emploi.",
+    mesure: "Taux d'inflation (IPCH) ; taux directeurs (Refi)."
+  },
+  monde: {
+    emoji: "🌍", tag: "Acteur · International", titre: "Le reste du monde",
+    qui: "Autres pays, firmes multinationales (FMN), organisations internationales (OMC, FMI, OCDE).",
+    pourquoi: "Échanger biens, services, capitaux et travail entre territoires.",
+    moyens: "Exportations ; importations ; investissements directs étrangers (IDE) ; accords commerciaux.",
+    cible: "L'insertion du pays dans la mondialisation et sa compétitivité.",
+    effetsPlus: "Élargit les <strong>débouchés</strong> (exports) et donne accès à des biens moins chers (imports). Les IDE entrants créent emplois et technologies.",
+    effetsMoins: "Trois risques liés à l'ouverture. <strong>(1) Dépendance stratégique</strong> : si on importe le gaz, les puces ou les médicaments, on est vulnérable en cas de crise (cf. gaz russe en 2022). <strong>(2) Concurrence déloyale</strong> (dumping) : certains pays produisent moins cher en payant moins leurs salariés ou en polluant plus. <strong>(3) Désindustrialisation</strong> : nos usines ne tiennent pas et ferment. Résultat pour la France : déficit commercial chronique ≈ 100 Md€/an.",
+    mesure: "Balance commerciale ; IDE entrants/sortants ; taux d'ouverture."
+  },
+
+  // ──────────── BLOC 2 : OBJECTIFS ────────────
+  croissance: {
+    emoji: "💰", tag: "Objectif", titre: "La croissance économique",
+    qui: "État (politiques publiques), BCE (politique monétaire), entreprises (investissement), ménages (consommation).",
+    pourquoi: "Produire plus de richesses sur le territoire pour élever le niveau de vie. En période de <strong>crise / récession</strong>, l'État cherche à relancer ; en période d'expansion, à stabiliser.",
+    moyens: "Investissement ; <strong>innovation et progrès technique</strong> ; soutien à la <strong>demande</strong> (chèques, baisse TVA, dépenses publiques → relancer la consommation) ou à l'<strong>offre</strong> (baisse d'impôts sur les sociétés, allègement de charges → relancer la production).",
+    cible: "La production nationale, mesurée par le PIB.",
+    effetsPlus: "Permet de <strong>créer des emplois</strong>, d'augmenter les recettes fiscales, de financer plus de services publics et de faire reculer la pauvreté.",
+    effetsMoins: "Une croissance non soutenable <strong>épuise les ressources</strong> et <strong>augmente les émissions de CO₂</strong>. Elle peut aussi <strong>creuser les inégalités</strong> si la richesse créée se concentre, et <strong>alourdir la dette publique</strong> si elle a été obtenue par dépense publique non remboursée.",
+    mesure: "Taux de croissance du PIB (en %, en volume, corrigé de l'inflation)."
   },
   emploi: {
-    type:"TYPE 2", titre:"Analyser une situation d'emploi ou de chômage",
-    freq:"★★★★☆ — 4 sujets sur 13", pts:"~4-5 pts", temps:"≈ 20 min",
-    annales:"2024 ME Remp. · 2025 PO Remp. · 2025 PO · 2025 NC",
-    notions:["marche-travail", "types-chomage", "politiques-emploi", "politique-active-passive"],
-    methode:[
-      {n:1, t:"Mesurer (taux de chômage, halo, sous-emploi)", d:"Calcul = Chômeurs / Population active × 100. Mentionner halo et sous-emploi."},
-      {n:2, t:"Identifier le type de chômage", d:"Conjoncturel · structurel · frictionnel · technologique."},
-      {n:3, t:"Repérer les causes (offre vs demande de travail)", d:"Freins individuels · structurels · institutionnels."},
-      {n:4, t:"Présenter les politiques de l'emploi mobilisées", d:"Active (formation, contrats aidés) vs passive (allocations chômage)."},
-      {n:5, t:"Évaluer l'efficacité", d:"Effets directs + limites (durée d'indemnisation, qualité de la formation, etc.)."}
-    ],
-    alerte:"Ne pas confondre OFFRE et DEMANDE de travail. Les SALARIÉS offrent, les ENTREPRISES demandent (contre-intuitif).",
-    astuce:"Toujours mentionner que le chômage officiel SOUS-ESTIME la réalité : ajouter halo + sous-emploi pour une vue complète."
+    emoji: "👷", tag: "Objectif", titre: "L'emploi",
+    qui: "État (politiques de l'emploi), entreprises (recrutement, salaires), ménages (offre de travail).",
+    pourquoi: "Maximiser le nombre d'actifs occupés et réduire le chômage, source de pauvreté et d'exclusion.",
+    moyens: "Politiques actives (formation, contrats aidés) ; politiques passives (allocations chômage).",
+    cible: "La population active occupée.",
+    effetsPlus: "Le travail est <strong>source de revenu, d'intégration sociale et d'estime de soi</strong>. Plus d'emplois = plus de cotisations, donc plus de financement pour la Sécu et les retraites.",
+    effetsMoins: "Les politiques de l'emploi <strong>coûtent cher</strong> et peuvent encourager des emplois de mauvaise qualité (CDD courts, temps partiel subi).",
+    formule: "Taux de chômage = (Chômeurs au sens BIT / Population active) × 100",
+    mesure: "Taux de chômage (BIT) ; taux d'emploi ; halo du chômage.",
+    aSavoir: "Les <strong>freins à l'emploi</strong> sont rarement listés dans les annexes — il faut les connaître. Trois familles :<ul><li><strong>Freins individuels</strong> : qualification insuffisante, manque de mobilité géographique, garde d'enfants, problèmes de transport, santé.</li><li><strong>Freins structurels</strong> : inadéquation entre formation initiale et besoins du marché, déserts industriels, vieillissement des compétences.</li><li><strong>Freins institutionnels</strong> : niveau du SMIC vs salaire d'embauche, allocations chômage qui réduisent l'incitation, fiscalité du travail, rigidités du droit du travail.</li></ul>",
+    piege: "Sur le marché du travail, l'<strong>OFFRE</strong> = les <strong>salariés</strong> qui proposent leur force de travail ; la <strong>DEMANDE</strong> = les <strong>entreprises</strong> qui cherchent à embaucher. C'est l'inverse de l'intuition."
   },
-  libre_echange: {
-    type:"TYPE 3", titre:"Argumenter sur le libre-échange et le commerce international",
-    freq:"★★★★☆ — 4 sujets sur 13", pts:"~5 pts", temps:"≈ 25 min",
-    annales:"2023 CE (FMN) · 2025 ME (ArchiDij974) · 2025 CE (Tourisme)",
-    notions:["libre-echange", "protectionnisme", "mondialisation", "ide", "fmn", "droits-douane", "balance-commerciale"],
-    methode:[
-      {n:1, t:"Définir libre-échange et protectionnisme", d:"Libre-échange = suppression des barrières. Protectionnisme = restrictions (droits de douane, quotas)."},
-      {n:2, t:"Citer les théories (Ricardo, List)", d:"Ricardo : avantages comparatifs → spécialisation. List : protéger industries naissantes."},
-      {n:3, t:"Arguments POUR le libre-échange", d:"Baisse prix, choix consommateurs, économies d'échelle, diffusion innovation."},
-      {n:4, t:"Arguments CONTRE (et POUR le protectionnisme)", d:"Concurrence déloyale (dumping social/fiscal/environnemental), désindustrialisation, dépendance stratégique."},
-      {n:5, t:"Conclure sur le débat actuel", d:"Montée du protectionnisme (Trump 2025, démondialisation), tensions UE/Chine."}
-    ],
-    alerte:"La mondialisation est un PROCESSUS factuel. Le libre-échange est une DOCTRINE normative. Ne pas confondre.",
-    astuce:"Mentionner les exemples ACTUELS : tarifs Trump sur l'UE (2025), guerre commerciale USA-Chine, taxe carbone aux frontières UE (CBAM)."
+  equite: {
+    emoji: "⚖️", tag: "Objectif", titre: "L'équité",
+    qui: "État via la redistribution (impôts progressifs + prestations sociales + services publics).",
+    pourquoi: "Réduire les inégalités de revenus et garantir l'égalité des chances.",
+    moyens: "Prélèvements progressifs (IR) ; prestations (RSA, allocs familiales) ; services publics universels (école, santé).",
+    cible: "L'écart entre les plus riches et les plus pauvres.",
+    effetsPlus: "Renforce la <strong>cohésion sociale</strong>, l'égalité des chances et la stabilité politique. Soutient la demande des bas revenus (qui ont tendance à dépenser presque tout leur revenu).",
+    effetsMoins: "Si les <strong>prélèvements deviennent trop lourds</strong>, ils peuvent décourager le travail, l'innovation ou attirer moins d'investisseurs étrangers (« fuite » des talents et des capitaux).",
+    mesure: "Coefficient de Gini ; ratio inter-décile (D9/D1) ; taux de pauvreté."
   },
-  calcul: {
-    type:"TYPE 4", titre:"Calculer et commenter un indicateur économique",
-    freq:"★★★☆☆ — 6 sujets sur 13", pts:"~3-4 pts", temps:"≈ 15 min",
-    annales:"2023 CE (déficit) · 2024 IN · 2025 ME (PIB) · 2025 PO · 2025 NC",
-    notions:["deficit-dette", "pib", "balance-commerciale", "population-active"],
-    methode:[
-      {n:1, t:"Écrire la formule", d:"Une ligne. Ex : Déficit = Dépenses publiques − Recettes publiques."},
-      {n:2, t:"Remplacer par les chiffres du document", d:"Montrer les calculs intermédiaires."},
-      {n:3, t:"Donner le résultat avec l'unité", d:"Milliards d'euros, %, points de PIB…"},
-      {n:4, t:"Comparer (N vs N-1, France vs UE)", d:"Mettre en perspective la valeur."},
-      {n:5, t:"Interpréter pour l'économie", d:"Que dit ce chiffre sur la situation économique ? Lien avec la conjoncture."}
-    ],
-    alerte:"Le calcul seul = moitié des points. Le COMMENTAIRE est aussi important. Ne jamais s'arrêter au résultat.",
-    astuce:"Pour les contributions au PIB : si une ligne contribue à −0,4 pt, ça NE veut PAS dire que la composante baisse de 0,4 %. C'est sa part dans la variation totale."
+  soutenabilite: {
+    emoji: "🌱", tag: "Objectif", titre: "La soutenabilité",
+    qui: "État (taxe carbone), BCE (verdissement de la politique monétaire), entreprises (transition), monde (Accords de Paris).",
+    pourquoi: "Concilier croissance d'aujourd'hui et préservation des ressources et des finances pour demain.",
+    moyens: "Taxe carbone ; réglementation environnementale ; marché carbone (UE) ; règles budgétaires européennes.",
+    cible: "Émissions de CO₂ ; dette publique ; ressources naturelles.",
+    effetsPlus: "Préserve <strong>l'avenir des générations futures</strong> et anticipe les coûts d'une crise climatique ou financière (toujours plus chers que la prévention).",
+    effetsMoins: "<strong>Coûts à court terme</strong> élevés : taxe carbone qui pèse sur les ménages modestes, hausse de prix, ralentissement de la consommation. Question d'acceptabilité sociale.",
+    mesure: "Émissions de CO₂ par hab. ; dette / PIB ; empreinte écologique."
   },
-  distinguer: {
-    type:"TYPE 5", titre:"Distinguer deux notions proches",
-    freq:"★★★☆☆ — 5 sujets sur 13", pts:"~2-3 pts", temps:"≈ 10 min",
-    annales:"2023 CE (déficit/dette) · 2024 IN (assurance/assistance) · 2024 CE (biens publics/communs) · 2025 PO Remp. (actif/passif) · 2025 NC (halo/sous-emploi)",
-    notions:["deficit-dette", "protection-sociale", "biens-publics", "biens-communs", "politique-active-passive", "halo-chomage", "sous-emploi"],
-    methode:[
-      {n:1, t:"Définir CHAQUE notion en 1 phrase", d:"Une ligne par notion, claire et précise."},
-      {n:2, t:"Identifier LE critère de distinction", d:"Ex : flux vs stock (déficit/dette) · contributif vs non contributif (assurance/assistance) · rival vs non rival (biens)…"},
-      {n:3, t:"Donner UN exemple par notion", d:"Concret, tiré du document ou de l'actualité."},
-      {n:4, t:"Conclure sur l'enjeu de la distinction", d:"Pourquoi cette différence est importante pour l'économie ou la politique publique."}
-    ],
-    alerte:"Ne pas se contenter de juxtaposer les deux définitions — il faut formuler explicitement LA différence.",
-    astuce:"Astuce mnémotechnique : déficit (la baignoire qui fuit, flux) vs dette (le niveau d'eau, stock)."
+
+  // ──────────── BLOC 3 : INDICATEURS ────────────
+  pib: {
+    emoji: "📈", tag: "Indicateur", titre: "Le PIB",
+    qui: "L'INSEE le calcule à partir des comptes nationaux. Publication trimestrielle.",
+    pourquoi: "Mesurer la richesse produite sur le territoire pendant 1 an (ou 1 trimestre).",
+    moyens: "PIB = somme de toutes les <strong>valeurs ajoutées</strong> produites en France en 1 an (entreprises + administrations), majorée de la TVA et des droits de douane.",
+    cible: "L'équation : PIB = Consommation + Investissement + (Exports − Imports = solde extérieur) + Variation de stocks <em>(souvent négligeable)</em>.",
+    effetsPlus: "Indicateur <strong>standardisé internationalement</strong>, permet de comparer les économies et de suivre leur dynamique trimestre après trimestre. Reste la référence mondiale.",
+    effetsMoins: "<strong>Ignore</strong> la production non marchande (bénévolat, travail domestique), les inégalités, l'environnement et la qualité de vie. Un PIB qui monte peut cacher une dégradation sociale.",
+    formule: "PIB = Consommation + Investissement + (Exports − Imports) + Variation de stocks",
+    mesure: "En milliards d'€ (PIB nominal) ou en taux de croissance (% en volume)."
   },
-  mecanisme: {
-    type:"TYPE 6", titre:"Expliquer un mécanisme économique à partir des documents",
-    freq:"★★★★★ — Présent dans presque tous les sujets", pts:"~3-4 pts", temps:"≈ 15 min",
-    annales:"2023 CE (dépenses pub → consommation) · 2024 IN (hausse prix → inégalités) · 2025 ME Remp. (prix → revenu → PA) · 2025 PO (subst. T/K → chômage)",
-    notions:["inflation", "pouvoir-achat", "facteurs-production", "fiscalite-eco", "defaillances"],
-    methode:[
-      {n:1, t:"Identifier la chaîne causale", d:"Cause → effet 1 → effet 2 → effet final."},
-      {n:2, t:"Mobiliser le vocabulaire éco précis", d:"'Effet multiplicateur', 'élasticité-prix', 'externalité', 'choc d'offre'…"},
-      {n:3, t:"Appuyer chaque étape par UN document", d:"'Doc 2 montre que…' / 'Annexe 4 illustre…'"},
-      {n:4, t:"Donner un exemple chiffré quand possible", d:"Aller chercher un chiffre précis dans les annexes."},
-      {n:5, t:"Conclure sur l'enjeu économique", d:"En quoi ce mécanisme éclaire la situation décrite ?"}
-    ],
-    alerte:"Une explication = une CHAÎNE de causes. Si on saute une étape, le raisonnement est cassé.",
-    astuce:"Les annexes du Bac sont là pour ÊTRE UTILISÉES. Citer explicitement 'd'après l'annexe X' fait gagner des points (l'élève prouve qu'il lit les documents)."
+  chomage: {
+    emoji: "📉", tag: "Indicateur", titre: "Le taux de chômage",
+    qui: "INSEE selon les normes du BIT (Bureau international du travail).",
+    pourquoi: "Mesurer la part de la population active sans emploi mais qui en cherche un.",
+    moyens: "Enquête Emploi (INSEE) trimestrielle auprès de ~ 110 000 ménages.",
+    cible: "Le ratio : Chômeurs au sens BIT / Population active × 100.",
+    effetsPlus: "<strong>Standard international</strong>, permet de comparer France / UE / OCDE et de suivre l'évolution conjoncturelle de l'emploi.",
+    effetsMoins: "<strong>Sous-estime la réalité</strong> : ne compte ni le halo (personnes qui veulent travailler mais qui ne cherchent plus activement) ni le sous-emploi (temps partiel subi). La « vraie » difficulté d'emploi est plus large.",
+    formule: "Taux de chômage = (Chômeurs au sens BIT / Population active) × 100<br>Taux d'emploi = (Actifs occupés / Population 15-64 ans) × 100<br>Population active = Actifs occupés + Chômeurs (BIT)",
+    mesure: "En % de la population active (≈ 7,3 % en France fin 2025).",
+    piege: "Le chômage officiel <strong>sous-estime</strong> les difficultés d'emploi. <strong>Halo du chômage</strong> = personnes qui veulent travailler mais ne cherchent plus activement (découragées, formation en cours). <strong>Sous-emploi</strong> = personnes en temps partiel subi qui voudraient travailler plus. Toujours mentionner ces deux compléments pour donner une vue complète."
   },
-  evolution: {
-    type:"TYPE 7", titre:"Commenter l'évolution de données (tableau / graphique)",
-    freq:"★★★☆☆ — 5 sujets sur 13", pts:"~3 pts", temps:"≈ 12 min",
-    annales:"2024 IN · 2025 ME Remp. (RDB/PA) · 2025 ME (échanges) · 2025 PO · 2025 NC",
-    notions:["pib", "inflation", "pouvoir-achat", "types-chomage", "balance-commerciale"],
-    methode:[
-      {n:1, t:"Lecture LITTÉRALE (la phrase d'amorce)", d:"'En 2023, le revenu disponible augmente de X % par rapport à 2022.'"},
-      {n:2, t:"Identifier la TENDANCE générale", d:"Hausse, baisse, stabilité ? Sur quelle période ?"},
-      {n:3, t:"Repérer les RUPTURES ou les pics", d:"Ex : choc Covid 2020, choc énergétique 2022."},
-      {n:4, t:"Calculer un TAUX d'évolution simple", d:"((V_arrivée − V_départ) / V_départ) × 100."},
-      {n:5, t:"Interpréter ÉCONOMIQUEMENT", d:"Quel contexte économique explique cette évolution ?"}
-    ],
-    alerte:"Ne pas se contenter de lire des chiffres. Donner une LECTURE économique en mobilisant le contexte (crise, plan de relance, etc.).",
-    astuce:"Toujours mentionner UNE rupture ou UN pic visible sur le graphique. Ça montre qu'on a compris la dynamique."
+  inflation: {
+    emoji: "🔥", tag: "Indicateur", titre: "L'inflation",
+    qui: "INSEE (IPC) en France et Eurostat (IPCH) pour comparer en zone euro.",
+    pourquoi: "Mesurer la hausse durable et générale du niveau des prix.",
+    moyens: "Indice des prix à la consommation (IPC) : panier représentatif de biens et services suivi chaque mois.",
+    cible: "Le pouvoir d'achat des ménages et la compétitivité des entreprises.",
+    effetsPlus: "Une inflation <strong>modérée (~ 2 %)</strong> indique une activité dynamique et facilite le remboursement des dettes (inflation érode la valeur réelle de la dette).",
+    effetsMoins: "Une <strong>inflation forte</strong> (> 5 %) <strong>diminue</strong> le pouvoir d'achat des ménages, fragilise les épargnants (l'argent placé perd de la valeur réelle), pénalise la compétitivité des entreprises. Risque de <strong>spirale prix-salaires</strong> : les salariés demandent des augmentations pour suivre l'inflation → coûts ↑ → prix ↑ encore → nouvelles demandes d'augmentation → emballement.",
+    mesure: "En % d'évolution annuelle (cible BCE = 2 %)."
+  },
+  "pouvoir-achat": {
+    emoji: "💶", tag: "Indicateur", titre: "Le pouvoir d'achat",
+    qui: "INSEE le calcule à partir du Revenu Disponible Brut (RDB) et de l'indice des prix.",
+    pourquoi: "Mesurer ce qu'on peut réellement acheter avec son revenu, une fois l'inflation prise en compte.",
+    moyens: "Formule : Pouvoir d'achat = RDB / Indice des prix.",
+    cible: "Le niveau de vie réel des ménages.",
+    effetsPlus: "Indicateur très <strong>parlant pour les ménages</strong> et très politique : il agrège revenus et prix dans un seul chiffre lisible. Cœur du débat public en 2022-2023.",
+    effetsMoins: "Très <strong>sensible aux chocs d'inflation</strong> (énergie, alimentation) et masque les disparités selon les profils (locataires/propriétaires, urbain/rural).",
+    formule: "Pouvoir d'achat = Revenu disponible brut (RDB) / Indice des prix",
+    mesure: "Pouvoir d'achat du RDB par unité de consommation (UC)."
+  },
+  balance: {
+    emoji: "⚖️", tag: "Indicateur", titre: "La balance commerciale",
+    qui: "Douanes + Banque de France. Publication mensuelle.",
+    pourquoi: "Mesurer l'écart entre les exportations et les importations de biens d'un pays.",
+    moyens: "Formule : Exportations − Importations.",
+    cible: "L'insertion du pays dans le commerce international et sa compétitivité.",
+    effetsPlus: "Un <strong>excédent commercial</strong> (= plus d'exportations que d'importations, comme Allemagne ou Chine) <strong>améliore le PIB</strong> (le solde X − M s'ajoute à la formule PIB = C + I + (X−M) + Δstocks). Il signale une économie compétitive qui finance ses importations par ses exportations.",
+    effetsMoins: "Un <strong>déficit chronique</strong> (= plus d'importations que d'exportations, France ≈ −100 Md€/an) <strong>diminue le PIB</strong> (le solde X − M négatif retranche à la formule). Il traduit une perte de compétitivité industrielle et un endettement extérieur croissant.",
+    formule: "Balance commerciale = Exportations − Importations",
+    mesure: "En milliards d'€ (ou en % du PIB)."
+  },
+  co2: {
+    emoji: "🌫️", tag: "Indicateur", titre: "Les émissions de CO₂",
+    qui: "Citepa (France), Eurostat, GIEC.",
+    pourquoi: "Suivre l'empreinte climatique de l'activité économique et vérifier les engagements (Accord de Paris).",
+    moyens: "Inventaire des émissions par secteur (transport, industrie, logement, agriculture).",
+    cible: "L'objectif de neutralité carbone (UE en 2050, France inscrite dans la loi).",
+    effetsPlus: "Permet de fixer des <strong>objectifs chiffrés et contraignants</strong> (-55 % d'ici 2030 en UE) et d'évaluer les politiques de transition.",
+    effetsMoins: "<strong>Empreinte importée</strong> (biens produits en Chine pour la France) souvent <strong>sous-estimée</strong>. La méthode « territoriale » officielle masque une partie des émissions liées à notre consommation.",
+    mesure: "En millions de tonnes de CO₂ équivalent (Mt CO₂e)."
+  },
+  pauvrete: {
+    emoji: "📊", tag: "Indicateur", titre: "Le taux de pauvreté",
+    qui: "INSEE selon la norme européenne.",
+    pourquoi: "Mesurer la part de la population dont le revenu est inférieur au seuil de pauvreté.",
+    moyens: "Seuil = 60 % du revenu médian (≈ 1 200 €/mois pour une personne seule en France).",
+    cible: "Les inégalités et la cohésion sociale.",
+    effetsPlus: "Indicateur <strong>standardisé en Europe</strong>, permet de comparer les pays. Utile pour cibler les politiques de redistribution.",
+    effetsMoins: "<strong>Indicateur relatif</strong> : si tous les revenus baissent en même temps, le taux ne bouge pas, alors que la population s'est appauvrie. Inversement, il peut monter en période de croissance si seuls les hauts revenus progressent.",
+    mesure: "En % de la population (≈ 14,5 % en France)."
+  },
+  "deficit-dette": {
+    emoji: "📊", tag: "Indicateur", titre: "Déficit & Dette publique",
+    qui: "INSEE et Comptes publics, suivi par Eurostat et la Commission européenne (règles budgétaires de l'UE).",
+    pourquoi: "Suivre la <strong>santé budgétaire</strong> de l'État : ses comptes sont-ils équilibrés cette année (déficit) ? Combien doit-il aux créanciers au total (dette) ?",
+    moyens: "Comptabilité publique annuelle : <strong>recettes</strong> (impôts, cotisations) − <strong>dépenses</strong> (services publics, prestations, intérêts de la dette) = <strong>solde public</strong> (positif = excédent, négatif = déficit).",
+    cible: "La <strong>capacité d'emprunt</strong> de l'État, sa <strong>crédibilité financière</strong>, et les <strong>taux d'intérêt</strong> auxquels il emprunte sur les marchés.",
+    effetsPlus: "Un <strong>excédent budgétaire</strong> (rare en France depuis 1974, fréquent en Allemagne) permet de <strong>rembourser la dette</strong>, d'investir ou de baisser les impôts. Une dette modérée maintient la crédibilité financière. Un déficit ciblé peut soutenir l'activité en période de crise (relance keynésienne, plan Covid 2020).",
+    effetsMoins: "Un <strong>déficit chronique</strong> creuse la dette publique (France ≈ 110 % du PIB en 2024). Une dette excessive fait monter les <strong>taux d'intérêt</strong> auxquels l'État emprunte (effet d'éviction sur l'investissement privé), pèse sur les générations futures, et peut conduire à une <strong>austérité imposée par les marchés</strong> (cas Grèce 2010-2015 : −25 % PIB, chômage 27 %).",
+    formule: "Solde public = Recettes − Dépenses (positif = excédent, négatif = déficit)<br>Dette publique = somme des déficits passés non remboursés",
+    mesure: "En <strong>% du PIB</strong>. Règles UE : déficit < 3 %, dette < 60 %. France 2024 ≈ 5 % de déficit, 110 % de dette.",
+    piege: "Le <strong>déficit</strong> est sur <strong>1 an</strong> (= flux annuel des comptes publics, comme un robinet). La <strong>dette</strong> est <strong>cumulée sur des dizaines d'années</strong> (= stock total dans la baignoire). Un pays peut avoir un déficit modéré (4 % PIB) mais une dette énorme (110 % PIB) parce que les déficits s'accumulent depuis 50 ans. Inversement, un pays peut être à l'équilibre cette année mais traîner une dette ancienne."
+  },
+
+  // ──────────── BLOC 4 : MARCHÉ ────────────
+  "offre-demande": {
+    emoji: "⚖️", tag: "Marché", titre: "Offre et demande",
+    qui: "Producteurs (offre) et consommateurs (demande) qui se rencontrent sur un marché.",
+    pourquoi: "Confronter ce qui est proposé et ce qui est recherché pour fixer prix et quantités.",
+    moyens: "Le prix, qui s'ajuste automatiquement à la hausse ou à la baisse.",
+    cible: "Les quantités échangées et le prix de marché.",
+    effetsPlus: "<strong>Allocation efficace sans décision centrale</strong> : le prix informe à la fois producteurs et consommateurs, et chacun adapte son comportement. C'est la « main invisible » d'Adam Smith.",
+    effetsMoins: "<strong>Peut produire des pénuries ou des excès</strong> si les prix sont rigides (loyers, salaire minimum) ou si l'information est imparfaite. Ne tient pas compte des externalités.",
+    mesure: "Élasticité-prix de l'offre et de la demande."
+  },
+  "prix-equilibre": {
+    emoji: "🎯", tag: "Marché", titre: "Le prix d'équilibre",
+    qui: "Le marché lui-même, par tâtonnement entre offreurs et demandeurs.",
+    pourquoi: "Trouver le prix qui égalise offre et demande, sans pénurie ni excès.",
+    moyens: "Mécanisme de prix : si demande > offre → prix monte ; si offre > demande → prix baisse.",
+    cible: "La quantité d'équilibre échangée.",
+    effetsPlus: "Crée une <strong>auto-régulation</strong> sans intervention extérieure et une information transparente sur la rareté relative des biens.",
+    effetsMoins: "Suppose <strong>information parfaite et concurrence pure</strong>, deux conditions rarement vérifiées en pratique. Sur certains marchés (santé, logement), l'équilibre exclut les pauvres.",
+    mesure: "Prix et quantité observés sur le marché à l'équilibre."
+  },
+  concurrence: {
+    emoji: "🏁", tag: "Marché", titre: "La concurrence",
+    qui: "Entreprises en rivalité sur un même marché, régulées en UE par la DG Concurrence.",
+    pourquoi: "Conquérir des parts de marché, innover, augmenter ses profits.",
+    moyens: "Prix ; qualité ; innovation ; marketing ; parts de marché.",
+    cible: "La part de marché et le profit des entreprises.",
+    effetsPlus: "Pousse les entreprises à <strong>innover, baisser les prix et améliorer la qualité</strong>. Bon pour le consommateur, bon pour la productivité économique.",
+    effetsMoins: "Peut <strong>détruire des emplois</strong> dans les secteurs perdants (désindustrialisation) et conduire à la formation de <strong>monopoles</strong> qui finissent par étouffer la concurrence (cas des GAFAM).",
+    mesure: "Indice de Herfindahl-Hirschman (concentration), parts de marché."
+  },
+  externalites: {
+    emoji: "↔️", tag: "Marché", titre: "Les externalités",
+    qui: "N'importe quel acteur dont l'activité a un effet sur un tiers, sans contrat de marché.",
+    pourquoi: "Décrire les défaillances du marché : effets qui ne sont pas payés par le marché.",
+    moyens: "L'État <strong>fait payer l'externalité</strong> (= internalisation) via : <strong>taxe</strong> (pollueur-payeur sur la pollution) ; <strong>subvention</strong> (encourager les bonnes : vaccin, éducation) ; <strong>réglementation</strong> (interdire, limiter) ; <strong>marché de droits</strong> à polluer (UE pour le CO₂).",
+    cible: "L'effet (positif ou négatif) qui retombe sur la collectivité.",
+    effetsPlus: "<strong>Externalités positives</strong> = ton action profite AUSSI aux autres, sans qu'ils paient. Ex : tu te vaccines → tu protèges la collectivité. Tu vas à l'école → tu participes à former une société instruite. Le marché ne les produit pas assez seul, donc l'État subventionne (école, vaccin gratuit, R&D).",
+    effetsMoins: "<strong>Externalités négatives</strong> (pollution, embouteillage, tabagisme) : coût social non payé par le pollueur, justifient taxes et réglementations. Sans intervention, le marché les ignore.",
+    mesure: "Coût social estimé, niveau de la taxe carbone, valeur statistique de la vie.",
+    piege: "<strong>Biens publics ≠ biens communs</strong> (Bac 2024). <strong>Biens publics</strong> = tout le monde peut en profiter en même temps sans se priver les uns des autres (défense, éclairage public, phares). <strong>Biens communs</strong> = tous peuvent en profiter mais ils s'épuisent si on en abuse (poissons en mer, climat, eau douce → \"tragédie des communs\"). L'État doit <strong>fournir</strong> les biens publics et <strong>réguler</strong> l'accès aux biens communs."
+  },
+
+  // ──────────── BLOC 5 : POLITIQUES ÉCONOMIQUES ────────────
+  "budgetaire-relance": {
+    emoji: "🏛️", tag: "Politique économique", titre: "Politique budgétaire — Relance",
+    qui: "L'État (gouvernement + Parlement), via la loi de finances annuelle.",
+    pourquoi: "Stimuler la croissance et l'emploi quand l'activité ralentit (récession, crise).",
+    moyens: "Hausse des dépenses publiques (investissements, prestations) et/ou baisse des impôts.",
+    cible: "La demande globale (consommation + investissement).",
+    effetsPlus: "<strong>Soutient l'activité</strong> et l'emploi à court terme. Effet multiplicateur : 1 € de dépense publique peut générer plus d'1 € de PIB. Exemple : plan de relance Covid 2020 (100 Md€).",
+    effetsMoins: "<strong>Creuse le déficit et la dette publique</strong>. Risque d'effet d'éviction sur l'investissement privé et de dégradation de la signature de l'État sur les marchés financiers.",
+    mesure: "Solde public, dette / PIB, taux de croissance, taux de chômage."
+  },
+  "budgetaire-rigueur": {
+    emoji: "🏛️", tag: "Politique économique", titre: "Politique budgétaire — Rigueur",
+    qui: "L'État (souvent sous pression européenne ou des marchés financiers).",
+    pourquoi: "Réduire le déficit et la dette publique, maîtriser l'inflation, restaurer la crédibilité financière.",
+    moyens: "Baisse des dépenses publiques et/ou hausse des impôts.",
+    cible: "Le solde des comptes publics (déficit, dette / PIB).",
+    effetsPlus: "Restaure la <strong>crédibilité financière</strong> (taux d'intérêt plus bas), assainit les comptes publics, prépare la marge de manœuvre pour la prochaine crise.",
+    effetsMoins: "<strong>Effet récessif</strong> : freine la croissance, augmente le chômage, dégrade les services publics. Risque social (manifestations, grèves) et politique fort.",
+    mesure: "Solde public, dette / PIB."
+  },
+  monetaire: {
+    emoji: "🏦", tag: "Politique économique", titre: "Politique monétaire (BCE)",
+    qui: "La BCE — institution européenne indépendante.",
+    pourquoi: "Stabilité des prix (cible inflation ≈ 2 %) en zone euro.",
+    moyens: "Taux directeurs (taux de refinancement, taux de dépôt) ; opérations de refinancement des banques ; achats d'actifs (QE).",
+    cible: "Le coût du crédit → consommation et investissement.",
+    effetsPlus: "<strong>Outil réactif et flexible</strong>, indépendant du politique. Une hausse des taux peut maîtriser une inflation dérapante en 1-2 ans (preuve : zone euro 2022-2024).",
+    effetsMoins: "<strong>Effet récessif</strong> quand on monte les taux (freine investissement et consommation) ; <strong>risque de bulles</strong> quand on les baisse longtemps (immobilier, actions). Effet retardé de 12-18 mois.",
+    mesure: "Taux d'inflation (IPCH), niveau des taux directeurs.",
+    piege: "Ne pas confondre <strong>politique budgétaire</strong> et <strong>politique monétaire</strong>. Budgétaire = <strong>État français</strong>, via impôts + dépenses publiques (loi de finances annuelle). Monétaire = <strong>BCE européenne</strong>, via taux directeurs. Deux acteurs, deux outils, deux niveaux."
+  },
+  "emploi-active": {
+    emoji: "👷", tag: "Politique économique", titre: "Politique de l'emploi — Active",
+    qui: "État + France Travail (ex-Pôle emploi) + régions + entreprises.",
+    pourquoi: "Améliorer l'employabilité et favoriser le retour à l'emploi durable.",
+    moyens: "Formation professionnelle ; contrats aidés ; aides à l'embauche (apprentissage, alternance) ; accompagnement personnalisé.",
+    cible: "Le taux d'emploi (et le chômage de longue durée).",
+    effetsPlus: "Augmente l'<strong>employabilité durable</strong> en agissant sur les compétences. Réduit le chômage de longue durée et la pauvreté laborieuse. Bénéfices à long terme pour la croissance.",
+    effetsMoins: "<strong>Coût budgétaire élevé</strong>, effets différés (les formations mettent du temps à porter leurs fruits) et difficulté à atteindre les publics les plus éloignés de l'emploi.",
+    mesure: "Taux d'emploi, taux de retour à l'emploi après formation."
+  },
+  "emploi-passive": {
+    emoji: "👷", tag: "Politique économique", titre: "Politique de l'emploi — Passive",
+    qui: "État via l'Assurance chômage (Unédic, gérée par les partenaires sociaux).",
+    pourquoi: "Maintenir le niveau de vie des chômeurs et soutenir la demande globale.",
+    moyens: "Allocations chômage (ARE), indemnisations diverses.",
+    cible: "Le revenu des chômeurs (donc leur consommation).",
+    effetsPlus: "Joue un rôle de <strong>stabilisateur automatique</strong> : en crise, les allocations soutiennent la demande sans décision politique. Préserve la dignité et la santé des chômeurs.",
+    effetsMoins: "Risque de <strong>désincitation</strong> si les allocations sont trop généreuses ou trop longues (« trappe à inactivité »). Coût élevé en période de chômage de masse.",
+    mesure: "Taux d'indemnisation, durée moyenne d'indemnisation, dépenses Unédic."
+  },
+  redistribution: {
+    emoji: "🔄", tag: "Politique économique", titre: "La redistribution",
+    qui: "État via prélèvements obligatoires et prestations sociales.",
+    pourquoi: "Réduire les inégalités de revenus et garantir une cohésion sociale.",
+    moyens: "<strong>Impôts</strong> (IR progressif, IS sur sociétés, TVA, IFI) ; <strong>cotisations sociales</strong> (Sécu, retraites, Unédic) ; <strong>prestations</strong> (RSA, allocs familiales, retraites) ; <strong>services publics gratuits</strong> (école, santé, justice).",
+    cible: "L'écart entre revenu primaire (avant impôts) et revenu disponible (après).",
+    effetsPlus: "<strong>Divise par 2 les inégalités</strong> en France (Gini avant 0,38, après 0,29). Soutient la demande des ménages modestes : ils <strong>ont tendance à dépenser presque tout leur revenu</strong> (~95 %, contre ~70 % pour les plus aisés), donc l'argent reçu retourne vite dans l'économie.",
+    effetsMoins: "<strong>Effet désincitatif</strong> si prélèvements trop lourds (travailler plus rapporte peu). Risque d'évasion fiscale, de fuite des talents et des capitaux à l'étranger.",
+    mesure: "Coefficient de Gini avant/après redistribution, taux de pauvreté.",
+    piege: "<strong>Assurance</strong> ≠ <strong>Assistance</strong>, et seule l'assistance est de la <strong>vraie redistribution verticale</strong>. <strong>Assurance</strong> = <strong>mutualisation</strong> des risques : on cotise quand on travaille → on perçoit en cas de coup dur (chômage, retraite, maladie). <strong>Assistance</strong> = <strong>redistribution</strong> du riche vers le pauvre, financée par l'impôt (RSA, APL, minimum vieillesse, sans cotisation préalable)."
+  },
+
+  // ──────────── BLOC 6 : OUVERTURE INTERNATIONALE ────────────
+  "libre-echange": {
+    emoji: "🌐", tag: "International", titre: "Le libre-échange",
+    qui: "Pays, FMN, OMC. Doctrine théorisée par Ricardo (avantages comparatifs).",
+    pourquoi: "Favoriser les échanges internationaux en supprimant les barrières (droits de douane, quotas, normes).",
+    moyens: "Accords commerciaux bilatéraux/multilatéraux ; baisse des droits de douane ; harmonisation des normes.",
+    cible: "Les flux d'exportations et d'importations entre pays.",
+    effetsPlus: "<strong>Baisse les prix</strong> pour les consommateurs (concurrence internationale), élargit le <strong>choix de produits</strong>, permet aux entreprises de réaliser des <strong>économies d'échelle</strong>, diffuse l'innovation.",
+    effetsMoins: "<strong>Désindustrialisation</strong> : les pays moins compétitifs voient fermer leurs usines (France/Italie face à la Chine). <strong>Dépendance stratégique</strong> : si on importe tout, on devient vulnérable en cas de crise (gaz russe 2022, puces taïwanaises). <strong>Dumping</strong> : produire moins cher en payant peu les salariés (<em>social</em>), en taxant peu les entreprises (<em>fiscal</em>), ou en polluant plus (<em>environnemental</em>).",
+    mesure: "Taux d'ouverture = (Exports + Imports) / PIB ; parts de marché à l'export."
+  },
+  protectionnisme: {
+    emoji: "🚧", tag: "International", titre: "Le protectionnisme",
+    qui: "Pays (gouvernements), Union européenne. Théorisé par List (protection des industries naissantes).",
+    pourquoi: "Protéger les producteurs nationaux de la concurrence étrangère, défendre l'emploi local.",
+    moyens: "Droits de douane ; quotas ; normes techniques/sanitaires ; subventions aux entreprises nationales.",
+    cible: "Les importations (réduites) et la production locale (protégée).",
+    effetsPlus: "<strong>Protège les emplois</strong> et les industries stratégiques (défense, agriculture, santé). Donne du temps aux industries naissantes pour se développer (Corée du Sud, Chine).",
+    effetsMoins: "<strong>Hausse des prix</strong> pour les consommateurs, <strong>risque de représailles</strong> (guerre commerciale type USA-Chine), perte de compétitivité à long terme par manque d'aiguillon.",
+    mesure: "Niveau moyen des droits de douane, balance commerciale, parts de marché."
+  },
+  competitivite: {
+    emoji: "🏆", tag: "International", titre: "La compétitivité",
+    qui: "Entreprises et pays (politiques publiques d'environnement des entreprises).",
+    pourquoi: "Gagner des parts de marché face à la concurrence internationale.",
+    moyens: "Compétitivité-prix (salaires, fiscalité, productivité) ; compétitivité hors-prix (innovation, qualité, marque, design).",
+    cible: "Les parts de marché à l'export.",
+    effetsPlus: "Permet une <strong>croissance par l'export</strong> (modèle allemand), attire les IDE et soutient l'emploi industriel à forte valeur ajoutée.",
+    effetsMoins: "La course à la compétitivité-prix peut tirer <strong>les salaires vers le bas</strong> et dégrader les conditions de travail. La compétitivité hors-prix demande un effort long et coûteux (R&D, formation).",
+    mesure: "Parts de marché à l'export, coût horaire du travail, productivité, dépenses de R&D / PIB."
+  },
+  attractivite: {
+    emoji: "🧲", tag: "International", titre: "L'attractivité",
+    qui: "Pays via leurs politiques publiques, et collectivités locales (régions, métropoles).",
+    pourquoi: "Attirer les capitaux et les talents étrangers (IDE) pour créer emplois et richesse.",
+    moyens: "Fiscalité avantageuse ; qualité des infrastructures ; formation ; stabilité politique ; accès au marché européen.",
+    cible: "Les investissements directs étrangers (IDE) entrants et l'implantation des FMN.",
+    effetsPlus: "<strong>Création d'emplois et de richesse</strong> sur le territoire (cas Tesla en Allemagne, gigafactories en France). Transferts de technologie et de savoir-faire.",
+    effetsMoins: "<strong>Dépendance aux multinationales</strong> qui peuvent partir aussi vite (Whirlpool, Bridgestone). <strong>Concurrence fiscale</strong> entre pays qui tire la fiscalité vers le bas (« race to the bottom »).",
+    mesure: "Flux et stock d'IDE entrants, classements internationaux (« Doing Business »)."
   }
 };
 
-// === SYNTH : 13 questions ✍️ (argumentations) ===
-// V1 : libellé + référence à la notion-clé. Les corrigés rédigés viendront
-// dans une étape ultérieure (extraction des PDFs Corrigé.pdf).
-const SYNTH = QUESTIONS_BAC_ECO.filter(q => q.synthese).map((q, i) => ({
-  index: i,
-  id: q.id,
-  titre: q.libelle.replace(/^Rédigez une argumentation\s*:\s*/, ''),
-  theme: q.theme,
-  source: `${q.annee} ${q.session} — ${q.sujet}`,
-  notions: [q.primary, ...(q.secondary || [])],
-  corrige: null  // ⏳ à rédiger depuis les PDFs Corrigé
-}));
-
-// === ÉTAT GLOBAL ===
-let currentMode = 'fiches';
-let currentBacQuestion = null;
-let currentTypeKey = null;
-
-// === SWITCH MODE ===
-function switchMode(mode, qid) {
-  currentMode = mode;
-  closeCartePanel();
-  closeBacPopup();
-  closeTypeModal();
-
-  // Mettre à jour les tabs
+// ============================================================
+// SWITCH ONGLETS
+// ============================================================
+function switchTab(name) {
+  document.body.setAttribute('data-tab', name);
   document.querySelectorAll('.nav-rubriques a').forEach(a => a.classList.remove('active'));
-  document.getElementById('tab-' + mode).classList.add('active');
+  const tab = document.getElementById('tab-' + name);
+  if (tab) tab.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-  // Sidebars : tout masquer puis afficher la bonne (si elle existe)
-  ['fiches','questions','synthese','decodage'].forEach(m => {
-    const el = document.getElementById('sidebar-' + m);
-    if (el) el.style.display = 'none';
-  });
+// ============================================================
+// LES 5 MÉTHODES — Démarches du bac STMG Éco
+// ============================================================
+const METHODES = {
 
-  const sidebar = document.getElementById('sidebar');
-  const layout = document.getElementById('layout');
-  const main = document.getElementById('main');
+  argumenter: {
+    emoji: "🎯", tag: "Méthode · 100 % des sujets", titre: "Argumenter",
+    meta: "<strong>~5 pts</strong> · ≈ 25 min · La grande question finale (Q5) de chaque sujet",
+    etapes: [
+      { n: 1, t: "Introduction (2-3 lignes)", d: "Reformuler la question, définir 1-2 notions-clés, annoncer le plan (thèse / antithèse)." },
+      { n: 2, t: "1<sup>re</sup> partie — Thèse : arguments POUR", d: "2-3 arguments. Pour chaque : un <strong>mécanisme économique</strong> + un <strong>chiffre tiré d'une annexe</strong> + un <strong>exemple historique</strong> (plan de relance Covid, hausse taux BCE 2022…)." },
+      { n: 3, t: "2<sup>e</sup> partie — Antithèse : limites / contre-arguments", d: "Même structure : mécanisme + chiffre + exemple. Reconnaître les limites de la thèse, ne pas faire un plaidoyer unilatéral." },
+      { n: 4, t: "Conclusion (2 lignes)", d: "Prendre position de façon nuancée + ouverture sur un débat actuel ou une alternative." }
+    ],
+    exemple: {
+      source: "Bac STMG 2024 · Métropole",
+      question: "Rédigez une argumentation qui permette de répondre à la question : la politique de relance budgétaire est-elle un instrument efficace pour soutenir la croissance ?",
+      corrige: "Thèse : la relance soutient effectivement la demande globale via l'effet multiplicateur (1 € de dépense publique → > 1 € de PIB). Exemple : plan de relance Covid 2020 (100 Md€) a contenu la récession.<br><br>Antithèse : elle creuse la dette (France ≈ 110 % du PIB) et risque l'effet d'éviction sur l'investissement privé.<br><br>Conclusion : utile à court terme en crise, mais nécessite un retour à l'équilibre en période d'expansion."
+    },
+    piege: "L'argumentation doit <strong>équilibrer pour et contre</strong>. Une copie qui ne fait que défendre une seule thèse perd la moitié des points."
+  },
 
-  if (mode === 'intro' || mode === 'fiches') {
-    // Intro et Carte : plein écran via iframe, sidebar masquée
-    sidebar.style.display = 'none';
-    layout.style.gridTemplateColumns = '1fr';
-    main.style.maxWidth = 'none';
-    main.style.padding = '0';
-    const src = (mode === 'intro') ? 'intro-eco.html?embed=1' : 'memos-eco.html';
-    const title = (mode === 'intro') ? 'Intro Éco' : 'La Carte Éco';
-    main.innerHTML = `<div class="fiches-iframe-wrap"><iframe src="${src}" title="${title}"></iframe></div>`;
-  } else {
-    sidebar.style.display = 'block';
-    layout.style.gridTemplateColumns = 'var(--sidebar-w) 1fr';
-    main.style.maxWidth = '820px';
-    main.style.padding = '24px 28px';
-    const sb = document.getElementById('sidebar-' + mode);
-    if (sb) sb.style.display = 'block';
+  reperer: {
+    emoji: "🔍", tag: "Méthode · 77 % des sujets", titre: "Repérer / Caractériser un fait",
+    meta: "<strong>~2-3 pts</strong> · ≈ 8 min · Verbes : Identifiez · Repérez · Caractérisez · Présentez",
+    etapes: [
+      { n: 1, t: "Relire la consigne précisément", d: "Que cherche-t-on exactement ? Un acteur, un montant, une cause, une politique ?" },
+      { n: 2, t: "Citer l'annexe", d: "Toujours indiquer la source : <em>« d'après l'annexe 2 »</em>, <em>« le document 3 montre que… »</em>. Ça prouve qu'on lit les documents." },
+      { n: 3, t: "Reprendre le fait / chiffre exact", d: "Citer la donnée précise du document (pas une approximation)." },
+      { n: 4, t: "Qualifier avec un terme éco précis", d: "Mettre un mot du programme sur le fait : <em>externalité négative</em>, <em>politique active</em>, <em>compétitivité hors-prix</em>, etc." }
+    ],
+    exemple: {
+      source: "Bac STMG 2025 · Métropole",
+      question: "Repérez les externalités négatives de l'activité humaine sur l'environnement présentées dans l'annexe 4.",
+      corrige: "D'après l'annexe 4, on identifie deux externalités négatives : (1) les émissions de gaz à effet de serre du secteur transport (28 % des émissions françaises en 2023), qui retombent sur la collectivité sous forme de réchauffement climatique ; (2) la pollution plastique des océans, conséquence non payée par les producteurs."
+    },
+    piege: "Ne pas se contenter de <strong>recopier l'annexe</strong> sans la qualifier. Un fait + un mot du programme = points complets."
+  },
 
-    if (mode === 'questions') renderQuestionsMain(qid);
-    else if (mode === 'synthese') renderSyntheseMain(qid);
-    else if (mode === 'decodage') renderDecodageMain();
+  expliquer: {
+    emoji: "⚙️", tag: "Méthode · 77 % des sujets", titre: "Expliquer un mécanisme",
+    meta: "<strong>~3-4 pts</strong> · ≈ 15 min · Verbes : Expliquez · Justifiez · Montrez · Démontrez",
+    etapes: [
+      { n: 1, t: "Identifier la chaîne causale", d: "Cause → effet 1 → effet 2 → effet final. Penser <em>engrenage</em>." },
+      { n: 2, t: "Mobiliser le vocabulaire éco précis", d: "« Effet multiplicateur », « élasticité-prix », « externalité », « choc d'offre », « substitution travail/capital »…" },
+      { n: 3, t: "Appuyer chaque étape sur UN document", d: "Citer explicitement : <em>« doc 2 montre que… »</em>, <em>« annexe 4 illustre… »</em>." },
+      { n: 4, t: "Donner un chiffre quand possible", d: "Aller chercher une donnée précise dans une annexe pour rendre la chaîne concrète." },
+      { n: 5, t: "Conclure sur l'enjeu", d: "En quoi ce mécanisme éclaire la situation décrite ou la question posée ?" }
+    ],
+    exemple: {
+      source: "Bac STMG 2023 · Métropole",
+      question: "Montrez en quoi les dépenses publiques favorisent la consommation.",
+      corrige: "Chaîne causale : l'État verse des prestations sociales (RSA, allocs) → ces revenus alimentent le revenu disponible des ménages → comme les bas revenus ont tendance à dépenser presque tout, ils consomment quasi tout → la consommation globale augmente. D'après l'annexe 3, les ménages modestes consomment 95 % de leur revenu (vs 70 % pour les plus aisés).<br>Enjeu : ce mécanisme illustre l'effet multiplicateur de la dépense publique (1 € versé génère ≥ 1 € de PIB), ce qui justifie les politiques de relance budgétaire en période de crise pour soutenir l'activité et l'emploi."
+    },
+    piege: "Sauter une étape de la chaîne <strong>casse le raisonnement</strong>. Le correcteur cherche les enchaînements, pas les conclusions toutes faites.",
+    engrenages: [
+      {
+        titre: "Inflation et pouvoir d'achat",
+        chain: "Inflation (prix ↑)<span class=\"arrow\">→</span>pouvoir d'achat ↓<span class=\"arrow\">→</span>consommation ↓<span class=\"arrow\">→</span>croissance ↓<span class=\"arrow\">→</span>emploi ↓",
+        exemple: {
+          source: "Bac 2025-1 · Métropole",
+          question: "Expliquez le mécanisme qui relie le niveau des prix, le revenu disponible et le pouvoir d'achat des ménages.",
+          corrige: "Chaîne causale : les prix montent (inflation) → avec le même revenu, on peut acheter moins de choses → le pouvoir d'achat baisse → les ménages réduisent leurs dépenses → la consommation globale baisse → la croissance ralentit → moins d'emplois. C'est un cercle vicieux : moins de demande nourrit moins d'activité."
+        }
+      },
+      {
+        titre: "Politique monétaire (baisse des taux)",
+        chain: "Taux directeurs ↓<span class=\"arrow\">→</span>crédits moins chers<span class=\"arrow\">→</span>investissement + consommation ↑<span class=\"arrow\">→</span>croissance ↑<span class=\"arrow\">→</span>emploi ↑",
+        exemple: {
+          source: "Exemple rédigé (mécanisme non posé directement en 2023-2025)",
+          question: "Comment une baisse des taux directeurs de la BCE peut-elle soutenir la croissance ?",
+          corrige: "Chaîne causale : la BCE baisse ses taux directeurs → les banques se refinancent moins cher → elles baissent à leur tour les taux des crédits aux ménages et entreprises → emprunter coûte moins cher → l'investissement (machines, immobilier) et la consommation à crédit (voiture, équipement) augmentent → la demande globale monte → la croissance accélère → l'emploi suit (avec un délai)."
+        }
+      },
+      {
+        titre: "Relance budgétaire",
+        chain: "Dépense État ↑<span class=\"arrow\">→</span>activité ↑<span class=\"arrow\">→</span>emploi ↑<span class=\"arrow\">→</span>croissance ↑  <strong>MAIS</strong>  dette publique ↑",
+        exemple: {
+          source: "Bac 2023-2 · Métropole",
+          question: "Montrez en quoi les dépenses publiques favorisent la consommation.",
+          corrige: "Chaîne causale : l'État verse des prestations sociales (RSA, allocs) → ces revenus alimentent le revenu disponible des ménages → comme les bas revenus ont tendance à dépenser presque tout leur revenu, ils consomment quasi tout → la consommation globale augmente. D'après l'annexe 3, les ménages modestes consomment 95 % de leur revenu (vs 70 % pour les plus aisés). Effet multiplicateur : 1 € de dépense publique génère ≥ 1 € de PIB."
+        }
+      },
+      {
+        titre: "Hausse des droits de douane",
+        chain: "Imports plus chers<span class=\"arrow\">→</span>conso de produits locaux ↑<span class=\"arrow\">→</span>emploi national protégé  <strong>MAIS</strong>  prix ↑ + risque de représailles",
+        exemple: {
+          source: "Bac 2025-5 · Métropole",
+          question: "Expliquez les conséquences de la hausse des droits de douane sur l'activité des entreprises.",
+          corrige: "Chaîne causale : l'État augmente les droits de douane → les produits importés deviennent plus chers → les entreprises qui importent voient leurs coûts gonfler ; les producteurs nationaux, eux, ont moins de concurrence → leur emploi est protégé. MAIS le consommateur paie plus cher, et les partenaires commerciaux peuvent répliquer (guerre commerciale type USA-Chine 2018, droits Trump sur acier UE 2025) → les exportations sont menacées et les chaînes d'approvisionnement perturbées."
+        }
+      },
+      {
+        titre: "Substitution travail / capital",
+        chain: "Hausse coût travail<span class=\"arrow\">→</span>entreprises remplacent par machines<span class=\"arrow\">→</span>productivité ↑  <strong>MAIS</strong>  chômage technologique ↑",
+        exemple: {
+          source: "Bac 2025-6 · Métropole",
+          question: "Déterminez si la substitution entre les facteurs de production travail et capital est source de chômage.",
+          corrige: "Chaîne causale : le coût du travail monte (SMIC, charges) OU la technologie progresse (automatisation, IA) → les entreprises remplacent des salariés par des machines → la productivité par tête augmente (gain de compétitivité) MAIS des emplois disparaissent (chômage technologique). D'après l'annexe, 14 % des emplois pourraient disparaître. Distinction : substitution partielle = les salariés se reconvertissent dans de nouveaux secteurs ; substitution totale = les emplois sont détruits sans remplacement."
+        }
+      },
+      {
+        titre: "Politique de rigueur",
+        chain: "Hausse impôts / baisse dépenses publiques<span class=\"arrow\">→</span>revenu disponible ↓<span class=\"arrow\">→</span>consommation ↓<span class=\"arrow\">→</span>croissance ↓<span class=\"arrow\">→</span>emploi ↓",
+        exemple: {
+          source: "Exemple rédigé (engrenage opposé à la relance)",
+          question: "Quels sont les risques d'une politique budgétaire de rigueur en période de croissance fragile ?",
+          corrige: "Chaîne causale : pour réduire le déficit, l'État augmente les impôts ou baisse ses dépenses → les ménages voient leur revenu disponible baisser (plus d'impôts) ou leurs prestations diminuer → ils consomment moins → la demande globale baisse → la croissance ralentit, voire devient négative → l'emploi recule. C'est l'effet récessif de l'austérité. Risque social majeur (manifestations). Exemple : austérité grecque 2010-2015 (−25 % de PIB, 27 % de chômage)."
+        }
+      },
+      {
+        titre: "Externalités négatives",
+        chain: "Activité polluante<span class=\"arrow\">→</span>coût social non payé par le pollueur<span class=\"arrow\">→</span>santé / climat dégradés<span class=\"arrow\">→</span>l'État intervient (taxe carbone, normes, marché de droits)",
+        exemple: {
+          source: "Bac 2024-3 · Métropole",
+          question: "Repérez les externalités négatives de l'activité humaine sur l'environnement en France.",
+          corrige: "Chaîne causale : une activité produit un effet négatif sur les autres (pollution, dégradation de l'environnement) → ce coût retombe sur la collectivité (santé, climat) mais n'est pas payé par celui qui pollue → c'est une défaillance du marché. Trois exemples concrets : (1) pollution de l'air par le trafic et l'industrie (coûts de santé), (2) perte de biodiversité (urbanisation, agriculture intensive), (3) déforestation qui réduit les puits de carbone. L'État intervient pour faire payer ce coût : taxe carbone, réglementation, marché de droits à polluer."
+        }
+      },
+      {
+        titre: "Hausse du SMIC",
+        chain: "SMIC ↑<span class=\"arrow\">→</span>pouvoir d'achat des modestes ↑ + coût du travail ↑<span class=\"arrow\">→</span>deux effets opposés : conso ↑ (croissance)  <strong>OU</strong>  chômage technologique ↑ (substitution)",
+        exemple: {
+          source: "Exemple rédigé (mécanisme à double tranchant)",
+          question: "Comment une hausse du SMIC affecte-t-elle l'économie ?",
+          corrige: "Chaîne causale : le SMIC augmente → deux effets opposés. Côté positif : les salariés modestes voient leur pouvoir d'achat monter → comme ils ont tendance à dépenser presque tout, la consommation des ménages modestes augmente → la demande globale est tirée → croissance et emploi. Côté négatif : le coût du travail à l'embauche monte → certaines entreprises renoncent à embaucher ou automatisent → chômage technologique. L'effet net dépend de la sensibilité de l'emploi au coût du travail (très débattu chez les économistes)."
+        }
+      }
+    ]
+  },
+
+  distinguer: {
+    emoji: "🔀", tag: "Méthode · 54 % des sujets", titre: "Distinguer deux notions",
+    meta: "<strong>~2-3 pts</strong> · ≈ 10 min · Verbes : Distinguez · Différenciez",
+    etapes: [
+      { n: 1, t: "Définir chaque notion en 1 phrase", d: "Une ligne par notion, claire et précise. Pas de paraphrase." },
+      { n: 2, t: "Identifier LE critère de distinction", d: "Trouver le mot-clé qui sépare : <em>flux vs stock</em>, <em>contributif vs non contributif</em>, <em>rival vs non rival</em>, <em>actif vs passif</em>…" },
+      { n: 3, t: "Donner UN exemple par notion", d: "Concret, tiré du document ou de l'actualité. Pas du vocabulaire creux." },
+      { n: 4, t: "Conclure sur l'enjeu de la distinction", d: "Pourquoi cette différence compte pour l'économie ou la politique publique ?" }
+    ],
+    exemple: {
+      source: "Bac STMG 2023 · Métropole · Liban",
+      question: "Distinguez le déficit public de la dette publique et retrouvez par le calcul le déficit public en France en 2022.",
+      corrige: "Définitions : le déficit est un flux annuel — l'écart entre les recettes et les dépenses publiques sur une année. La dette est un stock — l'accumulation des déficits passés non remboursés.<br>Critère de distinction : flux (déficit) vs stock (dette).<br>Exemples : déficit 2022 ≈ 5 % du PIB ; dette 2022 ≈ 112 % du PIB. Le déficit nourrit la dette mais ne s'y confond pas.<br>Enjeu : la distinction est essentielle pour les politiques publiques. Un État peut réduire son déficit (équilibrer ses comptes cette année) sans réduire sa dette pour autant (qui reste accumulée des années précédentes). Les règles européennes le traduisent par deux limites distinctes : déficit < 3 % du PIB et dette < 60 % du PIB."
+    },
+    piege: "Ne pas se contenter de <strong>juxtaposer</strong> les deux définitions — il faut <strong>formuler explicitement</strong> ce qui les sépare (le critère)."
+  },
+
+  commenter: {
+    emoji: "📈", tag: "Méthode · 54 % des sujets", titre: "Commenter une évolution",
+    meta: "<strong>~3 pts</strong> · ≈ 12 min · Verbes : Commentez · Analysez · (+ calcul si demandé)",
+    etapes: [
+      { n: 1, t: "Lecture littérale (phrase d'amorce)", d: "Une phrase qui dit ce qu'on observe : <em>« En 2023, le revenu disponible augmente de X % par rapport à 2022. »</em>" },
+      { n: 2, t: "Identifier la tendance générale", d: "Hausse, baisse, stabilité ? Sur quelle période ?" },
+      { n: 3, t: "Repérer les ruptures ou les pics", d: "Choc Covid 2020, choc énergétique 2022, plan de relance, hausse taux BCE…" },
+      { n: 4, t: "Calculer un taux d'évolution simple (si pertinent)", d: "Formule (à connaître par cœur) :<div style=\"background:#e8f3ff;border-left:3px solid #2a69a8;border-radius:0 8px 8px 0;padding:8px 12px;margin:6px 0;font-family:'Menlo','Consolas',monospace;font-size:12.5px\">Taux d'évolution = ((V_arrivée − V_départ) / V_départ) × 100</div>Ex : passage de 100 à 115 → + 15 %." },
+      { n: 5, t: "Interpréter économiquement", d: "Quel contexte explique cette évolution ? Ne pas se contenter de lire les chiffres." }
+    ],
+    exemple: {
+      source: "Bac STMG 2025 · Métropole remplacement",
+      question: "Commentez l'évolution du pouvoir d'achat des ménages français entre 2019 et 2023.",
+      corrige: "Lecture : le pouvoir d'achat passe de 100 (2019) à 102 (2023), soit + 2 % en 4 ans.<br>Tendance : quasi-stagnation sur la période.<br>Rupture : choc d'inflation 2022-2023 (+ 5,2 % de prix) qui érode les gains de revenu.<br>Interprétation : la flambée énergétique post-guerre Ukraine et les hausses alimentaires ont neutralisé les revalorisations salariales, malgré le bouclier tarifaire de l'État."
+    },
+    piege: "Ne pas se contenter de <strong>lire des chiffres</strong>. Toujours donner une <strong>lecture économique</strong> mobilisant le contexte (crise, plan de relance, choc externe, etc.)."
   }
-}
+};
 
-// === SIDEBAR QUESTIONS DU BAC ===
-function buildSidebarQuestions() {
-  const container = document.getElementById('sidebar-questions');
-  // Grouper par sujet (entreprise)
-  const sujets = {};
-  QUESTIONS_BAC_ECO.forEach(q => {
-    if (!sujets[q.sujet]) sujets[q.sujet] = { sujet: q.sujet, annee: q.annee, session: q.session, questions: [] };
-    sujets[q.sujet].questions.push(q);
-  });
+// ============================================================
+// MODALE MÉTHODE
+// ============================================================
+function openMethode(id) {
+  const m = METHODES[id];
+  if (!m) { console.warn('Méthode introuvable :', id); return; }
+  currentOpenMethodeId = id;
+  refreshAnnotBtnState('mm-annot-btn', 'methode:' + id);
+  document.getElementById('mm-emoji').textContent = m.emoji;
+  document.getElementById('mm-tag').textContent = m.tag;
+  document.getElementById('mm-titre').textContent = m.titre;
+  document.getElementById('mm-meta').innerHTML = m.meta;
+  const body = document.getElementById('mm-body');
+  let html = '<h4>📐 Méthode pas à pas</h4><div class="etapes">';
+  html += m.etapes.map(e => `
+    <div class="etape">
+      <div class="etape-n">${e.n}</div>
+      <div class="etape-body"><strong>${e.t}</strong> — ${e.d}</div>
+    </div>`).join('');
+  html += '</div>';
 
-  let html = `<div class="sidebar-intro">📋 Questions du Bac · 13 sujets · 54 questions</div>`;
-  Object.values(sujets).forEach((s, i) => {
-    const open = i === 0 ? 'open' : '';
-    html += `
-      <div class="group">
-        <div class="group-header" onclick="toggleGroup(this)">
-          <span class="group-arrow ${open}">▸</span>
-          <span class="group-label">${s.sujet}</span>
-          <span class="group-count">${s.annee}</span>
+  if (m.engrenages) {
+    html += '<h4>🔗 Engrenages classiques à connaître</h4><div class="engrenages-grid">';
+    html += m.engrenages.map((eng, idx) => {
+      const btn = eng.exemple
+        ? `<button class="engrenage-toggle" onclick="openEngExemple(${idx})">📋 Exemple corrigé →</button>`
+        : '';
+      return `<div class="engrenage">
+        <div class="engrenage-hd">
+          <div class="eng-titre">${eng.titre}</div>
+          ${btn}
         </div>
-        <div class="group-body ${open}">
-          ${s.questions.map(q => `
-            <div class="q-item" data-qid="${q.id}" onclick="showQuestion('${q.id}')">
-              <div class="q-name"><span class="q-fam">${q.fam}</span> Q${q.num} ${q.synthese ? '✍️' : ''}</div>
-              <div class="q-meta">${q.session}</div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
-  });
-  container.innerHTML = html;
-}
-
-function toggleGroup(headerEl) {
-  const arrow = headerEl.querySelector('.group-arrow');
-  const body = headerEl.nextElementSibling;
-  arrow.classList.toggle('open');
-  body.classList.toggle('open');
-}
-
-// === MAIN : Questions du Bac (vue : sujet sélectionné ou question cliquée) ===
-function renderQuestionsMain(qid) {
-  const main = document.getElementById('main');
-  if (!qid) {
-    // Vue par défaut : on affiche le 1er sujet
-    qid = QUESTIONS_BAC_ECO[0].id;
-  }
-  const q = QUESTIONS_BAC_ECO.find(x => x.id === qid);
-  if (!q) { main.innerHTML = `<div class="placeholder"><h3>Question introuvable</h3></div>`; return; }
-  // Toutes les questions du même sujet (sujet = entreprise + année)
-  const peers = QUESTIONS_BAC_ECO.filter(x => x.sujet === q.sujet);
-
-  let html = `<div class="bac-section-title">${q.sujet} · ${q.annee} ${q.session}</div>`;
-  html += `<div style="padding: 0 4px 12px; font-size: 12px; color: var(--gris);">Code officiel : <strong>${q.code}</strong> · Cliquez sur une question pour ouvrir la Carte avec la notion-clé surlignée.</div>`;
-  peers.forEach(p => {
-    const isActive = p.id === qid ? 'bac-line-active' : '';
-    html += `
-      <div class="bac-line ${isActive}" data-qid="${p.id}" onclick="openCarteOnQuestion('${p.id}')">
-        <span class="bac-line-num">Q${p.num}</span>
-        <div class="bac-line-body">
-          <div class="bac-line-libelle">${p.libelle}</div>
-          <div class="bac-line-meta">
-            <span class="bac-line-session">${p.fam}</span>
-            ${p.synthese ? '<span class="bac-line-synth">✍️ Argumentation</span>' : ''}
-            <span>Notion : <strong>${getNotionTitre(p.primary)}</strong></span>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  main.innerHTML = html;
-
-  // Marquer la question dans la sidebar
-  document.querySelectorAll('.q-item').forEach(el => el.classList.toggle('active', el.dataset.qid === qid));
-}
-
-function showQuestion(qid) {
-  renderQuestionsMain(qid);
-}
-
-// === OUVERTURE DU PANNEAU CARTE SUR UNE QUESTION ===
-function openCarteOnQuestion(qid) {
-  const q = QUESTIONS_BAC_ECO.find(x => x.id === qid);
-  if (!q) return;
-  currentBacQuestion = q;
-
-  // Marquer la ligne active
-  document.querySelectorAll('.bac-line').forEach(el => el.classList.toggle('bac-line-active', el.dataset.qid === qid));
-
-  // Ouvrir le panneau carte
-  const overlay = document.getElementById('carte-overlay');
-  const iframe = document.getElementById('carte-overlay-iframe');
-  // Passer la notion-clé via hash (pour future implémentation côté carte)
-  iframe.src = `memos-eco.html#notion=${q.primary}`;
-  overlay.style.display = 'flex';
-
-  // Afficher la popup question en haut
-  document.getElementById('bac-source').textContent = `${q.annee} ${q.session} · ${q.sujet} · Q${q.num}`;
-  document.getElementById('bac-question').textContent = q.libelle;
-  const methodBtn = document.getElementById('bac-method-btn');
-  // Bouton "Réponse attendue"
-  if (q.synthese) {
-    // Pour les ✍️ argumentations → ouvre la modale SYNTH
-    methodBtn.style.display = 'inline-block';
-    methodBtn.classList.remove('disabled');
-    methodBtn.textContent = '📖 Réponse attendue (synthèse)';
-    methodBtn.onclick = () => openSynthFromBac(q.id);
-  } else {
-    // Pour les questions normales → ouvre la modale TYPE
-    const typeKey = NOTION_TO_TYPE_FROM_KEY(q.primary);
-    if (typeKey) {
-      methodBtn.style.display = 'inline-block';
-      methodBtn.classList.remove('disabled');
-      methodBtn.textContent = '📖 Réponse attendue';
-      methodBtn.onclick = () => openTypeModal(typeKey);
-    } else {
-      methodBtn.style.display = 'inline-block';
-      methodBtn.classList.add('disabled');
-      methodBtn.textContent = '⏳ Méthode en attente';
-      methodBtn.onclick = () => {};
-    }
-  }
-  document.getElementById('bac-popup').style.display = 'block';
-}
-
-// Retourne la CLÉ du Q[] (pol_eco, emploi, ...) selon le TYPE n° de la notion
-function NOTION_TO_TYPE_FROM_KEY(notionId) {
-  const typeNum = NOTION_TO_TYPE_ECO[notionId];
-  if (!typeNum) return null;
-  const map = { 1: 'pol_eco', 2: 'emploi', 3: 'libre_echange', 4: 'calcul', 5: 'distinguer', 6: 'mecanisme', 7: 'evolution' };
-  return map[typeNum];
-}
-
-function closeCartePanel() {
-  document.getElementById('carte-overlay').style.display = 'none';
-  document.getElementById('carte-overlay-iframe').src = 'about:blank';
-  closeBacPopup();
-}
-
-function closeBacPopup() {
-  document.getElementById('bac-popup').style.display = 'none';
-}
-
-// === MODALE TYPE ===
-function openTypeModal(typeKey) {
-  const t = Q[typeKey];
-  if (!t) return;
-  currentTypeKey = typeKey;
-  document.getElementById('tm-tag').textContent = t.type + ' · ' + t.freq;
-  document.getElementById('tm-titre').textContent = t.titre;
-  const body = document.getElementById('tm-body');
-  body.innerHTML = `
-    <div style="font-size:13px;color:var(--gris);margin-bottom:6px"><strong>Points :</strong> ${t.pts} · <strong>Temps :</strong> ${t.temps}</div>
-    <div style="font-size:12.5px;color:var(--gris);font-style:italic">Apparaît dans : ${t.annales}</div>
-
-    <h4>🎯 Notions à mobiliser</h4>
-    <div class="pills">${t.notions.map(n => `<span class="pill" onclick="openCarteOnNotion('${n}')">${getNotionTitre(n)}</span>`).join('')}</div>
-
-    <h4>📐 Méthode en ${t.methode.length} étapes</h4>
-    <div class="steps">
-      ${t.methode.map(s => `<div class="step"><div class="step-n">${s.n}</div><div class="step-body"><strong>${s.t}</strong> — <span>${s.d}</span></div></div>`).join('')}
-    </div>
-
-    <h4>⚠️ Piège à éviter</h4>
-    <div class="alert-box">${t.alerte}</div>
-
-    <h4>💡 Astuce du correcteur</h4>
-    <div class="astuce-box">${t.astuce}</div>
-  `;
-  document.getElementById('type-modal').classList.add('show');
-}
-
-function closeTypeModal() {
-  document.getElementById('type-modal').classList.remove('show');
-}
-
-// === MODE SYNTHÈSE ===
-function buildSidebarSynthese() {
-  const container = document.getElementById('sidebar-synthese');
-  let html = `<div class="sidebar-intro">📝 Synthèse · 13 argumentations ✍️</div>`;
-  html += `
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-arrow open">▸</span>
-        <span class="group-label">📐 Méthode générale</span>
-      </div>
-      <div class="group-body open">
-        <div class="q-item" onclick="renderSyntheseMain('methode')"><div class="q-name">Comment rédiger une argumentation Éco</div></div>
-      </div>
-    </div>
-  `;
-  html += `
-    <div class="group">
-      <div class="group-header" onclick="toggleGroup(this)">
-        <span class="group-arrow open">▸</span>
-        <span class="group-label">📋 13 Questions Bac ✍️</span>
-        <span class="group-count">${SYNTH.length}</span>
-      </div>
-      <div class="group-body open">
-        ${SYNTH.map(s => {
-          const tag = s.corrige ? '✅' : '⏳';
-          return `<div class="q-item" data-sid="${s.id}" onclick="renderSyntheseMain('${s.id}')">
-            <div class="q-name">${tag} ${s.titre.substring(0,60)}${s.titre.length>60?'…':''}</div>
-            <div class="q-meta">${s.source}</div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>
-  `;
-  container.innerHTML = html;
-}
-
-function renderSyntheseMain(sid) {
-  const main = document.getElementById('main');
-  if (sid === 'methode' || !sid) {
-    main.innerHTML = `
-      <div class="bac-section-title">📐 Méthode de l'argumentation Éco (15 lignes)</div>
-      <div style="background:white;border:1px solid var(--bordure);border-radius:10px;padding:20px;font-size:14px;line-height:1.7">
-        <h3 style="font-family:'Nunito',sans-serif;font-size:17px;margin-bottom:10px">Structure attendue (~15 lignes)</h3>
-        <ol style="padding-left:20px">
-          <li><strong>Introduction (2-3 lignes)</strong> : reformuler la question + définir 1-2 notions-clés + annoncer le plan.</li>
-          <li><strong>1ère partie — Thèse (5-6 lignes)</strong> : arguments POUR. Citer au moins UN mécanisme économique + UN exemple chiffré (extrait de l'annexe) + UNE référence théorique ou historique.</li>
-          <li><strong>2ème partie — Antithèse (5-6 lignes)</strong> : arguments CONTRE / limites. Même structure (mécanisme + exemple + référence).</li>
-          <li><strong>Conclusion (2 lignes)</strong> : réponse nuancée. Ouvrir sur une perspective (débat actuel, alternative).</li>
-        </ol>
-
-        <h3 style="font-family:'Nunito',sans-serif;font-size:15px;margin-top:18px;margin-bottom:8px">💡 Astuces du jury</h3>
-        <ul style="padding-left:20px">
-          <li>L'élève DOIT prendre position dans la conclusion (pas de réponse en eau tiède).</li>
-          <li>Réutiliser EXPLICITEMENT les notions du programme (les souligner si on rédige).</li>
-          <li>Toujours mobiliser AU MOINS 2 annexes.</li>
-          <li>Indiquer le nombre de lignes attendu (~15) — ni trop court ni trop long.</li>
-        </ul>
+        <div class="eng-chain">${eng.chain}</div>
       </div>`;
-    return;
+    }).join('');
+    html += '</div>';
   }
-  const s = SYNTH.find(x => x.id === sid);
-  if (!s) { main.innerHTML = `<div class="placeholder"><h3>Synthèse introuvable</h3></div>`; return; }
-  let html = `<div class="bac-section-title">✍️ ${s.titre}</div>`;
-  html += `<div style="padding: 0 4px 12px; font-size: 12.5px; color: var(--gris);">Source : <strong>${s.source}</strong> · Thème : ${s.theme}</div>`;
-  html += `<div style="background:#fdf5f7;border:1px solid #e8b4bf;border-radius:8px;padding:14px 16px;margin-bottom:14px">
-    <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Notions à mobiliser</div>
-    <div class="pills">${s.notions.map(n => `<span class="pill" onclick="openCarteOnNotion('${n}')">${getNotionTitre(n)}</span>`).join('')}</div>
-  </div>`;
 
-  if (s.corrige) {
-    html += `<div style="background:#f0f7f3;border:1px solid #b8dfc9;border-radius:10px;padding:18px 20px;font-size:14px;line-height:1.7">
-      <div style="font-size:11px;font-weight:700;color:var(--vert);text-transform:uppercase;margin-bottom:10px">Corrigé officiel rédigé</div>
-      ${s.corrige}
+  html += `
+    <h4>📋 Exemple corrigé</h4>
+    <div class="exemple-bac">
+      <div class="ex-source">📌 ${m.exemple.source}</div>
+      <div class="ex-question">${m.exemple.question}</div>
+      <div class="ex-corrige">${m.exemple.corrige}</div>
     </div>`;
-  } else {
-    html += `<div style="background:#fff8e6;border:1px solid #f0d070;border-radius:10px;padding:18px 20px;text-align:center;color:#7a5800">
-      <div style="font-size:24px;margin-bottom:6px">⏳</div>
-      <div style="font-weight:700;font-size:14px;margin-bottom:6px">Corrigé en cours d'extraction</div>
-      <div style="font-size:13px;line-height:1.5">Le corrigé officiel est dans le PDF correspondant (<code>Eco-Droit/annales/*Corrigé.pdf</code>).<br>Étape 5 de la roadmap : extraction des 13 corrigés.</div>
-    </div>`;
-  }
-  main.innerHTML = html;
-  document.querySelectorAll('.q-item').forEach(el => el.classList.toggle('active', el.dataset.sid === sid));
+
+  html += `<h4>⚠️ Piège à éviter</h4><div class="methode-piege">${m.piege}</div>`;
+  body.innerHTML = html;
+  document.getElementById('methode-overlay').classList.add('show');
 }
 
-function openSynthFromBac(qid) {
-  closeCartePanel();
-  switchMode('synthese', qid);
-  renderSyntheseMain(qid);
+function closeMethode() {
+  document.getElementById('methode-overlay').classList.remove('show');
+  closeEngPanel();
+  currentOpenMethodeId = null;
 }
 
-// === MODE DÉCODAGE ===
-function renderDecodageMain() {
-  document.getElementById('main').innerHTML = `
-    <div class="placeholder">
-      <div class="big">🔑</div>
-      <h3>Décodage des verbes — En construction</h3>
-      <p>Cette section décodera les verbes de consigne de l'Éco STMG : <strong>Présentez · Commentez · Distinguez · Identifiez · Expliquez · Montrez · Rédigez une argumentation</strong>.<br><br>
-      À venir dans une prochaine version.</p>
+// Ouvre le panneau latéral avec l'exemple corrigé de l'engrenage [idx] de la méthode courante
+function openEngExemple(idx) {
+  if (!currentOpenMethodeId) return;
+  const m = METHODES[currentOpenMethodeId];
+  if (!m || !m.engrenages || !m.engrenages[idx]) return;
+  const eng = m.engrenages[idx];
+  if (!eng.exemple) return;
+  document.getElementById('eng-panel-titre').textContent = eng.titre;
+  document.getElementById('eng-panel-chain').innerHTML = eng.chain;
+  document.getElementById('eng-panel-source').textContent = eng.exemple.source;
+  document.getElementById('eng-panel-question').textContent = eng.exemple.question;
+  document.getElementById('eng-panel-corrige').innerHTML = eng.exemple.corrige;
+  document.getElementById('eng-panel').classList.add('show');
+}
+
+function closeEngPanel() {
+  document.getElementById('eng-panel').classList.remove('show');
+}
+
+// ============================================================
+// HELPER : formatage list-friendly
+//   " ; " → retour à la ligne
+//   "X : a ; b ; c" → "X :" + retour à la ligne + a + retour à la ligne + b...
+// ============================================================
+function fmt(s) {
+  if (!s) return '';
+  if (!s.includes(' ; ')) return s;
+  const items = s.split(' ; ');
+  // Si le 1er item commence par "Préfixe : Premier élément", on met le ":" à la ligne
+  const m = items[0].match(/^(.+? :)\s(.+)$/);
+  if (m) {
+    items[0] = m[1] + '<br>' + m[2];
+  }
+  return items.join('<br>');
+}
+
+// ============================================================
+// MODALE FICHE (6 cases)
+// ============================================================
+// Mémorise ce qui est ouvert pour pouvoir l'annoter depuis l'intérieur
+let currentOpenFicheId = null;
+let currentOpenMethodeId = null;
+
+function openFiche(id) {
+  const f = FICHES[id];
+  if (!f) { console.warn('Fiche introuvable :', id); return; }
+  currentOpenFicheId = id;
+  refreshAnnotBtnState('fm-annot-btn', 'fiche:' + id);
+  document.getElementById('fm-emoji').textContent = f.emoji;
+  document.getElementById('fm-tag').textContent = f.tag;
+  document.getElementById('fm-titre').textContent = f.titre;
+  const body = document.getElementById('fm-body');
+  body.innerHTML = `
+    <div class="fiche-row"><div class="q">Qui</div><div class="r">${fmt(f.qui)}</div></div>
+    <div class="fiche-row"><div class="q">Pourquoi</div><div class="r">${fmt(f.pourquoi)}</div></div>
+    <div class="fiche-row"><div class="q">Moyens</div><div class="r">${fmt(f.moyens)}</div></div>
+    <div class="fiche-row"><div class="q">Agit sur</div><div class="r">${fmt(f.cible)}</div></div>
+    <div class="fiche-row row-effets">
+      <div class="q">Effets</div>
+      <div class="r">
+        <div class="bullet-effet b-plus"><span class="ico">✅ +</span><span>${fmt(f.effetsPlus)}</span></div>
+        <div class="bullet-effet b-moins"><span class="ico">⚠️ −</span><span>${fmt(f.effetsMoins)}</span></div>
+      </div>
     </div>
+    ${f.formule ? `<div class="fiche-formule"><div class="q">📐 Formule</div><div class="formule-box">${f.formule}</div></div>` : ''}
+    <div class="fiche-row"><div class="q">Mesure</div><div class="r">${fmt(f.mesure)}</div></div>
+    ${f.aSavoir ? `<div class="fiche-asavoir"><div class="fiche-asavoir-tag">💡 À savoir par cœur (non fourni dans l'annexe)</div><div class="fiche-asavoir-body">${f.aSavoir}</div></div>` : ''}
+    ${f.piege ? `<div class="fiche-piege"><div class="fiche-piege-tag">⚠️ Piège du bac</div><div class="fiche-piege-body">${f.piege}</div></div>` : ''}
   `;
+  document.getElementById('fiche-overlay').classList.add('show');
 }
 
-// === HELPER ===
-function getNotionTitre(id) {
-  return (NE[id] && NE[id].titre) || id;
+function closeFiche() {
+  document.getElementById('fiche-overlay').classList.remove('show');
+  currentOpenFicheId = null;
 }
 
-function openCarteOnNotion(notionId) {
-  closeTypeModal();
-  const overlay = document.getElementById('carte-overlay');
-  const iframe = document.getElementById('carte-overlay-iframe');
-  iframe.src = `memos-eco.html#notion=${notionId}`;
-  overlay.style.display = 'flex';
-  closeBacPopup();
-}
-
-function openMethodFromBac() {
-  if (!currentBacQuestion) return;
-  if (currentBacQuestion.synthese) openSynthFromBac(currentBacQuestion.id);
-  else {
-    const typeKey = NOTION_TO_TYPE_FROM_KEY(currentBacQuestion.primary);
-    if (typeKey) openTypeModal(typeKey);
-  }
-}
-
-// === KEYBOARD ===
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    closeTypeModal();
-    closeCartePanel();
-    closeBacPopup();
+    // Priorité : si panneau engrenage ouvert, on ferme juste lui (sans fermer la modale méthode dessous)
+    const engOpen = document.getElementById('eng-panel').classList.contains('show');
+    if (engOpen) { closeEngPanel(); return; }
+    closeFiche();
+    closeMethode();
   }
 });
 
-// === INIT ===
-buildSidebarQuestions();
-buildSidebarSynthese();
+const hashToTab = { intro: 'intro', carte: 'carte', fiches: 'carte' };
+const initialTab = hashToTab[location.hash.replace('#','')] || 'intro';
+if (initialTab !== 'intro') switchTab(initialTab);
 
-// Mode par défaut : intro. Si #hash dans l'URL (intro/carte/questions/synthese/decodage),
-// on ouvre l'onglet correspondant. 'carte' est un alias de 'fiches' pour les liens externes.
-const hashToMode = { intro:'intro', carte:'fiches', fiches:'fiches', questions:'questions', synthese:'synthese', decodage:'decodage' };
-const initialMode = hashToMode[location.hash.replace('#','')] || 'intro';
-switchMode(initialMode);
-
-// Réagir aux changements de hash (navigation entre onglets via liens externes)
 window.addEventListener('hashchange', () => {
-  const m = hashToMode[location.hash.replace('#','')];
-  if (m && m !== currentMode) switchMode(m);
+  const t = hashToTab[location.hash.replace('#','')];
+  if (t) switchTab(t);
 });
 
-console.log('Revizo Éco chargé :', QUESTIONS_BAC_ECO.length, 'questions ·', Object.keys(NE).length, 'notions ·', Object.keys(Q).length, 'TYPES ·', SYNTH.length, 'synthèses · mode initial =', initialMode);
+// ============================================================
+// MODE ANNOTATION — clic en mode annot → popup commentaire
+// Stockage : localStorage clé 'revizo-eco-annots' = { id: {context, note, ts} }
+// ============================================================
+const ANNOT_KEY = 'revizo-eco-annots';
+let currentAnnotTarget = null; // { id, context }
 
+function loadAnnots() {
+  try { return JSON.parse(localStorage.getItem(ANNOT_KEY) || '{}'); }
+  catch (e) { return {}; }
+}
+function saveAnnots(obj) {
+  localStorage.setItem(ANNOT_KEY, JSON.stringify(obj));
+}
+
+// Assigne un data-annot-id et calcule un contexte lisible pour chaque élément annotable
+function initAnnotables() {
+  // Fiches (pills, acteur-cards, objectif-cards) : on récupère l'id de openFiche()
+  document.querySelectorAll('.fiche-pill, .acteur-card, .objectif-card').forEach(el => {
+    const onclick = el.getAttribute('onclick') || '';
+    const m = onclick.match(/openFiche\('([^']+)'\)/);
+    if (m) {
+      const id = m[1];
+      el.dataset.annotId = 'fiche:' + id;
+      const fiche = FICHES[id];
+      el.dataset.annotContext = fiche ? (fiche.emoji + ' ' + fiche.titre) : id;
+    }
+  });
+  // Blocs de la carte
+  document.querySelectorAll('.bloc').forEach(el => {
+    const num = el.querySelector('.bloc-num')?.textContent.trim() || '';
+    const titre = el.querySelector('.bloc-titre')?.textContent.trim() || '';
+    const slug = num.toLowerCase().replace(/\s+/g, '-');
+    el.dataset.annotId = 'bloc:' + slug;
+    el.dataset.annotContext = num + ' · ' + titre;
+  });
+}
+
+function toggleAnnotMode() {
+  const on = document.body.classList.toggle('annot-on');
+  const btn = document.getElementById('annot-toggle-btn');
+  btn.classList.toggle('toggle-on', on);
+  btn.title = on ? 'Quitter le mode annotation' : 'Activer le mode annotation';
+}
+
+// Interception du clic en mode annotation (capture: true → priorité)
+document.addEventListener('click', (e) => {
+  if (!document.body.classList.contains('annot-on')) return;
+  // On cherche l'élément annotable le plus proche
+  const target = e.target.closest('[data-annot-id]');
+  if (!target) return;
+  // Si on a cliqué sur la modale d'annotation ou sur la nav, on laisse passer
+  if (e.target.closest('.annot-modal-overlay, .annot-fab, .annot-banner, .nav-rubriques, .nav-epreuve')) return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  openAnnotEdit(target.dataset.annotId, target.dataset.annotContext);
+}, true);
+
+// Annoter la fiche / méthode actuellement ouverte (bouton dans la modale)
+function annotateCurrentFiche() {
+  if (!currentOpenFicheId) return;
+  const f = FICHES[currentOpenFicheId];
+  if (!f) return;
+  openAnnotEdit('fiche:' + currentOpenFicheId, f.emoji + ' ' + f.titre);
+}
+function annotateCurrentMethode() {
+  if (!currentOpenMethodeId) return;
+  const m = METHODES[currentOpenMethodeId];
+  if (!m) return;
+  openAnnotEdit('methode:' + currentOpenMethodeId, m.emoji + ' ' + m.titre);
+}
+
+// Met le bouton ✏️ en jaune si une note existe déjà sur cet élément
+function refreshAnnotBtnState(btnId, annotId) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  const annots = loadAnnots();
+  btn.classList.toggle('has-note', !!annots[annotId]);
+  btn.title = annots[annotId] ? 'Voir / éditer ma note' : 'Annoter cette fiche';
+}
+
+function openAnnotEdit(id, context) {
+  currentAnnotTarget = { id, context };
+  const annots = loadAnnots();
+  const existing = annots[id];
+  document.getElementById('annot-edit-context').innerHTML = '<strong>' + escapeHtml(context) + '</strong>';
+  document.getElementById('annot-edit-textarea').value = existing ? existing.note : '';
+  document.getElementById('annot-edit-delete').style.display = existing ? 'inline-block' : 'none';
+  document.getElementById('annot-edit-overlay').classList.add('show');
+  setTimeout(() => document.getElementById('annot-edit-textarea').focus(), 50);
+}
+
+function closeAnnotEdit() {
+  document.getElementById('annot-edit-overlay').classList.remove('show');
+  currentAnnotTarget = null;
+}
+
+function saveCurrentAnnot() {
+  if (!currentAnnotTarget) return;
+  const text = document.getElementById('annot-edit-textarea').value.trim();
+  const annots = loadAnnots();
+  if (text) {
+    annots[currentAnnotTarget.id] = {
+      context: currentAnnotTarget.context,
+      note: text,
+      ts: Date.now()
+    };
+  } else {
+    delete annots[currentAnnotTarget.id];
+  }
+  saveAnnots(annots);
+  closeAnnotEdit();
+  renderAnnotMarkers();
+  syncOpenModalBtns();
+}
+
+function deleteCurrentAnnot() {
+  if (!currentAnnotTarget) return;
+  const annots = loadAnnots();
+  delete annots[currentAnnotTarget.id];
+  saveAnnots(annots);
+  closeAnnotEdit();
+  renderAnnotMarkers();
+  syncOpenModalBtns();
+}
+
+// Met à jour les boutons ✏️ des modales encore ouvertes (au cas où)
+function syncOpenModalBtns() {
+  if (currentOpenFicheId)   refreshAnnotBtnState('fm-annot-btn', 'fiche:'   + currentOpenFicheId);
+  if (currentOpenMethodeId) refreshAnnotBtnState('mm-annot-btn', 'methode:' + currentOpenMethodeId);
+}
+
+// Affiche les 📌 sur les éléments annotés + met à jour le badge du bouton 📋
+function renderAnnotMarkers() {
+  const annots = loadAnnots();
+  // Nettoyer anciens marqueurs
+  document.querySelectorAll('.annot-marker').forEach(m => m.remove());
+  // Replacer
+  Object.keys(annots).forEach(id => {
+    const el = document.querySelector(`[data-annot-id="${CSS.escape(id)}"]`);
+    if (el) {
+      const m = document.createElement('div');
+      m.className = 'annot-marker';
+      m.textContent = '📌';
+      m.title = annots[id].note;
+      el.appendChild(m);
+    }
+  });
+  // Badge
+  const count = Object.keys(annots).length;
+  const badge = document.getElementById('annot-count-badge');
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// === LISTE / EXPORT ===
+function openAnnotList() {
+  const annots = loadAnnots();
+  const entries = Object.entries(annots).sort((a, b) => a[1].ts - b[1].ts);
+  document.getElementById('annot-list-count').textContent = entries.length + (entries.length > 1 ? ' notes' : ' note');
+  const body = document.getElementById('annot-list-body');
+  if (!entries.length) {
+    body.innerHTML = '<div class="annot-list-empty">Aucune note pour l\'instant.<br><br>Active le mode <strong>✏️</strong> et clique sur une fiche, un bloc ou une carte pour commencer.</div>';
+  } else {
+    body.innerHTML = entries.map(([id, a]) => `
+      <div class="annot-item">
+        <div>
+          <div class="annot-item-context">${escapeHtml(a.context)}</div>
+          <div class="annot-item-text">${escapeHtml(a.note)}</div>
+        </div>
+        <div class="annot-item-actions">
+          <button class="edit-btn" onclick="editAnnotFromList('${id.replace(/'/g, "\\'")}')">Éditer</button>
+          <button class="del-btn" onclick="deleteAnnotFromList('${id.replace(/'/g, "\\'")}')">×</button>
+        </div>
+      </div>`).join('');
+  }
+  document.getElementById('annot-list-overlay').classList.add('show');
+}
+
+function closeAnnotList() {
+  document.getElementById('annot-list-overlay').classList.remove('show');
+  document.getElementById('annot-copy-feedback').classList.remove('show');
+}
+
+function editAnnotFromList(id) {
+  const annots = loadAnnots();
+  const a = annots[id];
+  if (!a) return;
+  closeAnnotList();
+  openAnnotEdit(id, a.context);
+}
+
+function deleteAnnotFromList(id) {
+  const annots = loadAnnots();
+  delete annots[id];
+  saveAnnots(annots);
+  renderAnnotMarkers();
+  openAnnotList(); // refresh
+}
+
+function clearAllAnnots() {
+  if (!confirm('Effacer toutes les annotations ? Cette action est irréversible.')) return;
+  saveAnnots({});
+  renderAnnotMarkers();
+  closeAnnotList();
+}
+
+function getAnnotsAsText(format) {
+  const annots = loadAnnots();
+  const entries = Object.entries(annots).sort((a, b) => a[1].ts - b[1].ts);
+  if (!entries.length) return '';
+  if (format === 'markdown') {
+    return '# Notes de relecture — Revizo Éco\n\n' +
+      entries.map(([id, a]) =>
+        `## ${a.context}\n_(${id})_\n\n${a.note}\n`
+      ).join('\n');
+  }
+  return entries.map(([id, a]) =>
+    `▸ ${a.context}\n  ${a.note}\n`
+  ).join('\n');
+}
+
+async function copyAllAnnots() { await copyToClipboard(getAnnotsAsText('text')); }
+async function exportAnnotsMarkdown() { await copyToClipboard(getAnnotsAsText('markdown')); }
+
+async function copyToClipboard(text) {
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+    const fb = document.getElementById('annot-copy-feedback');
+    fb.classList.add('show');
+    setTimeout(() => fb.classList.remove('show'), 2000);
+  } catch (e) {
+    // Fallback : afficher dans un prompt
+    prompt('Sélectionne et copie le texte (Ctrl/Cmd+C) :', text);
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+// Échap pour fermer les modales annot aussi
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeAnnotEdit();
+    closeAnnotList();
+  }
+});
+
+// Init
+initAnnotables();
+renderAnnotMarkers();
+
+
+// ============================================================
+// BULLETS 3-états (○ → 🟠 à revoir → 🟢 acquis → ○)
+//   Clé localStorage : revizo-eco-states
+// ============================================================
+const ECO_STATES = JSON.parse(localStorage.getItem('revizo-eco-states') || '{}');
+
+function applyBulletState(b, state) {
+  b.classList.remove('state-review', 'state-know');
+  if (state === 'review') b.classList.add('state-review');
+  else if (state === 'know') b.classList.add('state-know');
+}
+
+document.querySelectorAll('.bullet[data-bullet]').forEach(b => {
+  const id = b.dataset.bullet;
+  applyBulletState(b, ECO_STATES[id]);
+  b.addEventListener('click', ev => {
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
+    const cur = ECO_STATES[id];
+    const next = cur === 'review' ? 'know' : cur === 'know' ? null : 'review';
+    if (next) ECO_STATES[id] = next;
+    else delete ECO_STATES[id];
+    localStorage.setItem('revizo-eco-states', JSON.stringify(ECO_STATES));
+    applyBulletState(b, next);
+  });
+});
+
+console.log('Revizo Éco (refonte fiches + mode annot) chargé · ' + Object.keys(FICHES).length + ' fiches');
 </script>
 
 </body>
