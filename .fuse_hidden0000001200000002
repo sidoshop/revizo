@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Flashcards Philosophie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; min-height: 100vh; }
+
+.page { max-width: 820px; margin: 0 auto; padding: 28px 20px 48px; }
+
+.fc-header { text-align: center; margin-bottom: 22px; }
+.fc-badge { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #1e1c18; color: #f5c842; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+.fc-title { font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; color: #1e1c18; margin-bottom: 4px; }
+.fc-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+
+/* STATS */
+.stats-bar { background: #fffdf8; border-radius: 12px; padding: 12px 20px; display: flex; align-items: center; gap: 14px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.06); flex-wrap: wrap; }
+.stat-item { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: #5a5448; }
+.stat-dot { width: 9px; height: 9px; border-radius: 50%; }
+.d-new { background: #c8c0b4; }
+.d-nope { background: #b5415a; }
+.d-ok { background: #1a7a3c; }
+.progress-track { flex: 1; min-width: 80px; height: 7px; background: #e0dbd2; border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #1a7a3c, #2cad60); border-radius: 4px; transition: width 0.35s; }
+
+/* FILTRES */
+.filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+.f-btn { font-family: 'Nunito Sans', sans-serif; font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 20px; border: 2px solid transparent; cursor: pointer; transition: all 0.13s; }
+.f-btn:hover { opacity: 0.85; }
+.f-all    { background: #e0dbd2; color: #5a5448; border-color: #e0dbd2; }
+.f-all.on { background: #1e1c18; color: #fffdf8; border-color: #1e1c18; }
+.f-notion { background: #e8f0fb; color: #2563a8; border-color: #e8f0fb; }
+.f-notion.on { background: #2563a8; color: #fff; border-color: #2563a8; }
+.f-repere { background: #e8f5ee; color: #2d7a4f; border-color: #e8f5ee; }
+.f-repere.on { background: #2d7a4f; color: #fff; border-color: #2d7a4f; }
+.f-auteur { background: #fdf7e3; color: #946e00; border-color: #fdf7e3; }
+.f-auteur.on { background: #946e00; color: #fff; border-color: #946e00; }
+.f-methode { background: #2c2920; color: #f5c842; border-color: #2c2920; }
+.f-methode.on { background: #f5c842; color: #1e1c18; border-color: #f5c842; }
+
+/* TOOLBAR */
+.toolbar { display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap; align-items: center; }
+.tool-btn { font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 700; padding: 6px 13px; border-radius: 8px; border: 1.5px solid #ddd8cf; background: #fff; color: #5a5448; cursor: pointer; }
+.tool-btn:hover { background: #f0ede6; }
+.card-counter { margin-left: auto; font-size: 12px; font-weight: 700; color: #8a8478; }
+
+/* FLASHCARD */
+.fc-area { perspective: 1000px; max-width: 520px; margin: 0 auto 22px; }
+.fc-inner { position: relative; width: 100%; height: 220px; transform-style: preserve-3d; transition: transform 0.45s cubic-bezier(.4,0,.2,1); cursor: pointer; }
+.fc-inner.flipped { transform: rotateY(180deg); }
+.fc-face { position: absolute; inset: 0; border-radius: 20px; padding: 30px 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+.fc-front { background: #fff; }
+.fc-back { background: #1e1c18; color: #fffdf8; transform: rotateY(180deg); }
+.fc-cat { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; padding: 3px 10px; border-radius: 12px; }
+.fc-q { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.15rem; color: #1e1c18; line-height: 1.35; }
+.fc-back .fc-cat { color: rgba(255,255,255,0.4); }
+.fc-a { font-size: 0.9rem; line-height: 1.55; color: #fffdf8; }
+.fc-a strong { color: #f5c842; }
+
+/* COULEURS CATÉGORIES */
+.cat-notion  { background: #e8f0fb; color: #2563a8; }
+.cat-repere  { background: #e8f5ee; color: #2d7a4f; }
+.cat-auteur  { background: #fdf7e3; color: #946e00; }
+.cat-methode { background: #3a3020; color: #f5c842; }
+
+/* DOTS */
+.fc-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap; }
+.fc-dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd8cf; cursor: pointer; transition: transform .1s; }
+.fc-dot.active { background: #1e1c18; transform: scale(1.4); }
+.fc-dot.ok-dot { background: #1a7a3c; }
+.fc-dot.nope-dot { background: #b5415a; }
+
+/* MASTERY BTNS */
+.mastery { display: flex; gap: 10px; justify-content: center; margin-bottom: 18px; }
+.m-btn { font-family: 'Nunito Sans', sans-serif; font-size: 13px; font-weight: 700; padding: 9px 22px; border-radius: 10px; border: 2px solid transparent; cursor: pointer; }
+.m-ok   { background: #eaf5ee; color: #1a7a3c; border-color: #1a7a3c; }
+.m-nope { background: #fdeef2; color: #b5415a; border-color: #b5415a; }
+.m-btn:hover { opacity: 0.8; }
+
+.empty-state { text-align: center; padding: 60px 20px; color: #8a8478; }
+.empty-state .big { font-size: 36px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+  <a href="revizo-msgn.html" class="epreuve-link">SGDN</a>
+  <a href="revizo-philo.html" class="epreuve-link active">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Philosophie</span>
+  <a href="revizo-philo.html">Notions</a>
+  <a href="quiz-philo.html">Quiz</a>
+  <a href="flashcards-philo.html" class="active">Flashcards</a>
+  <a href="methode-jour-j-philo.html">Méthode Jour J</a>
+  <a href="bac-blanc-philo.html">Bac Blanc</a>
+  <a href="https://drive.google.com/file/d/1Oh2VhBZJ2hkCSnDN63aye7FnuHObgKu6/view?usp=drive_link" target="_blank" style="color:#b5415a">📺 Guide vidéo</a>
+</nav>
+
+<div class="page">
+
+  <div class="fc-header">
+    <div class="fc-badge">Philosophie · Terminale Techno</div>
+    <div class="fc-title">Flashcards</div>
+    <div class="fc-sub" id="fc-sub-count">30 cartes · Notions · Repères · Auteurs · Méthode</div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-dot d-new"></div><span id="count-new">30</span> à revoir</div>
+    <div class="stat-item"><div class="stat-dot d-ok"></div><span id="count-ok">0</span> sus</div>
+    <div class="stat-item"><div class="stat-dot d-nope"></div><span id="count-nope">0</span> difficiles</div>
+    <div class="progress-track"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+  </div>
+
+  <!-- FILTRES -->
+  <div class="filters">
+    <button class="f-btn f-all on" onclick="setFilter('all', this)">Tout (30)</button>
+    <button class="f-btn f-notion" onclick="setFilter('notion', this)">Notions (7)</button>
+    <button class="f-btn f-repere" onclick="setFilter('repere', this)">Repères (6)</button>
+    <button class="f-btn f-auteur" onclick="setFilter('auteur', this)">Auteurs (7)</button>
+    <button class="f-btn f-methode" onclick="setFilter('methode', this)">Méthode (10)</button>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <button class="tool-btn" onclick="prevCard()">← Précédente</button>
+    <button class="tool-btn" onclick="nextCard()">Suivante →</button>
+    <button class="tool-btn" onclick="shuffleCards()">🔀 Mélanger</button>
+    <button class="tool-btn" onclick="resetAll()">↺ Tout réinitialiser</button>
+    <span class="card-counter" id="card-counter">1 / 30</span>
+  </div>
+
+  <!-- FLASHCARD -->
+  <div class="fc-area">
+    <div class="fc-inner" id="fc-inner" onclick="flipCard()">
+      <div class="fc-face fc-front" id="fc-front">
+        <div class="fc-cat" id="fc-cat"></div>
+        <div class="fc-q" id="fc-q">Chargement…</div>
+      </div>
+      <div class="fc-face fc-back" id="fc-back">
+        <div class="fc-cat" id="fc-cat-back"></div>
+        <div class="fc-a" id="fc-a"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MASTERY -->
+  <div class="mastery" id="mastery" style="display:none">
+    <button class="m-btn m-ok"   onclick="markMastery('ok')">✓ Je sais</button>
+    <button class="m-btn m-nope" onclick="markMastery('nope')">✗ À revoir</button>
+  </div>
+
+  <!-- DOTS -->
+  <div class="fc-dots" id="fc-dots"></div>
+
+  <div class="empty-state" id="empty-state" style="display:none">
+    <div class="big">🎉</div>
+    <p>Aucune carte pour ce filtre.</p>
+  </div>
+
+</div>
+
+<script>
+const CARDS = [
+  // NOTIONS (7)
+  { cat:'notion', q:'Liberté — La grande question', a:'Peut-on être libre tout en obéissant à des règles ?\n→ <strong>Oui.</strong> La vraie liberté n\'est pas faire n\'importe quoi — c\'est agir selon la raison. (Spinoza)' },
+  { cat:'notion', q:'Vérité — La grande question', a:'Peut-on faire confiance à nos sens pour accéder à la vérité ?\n→ <strong>Non.</strong> La vérité exige de dépasser les apparences. Nos sens peuvent nous tromper. (Platon)' },
+  { cat:'notion', q:'Justice — La grande question', a:'"Juste" = "égal" ?\n→ <strong>Non.</strong> La vraie justice, c\'est l\'équité : adapter le traitement selon les besoins et les mérites. (Aristote)' },
+  { cat:'notion', q:'Technique — La grande question', a:'La technique nous libère-t-elle ou nous éloigne-t-elle de la nature ?\n→ Elle nous libère d\'une nature parfois <strong>hostile</strong>. Elle corrige la nature, elle ne la détruit pas. (Mill)' },
+  { cat:'notion', q:'Art — Artiste vs artisan', a:'<strong>Artisan</strong> : technique précise, objet utile, reproductible.\n<strong>Artiste</strong> : création originale, unique, irréductible à une recette — vise l\'émotion et la beauté.' },
+  { cat:'notion', q:'Nature — Le piège du "c\'est naturel"', a:'"C\'est naturel donc c\'est bien" → à <strong>questionner</strong> systématiquement.\nLa douleur est 100% naturelle. La morphine est artificielle. Pourtant personne ne refuse un antidouleur. Le naturel ne garantit pas le bien.' },
+  { cat:'notion', q:'Religion — D\'où vient le besoin de religion ?', a:'La religion répond à une angoisse profonde face à la mort et à la fragilité humaine.\n→ Pour <strong>Freud</strong> : c\'est une "illusion consolatrice" — elle console, ce n\'est pas une connaissance.' },
+
+  // REPÈRES (6)
+  { cat:'repere', q:'Repère : EN FAIT / EN DROIT', a:'<strong>En fait</strong> = ce qui existe réellement (constat).\n<strong>En droit</strong> = ce qui devrait être selon la justice (idéal).\nEx : en fait des inégalités existent ; en droit tous les hommes naissent libres et égaux.' },
+  { cat:'repere', q:'Repère : LÉGAL / LÉGITIME', a:'<strong>Légal</strong> = conforme aux lois de l\'État (peut être injuste).\n<strong>Légitime</strong> = conforme à la justice morale (peut être illégal).\nEx : en France jusqu\'en 1965, une femme mariée ne pouvait pas ouvrir un compte bancaire sans l\'autorisation de son mari. Légal — mais illégitime.' },
+  { cat:'repere', q:'Repère : OBJECTIF / SUBJECTIF', a:'<strong>Objectif</strong> = indépendant de l\'opinion, vérifiable par tous.\n<strong>Subjectif</strong> = dépend du point de vue de chacun.\nEx : "La table mesure 1m20" = objectif. "La table est belle" = subjectif.' },
+  { cat:'repere', q:'Repère : CROIRE / SAVOIR', a:'<strong>Croire</strong> = tenir pour vrai sans preuve suffisante (opinion, foi).\n<strong>Savoir</strong> = tenir pour vrai avec démonstration ou preuve.\nEx : Semmelweis a prouvé par des chiffres que le lavage des mains divisait la mortalité par 10 — ses collègues ont refusé de le croire malgré les preuves.' },
+  { cat:'repere', q:'Repère : PERSUADER / CONVAINCRE', a:'<strong>Persuader</strong> = agir sur les émotions (publicité, démagogie).\n<strong>Convaincre</strong> = s\'adresser à la raison par des arguments (science, philosophie).' },
+  { cat:'repere', q:'Repère : OBLIGATION / CONTRAINTE', a:'<strong>Obligation</strong> = devoir moral ou juridique — on peut refuser (avec des conséquences).\n<strong>Contrainte</strong> = force physique impossible à éviter.\nEx : ne pas porter secours à quelqu\'un en danger = obligation légale. Ne pas savoir nager quand quelqu\'un se noie = contrainte physique.' },
+
+  // AUTEURS (7)
+  { cat:'auteur', q:'Spinoza — Liberté', a:'Obéir à des lois raisonnées = être libre.\nLe citoyen obéit à des lois fondées sur la raison : il agit dans l\'intérêt général ET dans son intérêt personnel. C\'est la liberté véritable.' },
+  { cat:'auteur', q:'Platon — Vérité', a:'Nos sens nous trompent — ils ne donnent accès qu\'aux apparences.\nLa raison seule atteint la vérité.\n(Allégorie de la caverne : les prisonniers croient que les ombres sont la réalité.)' },
+  { cat:'auteur', q:'Aristote — Justice', a:'La vraie justice = l\'équité, pas l\'égalité stricte.\nDonner la même chose à des personnes dans des situations différentes n\'est pas juste.' },
+  { cat:'auteur', q:'Mill — Technique', a:'La nature est indifférente à l\'homme, parfois dangereuse.\nLa technique permet de la corriger : digues, vaccins, paratonnerres.\nLa technique n\'est pas une trahison de la nature — c\'est une réponse à sa dangerosité.' },
+  { cat:'auteur', q:'Rousseau — Nature', a:'L\'homme naturel est bon — c\'est la société qui produit les inégalités et la violence.\nSignal dans le texte : le texte parle d\'inné/acquis, de violence ou d\'état naturel.' },
+  { cat:'auteur', q:'Freud — Religion', a:'La religion est une "illusion consolatrice".\nFace à la mort et à la souffrance, l\'homme s\'invente une figure divine pour se rassurer.\nElle console — mais ce n\'est pas une connaissance du monde.' },
+  { cat:'auteur', q:'Adam Smith — Justice (texte récurrent)', a:'La société peut subsister sans bienveillance — mais pas sans justice.\n<strong>Justice</strong> = condition minimale (ne pas nuire à autrui).\n<strong>Bienveillance</strong> = vertu supérieure, mais facultative pour la survie sociale.' },
+
+  // MÉTHODE (10)
+  { cat:'methode', q:'Les 3 questions de l\'explication de texte', a:'<strong>Q1</strong> : Dégagez la thèse et les grandes étapes de l\'argumentation.\n<strong>Q2</strong> : Expliquez les expressions suivantes : [2 extraits].\n<strong>Q3</strong> : Question ouverte de réflexion personnelle.\nToujours dans cet ordre — fixé par le ministère.' },
+  { cat:'methode', q:'Timing — Répartition des 4h', a:'20 min — Lire, relire, annoter le texte.\n40 min — Q1 (thèse et argumentation).\n60 min — Q2 (expliquer les passages).\n70 min — Q3 (réflexion personnelle).\n10 min — Relire et corriger.' },
+  { cat:'methode', q:'Q1 — Comment identifier la thèse ?', a:'1. Quel est le thème ? (De quoi parle le texte ?)\n2. Qu\'affirme l\'auteur sur ce thème ? (Sa thèse)\n3. Repère les connecteurs logiques : <em>donc, car, en effet, or, pourtant, cependant…</em>' },
+  { cat:'methode', q:'Q1 — Modèle de réponse', a:'"Dans ce texte, [auteur] cherche à répondre à… Sa thèse est que… Pour défendre cette thèse, il procède en [2/3] temps : D\'abord… Ensuite… Il en conclut que…"' },
+  { cat:'methode', q:'Q1 — Le piège principal', a:'Ne pas <strong>recopier</strong> des phrases du texte.\nLe correcteur veut voir que TU as compris — pas que tu sais copier.\nReformule toujours avec tes propres mots.' },
+  { cat:'methode', q:'Q2 — Les 4 étapes pour chaque passage', a:'1. <strong>Cite</strong> le passage entre guillemets.\n2. <strong>Reformule</strong> en langage ordinaire.\n3. <strong>Explique</strong> le lien avec la thèse générale.\n4. <strong>Illustre</strong> avec un exemple concret.' },
+  { cat:'methode', q:'Q2 — La paraphrase : c\'est quoi, pourquoi l\'éviter ?', a:'Paraphraser = recopier le texte avec des mots légèrement différents.\nCe n\'est <strong>pas</strong> expliquer.\nExpliquer = dire ce que ça signifie vraiment + pourquoi c\'est dit + exemple.' },
+  { cat:'methode', q:'Q3 — Structure en 3 temps', a:'1. <strong>Prends position</strong> dès le début (réponds clairement).\n2. <strong>Donne 1 ou 2 arguments</strong> avec exemples.\n3. <strong>Nuance</strong> ou envisage une objection.' },
+  { cat:'methode', q:'Q3 — Dois-je citer un philosophe ?', a:'Non, ce n\'est pas obligatoire.\nUn <strong>bon exemple de la vie courante</strong> vaut souvent mieux qu\'un nom mal utilisé.\nTu peux t\'appuyer sur le texte : "comme le montre l\'auteur…"' },
+  { cat:'methode', q:'Ce que cherche le correcteur', a:'Pas l\'érudition.\nQuelqu\'un qui a <strong>compris</strong> le texte, qui l\'<strong>explique clairement</strong> et qui sait <strong>réfléchir avec des exemples concrets</strong>.' },
+];
+
+const MASTERY_KEY = 'philo_mastery';
+let mastery = JSON.parse(localStorage.getItem(MASTERY_KEY) || '{}');
+let currentFilter = 'all';
+let filtered = [];
+let idx = 0;
+let flipped = false;
+
+function getFiltered() {
+  if (currentFilter === 'all') return CARDS.map((c,i) => i);
+  return CARDS.map((c,i) => c.cat === currentFilter ? i : -1).filter(i => i >= 0);
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  filtered = getFiltered();
+  idx = 0;
+  render();
+}
+
+function render() {
+  filtered = getFiltered();
+  if (filtered.length === 0) {
+    document.getElementById('empty-state').style.display = 'block';
+    document.getElementById('fc-area') && (document.getElementById('fc-area').style.display = 'none');
+    return;
+  }
+  document.getElementById('empty-state').style.display = 'none';
+  flipped = false;
+  document.getElementById('fc-inner').classList.remove('flipped');
+  const ci = filtered[idx];
+  const card = CARDS[ci];
+  const catLabel = { notion: 'Notion', repere: 'Repère', auteur: 'Auteur', methode: 'Méthode' }[card.cat];
+  const catClass = 'cat-' + card.cat;
+  document.getElementById('fc-cat').className = 'fc-cat ' + catClass;
+  document.getElementById('fc-cat').textContent = catLabel;
+  document.getElementById('fc-cat-back').className = 'fc-cat ' + catClass;
+  document.getElementById('fc-cat-back').textContent = catLabel;
+  document.getElementById('fc-q').textContent = card.q;
+  document.getElementById('fc-a').innerHTML = card.a.replace(/\n/g, '<br>');
+  document.getElementById('card-counter').textContent = (idx+1) + ' / ' + filtered.length;
+  document.getElementById('mastery').style.display = 'none';
+  renderDots();
+  updateStats();
+}
+
+function flipCard() {
+  flipped = !flipped;
+  document.getElementById('fc-inner').classList.toggle('flipped', flipped);
+  document.getElementById('mastery').style.display = flipped ? 'flex' : 'none';
+}
+
+function nextCard() {
+  if (filtered.length === 0) return;
+  idx = (idx + 1) % filtered.length;
+  render();
+}
+function prevCard() {
+  if (filtered.length === 0) return;
+  idx = (idx - 1 + filtered.length) % filtered.length;
+  render();
+}
+
+function shuffleCards() {
+  filtered = getFiltered().sort(() => Math.random() - 0.5);
+  idx = 0;
+  render();
+}
+
+function markMastery(v) {
+  const ci = filtered[idx];
+  mastery[ci] = v;
+  localStorage.setItem(MASTERY_KEY, JSON.stringify(mastery));
+  nextCard();
+}
+
+function resetAll() {
+  mastery = {};
+  localStorage.removeItem(MASTERY_KEY);
+  idx = 0;
+  filtered = getFiltered();
+  render();
+}
+
+function updateStats() {
+  const all = filtered;
+  let ok = 0, nope = 0;
+  all.forEach(i => { if (mastery[i] === 'ok') ok++; else if (mastery[i] === 'nope') nope++; });
+  const newCount = all.length - ok - nope;
+  document.getElementById('count-new').textContent = newCount;
+  document.getElementById('count-ok').textContent = ok;
+  document.getElementById('count-nope').textContent = nope;
+  document.getElementById('progress').style.width = (ok / Math.max(all.length,1) * 100) + '%';
+}
+
+function renderDots() {
+  const el = document.getElementById('fc-dots');
+  el.innerHTML = '';
+  filtered.forEach((ci, i) => {
+    const d = document.createElement('div');
+    d.className = 'fc-dot' + (i === idx ? ' active' : '') + (mastery[ci] === 'ok' ? ' ok-dot' : mastery[ci] === 'nope' ? ' nope-dot' : '');
+    d.onclick = () => { idx = i; render(); };
+    el.appendChild(d);
+  });
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') nextCard();
+  if (e.key === 'ArrowLeft')  prevCard();
+  if (e.key === ' ')          { e.preventDefault(); flipCard(); }
+});
+
+// Init
+filtered = getFiltered();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo · Philosophie · Méthode Jour J</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito Sans', sans-serif; background: #f0ede6; color: #1e1c18; line-height: 1.6; min-height: 100vh; }
+
+/* HEADER */
+.header { background: #1e1c18; padding: 32px 24px 40px; text-align: center; position: relative; }
+.header-badge { display: inline-block; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; color: #f5c842; background: rgba(245,200,66,.12); padding: 4px 16px; border-radius: 20px; margin-bottom: 12px; }
+.header h1 { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 2rem; color: #fff; margin-bottom: 8px; }
+.header p { color: #a09880; font-size: 0.9rem; max-width: 500px; margin: 0 auto; }
+.print-btn { position: absolute; top: 24px; right: 24px; background: #f5c842; color: #1e1c18; border: none; padding: 8px 16px; border-radius: 8px; font-family: 'Nunito Sans', sans-serif; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
+
+/* MAIN */
+.main { max-width: 800px; margin: 0 auto; padding: 32px 20px 60px; }
+
+/* TABS */
+.tabs-bar { display: flex; gap: 6px; margin-bottom: 28px; flex-wrap: wrap; }
+.tab-btn { font-family: 'Nunito Sans', sans-serif; font-size: 0.82rem; font-weight: 700; padding: 9px 16px; border-radius: 10px; border: 2px solid #ddd8cf; background: #fff; color: #5a5448; cursor: pointer; transition: all 0.15s; }
+.tab-btn:hover { border-color: #888; }
+.tab-btn.active { background: #1e1c18; color: #f5c842; border-color: #1e1c18; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* CARDS */
+.card { background: #fffdf8; border-radius: 14px; padding: 22px 26px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.card-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.05rem; margin-bottom: 12px; color: #1e1c18; }
+
+/* TIMING */
+.timing-grid { display: grid; gap: 8px; }
+.timing-row { display: flex; align-items: center; gap: 14px; background: #fff; border-radius: 10px; padding: 12px 16px; border-left: 4px solid #2e2e2e; }
+.timing-row .t-time { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; color: #1e1c18; min-width: 52px; }
+.timing-row .t-label { font-size: 0.88rem; color: #2e2e2e; }
+.timing-row .t-tip { font-size: 0.78rem; color: #b5415a; font-weight: 700; margin-left: auto; white-space: nowrap; }
+
+/* STEPS */
+.step-block { background: #fff; border-radius: 12px; padding: 16px 20px; margin-bottom: 10px; display: flex; gap: 14px; align-items: flex-start; }
+.step-num { background: #1e1c18; color: #f5c842; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.9rem; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.step-body { flex: 1; font-size: 0.88rem; line-height: 1.55; }
+.step-body strong { font-weight: 700; }
+
+/* MODELE */
+.modele { background: #f0ede6; border-left: 4px solid #f5c842; border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 12px 0; font-size: 0.85rem; font-style: italic; line-height: 1.65; color: #2e2e2e; }
+.modele .fill { background: rgba(245,200,66,.25); border-radius: 4px; padding: 1px 5px; font-style: normal; font-weight: 700; font-size: 0.8rem; }
+
+/* ALERTE / CONSEIL */
+.alerte { background: #fdeef2; border-left: 4px solid #b5415a; border-radius: 0 10px 10px 0; padding: 12px 16px; margin: 10px 0; font-size: 0.85rem; line-height: 1.5; }
+.alerte strong { color: #b5415a; }
+.conseil { background: #eaf5ee; border-left: 4px solid #2d7a4f; border-radius: 0 10px 10px 0; padding: 12px 16px; margin: 10px 0; font-size: 0.85rem; line-height: 1.5; }
+.conseil strong { color: #2d7a4f; }
+
+/* CHECKLIST */
+.check-section { background: #fffdf8; border-radius: 14px; padding: 22px 26px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.check-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.05rem; margin-bottom: 14px; }
+.check-item { display: flex; align-items: flex-start; gap: 12px; padding: 9px 0; border-bottom: 1px solid rgba(30,28,24,.06); cursor: pointer; }
+.check-item:last-child { border-bottom: none; }
+.check-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #1e1c18; flex-shrink: 0; margin-top: 1px; cursor: pointer; }
+.check-item label { font-size: 0.87rem; cursor: pointer; }
+.check-item.done label { color: #999; text-decoration: line-through; }
+
+/* PHRASES */
+.phrase-group { margin-bottom: 20px; }
+.phrase-group h4 { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.95rem; color: #1e1c18; margin-bottom: 8px; border-bottom: 2px solid #e0dcd4; padding-bottom: 5px; }
+.phrase-item { background: #fff; border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; font-size: 0.85rem; font-style: italic; color: #2e2e2e; border-left: 3px solid #ddd; }
+
+/* RÉFLEXES */
+.signal-grid { display: grid; gap: 8px; margin-top: 10px; }
+.signal-row { background: #fff; border-radius: 10px; padding: 11px 16px; display: flex; align-items: flex-start; gap: 12px; font-size: 0.86rem; }
+.signal-arrow { color: #2563a8; font-weight: 900; flex-shrink: 0; font-size: 1rem; }
+.signal-text strong { color: #1e1c18; }
+.signal-text em { color: #7a6a58; font-size: 0.82rem; }
+.enjeux-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
+.enjeux-table th { background: #1e1c18; color: #f5c842; padding: 9px 14px; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.enjeux-table td { padding: 10px 14px; border-bottom: 1px solid #e8e4dc; line-height: 1.45; }
+.enjeux-table tr:last-child td { border-bottom: none; }
+.enjeux-table td:first-child { font-weight: 700; white-space: nowrap; }
+.enjeux-table tr:nth-child(even) td { background: rgba(30,28,24,.025); }
+.verbe-grid { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.verbe-item { background: #fff; border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; font-style: italic; color: #2e2e2e; border-left: 3px solid #f5c842; }
+
+@media print { nav, .tabs-bar, .print-btn { display: none !important; } body { background: white; } .tab-panel { display: block !important; } .main { padding: 0; } }
+</style>
+</head>
+<body>
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+  <a href="revizo-msgn.html" class="epreuve-link">SGDN</a>
+  <a href="revizo-philo.html" class="epreuve-link active">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Philosophie</span>
+  <a href="revizo-philo.html">Notions</a>
+  <a href="quiz-philo.html">Quiz</a>
+  <a href="flashcards-philo.html">Flashcards</a>
+  <a href="methode-jour-j-philo.html" class="active">Méthode Jour J</a>
+  <a href="bac-blanc-philo.html">Bac Blanc</a>
+  <a href="https://drive.google.com/file/d/1Oh2VhBZJ2hkCSnDN63aye7FnuHObgKu6/view?usp=drive_link" target="_blank" style="color:#b5415a">📺 Guide vidéo</a>
+</nav>
+
+<div class="header">
+  <button class="print-btn" onclick="window.print()">🖨 Imprimer</button>
+  <div class="header-badge">Philosophie · Filière technologique · 4h</div>
+  <h1>Méthode Jour J</h1>
+  <p>Explication de texte uniquement — 3 questions, toujours dans le même ordre.</p>
+</div>
+
+<div class="main">
+
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('timing')">⏱ Timing</button>
+    <button class="tab-btn" onclick="showTab('q1')">Q1 — Thèse</button>
+    <button class="tab-btn" onclick="showTab('q2')">Q2 — Passages</button>
+    <button class="tab-btn" onclick="showTab('q3')">Q3 — Réflexion</button>
+    <button class="tab-btn" onclick="showTab('reflexes')">⚡ Réflexes</button>
+    <button class="tab-btn" onclick="showTab('phrases')">Phrases-types</button>
+    <button class="tab-btn" onclick="showTab('checklist')">✅ Checklist</button>
+  </div>
+
+  <!-- TIMING -->
+  <div id="tab-timing" class="tab-panel active">
+
+    <div class="card">
+      <div class="card-title">Ce que tu as devant toi</div>
+      <p style="font-size:.88rem;margin-bottom:12px">Un texte court (10 à 20 lignes) d'un auteur au programme, suivi de <strong>3 questions toujours dans le même ordre</strong>. C'est fixé par le ministère — ça ne change pas.</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:#fff;border-radius:10px;padding:12px 16px;border-left:4px solid #2563a8;font-size:.86rem"><strong>Question 1</strong> — "Dégagez la thèse du texte et les grandes étapes de son argumentation."</div>
+        <div style="background:#fff;border-radius:10px;padding:12px 16px;border-left:4px solid #2d7a4f;font-size:.86rem"><strong>Question 2</strong> — "Expliquez les expressions suivantes : [deux extraits précis]."</div>
+        <div style="background:#fff;border-radius:10px;padding:12px 16px;border-left:4px solid #b5415a;font-size:.86rem"><strong>Question 3</strong> — Une question ouverte liée au texte, ex : "La justice exige-t-elle de traiter tout le monde de la même façon ?"</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Timing conseillé sur 4h</div>
+      <div class="timing-grid">
+        <div class="timing-row"><span class="t-time">20 min</span><span class="t-label">Lire, relire, annoter le texte</span><span class="t-tip">Ne pas sauter cette étape</span></div>
+        <div class="timing-row"><span class="t-time">40 min</span><span class="t-label">Répondre à la Question 1 — Thèse</span></div>
+        <div class="timing-row"><span class="t-time">60 min</span><span class="t-label">Répondre à la Question 2 — Passages</span></div>
+        <div class="timing-row"><span class="t-time">70 min</span><span class="t-label">Répondre à la Question 3 — Réflexion</span></div>
+        <div class="timing-row"><span class="t-time">10 min</span><span class="t-label">Relire l'ensemble et corriger</span></div>
+      </div>
+    </div>
+
+    <div class="conseil"><strong>Comment annoter le texte :</strong> Cherche d'abord le thème (de quoi parle-t-on ?), puis la thèse (qu'affirme l'auteur ?), puis les connecteurs logiques — <em>donc, car, en effet, or, ainsi, pourtant, cependant</em> — qui montrent comment les idées s'enchaînent.</div>
+
+  </div>
+
+  <!-- Q1 -->
+  <div id="tab-q1" class="tab-panel">
+
+    <div class="card">
+      <div class="card-title">Ce que le correcteur attend</div>
+      <p style="font-size:.88rem">Que tu aies compris ce que l'auteur veut démontrer et comment il s'y prend. Il veut voir ta compréhension, pas ta capacité à recopier.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Méthode en 3 temps</div>
+      <div class="step-block"><div class="step-num">1</div><div class="step-body"><strong>Identifie le thème</strong> — De quoi parle ce texte ? Formule en une phrase : "Ce texte parle de…"</div></div>
+      <div class="step-block"><div class="step-num">2</div><div class="step-body"><strong>Identifie la thèse</strong> — Qu'est-ce que l'auteur affirme sur ce sujet ? C'est son point de vue, sa réponse principale.</div></div>
+      <div class="step-block"><div class="step-num">3</div><div class="step-body"><strong>Repère les étapes</strong> — Cherche les connecteurs logiques (<em>d'abord, ensuite, enfin, car, donc, or, pourtant</em>). Chaque connecteur marque un nouveau temps du raisonnement.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Modèle de réponse</div>
+      <div class="modele">
+        Dans ce texte, <span class="fill">auteur</span> cherche à répondre à la question suivante : <span class="fill">formule la question en une phrase</span>.<br>
+        Sa thèse est que <span class="fill">reformule l'idée principale en tes propres mots</span>.<br>
+        Pour défendre cette thèse, il procède en <span class="fill">deux / trois</span> temps :<br>
+        D'abord, il montre que <span class="fill">idée 1</span>.<br>
+        Ensuite, il explique que <span class="fill">idée 2</span>.<br>
+        Il en conclut que <span class="fill">idée finale</span>.
+      </div>
+    </div>
+
+    <div class="alerte"><strong>Piège à éviter :</strong> ne pas recopier des phrases du texte. Le correcteur veut voir que TU as compris, pas que tu sais copier. Reformule toujours avec tes propres mots.</div>
+
+    <div class="card" style="border-left:4px solid #f5c842;background:#fffbeb">
+      <div class="card-title" style="color:#8a6d00">Si je bloque sur la Q1…</div>
+      <div class="signal-grid">
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>Lis la dernière phrase du texte</strong> — c'est souvent là que l'auteur résume sa thèse, sa conclusion</div></div>
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>Compte les paragraphes</strong> — chaque paragraphe = une étape du raisonnement. Tu as ta structure</div></div>
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>Cherche les "mais", "donc", "car"</strong> — ces mots révèlent comment les idées s'enchaînent</div></div>
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>Demande-toi : "de quoi parle ce texte en un mot ?"</strong> — c'est ton thème (liberté, justice, vérité…)</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Q2 -->
+  <div id="tab-q2" class="tab-panel">
+
+    <div class="card">
+      <div class="card-title">Ce que le correcteur attend</div>
+      <p style="font-size:.88rem">Que tu reformules les deux passages dans un langage simple, sans trahir le sens — et que tu illustres avec un exemple concret. Deux passages = deux réponses séparées, même structure pour chacune.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Méthode pour chaque passage</div>
+      <div class="step-block"><div class="step-num">1</div><div class="step-body"><strong>Cite</strong> le passage entre guillemets (une seule fois).</div></div>
+      <div class="step-block"><div class="step-num">2</div><div class="step-body"><strong>Reformule</strong> ce que ça veut dire en langage ordinaire.</div></div>
+      <div class="step-block"><div class="step-num">3</div><div class="step-body"><strong>Explique</strong> pourquoi l'auteur dit ça dans le cadre de son raisonnement — le lien avec sa thèse.</div></div>
+      <div class="step-block"><div class="step-num">4</div><div class="step-body"><strong>Illustre</strong> avec un exemple concret de la vie courante.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Modèle de réponse</div>
+      <div class="modele">
+        L'auteur écrit : "<span class="fill">passage entre guillemets</span>".<br>
+        Par cette expression, il veut dire que <span class="fill">reformulation claire et simple</span>.<br>
+        Cette idée est importante dans son raisonnement car <span class="fill">lien avec la thèse générale</span>.<br>
+        On peut illustrer cela avec l'exemple suivant : <span class="fill">exemple de la vie courante</span>.
+      </div>
+    </div>
+
+    <div class="alerte"><strong>Piège à éviter — la paraphrase :</strong> paraphraser = recopier le texte avec des mots légèrement différents. Ce n'est pas expliquer. Expliquer = dire ce que ça signifie vraiment, pourquoi c'est dit, et le montrer par un exemple.</div>
+
+    <div class="card" style="border-left:4px solid #f5c842;background:#fffbeb">
+      <div class="card-title" style="color:#8a6d00">Si je bloque sur la Q2…</div>
+      <div class="signal-grid">
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>Relis la phrase avant et après le passage</strong> — le contexte t'aide à comprendre ce que l'auteur veut dire</div></div>
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>Traduis en langage SMS dans ta tête</strong> — puis écris-le proprement. Si tu peux le dire simplement, c'est que tu as compris</div></div>
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>Cherche si un repère s'applique</strong> — légal/légitime ? objectif/subjectif ? en fait/en droit ? Ça oriente ton explication</div></div>
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>Pense à un exemple de ta vie quotidienne</strong> qui illustre la même idée — ça prouve que tu as compris</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Q3 -->
+  <div id="tab-q3" class="tab-panel">
+
+    <div class="card">
+      <div class="card-title">Ce que le correcteur attend</div>
+      <p style="font-size:.88rem">Que tu prennes position sur une question philosophique en t'appuyant sur le texte et en donnant des arguments. Tu n'es pas obligé d'être d'accord avec l'auteur.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Structure en 3 temps</div>
+      <div class="step-block"><div class="step-num">1</div><div class="step-body"><strong>Réponds clairement</strong> à la question posée — prends une position dès le départ.</div></div>
+      <div class="step-block"><div class="step-num">2</div><div class="step-body"><strong>Donne 1 ou 2 arguments</strong> pour défendre ta position, avec un exemple chacun.</div></div>
+      <div class="step-block"><div class="step-num">3</div><div class="step-body"><strong>Nuance ou envisage une objection</strong> — montre que tu vois les limites de ta position.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Modèle de réponse</div>
+      <div class="modele">
+        La question posée est de savoir si <span class="fill">reformule la question</span>.<br>
+        Il me semble que <span class="fill">ta position</span>.<br>
+        En effet, <span class="fill">argument 1 avec exemple</span>.<br>
+        On peut aussi ajouter que <span class="fill">argument 2 si tu en as un</span>.<br>
+        Cependant, on pourrait objecter que <span class="fill">une limite ou un contre-argument</span>.<br>
+        En définitive, <span class="fill">conclusion courte</span>.
+      </div>
+    </div>
+
+    <div class="conseil"><strong>Conseil :</strong> tu peux t'appuyer sur le texte ("comme le montre l'auteur…") ET sur tes propres exemples. Tu n'as pas besoin de citer un philosophe si tu n'en as pas un sous la main — un bon exemple vaut souvent mieux qu'un nom mal utilisé.</div>
+
+    <div class="card" style="border-left:4px solid #f5c842;background:#fffbeb">
+      <div class="card-title" style="color:#8a6d00">Si je bloque sur la Q3…</div>
+      <div class="signal-grid">
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>Identifie le thème</strong> (liberté, justice, vérité…) — puis regarde le tableau des enjeux dans l'onglet Réflexes</div></div>
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>Commence par "oui" ou "non"</strong> — tu nuanceras après. L'important c'est de prendre position tout de suite</div></div>
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>Pense à un contre-exemple concret</strong> tiré de la vie réelle — ça te donne un argument et de la matière à écrire</div></div>
+        <div class="signal-row" style="background:#fff9e0"><span class="signal-arrow" style="color:#8a6d00">→</span><div class="signal-text"><strong>"Que se passe-t-il si l'auteur a tort ?"</strong> — cette question te donne immédiatement un angle pour argumenter</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RÉFLEXES -->
+  <div id="tab-reflexes" class="tab-panel">
+
+    <div class="card">
+      <div class="card-title">Réflexe 1 — Définir par opposition</div>
+      <p style="font-size:.86rem;margin-bottom:4px">Dès la première lecture, demande-toi : <strong>entre quels deux pôles l'auteur se situe-t-il ?</strong> C'est le réflexe le plus rapide pour identifier la thèse.</p>
+      <div class="signal-grid">
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>loi ou d'obéissance</strong> <em>→ légal ou légitime ?</em></div></div>
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>connaissance ou d'opinion</strong> <em>→ croire ou savoir ?</em></div></div>
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>ce qu'on doit faire</strong> <em>→ obligation ou contrainte ?</em></div></div>
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>faits et d'idéaux</strong> <em>→ en fait ou en droit ?</em></div></div>
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>jugements, goûts ou perceptions</strong> <em>→ objectif ou subjectif ?</em></div></div>
+        <div class="signal-row"><span class="signal-arrow">→</span><div class="signal-text">Le texte parle de <strong>discours, arguments ou rhétorique</strong> <em>→ persuader ou convaincre ?</em></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Réflexe 2 — Identifier l'enjeu pour la Q3</div>
+      <p style="font-size:.86rem;margin-bottom:10px">Pose-toi cette question : <strong>"Quel est le risque si l'auteur a tort ?"</strong> Elle te donne immédiatement un argument à développer en Q3 — sans avoir à inventer.</p>
+      <table class="enjeux-table">
+        <tr><th>Notion dans le texte</th><th>Si l'auteur a tort, le risque est…</th></tr>
+        <tr><td>Liberté</td><td>Plus de responsabilité → plus de justice possible</td></tr>
+        <tr><td>Vérité</td><td>Toutes les opinions se valent → la science s'effondre</td></tr>
+        <tr><td>Justice</td><td>L'arbitraire remplace le droit → la vie ensemble devient impossible</td></tr>
+        <tr><td>Technique</td><td>On ne peut plus distinguer progrès libérateur et technique aliénante</td></tr>
+        <tr><td>Art</td><td>La beauté n'existe pas, rien ne se vaut → indifférence totale</td></tr>
+        <tr><td>Nature</td><td>On ne peut plus distinguer le normal du pathologique</td></tr>
+        <tr><td>Religion</td><td>L'homme n'a plus rien pour faire face à la mort et au sens de la vie</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Réflexe 3 — Analyser les termes, pas juste "raconter"</div>
+      <p style="font-size:.86rem;margin-bottom:4px">Ne dis jamais "l'auteur dit que". Utilise un verbe qui montre ce que l'auteur <em>fait</em> intellectuellement avec son argument.</p>
+      <div class="verbe-grid">
+        <div class="verbe-item">"L'auteur <strong>établit une distinction</strong> entre ce qui est en fait et ce qui est en droit"</div>
+        <div class="verbe-item">"L'auteur <strong>oppose</strong> la liberté à la contrainte"</div>
+        <div class="verbe-item">"L'auteur <strong>montre</strong> que… / <strong>démontre</strong> que…"</div>
+        <div class="verbe-item">"L'auteur <strong>remet en question</strong> l'idée selon laquelle…"</div>
+        <div class="verbe-item">"L'auteur <strong>défend la thèse</strong> que…"</div>
+        <div class="verbe-item">"L'auteur <strong>soutient</strong> que… / <strong>affirme</strong> que…"</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PHRASES-TYPES -->
+  <div id="tab-phrases" class="tab-panel">
+
+    <div class="phrase-group">
+      <h4>Présenter la thèse de l'auteur</h4>
+      <div class="phrase-item">"Dans ce texte, [auteur] cherche à montrer que…"</div>
+      <div class="phrase-item">"La thèse défendue par [auteur] est que…"</div>
+      <div class="phrase-item">"L'auteur soutient que…"</div>
+    </div>
+
+    <div class="phrase-group">
+      <h4>Expliquer un passage</h4>
+      <div class="phrase-item">"Par cette expression, l'auteur veut dire que…"</div>
+      <div class="phrase-item">"Cette idée signifie que…"</div>
+      <div class="phrase-item">"Autrement dit…"</div>
+      <div class="phrase-item">"On peut reformuler ainsi : …"</div>
+    </div>
+
+    <div class="phrase-group">
+      <h4>Donner un exemple</h4>
+      <div class="phrase-item">"On peut illustrer cette idée avec l'exemple suivant : …"</div>
+      <div class="phrase-item">"C'est ce qu'on observe lorsque…"</div>
+      <div class="phrase-item">"Pensons, par exemple, à…"</div>
+    </div>
+
+    <div class="phrase-group">
+      <h4>Introduire un repère</h4>
+      <div class="phrase-item">"Il faut ici distinguer le légal et le légitime : …"</div>
+      <div class="phrase-item">"Cette distinction renvoie à l'opposition entre objectif et subjectif : …"</div>
+      <div class="phrase-item">"On peut mobiliser ici le repère croire / savoir : …"</div>
+    </div>
+
+    <div class="phrase-group">
+      <h4>Nuancer ou discuter</h4>
+      <div class="phrase-item">"D'un côté, cette thèse est convaincante car…"</div>
+      <div class="phrase-item">"Cependant, on peut objecter que…"</div>
+      <div class="phrase-item">"Il faut néanmoins nuancer : …"</div>
+    </div>
+
+    <div class="phrase-group">
+      <h4>Conclure</h4>
+      <div class="phrase-item">"En définitive, il semble que…"</div>
+      <div class="phrase-item">"On peut donc conclure que…"</div>
+      <div class="phrase-item">"Ainsi, la thèse de [auteur] nous invite à penser que…"</div>
+    </div>
+
+  </div>
+
+  <!-- CHECKLIST -->
+  <div id="tab-checklist" class="tab-panel">
+
+    <div class="check-section">
+      <div class="check-title">✅ Avant de rendre la copie</div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>J'ai répondu aux <strong>3 questions dans l'ordre</strong></label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Q1 : j'ai formulé la <strong>thèse</strong> ET les <strong>étapes</strong> de l'argumentation</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Q1 : je n'ai pas recopié le texte — j'ai reformulé avec mes propres mots</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Q2 : j'ai <strong>expliqué</strong> (pas recopié) et donné <strong>un exemple par passage</strong></label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Q2 : j'ai cité les passages entre guillemets</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Q3 : j'ai <strong>pris position</strong> dès le début</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Q3 : j'ai donné au moins <strong>un argument avec un exemple</strong></label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>J'ai utilisé des <strong>connecteurs logiques</strong> (car, donc, en effet, cependant…)</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>Je n'ai pas fait de paraphrase</label></div>
+      <div class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><label>J'ai relu pour corriger les fautes</label></div>
+    </div>
+
+    <div class="conseil"><strong>Rappel :</strong> le correcteur ne cherche pas l'érudition. Il cherche quelqu'un qui a compris le texte, qui l'explique clairement et qui sait réfléchir avec des exemples concrets.</div>
+
+  </div>
+
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleCheck(item) {
+  item.classList.toggle('done');
+  item.querySelector('input').checked = item.classList.contains('done');
+}
+</script>
+</body>
+</html>

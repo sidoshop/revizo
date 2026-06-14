@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révizo — Quiz Philosophie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="revizo-design-system.css">
+<link rel="stylesheet" href="revizo-nav.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #f0ede6; color: #1e1c18; min-height: 100vh; }
+
+.page { max-width: 660px; margin: 0 auto; padding: 28px 20px 60px; }
+
+/* HEADER */
+.q-header { text-align: center; margin-bottom: 24px; }
+.q-badge { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; background: #1e1c18; color: #f5c842; padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+.q-title { font-family: 'Nunito', sans-serif; font-size: 26px; font-weight: 900; color: #1e1c18; margin-bottom: 4px; }
+.q-sub { font-size: 13px; color: #7a6a58; font-weight: 600; }
+
+/* FILTRES */
+.filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; justify-content: center; }
+.f-btn { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; padding: 7px 15px; border-radius: 20px; border: 2px solid transparent; cursor: pointer; transition: all 0.13s; }
+.f-all    { background: #e0dbd2; color: #5a5448; border-color: #e0dbd2; }
+.f-all.on { background: #1e1c18; color: #fffdf8; border-color: #1e1c18; }
+.f-notion    { background: #e8f0fb; color: #2563a8; border-color: #e8f0fb; }
+.f-notion.on { background: #2563a8; color: #fff; border-color: #2563a8; }
+.f-repere    { background: #e8f5ee; color: #2d7a4f; border-color: #e8f5ee; }
+.f-repere.on { background: #2d7a4f; color: #fff; border-color: #2d7a4f; }
+.f-methode    { background: #2c2920; color: #f5c842; border-color: #2c2920; }
+.f-methode.on { background: #f5c842; color: #1e1c18; border-color: #f5c842; }
+
+/* PROGRESS */
+.progress-wrap { margin-bottom: 20px; }
+.progress-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 12px; font-weight: 700; color: #8a8478; }
+.progress-track { height: 6px; background: #ddd8cf; border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #2563a8, #4f8ef5); border-radius: 4px; transition: width 0.35s; }
+
+/* QUESTION CARD */
+.qcard { background: #fff; border-radius: 20px; padding: 28px 28px 24px; box-shadow: 0 4px 20px rgba(0,0,0,.08); margin-bottom: 16px; }
+.qcard-cat { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 3px 10px; border-radius: 12px; display: inline-block; margin-bottom: 14px; }
+.cat-notion  { background: #e8f0fb; color: #2563a8; }
+.cat-repere  { background: #e8f5ee; color: #2d7a4f; }
+.cat-methode { background: #2c2920; color: #f5c842; }
+.qcard-text { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.15rem; line-height: 1.45; color: #1e1c18; margin-bottom: 22px; }
+
+/* CHOICES */
+.choices { display: flex; flex-direction: column; gap: 10px; }
+.choice-btn {
+  text-align: left; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 500;
+  padding: 13px 16px; border-radius: 12px; border: 2px solid #e0dbd2;
+  background: #fafaf8; color: #1e1c18; cursor: pointer; transition: all 0.15s; line-height: 1.4;
+}
+.choice-btn:hover:not(:disabled) { border-color: #2563a8; background: #f0f4ff; }
+.choice-btn.correct { background: #eaf5ee; border-color: #1a7a3c; color: #1a7a3c; font-weight: 700; }
+.choice-btn.wrong   { background: #fdeef2; border-color: #b5415a; color: #b5415a; }
+.choice-btn:disabled { cursor: default; }
+
+/* FEEDBACK */
+.feedback { display: none; background: #fffdf8; border: 1px solid #ddd8cc; border-radius: 14px; padding: 18px 20px; margin-top: 16px; }
+.feedback.show { display: block; }
+.fb-result { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; margin-bottom: 8px; }
+.fb-result.ok   { color: #1a7a3c; }
+.fb-result.nope { color: #b5415a; }
+.fb-explain { font-size: 0.87rem; line-height: 1.6; color: #3a3530; }
+
+/* NEXT BTN */
+.next-btn {
+  display: block; width: 100%; margin-top: 18px;
+  font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem;
+  padding: 14px; border-radius: 12px; border: none;
+  background: #1e1c18; color: #f5c842; cursor: pointer; transition: opacity 0.15s;
+}
+.next-btn:hover { opacity: 0.88; }
+
+/* SCORE SCREEN */
+.score-screen { display: none; background: #1e1c18; border-radius: 20px; padding: 40px 32px; text-align: center; color: #fffdf8; }
+.score-screen.show { display: block; }
+.score-emoji { font-size: 52px; margin-bottom: 16px; }
+.score-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.6rem; margin-bottom: 6px; }
+.score-sub { font-size: 0.9rem; color: #a09880; margin-bottom: 24px; }
+.score-big { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 3.5rem; color: #f5c842; margin-bottom: 4px; }
+.score-label { font-size: 0.85rem; color: #a09880; margin-bottom: 24px; }
+.score-detail { background: rgba(255,255,255,.07); border-radius: 12px; padding: 14px 20px; margin-bottom: 24px; font-size: 0.87rem; line-height: 1.7; }
+.score-detail span { color: #f5c842; font-weight: 700; }
+.restart-btn { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1rem; padding: 14px 32px; border-radius: 12px; border: none; background: #f5c842; color: #1e1c18; cursor: pointer; }
+.restart-btn:hover { opacity: 0.88; }
+
+.empty-state { text-align: center; padding: 60px 20px; color: #8a8478; }
+</style>
+</head>
+<body>
+
+<nav class="nav-epreuve">
+  <a href="index.html" class="logo">Révi<span>zo</span></a>
+  <a href="epreuve-ecodroit.html" class="epreuve-link">Éco-Droit</a>
+  <a href="revizo-msgn.html"     class="epreuve-link">SGDN</a>
+  <a href="revizo-philo.html"    class="epreuve-link active">Philo</a>
+</nav>
+<nav class="nav-rubriques">
+  <span class="matiere-pill">Philosophie</span>
+  <a href="revizo-philo.html">Notions</a>
+  <a href="quiz-philo.html" class="active">Quiz</a>
+  <a href="flashcards-philo.html">Flashcards</a>
+  <a href="methode-jour-j-philo.html">Méthode Jour J</a>
+  <a href="bac-blanc-philo.html">Bac Blanc</a>
+  <a href="https://drive.google.com/file/d/1Oh2VhBZJ2hkCSnDN63aye7FnuHObgKu6/view?usp=drive_link" target="_blank" style="color:#b5415a">📺 Guide vidéo</a>
+</nav>
+
+<div class="page">
+
+  <div class="q-header">
+    <div class="q-badge">Philosophie · Quiz</div>
+    <div class="q-title">Quiz de compréhension</div>
+    <div class="q-sub" id="sub-count">30 questions · Notions · Repères · Méthode</div>
+  </div>
+
+  <!-- FILTRES -->
+  <div class="filters">
+    <button class="f-btn f-all on"   onclick="setFilter('all', this)">Tout (30)</button>
+    <button class="f-btn f-notion"   onclick="setFilter('notion', this)">Notions (14)</button>
+    <button class="f-btn f-repere"   onclick="setFilter('repere', this)">Repères (12)</button>
+    <button class="f-btn f-methode"  onclick="setFilter('methode', this)">Méthode (4)</button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-info">
+      <span id="prog-label">Question 1 / 20</span>
+      <span id="score-live">Score : 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="qcard" id="qcard">
+    <div class="qcard-cat" id="qcat"></div>
+    <div class="qcard-text" id="qtext">Chargement…</div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback">
+      <div class="fb-result" id="fb-result"></div>
+      <div class="fb-explain" id="fb-explain"></div>
+      <button class="next-btn" onclick="nextQuestion()">Question suivante →</button>
+    </div>
+  </div>
+
+  <!-- SCORE SCREEN -->
+  <div class="score-screen" id="score-screen">
+    <div class="score-emoji" id="sc-emoji">🎉</div>
+    <div class="score-title" id="sc-title">Quiz terminé !</div>
+    <div class="score-sub" id="sc-sub"></div>
+    <div class="score-big" id="sc-big"></div>
+    <div class="score-label">bonnes réponses</div>
+    <div class="score-detail" id="sc-detail"></div>
+    <button class="restart-btn" onclick="restartQuiz()">↺ Recommencer</button>
+  </div>
+
+</div>
+
+<script>
+const ALL_QUESTIONS = [
+
+  // ===== NOTIONS (14) =====
+  { cat:'notion', q:'Un détenu accepte des règles strictes pour sortir en liberté conditionnelle. Cet exemple montre que :', choices:["La vraie liberté c'est l'absence de toute règle","On peut être libre en acceptant des règles qu'on comprend","La justice est toujours arbitraire","L'obligation et la contrainte sont identiques"], correct:1, explain:"Spinoza montre que la liberté véritable n'est pas de faire n'importe quoi, mais d'obéir à des règles fondées sur la raison. Le détenu qui accepte les conditions de sa liberté conditionnelle en est l'exemple parfait : c'est en acceptant les règles qu'il gagne sa liberté." },
+  { cat:'notion', q:"Si la liberté n'existe pas et que tout est déterminé à l'avance, quelle conséquence s'ensuit directement ?", choices:["La technique devient inutile","La responsabilité morale n'a plus de sens","La religion disparaît","La vérité devient relative"], correct:1, explain:"Si tout est déterminé — si on ne peut pas faire autrement que ce qu'on fait — on ne peut pas tenir quelqu'un pour responsable de ses actes. Pas de liberté = pas de responsabilité = pas de justice possible." },
+  { cat:'notion', q:"Les médecins croyaient que les maladies venaient de 'mauvais airs' — c'était faux. Que montre cet exemple ?", choices:["Que les médecins anciens étaient incompétents","Que l'observation quotidienne peut produire des croyances fausses","Que la science a toujours raison","Que les sens sont fiables quand on les entraîne"], correct:1, explain:"Ce n'est pas une question de compétence. Des gens instruits, qui observaient soigneusement, se trompaient quand même — parce que l'observation seule ne suffit pas. La vérité demande un effort de la raison et des outils (comme le microscope) qui dépassent les sens." },
+  { cat:'notion', q:"Si toutes les opinions se valent et qu'il n'y a pas de vérité objective, qu'est-ce qui devient impossible ?", choices:["Distinguer une théorie scientifique d'une rumeur","Pratiquer une religion","Créer des œuvres d'art","Vivre en société"], correct:0, explain:"Si toutes les opinions se valent, la théorie de l'évolution ne vaut pas plus qu'une rumeur inventée. La science repose sur l'idée qu'il existe des vérités démontrables — sans ça, tout s'effondre." },
+  { cat:'notion', q:"Aux Jeux paralympiques, les athlètes ne concourent pas tous dans les mêmes catégories. C'est un exemple de :", choices:["Discrimination injuste","Égalité stricte","Équité","Légalité sans légitimité"], correct:2, explain:"L'équité consiste à adapter le traitement selon les situations différentes. Imposer les mêmes conditions à tous les athlètes paralympiques serait une égalité stricte — mais ce serait injuste. L'équité est ici plus juste que l'égalité." },
+  { cat:'notion', q:"Si l'arbitraire remplace le droit et qu'il n'y a plus de justice, qu'est-ce qui disparaît ?", choices:["La technique","La possibilité de vivre ensemble","La religion","La vérité"], correct:1, explain:"La justice est le fondement du lien social. Sans elle, chacun agit selon son intérêt immédiat, la force remplace le droit, et la vie en commun devient impossible." },
+  { cat:'notion', q:"Un bébé prématuré survit grâce à une couveuse. Que montre cet exemple ?", choices:["Que la nature est bienveillante","Que la technique trahit la nature","Que la technique corrige ce que la nature n'a pas pu finir","Que l'artificiel est toujours supérieur au naturel"], correct:2, explain:"Mill montre que la nature est indifférente à l'homme — elle n'est ni bienveillante ni malveillante. La technique ne trahit pas la nature : elle complète ce qu'elle n'a pas achevé. La couveuse ne remplace pas la nature, elle la prolonge." },
+  { cat:'notion', q:"Si on ne peut plus distinguer technique libératrice et technique aliénante, quel problème se pose ?", choices:["On ne peut plus juger si un progrès est bon ou mauvais pour l'humanité","La religion perd son sens","La justice devient impossible","La vérité disparaît"], correct:0, explain:"La technique n'est pas bonne ou mauvaise en soi — c'est son usage qui compte. Si on perd la capacité de distinguer ce qui libère de ce qui asservit, on ne peut plus exercer de jugement critique sur le progrès." },
+  { cat:'notion', q:"Deux photographes, même appareil, même rue. L'un fait une photo banale, l'autre une photo d'expo. Que montre cet exemple ?", choices:["Que la technique est inutile en art","Que la technique seule ne suffit pas — c'est le regard qui fait l'œuvre","Que l'art est purement subjectif","Que tout le monde peut être artiste"], correct:1, explain:"Les deux photographes maîtrisent la même technique. Ce qui les distingue, c'est le regard, le sens du moment, le cadrage — quelque chose qui ne s'enseigne pas comme une recette. C'est ce qui sépare l'artiste de l'artisan." },
+  { cat:'notion', q:"Après le 13 novembre 2015, les gens ont spontanément chanté et apporté des guitares dans la rue. Que montre cet exemple ?", choices:["Que l'art est un luxe réservé aux moments de paix","Que face au trauma, l'art répond à un besoin que rien d'autre ne comble","Que l'art n'a de valeur que collectif","Que la musique est la plus importante des disciplines artistiques"], correct:1, explain:"Face à l'horreur, le premier réflexe collectif n'était pas utilitaire — il était artistique. Cela montre que l'art répond à un besoin spécifiquement humain : donner une forme à ce qu'on ne peut pas dire, traverser ensemble ce qu'on ne peut pas expliquer." },
+  { cat:'notion', q:"La douleur est naturelle. La morphine est artificielle. Faut-il refuser la morphine au nom du 'naturel' ?", choices:["Oui, le naturel est toujours préférable","Non, naturel ne veut pas dire bon","Oui, la douleur a une utilité biologique donc il faut la respecter","Non, la technique est toujours supérieure à la nature"], correct:1, explain:"Le naturel ne garantit pas le bien. La douleur est naturelle mais personne ne soutient qu'il faut souffrir sans soin. L'argument 'c'est naturel donc c'est bon' est un sophisme — un raisonnement qui semble logique mais qui ne tient pas." },
+  { cat:'notion', q:"Si on ne peut plus distinguer ce qui est naturel de ce qui est culturel, quel problème se pose ?", choices:["On ne sait plus ce qui est propre à l'être humain en tant qu'espèce","La technique devient inutile","La justice est impossible","La vérité disparaît"], correct:0, explain:"La distinction inné/acquis est fondamentale pour comprendre ce qui appartient à la nature humaine universelle et ce qui est construit par la société. Sans cette distinction, on ne peut plus questionner ce qui pourrait ou devrait changer dans nos comportements." },
+  { cat:'notion', q:"Pour Freud, la religion est une 'illusion consolatrice'. Ça veut dire :", choices:["Que la religion est fausse et inutile","Qu'elle répond à un besoin psychologique réel même si elle ne dit pas la vérité sur le monde","Que les croyants sont naïfs","Que Dieu n'existe pas"], correct:1, explain:"Freud ne dit pas que les croyants sont stupides. Il dit que la religion répond à quelque chose de profondément humain — l'angoisse face à la mort, le besoin de protection. C'est une illusion au sens où elle ne correspond pas à la réalité du monde, mais elle remplit une fonction psychologique réelle." },
+  { cat:'notion', q:"Si la religion disparaît sans être remplacée, quel besoin humain reste sans réponse ?", choices:["Le besoin de justice","Faire face à la mort et donner un sens à la vie","Le besoin de technique","Le besoin de vérité scientifique"], correct:1, explain:"La religion répond à une angoisse existentielle que la science ne résout pas. Savoir comment on meurt biologiquement ne dit pas pourquoi on vit. Ce besoin de sens face à la mort est universel — toutes les cultures connues ont des rites funèbres." },
+
+  // ===== REPÈRES (12) =====
+  { cat:'repere', q:"'Tous les hommes sont égaux en droits.' Cette affirmation relève de :", choices:["En fait","En droit","Les deux à la fois","Ni l'un ni l'autre"], correct:1, explain:"'En droit' désigne ce qui devrait être selon la loi ou la justice — un idéal ou une norme. 'En fait' désigne ce qui existe réellement dans le monde. L'égalité en droits est une norme juridique et morale, pas un constat de la réalité." },
+  { cat:'repere', q:"'1% de la population possède 50% des richesses.' Cette affirmation relève de :", choices:["En droit","En fait","Une obligation morale","Une contrainte juridique"], correct:1, explain:"C'est un constat de la réalité économique — ce qui existe concrètement dans le monde, indépendamment de ce qui devrait être. C'est donc une affirmation 'en fait'." },
+  { cat:'repere', q:"En France jusqu'en 1965, une femme ne pouvait pas ouvrir un compte bancaire sans l'accord de son mari. C'était :", choices:["Légal et légitime","Illégal et illégitime","Légal mais illégitime","Illégitime mais juste"], correct:2, explain:"C'était inscrit dans le Code civil donc parfaitement légal. Mais c'était moralement injuste — contraire à l'égalité humaine fondamentale. Une loi peut donc être légale sans être légitime." },
+  { cat:'repere', q:"Un lanceur d'alerte publie des documents secrets pour révéler une corruption d'État. Son acte est :", choices:["Légal et légitime","Illégal mais potentiellement légitime","Légal mais illégitime","Ni légal ni légitime"], correct:1, explain:"Divulguer des documents confidentiels est illégal. Mais si c'est pour révéler une injustice grave, l'acte peut être moralement justifié — donc légitime. C'est le principe de la désobéissance civile : un acte illégal peut être légitime." },
+  { cat:'repere', q:"'Cette chanson est triste.' C'est :", choices:["Objectif","Subjectif","Objectif car tout le monde est d'accord","Ni objectif ni subjectif"], correct:1, explain:"La tristesse ressentie à l'écoute d'une chanson dépend du ressenti de chaque auditeur — de son histoire, de son humeur, de sa sensibilité. Ce n'est pas vérifiable comme une mesure physique. C'est donc subjectif." },
+  { cat:'repere', q:"'Il fait 4 degrés dehors.' C'est :", choices:["Subjectif car le froid se ressent différemment selon les personnes","Objectif car vérifiable par un thermomètre","Une croyance","Une opinion"], correct:1, explain:"Peu importe si tu as chaud ou froid, le thermomètre indique 4 degrés — c'est vérifiable et indépendant du ressenti individuel. C'est donc objectif. Attention : 'j'ai froid' est subjectif, mais 'il fait 4 degrés' est objectif." },
+  { cat:'repere', q:"Les médecins refusaient les preuves de Semmelweis sur le lavage des mains. Que montre cet exemple ?", choices:["Que la science est toujours en retard sur la pratique","Que croire et savoir peuvent s'opposer même chez des gens instruits","Que Semmelweis avait tort","Que les croyances sont invincibles"], correct:1, explain:"Des médecins formés et expérimentés ont refusé des preuves chiffrées parce qu'elles contredisaient leurs croyances établies. Cela montre que même des gens instruits peuvent préférer croire plutôt que savoir — et que la frontière entre les deux demande un effort." },
+  { cat:'repere', q:"'Je sais que 2+2=4' vs 'Je crois que mon équipe va gagner ce soir'. La différence c'est :", choices:["L'un est vrai, l'autre est faux","L'un repose sur une démonstration, l'autre sur une espérance sans preuve","L'un est objectif, l'autre est illégitime","L'un concerne la raison, l'autre la contrainte"], correct:1, explain:"Savoir c'est tenir pour vrai en s'appuyant sur une démonstration ou des preuves vérifiables. Croire c'est tenir pour vrai sans preuve suffisante — par espoir, confiance ou intuition. Les deux peuvent porter sur des choses vraies ou fausses, mais la méthode est différente." },
+  { cat:'repere', q:"L214 diffuse des vidéos choc tournées dans des abattoirs pour changer les comportements alimentaires. C'est :", choices:["Convaincre par la raison","Persuader par l'émotion","Démontrer une vérité objective","Une obligation légale"], correct:1, explain:"Les images choc visent à provoquer une réaction émotionnelle — dégoût, culpabilité, empathie. C'est une stratégie de persuasion : on agit sur les émotions pour modifier le comportement, pas sur la raison par des arguments." },
+  { cat:'repere', q:"Un chercheur publie une étude comparative sur l'impact environnemental de différents régimes alimentaires. C'est :", choices:["Persuader par la peur","Convaincre par des arguments rationnels","Une contrainte morale","Une croyance collective"], correct:1, explain:"Une étude scientifique s'adresse à la raison : elle présente des données, des méthodes, des résultats vérifiables. L'objectif est de convaincre — d'obtenir l'adhésion par la démonstration, pas par l'émotion." },
+  { cat:'repere', q:"Tu ne sais pas nager. Quelqu'un se noie devant toi. Tu es légalement obligé de porter secours mais physiquement incapable de plonger. Ici :", choices:["Obligation et contrainte coïncident","La contrainte physique annule la possibilité d'accomplir l'obligation","Tu es en faute car tu n'as pas aidé","Il n'y a ni obligation ni contrainte"], correct:1, explain:"L'obligation juridique existe — ne pas secourir est un délit. Mais la contrainte physique (ne pas savoir nager) rend l'acte impossible. Les deux s'affrontent dans le même instant. La contrainte ne supprime pas l'obligation morale, mais elle en empêche l'accomplissement." },
+  { cat:'repere', q:"'Je dois rendre ce devoir demain' vs 'Je ne peux pas voler sans ailes.' Laquelle décrit une contrainte ?", choices:["La première","La deuxième","Les deux","Aucune des deux"], correct:1, explain:"Voler sans ailes est physiquement impossible — c'est une contrainte absolue imposée par la nature. Rendre un devoir est une obligation : on peut techniquement ne pas le rendre, mais on doit le faire. La contrainte supprime le choix, l'obligation le suppose." },
+
+  // ===== MÉTHODE (4) =====
+  { cat:'methode', q:"L'explication de texte au bac techno c'est :", choices:["5 questions libres au choix","3 questions dans un ordre fixe imposé","Une dissertation courte","Un résumé du texte suivi d'un commentaire libre"], correct:1, explain:"Le format est fixé par le ministère et ne change pas : Q1 = thèse et argumentation, Q2 = explication de deux passages, Q3 = réflexion personnelle. Toujours dans cet ordre." },
+  { cat:'methode', q:"La thèse d'un texte philosophique c'est :", choices:["Le sujet général dont parle le texte","La réponse que l'auteur donne à une question philosophique","Le titre du texte reformulé","L'exemple principal utilisé par l'auteur"], correct:1, explain:"Le thème c'est le sujet (ex : la liberté). La thèse c'est ce que l'auteur affirme sur ce sujet (ex : on peut être libre en obéissant à des lois raisonnées). C'est la distinction fondamentale pour répondre à la Q1." },
+  { cat:'methode', q:"Tu dois expliquer un passage. Laquelle de ces réponses est une paraphrase à éviter ?", choices:["L'auteur veut dire que la liberté n'est pas l'absence de règle","L'auteur établit une distinction entre liberté et absence de contrainte","D'après l'auteur, la liberté ne consiste pas à faire ce que l'on veut","Cette phrase signifie que la liberté demande d'accepter certaines contraintes"], correct:2, explain:"La réponse C recopie quasi mot pour mot la phrase du texte avec de légères variantes. C'est exactement ce qu'on appelle une paraphrase — ça ne montre pas qu'on a compris, ça montre juste qu'on sait reformuler superficiellement." },
+  { cat:'methode', q:"Pour la Q3, le réflexe le plus utile est :", choices:["Citer le plus d'auteurs possible","Recopier des passages du texte pour montrer qu'on l'a bien lu","Se demander 'quel est le risque si l'auteur a tort ?' pour trouver un argument","Donner son opinion personnelle sans justification"], correct:2, explain:"Se demander 'quel est le risque si l'auteur a tort ?' force à comprendre l'enjeu philosophique de la question — et donne immédiatement un argument à développer. C'est le réflexe le plus efficace pour construire une réponse à la Q3." }
+];
+
+let currentFilter = 'all';
+let questions = [];
+let idx = 0;
+let score = 0;
+let answered = false;
+
+function getFiltered() {
+  if (currentFilter === 'all') return [...ALL_QUESTIONS];
+  return ALL_QUESTIONS.filter(q => q.cat === currentFilter);
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  restartQuiz();
+}
+
+function restartQuiz() {
+  questions = getFiltered().sort(() => Math.random() - 0.5);
+  idx = 0;
+  score = 0;
+  document.getElementById('score-screen').classList.remove('show');
+  document.getElementById('qcard').style.display = 'block';
+  document.getElementById('progress-wrap').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (idx >= questions.length) {
+    showScore();
+    return;
+  }
+  answered = false;
+  const q = questions[idx];
+  const total = questions.length;
+
+  // Progress
+  document.getElementById('prog-label').textContent = 'Question ' + (idx + 1) + ' / ' + total;
+  document.getElementById('score-live').textContent = 'Score : ' + score;
+  document.getElementById('prog-fill').style.width = (idx / total * 100) + '%';
+
+  // Category badge
+  const catLabels = { notion: 'Notion', repere: 'Repère', methode: 'Méthode' };
+  const catEl = document.getElementById('qcat');
+  catEl.textContent = catLabels[q.cat];
+  catEl.className = 'qcard-cat cat-' + q.cat;
+
+  // Question
+  document.getElementById('qtext').textContent = q.q;
+
+  // Choices
+  const choicesEl = document.getElementById('choices');
+  choicesEl.innerHTML = '';
+  q.choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = c;
+    btn.onclick = () => answer(i);
+    choicesEl.appendChild(btn);
+  });
+
+  // Hide feedback
+  const fb = document.getElementById('feedback');
+  fb.classList.remove('show');
+}
+
+function answer(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = questions[idx];
+  const btns = document.querySelectorAll('.choice-btn');
+
+  btns.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === chosen) btn.classList.add('wrong');
+  });
+
+  const isCorrect = chosen === q.correct;
+  if (isCorrect) score++;
+
+  const fb = document.getElementById('feedback');
+  const fbResult = document.getElementById('fb-result');
+  const fbExplain = document.getElementById('fb-explain');
+
+  fbResult.className = 'fb-result ' + (isCorrect ? 'ok' : 'nope');
+  fbResult.textContent = isCorrect ? '✓ Bonne réponse !' : '✗ Pas tout à fait…';
+  fbExplain.textContent = q.explain;
+  fb.classList.add('show');
+
+  // Last question: change button text
+  if (idx === questions.length - 1) {
+    fb.querySelector('.next-btn').textContent = 'Voir mon score →';
+  } else {
+    fb.querySelector('.next-btn').textContent = 'Question suivante →';
+  }
+}
+
+function nextQuestion() {
+  idx++;
+  renderQuestion();
+}
+
+function showScore() {
+  document.getElementById('qcard').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'none';
+  const total = questions.length;
+  const pct = Math.round(score / total * 100);
+
+  let emoji, title, sub;
+  if (pct === 100)      { emoji = '🏆'; title = 'Parfait !'; sub = 'Tu maîtrises tout. Tu es prêt(e) pour le bac.'; }
+  else if (pct >= 80)   { emoji = '🎉'; title = 'Excellent !'; sub = 'Très bonne maîtrise. Quelques points à revoir.'; }
+  else if (pct >= 60)   { emoji = '👍'; title = 'Bien !'; sub = 'Tu as les bases. Relis les notions que tu as ratées.'; }
+  else if (pct >= 40)   { emoji = '📚'; title = 'À retravailler'; sub = 'Reviens sur les notions et les repères dans le cours.'; }
+  else                  { emoji = '💪'; title = 'Continue !'; sub = 'Commence par lire les fiches Notions avant de refaire le quiz.'; }
+
+  document.getElementById('sc-emoji').textContent = emoji;
+  document.getElementById('sc-title').textContent = title;
+  document.getElementById('sc-sub').textContent = sub;
+  document.getElementById('sc-big').textContent = score + ' / ' + total;
+  document.getElementById('sc-detail').innerHTML =
+    '<span>' + score + '</span> bonne' + (score > 1 ? 's' : '') + ' réponse' + (score > 1 ? 's' : '') +
+    ' sur <span>' + total + '</span> — ' + pct + '%';
+
+  document.getElementById('score-screen').classList.add('show');
+}
+
+// Init
+restartQuiz();
+</script>
+</body>
+</html>
